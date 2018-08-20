@@ -1,16 +1,18 @@
-import { Component } from 'react'
-import ReactDOM from 'react-dom';
-import imageViewer from './components/ImageViewer.js'
+import React,{ Component } from 'react'
+import ReactDOM, {Route} from 'react-dom';
+import ImageViewer from './components/ImageViewer.js'
+import testimg from './oip.svg'
 
 class App extends Component {
 	render(){
 		return(
-			<div>Hello World!</div>
+			<div>
+				<ImageViewer />
+			</div>
 		)
 	}
 }
 
-<Route exact path="imgTest" Component={imageViewer} />
 ReactDOM.render(<App/>, document.getElementById('main'));
 
 export default App;
