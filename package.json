@@ -2,7 +2,7 @@
   "name": "oip-react",
   "version": "1.0.0",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "npm run start:dev",
     "start:dev": "webpack-dev-server --config ./config/webpack.dev.js",
