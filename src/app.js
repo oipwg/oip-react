@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import ReactDOM from 'react-dom';
+import imageViewer from './components/ImageViewer.js'
 
 class App extends Component {
 	render(){
@@ -9,6 +10,7 @@ class App extends Component {
 	}
 }
 
+<Route exact path="imgTest" Component={imageViewer} />
 ReactDOM.render(<App/>, document.getElementById('main'));
 
 export default App;
