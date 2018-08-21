@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import oip from '../oip.svg'
-import { artifact } from 'oip-index'
+import { Index } from 'oip-index';
 
 class ImageViewer extends Component {
     constructor(props){

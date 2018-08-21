@@ -21,7 +21,7 @@
     "url": "https://github.com/oipwg/oip-react/issues"
   },
   "dependencies": {
-    "oip-index": "^1.1.0",
+    "oip-index": "git+https://github.com/oipwg/oip-index.git",
     "oip-state": "git+https://github.com/oipwg/oip-state.git",
     "react": "^16.4.2",
     "react-bootstrap": "^0.32.1",
