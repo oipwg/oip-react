@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { logout } from 'oip-state/src/actions/Account/actions'
-import { accountLogin } from 'oip-state/src/actions/Account/thunks'
+import { promptLogin } from 'oip-state/src/actions/Account/actions'
 
 class AccountButton extends Component {
 	constructor(props){
@@ -11,28 +10,33 @@ class AccountButton extends Component {
 		this.onButtonClick = this.onButtonClick.bind(this)
 	}
 	onButtonClick(){
-		this.props.accountLogin("sarah@gmail.com", "sarah")
+		if (!this.props.isLoggedIn)
+			this.props.promptLogin()
 	}
 	render(){
 		let loginText = "Login";
 
-		if (this.props.isLoggedIn)
-			loginText = "Logged In!"
+		if (this.props.isLoggedIn){
+			if (this.props.Account && this.props.Account._username)
+				loginText = this.props.Account._username
+			else
+				loginText = "Logged In"
+		}
 
     	return (
-            <div><button type="button" className="btn btn-outline-dark border-0">{LoginText}</button></div>
+            <button type="button" className="btn btn-outline-dark border-0" onClick={this.onButtonClick}>{loginText}</button>
         )
 	}
 }
 
 const mapDispatchToProps = {
-    accountLogin,
-    logout
+    promptLogin
 }
 
 function mapStateToProps(state) {
     return {
         isLoggedIn: state.Account.isLoggedIn,
+        Account: state.Account.Account
     }
 }
 
