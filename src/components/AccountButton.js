@@ -19,7 +19,9 @@ class AccountButton extends Component {
 		if (this.props.isLoggedIn)
 			loginText = "Logged In!"
 
-    	return <button type="button" className="btn btn-outline-dark border-0">Login</button>
+    	return (
+            <button type="button" className="btn btn-outline-dark border-0">{LoginText}</button>
+        )
 	}
 }
 
