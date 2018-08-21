@@ -29,3 +29,4 @@ stories.add('height: 300px', withNotes('Hardcoded options and no props')( () => 
 		<ImageViewer />
     </div>
 )))
+
