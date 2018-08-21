@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import { connect } from 'react-redux';
 import validator from 'validator';
 
 import ButtonCheckbox from './ButtonCheckbox.js';
