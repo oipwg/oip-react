@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-
+import artifact from './TestArtifact'
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
 
 const stories = storiesOf('ImageViewer', module);
@@ -30,3 +30,8 @@ stories.add('height: 300px', withNotes('Hardcoded options and no props')( () => 
     </div>
 )))
 
+stories.add('IV with artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
+	<div style={{width: "500px"}}>
+		<ImageViewer artifact={artifact} artifactFile={null} />
+	</div>
+)))
