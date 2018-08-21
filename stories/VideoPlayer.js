@@ -33,8 +33,10 @@ stories.add('height: broken', withNotes('Note: this is broken. For height to be 
 	</div>
 )))
 
-stories.add('VP with artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
+stories.add('live artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "500px"}}>
 		<VideoPlayer artifact={artifact} artifactFile={null} />
 	</div>
-)))
+)));
+
+
