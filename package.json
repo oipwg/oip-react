@@ -30,6 +30,7 @@
     "react-date-picker": "^6.10.1",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
+    "reactstrap": "^6.4.0",
     "video.js": "^7.1.0"
   },
   "devDependencies": {
