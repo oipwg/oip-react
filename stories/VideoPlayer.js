@@ -1,7 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-import { withKnobs, text, boolean, number } from '@storybook/addon-knobs/react';
+import { withKnobs, object } from '@storybook/addon-knobs/react';
+import artifact from './TestArtifact'
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
 
@@ -29,5 +30,11 @@ stories.add('width: 900px', withNotes('Hardcoded options and no props')( () => (
 stories.add('height: broken', withNotes('Note: this is broken. For height to be set, it has to be done as a property of the object prop, options. Fluid must be set to false for height to take affect.')( () => (
 	<div style={{height: "200px"}}>
 		<VideoPlayer artifact={null} artifactFile={null} />
+	</div>
+)))
+
+stories.add('VP with artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
+	<div style={{width: "500px"}}>
+		<VideoPlayer artifact={artifact} artifactFile={null} />
 	</div>
 )))
