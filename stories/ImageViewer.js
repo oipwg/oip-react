@@ -1,41 +1,40 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-<<<<<<< HEAD
-import { amsterdam } from './TestArtifact'
-=======
 import artifact from './TestArtifacts'
->>>>>>> 44643fffc0fbabdf99f72844856389392d44e1d4
+import { amsterdam } from './TestArtifacts'
+import { withKnobs, object} from '@storybook/addon-knobs/react';
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
 
 const stories = storiesOf('ImageViewer', module);
+stories.addDecorator(withKnobs)
 
-stories.add('width: 300px', withNotes('Hardcoded options and no props')( () => (
+stories.add('width: 300px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "300px"}}>
-		<ImageViewer />
+		<ImageViewer artifact={object("Artifact", amsterdam)} artifactFile={object("artifactFile", amsterdam.getFiles()[0])}/>
     </div>
 )))
 
-stories.add('width: 600px', withNotes('Hardcoded options and no props')( () => (
+stories.add('width: 600px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "600px"}}>
-		<ImageViewer />
+		<ImageViewer artifact={object("Artifact", amsterdam)} artifactFile={object("artifactFile", amsterdam.getFiles()[0])} />
     </div>
 )))
 
-stories.add('width: 900px', withNotes('Hardcoded options and no props')( () => (
+stories.add('width: 900px Second File', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "900px"}}>
-		<ImageViewer />
+		<ImageViewer artifact={object("Artifact", amsterdam)} artifactFile={object("artifactFile", amsterdam.getFiles()[1])} />
     </div>
 )))
 
-stories.add('height: 300px', withNotes('Hardcoded options and no props')( () => (
+stories.add('height: 300px Second File', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{height: "200px"}}>
-		<ImageViewer />
+		<ImageViewer artifact={object("Artifact", amsterdam)} artifactFile={object("artifactFile", amsterdam.getFiles()[1])} />
     </div>
 )))
 
-stories.add('IV with artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
+stories.add('Art Prop Test', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "500px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={amsterdam.getFiles()[0]} />
+		<ImageViewer artifact={object("Artifact", amsterdam)} artifactFile={object("artifactFile", amsterdam.getFiles()[0])} />
 	</div>
 )))
