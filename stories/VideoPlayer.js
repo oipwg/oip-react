@@ -1,10 +1,12 @@
 import React from 'react';
+
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, object} from '@storybook/addon-knobs/react';
-import { apocalypse } from './TestArtifacts'
+
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
+import { apocalypse } from './TestArtifacts'
 
 const stories = storiesOf('VideoPlayer', module);
 stories.addDecorator(withKnobs)
