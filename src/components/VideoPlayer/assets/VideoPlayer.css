@@ -2,8 +2,7 @@
 	border: none;
 	background: none;
 	opacity: .8;
-	font-size: 5em;
-}
+	font-size: 5em; }
 
 .vjs-oip:hover .vjs-big-play-button,
 .video-oip .vjs-big-play-button:focus {
@@ -11,5 +10,4 @@
 	background: none;
 	outline: none;
 	opacity: .9;
-	cursor: default;
-}
+	cursor: default; }
