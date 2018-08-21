@@ -1,41 +1,14 @@
-/*.vjs-oip .vjs-big-play-button{*/
-	/*border: none;*/
-	/*background: none;*/
-	/*transition: none;*/
-	/*font-size: 7em}*/
-
-/*.video-js:hover .vjs-big-play-button,*/
-/*.video-js .vjs-big-play-button:focus {*/
-	/*border: none;*/
-	/*background: none;*/
-	/*cursor: pointer}*/
-
 .vjs-oip .vjs-big-play-button {
-	display: none;
 	border: none;
 	background: none;
+	opacity: .8;
 }
 
 .vjs-oip:hover .vjs-big-play-button,
 .video-oip .vjs-big-play-button:focus {
-	display: block;
 	border: none;
 	background: none;
-	cursor: default;
-	font-size: 6em;
-	opacity: .8;
 	outline: none;
-	animation-name: fadeInOpacity;
-	animation-iteration-count: 1;
-	animation-timing-function: ease-in;
-	animation-duration: .2s;
-}
-
-@keyframes fadeInOpacity {
-	0% {
-		opacity: 0;
-	}
-	100% {
-		opacity: 1;
-	}
+	font-size: 4em;
+	opacity: .8;
 }
