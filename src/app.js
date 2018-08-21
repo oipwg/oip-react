@@ -1,10 +1,14 @@
-import { Component } from 'react'
-import ReactDOM from 'react-dom';
+import React,{ Component } from 'react'
+import ReactDOM, {Route} from 'react-dom';
+import ImageViewer from './components/ImageViewer.js'
+import testimg from './oip.svg'
 
 class App extends Component {
 	render(){
 		return(
-			<div>Hello World!</div>
+			<div>
+				<ImageViewer />
+			</div>
 		)
 	}
 }
