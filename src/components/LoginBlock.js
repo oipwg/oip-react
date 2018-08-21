@@ -30,7 +30,6 @@ class LoginBlock extends Component {
 		this.updateEmail = this.updateEmail.bind(this);
 		this.updatePassword = this.updatePassword.bind(this);
 		this.updateRememberMe = this.updateRememberMe.bind(this);
-		this.registerClick = this.registerClick.bind(this);	
 	}
 
 	login(){
