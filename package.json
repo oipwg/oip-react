@@ -21,10 +21,12 @@
     "url": "https://github.com/oipwg/oip-react/issues"
   },
   "dependencies": {
+    "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-bootstrap": "^0.32.1",
     "react-date-picker": "^6.10.1",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "video.js": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",
