@@ -1,8 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-import { withKnobs, object } from '@storybook/addon-knobs/react';
-import artifact from './TestArtifact'
+import { withKnobs } from '@storybook/addon-knobs/react';
+import { apocalypse } from './TestArtifacts'
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
 
@@ -35,7 +35,7 @@ stories.add('height: broken', withNotes('Note: this is broken. For height to be 
 
 stories.add('live artifact prop', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "500px"}}>
-		<VideoPlayer artifact={artifact} artifactFile={null} />
+		<VideoPlayer artifact={apocalypse} artifactFile={apocalypse.getFiles()[0]} />
 	</div>
 )));
 
