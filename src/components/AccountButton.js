@@ -24,7 +24,7 @@ class AccountButton extends Component {
 		}
 
     	return (
-            <button type="button" className="btn btn-outline-dark border-0" onClick={this.onButtonClick}>{loginText}</button>
+            <button type="button" className="btn btn-outline-dark border-0" style={this.props.style} onClick={this.onButtonClick}>{loginText}</button>
         )
 	}
 }
