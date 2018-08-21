@@ -20,7 +20,7 @@ class AccountButton extends Component {
 			loginText = "Logged In!"
 
     	return (
-            <div><button type="button" className="btn btn-outline-dark border-0">{loginText}</button></div>
+            <div><button type="button" className="btn btn-outline-dark border-0" onClick={this.onButtonClick}>{loginText}</button></div>
         )
 	}
 }
