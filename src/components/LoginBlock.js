@@ -116,8 +116,7 @@ class LoginBlock extends Component {
 }
 
 const mapDispatchToProps = {
-    accountLogin,
-    resetLoginState
+    accountLogin
 }
 
 function mapStateToProps(state) {
