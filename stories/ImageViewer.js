@@ -27,10 +27,3 @@ stories.add('width: 900px', withNotes('Hardcoded options and no props')( () => (
 		<ImageViewer />
     </div>
 )))
-
-
-stories.add('height: 300px', withNotes('Hardcoded options and no props')( () => (
-	<div style={{height: "200px"}}>
-		<ImageViewer />
-    </div>
-)))
