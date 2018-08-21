@@ -2,7 +2,7 @@
   "name": "oip-react",
   "version": "1.0.0",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start": "npm run start:dev",
     "start:dev": "webpack-dev-server --config ./config/webpack.dev.js",
@@ -21,12 +21,15 @@
     "url": "https://github.com/oipwg/oip-react/issues"
   },
   "dependencies": {
-    "oip-index": "git+https://github.com/oipwg/oip-index.git",
+    "prop-types": "^15.6.2",
+    "oip-index": "^1.1.0",
     "oip-state": "git+https://github.com/oipwg/oip-state.git",
     "react": "^16.4.2",
     "react-bootstrap": "^0.32.1",
     "react-date-picker": "^6.10.1",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "video.js": "^7.1.0",
+    "react-redux": "^5.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.55",

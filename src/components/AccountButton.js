@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import { logout } from 'oip-state/src/actions/Account/actions'
@@ -21,7 +20,7 @@ class AccountButton extends Component {
 			loginText = "Logged In!"
 
     	return (
-            <button type="button" className="btn btn-outline-dark border-0">Login</button>
+            <div><button type="button" className="btn btn-outline-dark border-0">{LoginText}</button></div>
         )
 	}
 }
