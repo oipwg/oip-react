@@ -1,11 +1,8 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-<<<<<<< HEAD
-import { amsterdam } from './TestArtifact'
-=======
 import artifact from './TestArtifacts'
->>>>>>> 44643fffc0fbabdf99f72844856389392d44e1d4
+
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
 
 const stories = storiesOf('ImageViewer', module);
