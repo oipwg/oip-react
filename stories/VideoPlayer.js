@@ -26,7 +26,7 @@ stories.add('width: 900px', withNotes('Hardcoded options and no props')( () => (
 	</div>
 )))
 
-stories.add('height: 300px', withNotes('For height to be set, it has to be done as a property of the object prop, options. Fluid must be set to false for height to take affect.')( () => (
+stories.add('height: broken', withNotes('Note: this is broken. For height to be set, it has to be done as a property of the object prop, options. Fluid must be set to false for height to take affect.')( () => (
 	<div style={{height: "200px"}}>
 		<VideoPlayer artifact={null} artifactFile={null} />
 	</div>
