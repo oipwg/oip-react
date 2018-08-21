@@ -55,8 +55,8 @@ class LoginModal extends Component {
 
 function mapStateToProps(state) {
     return {
-        show_login_modal: state.Account.loginModalPrompt,
-        show_register_modal: state.Account.registerModalPrompt
+        show_login_modal: state.Account.showLoginModal,
+        show_register_modal: state.Account.showRegisterModal
     }
 }
 

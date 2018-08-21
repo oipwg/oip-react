@@ -2,7 +2,8 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
 
-import ImageViewer from '../src/components/ImageViewer';
+
+import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
 
 
 const stories = storiesOf('ImageViewer', module);
