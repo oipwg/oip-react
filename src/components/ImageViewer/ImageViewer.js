@@ -25,11 +25,13 @@ class ImageViewer extends Component {
 		);
 	}
 }
-ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
-ImageViewer.propTypes = {
-    artifact: PropTypes.object.isRequired,
-    activeFile: PropTypes.object.isRequired,
-    buildIPFSShortURL: PropTypes.func.isRequired,
-    buildIPFSURL: PropTypes.func.isRequired,
-};
+		ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
+		ImageViewer.propTypes = {
+			artifact: PropTypes.object.isRequired,
+			activeFile: PropTypes.object.isRequired,
+			buildIPFSShortURL: PropTypes.func.isRequired,
+			buildIPFSURL: PropTypes.func.isRequired,
+		};
+
+		
 export default ImageViewer;
