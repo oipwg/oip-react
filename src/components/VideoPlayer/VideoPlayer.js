@@ -20,9 +20,7 @@ class VideoPlayer extends React.Component {
 	        ],
 	        controls: true,
 	        preload: "auto",
-	        fluid: true,
-	        height: "auto",
-	        width: "auto"
+	        fluid: true
         };
 
 		let videoOptions = this.props.options ? {...this.defaultVideoOptions, ...this.props.options} : this.defaultVideoOptions;
@@ -57,12 +55,10 @@ class VideoPlayer extends React.Component {
     //     }
     // }
 
-
-
     render() {
         return (
             <div data-vjs-player className="videojs-container">
-                <video ref={node => this.videoNode = node} className="video-js vjs-big-play-centered">
+                <video ref={node => this.videoNode = node} className="video-js vjs-oip vjs-big-play-centered">
                     <p className="vjs-no-js">
                         To view this video please enable JavaScript, and consider upgrading to a
                         web browser that
