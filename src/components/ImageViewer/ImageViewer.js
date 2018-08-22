@@ -2,26 +2,50 @@ import React, { Component } from 'react'
 import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
 import './assets/css/ImageViewer.css'
+import ArtifactFile from 'oip-index/lib/ArtifactFile';
 
 class ImageViewer extends Component {
 	constructor(props){
 		super(props)
-		
+
+		this.buildIPFSShortURL = this.buildIPFSShortURL.bind(this);
+		this.buildIPFSURL = this.buildIPFSURL.bind(this);
 	
 	}
+
+	buildIPFSShortURL(location, fileName) {
+        if (!location || !fileName)
+            return "";
+
+        return location + "/" + fileName;
+    }
+
+    buildIPFSURL(hash, fname) {
+        let trailURL = "";
+        if (!fname) {
+            let parts = hash.split('/');
+            if (parts.length == 2) {
+                trailURL = parts[0] + "/" + encodeURIComponent(parts[1]);
+            } else {
+                trailURL = hash;
+            }
+        } else {
+            trailURL = hash + "/" + encodeURIComponent(fname);
+        }
+        return "https://gateway.ipfs.io/ipfs/" + trailURL;
+    }
 	
 	render() {
-		let hash = "https://gateway.ipfs.io/ipfs/QmQV23t3wUj7rUGVMDq9Qfgv16j75B1yMpJQcsYpgWKCrt/Apocalypse_CA_Poster.jpg";
+		let hash = "";
 
-		// if (this.props.activeFile && ((this.props.activeFile.isPaid && !this.props.activeFile.hasPaid) && !this.props.activeFile.owned)){
-		// 	hash = this.props.buildIPFSShortURL(this.props.artifact.getLocation(), this.props.activeFile.info.getFilename());
-		// } else {
-		// 	if (this.props.artifact && this.props.activeFile){
-		// 		hash = this.props.buildIPFSShortURL(this.props.artifact.getLocation(), this.props.activeFile.info.getFilename());
-		// 	}
-		// }
+		hash = this.buildIPFSShortURL(this.props.artifact.getLocation(), this.props.artifactFile.getFilename());
+		let url = this.buildIPFSURL(hash);
+
+		console.log(url)
+		
+
 		return (
-			<img className='OIP-ImageViewer' src={hash} alt="Open Index" />
+			<img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
 		);
 	}
 }
