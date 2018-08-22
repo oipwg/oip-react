@@ -1,7 +1,9 @@
 import React from 'react'
-// window.VIDEOJS_NO_DYNAMIC_STYLE = true
+import {Artifact as ArtifactClass, ArtifactFile as ArtifactFileClass} from 'oip-index'
 import videojs from 'video.js'
 import PropTypes from 'prop-types';
+
+import { getIPFSURL, getIPFSImage, getFileExtension } from '../../utils.js'
 
 import 'video.js/dist/video-js.css'
 import './assets/VideoPlayer.css'
@@ -31,66 +33,58 @@ class VideoPlayer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    let options = prevState.options;
+	    // console.log("getDerivedStateFromProps", nextProps, prevState)
+	    let options = prevState.options, poster, url;
 
-    	const buildIPFSShortURL = (location, fileName) => {
-		    if (!location || !fileName)
-			    return "";
+	    if (nextProps.ArtifactFile && nextProps.Artifact && nextProps.Artifact instanceof ArtifactClass && nextProps.ArtifactFile instanceof ArtifactFileClass) {
+		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.ArtifactFile) {
+			    if (nextProps.Artifact.getLocation() && nextProps.ArtifactFile.getFilename()) {
 
-		    return location + "/" + fileName;
-	    }
-
-	    const buildIPFSURL = (hash, fname) => {
-		    let trailURL = "";
-		    if (!fname) {
-			    let parts = hash.split('/');
-			    if (parts.length == 2) {
-				    trailURL = parts[0] + "/" + encodeURIComponent(parts[1]);
-			    } else {
-				    trailURL = hash;
+				    let extension = getFileExtension(nextProps.ArtifactFile);
+				    if (extension === "mp4") {
+					    poster = getIPFSImage(nextProps.Artifact);
+					    url = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
+					    options = {...options, sources: [{src: url, type: "video/mp4"}], poster};
+					    //@ToDo: If paid artifact...
+				    }
+				    return {
+					    options,
+					    Artifact: nextProps.Artifact,
+					    ArtifactFile: nextProps.ArtifactFile
+				    }
 			    }
-		    } else {
-			    trailURL = hash + "/" + encodeURIComponent(fname);
-		    }
-		    return "https://gateway.ipfs.io/ipfs/" + trailURL;
-	    }
-
-    	if (nextProps.artifact && nextProps.artifactFile && nextProps.artifact.getTXID() !== prevState.txid) {
-		    let extension, artifact, artifactFile, thumbnail, src, poster;
-
-		    if (nextProps.artifactFile && nextProps.artifactFile.getFilename()) {
-		    	let splitFilename = nextProps.artifactFile.getFilename().split(".")
-			    let indexToGrab = splitFilename.length - 1;
-
-		    	extension = splitFilename[indexToGrab].toLowerCase()
-		    }
-
-		    if (extension === "mp4") {
-		    	artifact = nextProps.artifact;
-		    	artifactFile = nextProps.artifactFile;
-
-		    	src = buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
-			    if (artifact.getThumbnail()) {
-			    	thumbnail = artifact.getThumbnail()
-				    poster = buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), thumbnail.getFilename()))
-			    }
-
-			    //@ToDo: If paid artifact, set autoplay to false
-		    }
-		    let newOptions = {...options, sources: [{src, type: "video/mp4"}], poster}
-		    return {
-			    txid: nextProps.artifact.getTXID(),
-			    options: newOptions
 		    }
 	    }
+	    return {}
     }
 
     componentDidMount() {
-        // instantiate Video.js
-        this.player = videojs(this.videoNode, this.state.options, function onPlayerReady() {
-            //toSomething
-        });
+	    // instantiate Video.js
+	    this.player = videojs(this.videoNode, this.state.options, function onPlayerReady() {
+		    //doSomething
+	    });
+
     }
+
+	componentDidUpdate(prevProps, prevState){
+    	if (prevState !== this.state) {
+		    if (this.player) {
+		    	console.log("Video.js ", this.player)
+			    let opts = this.player.options_;
+
+			    if (opts.post !== this.state.options.poster) {
+				    this.player.poster(this.state.options.poster)
+			    }
+
+			    if (opts.sources !== this.state.options.sources) {
+				    this.player.src(this.state.options.sources)
+			    }
+			    if (opts.autoplay !== this.state.options.autoplay) {
+				    this.player.autoplay(this.state.options.autoplay)
+			    }
+		    }
+	    }
+	}
 
     // // destroy player on unmount @ToDo: Uncomment when not testing in storybook
     // componentWillUnmount() {
@@ -118,8 +112,8 @@ class VideoPlayer extends React.Component {
 
 VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
 VideoPlayer.propTypes = {
-    artifact: PropTypes.object.isRequired,
-    artifactFile: PropTypes.object.isRequired,
+    artifact: PropTypes.object,
+    artifactFile: PropTypes.object,
     style: PropTypes.object,
     options: PropTypes.object
 };
