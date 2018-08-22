@@ -1,27 +1,41 @@
 import React from 'react';
-import { storiesOf } from '@storybook/react';
+import { storiesOf, addDecorator } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-import artifact from './TestArtifacts'
-import { amsterdam } from './TestArtifacts'
-import { withKnobs, object} from '@storybook/addon-knobs/react';
+import { withKnobs, object, select} from '@storybook/addon-knobs';
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
-import { specs, describe, it } from 'storybook-addon-specifications'
-import {mount} from "enzyme";
-import expect from "expect";
-
+import { getFileOptions, getArtifactOptions} from './util.js'
+import { amsterdam, apocalypse, barbershop, scout } from './TestArtifacts'
 
 const stories = storiesOf('ImageViewer', module);
 stories.addDecorator(withKnobs)
+stories.addDecorator(withNotes)
+
+const artifacts = getArtifactOptions([amsterdam, scout])
+
+stories.add('Knobs', withNotes('Passing kobs')( () => {
+
+	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact)
+	const artifact = artifacts.map[artifact_value]
+
+	const artifact_files = getFileOptions(artifact)
+
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file)
+
+	const artifact_file = artifact_files.map[file_value]
+
+	return (
+		<div style={{width: "500px"}}>
+			<ImageViewer artifact={artifact} artifactFile={ artifact_file}/>
+		</div>
+	)
+}))
 
 stories.add('width: 300px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "300px"}}>
 		<ImageViewer artifact={amsterdam} artifactFile={ amsterdam.getFiles()[0]}/>
-		
     </div>
 	
 )))
-
-
 
 stories.add('width: 600px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "600px"}}>

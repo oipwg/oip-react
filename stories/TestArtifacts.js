@@ -234,10 +234,67 @@ const amsterdam = {
 	publisherName: "vkinc"
 }
 
+const scout = {
+	"oip042":{
+	   "artifact":{
+		  "floAddress":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+		  "timestamp":1532632036,
+		  "type":"Image",
+		  "subtype":"Basic",
+		  "info":{
+			 "title":"Scouty Test",
+			 "description":"A super amazing puppy!",
+			 "year":2018
+		  },
+		  "details":{
+			 "artist":"Sky Young",
+			 "genre":"Animals/Wildlife",
+			 "tags":[
+				"Border Collie",
+				"Puppy",
+				"Dog"
+			 ]
+		  },
+		  "storage":{
+			 "network":"IPFS",
+			 "location":"QmcEAy2sEp7dTdyPea7TCUe9zwpkwaxGZRiq9d79YyNxip",
+			 "files":[
+				{
+				   "disBuy":true,
+				   "fname":"scout.jpg",
+				   "fsize":1571667,
+				   "sugPlay":1,
+				   "type":"Image"
+				}
+			 ]
+		  },
+		  "payment":{
+			 "fiat":"USD",
+			 "scale":"1000:1",
+			 "tokens":{
+ 
+			 },
+			 "addresses":{
+				"BTC":"1FjQxmrue5jdgVhmVMN3Y4XjXdtiDC257K"
+			 },
+			 "platform":15,
+			 "influencer":15,
+			 "maxdisc":30
+		  },
+		  "signature":"H70Ad0ev0qipZrKT5Ok3M7CusR7GvvIRVVDU6RGNOLHuRcaN4pUUNyZRN/HUPym7nVRvyfmFtAJ+pa0QgtesLOM="
+	   }
+	},
+	"txid":"9f02a90bd126bd5b2aa78a06821843eaf1e9ab338430da8fe8003933d317656c",
+	"publisher":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+	"publisherName":"OstlerDev"
+ }
+
 module.exports = {
 	apocalypse: new Artifact(apocalypse),
 	barbershop: new Artifact(barberShop),
 	barbershop_paid: new Artifact(barberShopPaid),
-	amsterdam: new Artifact(amsterdam)
+	amsterdam: new Artifact(amsterdam),
+	scout: new Artifact(scout)
+
 }
 
