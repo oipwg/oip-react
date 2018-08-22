@@ -32,11 +32,12 @@ class VideoPlayer extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options;
 	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
-
+			console.log("Generating url for poster and src using: ", nextProps.ArtifactFile, nextProps.Artifact)
 		    options.poster = getIPFSImage(nextProps.Artifact);
 		    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
 
 		    //@ToDo: If paid artifact...
+		    console.log("generating sources.src in lifecycle method = ", getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile))
 	    }
 	    return {
 	    	options,
@@ -57,7 +58,9 @@ class VideoPlayer extends React.Component {
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
 		    if (this.player) {
+		    	console.log("Sources.src before videojs update: ", this.player.src());
 		    	this.player.src(this.state.options.sources);
+		    	console.log("Sources.src after videojs update: ", this.player.src());
 			    this.player.poster(this.state.options.poster);
 			    this.player.autoplay(this.state.options.autoplay);
 		    }
