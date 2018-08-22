@@ -7,7 +7,7 @@ import { withKnobs, button } from '@storybook/addon-knobs';
 import { Provider } from 'react-redux'
 import state from 'oip-state'
 
-import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
+import { logout } from 'oip-state/src/actions/Account/actions'
 
 import RegisterBlock from '../src/components/RegisterBlock'
 
@@ -23,7 +23,7 @@ stories.addDecorator(withKnobs)
 const store = state.createStore()
 
 stories.add('Example', withNotes('')( () => {
-	// button("Dispatch Logout", () => { store.dispatch(logout()) })
+	button("Dispatch Logout", () => { store.dispatch(logout()) })
 	return (
 		<Provider store={store}>
 			<div>

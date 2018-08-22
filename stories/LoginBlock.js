@@ -7,7 +7,7 @@ import { withKnobs, button } from '@storybook/addon-knobs';
 import { Provider } from 'react-redux'
 import state from 'oip-state'
 
-import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
+import { logout } from 'oip-state/src/actions/Account/actions'
 
 import LoginBlock from '../src/components/LoginBlock'
 
