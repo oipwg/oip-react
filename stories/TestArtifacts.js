@@ -73,7 +73,7 @@ const barberShop = {
 			type: "Video",
 			subtype: "Movie",
 			info: {
-				title: "Agent 327 - Operation Barbershop",
+				title: "(Free) Agent 327 - Operation Barbershop",
 				year: 2018
 			},
 			details: {
@@ -117,6 +117,69 @@ const barberShop = {
 	txid: "5533ce5766dfbe4667d9e21e90f6542bdcd2a22bd81a2bb5d110e6aa97010008",
 	publisher: "FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
 	publisherName: "OstlerDev"
+}
+
+const barberShopPaid = {  
+	"oip042":{  
+		"artifact":{  
+			"floAddress":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+			"timestamp":1534476553,
+			"type":"Video",
+			"subtype":"Movie",
+			"info":{  
+				"title":"(Paid) Agent 327 - Operation Barbershop",
+				"description":"\"Hendrik IJzerbroot \\u2013 Agent 327 \\u2013 is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.\\n\\nBlender Institute is currently developing its first animated feature film, based on the celebrated Dutch comic character Agent 327. This adventurous comedy is targeted at an international market.\\n\\nThanks to the Blender open source project, known by millions of people, we have a large network of artists and developers world-wide. We\\u2019ve pioneered crowd-funding and are self-supportive thanks to an innovative cloud platform. Blender Institute seeks for additional funding to kickstart the production in the Netherlands of a high-end 3D animated CG feature film.\"",
+				"year":2018
+			},
+			"details":{  
+				"genre":"Animation,Family"
+			},
+			"storage":{  
+				"network":"IPFS",
+				"location":"QmZMgAqabQEMxY78zcdcr9wMY8QuqVYn4XzXdFhDTWys4d",
+				"files":[  
+					{  
+						"duration":231,
+						"fname":"Agent 327 - Operation Barbershop.mp4",
+						"fsize":28512527,
+						"sugPlay":1,
+						"type":"Video",
+						"sugBuy":10
+					},
+					{  
+						"fname":"Agent 327 - Operation Barbershop.en.vtt",
+						"fsize":933,
+						"type":"Other",
+						"subtype":"Other"
+					},
+					{  
+						"fname":"agent_barbershop_poster.jpg",
+						"fsize":98482,
+						"type":"Image",
+						"subtype":"cover"
+					}
+				]
+			},
+			"payment":{  
+				"fiat":"USD",
+				"scale":"1000:1",
+				"tokens":{  
+
+				},
+				"addresses":{  
+					"BTC":"1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA",
+					"LTC":"LUWPbpM43E2p7ZSh8cyTBEkvpHmr3cB8Ez"
+				},
+				"platform":15,
+				"influencer":15,
+				"maxdisc":30
+			},
+			"signature":"IMOmrIfjOr1fOevJDXR9/ZKjvr/dtaqgC/9WjUFHro9ULo506UXdkVavBwZTbbKBUwqBHq3Ij7YqDlUbUmJ0IT4="
+		}
+	},
+	"txid":"fca1d6407b21cc5966a0fa589ec1e9b9cb38634ec3c03a86bc630848991ae52e",
+	"publisher":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+	"publisherName":"OstlerDev"
 }
 
 const amsterdam = {
@@ -174,6 +237,7 @@ const amsterdam = {
 module.exports = {
 	apocalypse: new Artifact(apocalypse),
 	barbershop: new Artifact(barberShop),
+	barbershop_paid: new Artifact(barberShopPaid),
 	amsterdam: new Artifact(amsterdam)
 }
 

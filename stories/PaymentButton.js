@@ -2,20 +2,17 @@ import React from 'react';
 
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-import { withKnobs, select} from '@storybook/addon-knobs';
+import { withKnobs, select, boolean } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
 import state from 'oip-state'
 
-import {setActiveArtifact} from 'oip-state/src/actions/ActiveArtifact/thunks'
-
 import { getArtifactOptions, getFileOptions } from './util'
-import { apocalypse, barbershop, amsterdam } from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam } from './TestArtifacts'
 
 import PaymentButton from '../src/components/PaymentButton'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
-import 'font-awesome/css/font-awesome.min.css'
 
 // Setup Stories
 const stories = storiesOf('PaymentButton', module);
@@ -31,12 +28,10 @@ const type_options = {
 const type_default = "buy"
 
 // Setup Artifact
-const artifacts = getArtifactOptions([apocalypse, barbershop])
+const artifacts = getArtifactOptions([apocalypse, barbershop_paid, barbershop])
 
 // Setup Store
 const store = state.createStore()
-
-store.dispatch(setActiveArtifact(apocalypse))
 
 stories.add('Buy Button', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => {
 	let state = store.getState()
@@ -51,13 +46,28 @@ stories.add('Buy Button', withNotes('Using oip-index to pull in a live artifact 
 	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file)
 
 	const artifact_file = artifact_files.map[file_value]
+
+	let file_state = {
+		owned: boolean("File Owned", false),
+		isPaid: artifact.isPaid(),
+		hasPaid: boolean("Paid for File", false),
+	}
+
+	if (type_value === "buy"){
+		file_state.payInProgressBuy = boolean("Payment in Progress", false)
+		file_state.payErrorBuy = boolean("Payment Error", false)
+	}
+	if (type_value === "play"){
+		file_state.payInProgressPlay = boolean("Payment in Progress", false)
+		file_state.payErrorPlay = boolean("Payment Error", false)
+	}
 	return (
 		<Provider store={store}>
 			<PaymentButton 
 				Artifact={artifact} 
 				ArtifactFile={artifact_file} 
 				type={type_value} 
-				fileState={state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]} 
+				fileState={file_state} 
 			/>
 		</Provider>
 	)
