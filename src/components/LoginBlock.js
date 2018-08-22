@@ -106,7 +106,7 @@ class LoginBlock extends Component {
 					<div className="col-12 col-sm-7 col-md-7 order-1 order-sm-2">
                        {this.props.Account.loginFailure ? this.props.Account.loginErrorMessage : null}
                         <button id="signinl" className={"btn btn-lg btn" + (this.props.Account.loginFailure ? "-danger" : "-success") + " btn-block"}
-                                onClick={this.login}>{this.props.Account.isFetching ? "Loading..." : this.props.Account.loginFailure ? "Login Error" : "Login"}</button>
+                                onClick={this.login}>{this.props.Account.loginFetching ? "Logging in..." : this.props.Account.loginFailure ? "Login Error" : "Login"}</button>
 					</div>
 				</div>
 			</div>
