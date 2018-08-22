@@ -11,10 +11,10 @@ class VideoPlayer extends React.Component {
         super(props);
 
         this.defaultVideoOptions = {
-	        poster: "https://gateway.ipfs.io/ipfs/QmQV23t3wUj7rUGVMDq9Qfgv16j75B1yMpJQcsYpgWKCrt/Apocalypse_CA_Poster.jpg",
+	        poster: "",
 	        sources: [
 		        {
-			        src: "https://gateway.ipfs.io/ipfs/QmQV23t3wUj7rUGVMDq9Qfgv16j75B1yMpJQcsYpgWKCrt/Apocalypse_CA.mp4",
+			        src: "",
 			        type: "video/mp4"
 		        }
 	        ],
@@ -31,20 +31,64 @@ class VideoPlayer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-    	if (nextProps.artifact !== prevState.artifact || nextProps.artifactFile !== prevState.artifactFile) {
-			//@ToDo: check extension. if extension === mp4, set prop opts.
+	    let options = prevState.options;
+
+    	const buildIPFSShortURL = (location, fileName) => {
+		    if (!location || !fileName)
+			    return "";
+
+		    return location + "/" + fileName;
 	    }
 
-	    return {
-    		artifact: nextProps.artifact,
-		    artifactFile: nextProps.artifactFile
+	    const buildIPFSURL = (hash, fname) => {
+		    let trailURL = "";
+		    if (!fname) {
+			    let parts = hash.split('/');
+			    if (parts.length == 2) {
+				    trailURL = parts[0] + "/" + encodeURIComponent(parts[1]);
+			    } else {
+				    trailURL = hash;
+			    }
+		    } else {
+			    trailURL = hash + "/" + encodeURIComponent(fname);
+		    }
+		    return "https://gateway.ipfs.io/ipfs/" + trailURL;
+	    }
+
+    	if (nextProps.artifact && nextProps.artifactFile && nextProps.artifact.getTXID() !== prevState.txid) {
+		    let extension, artifact, artifactFile, thumbnail, src, poster;
+
+		    if (nextProps.artifactFile && nextProps.artifactFile.getFilename()) {
+		    	let splitFilename = nextProps.artifactFile.getFilename().split(".")
+			    let indexToGrab = splitFilename.length - 1;
+
+		    	extension = splitFilename[indexToGrab].toLowerCase()
+		    }
+
+		    if (extension === "mp4") {
+		    	artifact = nextProps.artifact;
+		    	artifactFile = nextProps.artifactFile;
+
+		    	src = buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
+			    if (artifact.getThumbnail()) {
+			    	thumbnail = artifact.getThumbnail()
+				    poster = buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), thumbnail.getFilename()))
+			    }
+
+			    //@ToDo: If paid artifact, set autoplay to false
+		    }
+		    let newOptions = {...options, sources: [{src, type: "video/mp4"}], poster}
+		    return {
+			    txid: nextProps.artifact.getTXID(),
+			    options: newOptions
+		    }
 	    }
     }
 
     componentDidMount() {
         // instantiate Video.js
         this.player = videojs(this.videoNode, this.state.options, function onPlayerReady() {
-            console.log('onPlayerReady', this)
+            //toSomething
         });
     }
 
