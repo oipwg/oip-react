@@ -10,7 +10,7 @@ import state from 'oip-state'
 import {setActiveArtifact} from 'oip-state/src/actions/ActiveArtifact/thunks'
 
 import { getArtifactOptions, getFileOptions } from './util'
-import { apocalypse, barbershop, amsterdam } from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam } from './TestArtifacts'
 
 import PaymentButton from '../src/components/PaymentButton'
 
@@ -31,7 +31,7 @@ const type_options = {
 const type_default = "buy"
 
 // Setup Artifact
-const artifacts = getArtifactOptions([apocalypse, barbershop])
+const artifacts = getArtifactOptions([apocalypse, barbershop_paid, barbershop])
 
 // Setup Store
 const store = state.createStore()
