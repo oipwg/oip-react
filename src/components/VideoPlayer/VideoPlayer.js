@@ -13,16 +13,20 @@ class VideoPlayer extends React.Component {
 
         this.defaultVideoOptions = {
 	        poster: "",
-	        sources: {src: "", type: "video/mp4"},
+	        sources: [{src: "", type: "video/mp4"}],
+	        // src: {src: "", type: "video/mp4"},
 	        controls: true,
 	        preload: "auto",
-	        fluid: true
+	        fluid: true,
+	        autoplay: true
         };
 
 		let videoOptions = this.props.options ? {...this.defaultVideoOptions, ...this.props.options} : this.defaultVideoOptions;
 
         this.state = {
-            options: videoOptions
+            options: videoOptions,
+	        Artifact: undefined,
+	        ArtifactFile: undefined
         }
     }
 
@@ -31,7 +35,7 @@ class VideoPlayer extends React.Component {
 	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
 
 		    options.poster = getIPFSImage(nextProps.Artifact);
-		    options.sources.src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
+		    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
 
 		    //@ToDo: If paid artifact...
 	    }
@@ -47,24 +51,16 @@ class VideoPlayer extends React.Component {
 	    this.player = videojs(this.videoNode, this.state.options, function onPlayerReady() {
 		    //doSomething
 	    });
+	    this.setState({player: this.player})
 
     }
 
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
 		    if (this.player) {
-			    let opts = this.player.options_;
-
-			    if (opts.post != this.state.options.poster) {
-				    this.player.poster(this.state.options.poster)
-			    }
-
-			    if (opts.sources != this.state.options.sources) {
-				    this.player.src(this.state.options.sources)
-			    }
-			    if (opts.autoplay != this.state.options.autoplay) {
-				    this.player.autoplay(this.state.options.autoplay)
-			    }
+		    	this.player.src(this.state.options.sources);
+			    this.player.poster(this.state.options.poster);
+			    this.player.autoplay(this.state.options.autoplay);
 		    }
 	    }
 	}
