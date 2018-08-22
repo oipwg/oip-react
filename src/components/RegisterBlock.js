@@ -320,7 +320,7 @@ class RegisterBlock extends Component {
 				<hr className="" />
                 {this.props.Account.registerFailure ? this.props.Account.registerErrorMessage : null}
 				<div className="row">
-					<div className="col-xs-12 col-md-3 order-2 order-sm-1"><button className="btn btn-outline-primary btn-block btn-lg" onClick={this.props.onLoginClick}>Login</button></div>
+					<div className="col-xs-12 col-md-3 order-2 order-sm-1"><button className="btn btn-outline-secondary btn-block btn-lg" onClick={this.props.onLoginClick}>Login</button></div>
 					<div className="col-xs-12 col-md-9 order-1 order-sm-2"><button id="register" className={"btn btn" + (this.props.Account.registerFailure ? "-danger" : "-success") + " btn-block btn-lg"} onClick={this.register} tabIndex="5">{RegisterBtnTxt}</button></div>
 				</div>
 			</div>

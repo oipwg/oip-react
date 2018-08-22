@@ -14,6 +14,15 @@ const artifacts = getArtifactOptions([amsterdam, scout])
 
 stories.add('Knobs', withNotes('Passing kobs')( () => {
 
+	
+	const width_value = select("Parent: div.width", {
+		"300px": "300px",
+		"500px": "500px",
+		"900px": "900px"
+
+	},"300px")
+
+
 	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact)
 	const artifact = artifacts.map[artifact_value]
 
@@ -23,40 +32,10 @@ stories.add('Knobs', withNotes('Passing kobs')( () => {
 
 	const artifact_file = artifact_files.map[file_value]
 
+
 	return (
-		<div style={{width: "500px"}}>
-			<ImageViewer artifact={artifact} artifactFile={ artifact_file}/>
+		<div style={{width: width_value}}>
+			<ImageViewer artifact={artifact} artifactFile={artifact_file}/>
 		</div>
 	)
 }))
-
-stories.add('width: 300px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
-	<div style={{width: "300px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={ amsterdam.getFiles()[0]}/>
-    </div>
-	
-)))
-
-stories.add('width: 600px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
-	<div style={{width: "600px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={amsterdam.getFiles()[0]} />
-    </div>
-)))
-
-stories.add('width: 900px Second File', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
-	<div style={{width: "900px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={amsterdam.getFiles()[1]} />
-    </div>
-)))
-
-stories.add('height: 300px Second File', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
-	<div style={{height: "200px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={amsterdam.getFiles()[1]} />
-    </div>
-)))
-
-stories.add('Art Prop Test', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
-	<div style={{width: "500px"}}>
-		<ImageViewer artifact={amsterdam} artifactFile={amsterdam.getFiles()[0]} />
-	</div>
-)))

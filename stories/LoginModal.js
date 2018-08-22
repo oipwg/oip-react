@@ -9,14 +9,15 @@ import state from 'oip-state'
 
 import { logout } from 'oip-state/src/actions/Account/actions'
 
-import RegisterBlock from '../src/components/RegisterBlock'
+import AccountButton from '../src/components/AccountButton'
+import LoginModal from '../src/components/LoginModal'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import StoreDebugHelper from './StoreDebugHelper'
 
 // Setup Stories
-const stories = storiesOf('RegisterBlock', module);
+const stories = storiesOf('LoginModal', module);
 stories.addDecorator(withKnobs)
 
 // Setup Store
@@ -27,12 +28,14 @@ stories.add('Example', withNotes('')( () => {
 	return (
 		<Provider store={store}>
 			<div>
-				<RegisterBlock />
+				<AccountButton />
+				<LoginModal />
 				<hr />
-				<StoreDebugHelper path={['Account', 'registerFetching']} />
-				<StoreDebugHelper path={['Account', 'registerFailure']} />
-				<StoreDebugHelper path={['Account', 'registerSuccess']} />
+				<StoreDebugHelper path={['Account', 'showLoginModal']} />
+				<StoreDebugHelper path={['Account', 'showRegisterModal']} />
 				<StoreDebugHelper path={['Account', 'isLoggedIn']} />
+				<StoreDebugHelper path={['Account', 'loginFetching']} />
+				<StoreDebugHelper path={['Account', 'registerFetching']} />
 				<StoreDebugHelper path={['Account', 'Account', '_username']} />
 			</div>
 		</Provider>
