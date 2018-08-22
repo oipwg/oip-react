@@ -5,6 +5,10 @@ import artifact from './TestArtifacts'
 import { amsterdam } from './TestArtifacts'
 import { withKnobs, object} from '@storybook/addon-knobs/react';
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
+import { specs, describe, it } from 'storybook-addon-specifications'
+import {mount} from "enzyme";
+import expect from "expect";
+
 
 const stories = storiesOf('ImageViewer', module);
 stories.addDecorator(withKnobs)
@@ -12,8 +16,12 @@ stories.addDecorator(withKnobs)
 stories.add('width: 300px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "300px"}}>
 		<ImageViewer artifact={amsterdam} artifactFile={ amsterdam.getFiles()[0]}/>
+		
     </div>
+	
 )))
+
+
 
 stories.add('width: 600px', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => (
 	<div style={{width: "600px"}}>
