@@ -49,13 +49,13 @@ const getFileExtension = (file) => {
 const getIPFSImage = (artifact) => {
 	if (artifact instanceof Artifact) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifact.getThumbnail().getFilename()))
-	} else return new Error("must pass in valid Artifact")
+	} else return "error: invalid Artifact[File]"
 };
 
 const getIPFSURL = (artifact, artifactFile) => {
 	if (artifact instanceof Artifact && artifactFile instanceof ArtifactFile) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
-	} else return new Error("must pass in valid Artifact and ArtifactFile")
+	} else return "error: invalid Artifact[File]"
 };
 
 const getIPFSURLAndImage = (artifact, artifactFile) => {
