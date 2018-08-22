@@ -1,9 +1,8 @@
 import React from 'react'
-import {Artifact as ArtifactClass, ArtifactFile as ArtifactFileClass} from 'oip-index'
 import videojs from 'video.js'
 import PropTypes from 'prop-types';
 
-import { getIPFSURL, getIPFSImage, getFileExtension } from '../../utils.js'
+import { getIPFSURL, getIPFSImage } from '../../utils.js'
 
 import 'video.js/dist/video-js.css'
 import './assets/VideoPlayer.css'
@@ -14,12 +13,7 @@ class VideoPlayer extends React.Component {
 
         this.defaultVideoOptions = {
 	        poster: "",
-	        sources: [
-		        {
-			        src: "",
-			        type: "video/mp4"
-		        }
-	        ],
+	        sources: {src: "", type: "video/mp4"},
 	        controls: true,
 	        preload: "auto",
 	        fluid: true
@@ -33,29 +27,19 @@ class VideoPlayer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    // console.log("getDerivedStateFromProps", nextProps, prevState)
-	    let options = prevState.options, poster, url;
+	    let options = prevState.options;
+	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
 
-	    if (nextProps.ArtifactFile && nextProps.Artifact && nextProps.Artifact instanceof ArtifactClass && nextProps.ArtifactFile instanceof ArtifactFileClass) {
-		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.ArtifactFile) {
-			    if (nextProps.Artifact.getLocation() && nextProps.ArtifactFile.getFilename()) {
+		    options.poster = getIPFSImage(nextProps.Artifact);
+		    options.sources.src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
 
-				    let extension = getFileExtension(nextProps.ArtifactFile);
-				    if (extension === "mp4") {
-					    poster = getIPFSImage(nextProps.Artifact);
-					    url = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
-					    options = {...options, sources: [{src: url, type: "video/mp4"}], poster};
-					    //@ToDo: If paid artifact...
-				    }
-				    return {
-					    options,
-					    Artifact: nextProps.Artifact,
-					    ArtifactFile: nextProps.ArtifactFile
-				    }
-			    }
-		    }
+		    //@ToDo: If paid artifact...
 	    }
-	    return {}
+	    return {
+	    	options,
+		    Artifact: nextProps.Artifact,
+		    ArtifactFile: nextProps.ArtifactFile
+	    }
     }
 
     componentDidMount() {
@@ -69,17 +53,16 @@ class VideoPlayer extends React.Component {
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
 		    if (this.player) {
-		    	console.log("Video.js ", this.player)
 			    let opts = this.player.options_;
 
-			    if (opts.post !== this.state.options.poster) {
+			    if (opts.post != this.state.options.poster) {
 				    this.player.poster(this.state.options.poster)
 			    }
 
-			    if (opts.sources !== this.state.options.sources) {
+			    if (opts.sources != this.state.options.sources) {
 				    this.player.src(this.state.options.sources)
 			    }
-			    if (opts.autoplay !== this.state.options.autoplay) {
+			    if (opts.autoplay != this.state.options.autoplay) {
 				    this.player.autoplay(this.state.options.autoplay)
 			    }
 		    }
