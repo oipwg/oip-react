@@ -14,6 +14,9 @@ let getArtifactOptions = function(artifact_array){
 			default_artifact = title
 	}
 
+	options["None"] = "None"
+	map["None"] = undefined
+
 	return {
 		title,
 		options,
@@ -28,16 +31,21 @@ let getFileOptions = function(Artifact){
 	let map = {}
 	let default_file = ""
 
-	let files = Artifact.getFiles()
-	for (let i = 0; i < files.length; i++){
-		let displayName = files[i].getDisplayName()
+	if (Artifact){
+		let files = Artifact.getFiles()
+		for (let i = 0; i < files.length; i++){
+			let displayName = files[i].getDisplayName()
 
-		options[displayName] = displayName
-		map[displayName] = files[i]
+			options[displayName] = displayName
+			map[displayName] = files[i]
 
-		if (i === 0)
-			default_file = displayName
+			if (i === 0)
+				default_file = displayName
+		}
 	}
+
+	options["None"] = "None"
+	map["None"] = undefined
 
 	return {
 		title,
