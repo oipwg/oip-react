@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from "prop-types";
 import {connect} from 'react-redux'
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlay, faDownload, faCircleNotch, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+
 import { formatPriceString } from '../utils'
 
 // import {payForArtifactFile} from "../actions/Wallet/thunks";
@@ -10,25 +13,11 @@ class PaymentButton extends Component {
 	constructor(props){
 		super(props);
 
-		this.buyFile = this.buyFile.bind(this);
+		this.payForFile = this.payForFile.bind(this);
 	}
 
-	buyFile(){
-		if (this.props.file.info && this.props.file.info.getSuggestedBuyCost() == 0) {
-			console.log("buying file: ", this.props.file.key)
-			this.props.buyFile(this.props.file.key)
-
-			if (this.props.file.info.getType() === 'Audio') {
-				this.props.isPlayingFile(this.props.file.key, !this.props.file.isPlaying)
-			}
-			if (!this.props.activeFile) {this.props.setCurrentFile(this.props.artifact, this.props.file)}
-			else {if (this.props.file.key !== this.props.activeFile.key) {this.props.setCurrentFile(this.props.artifact, this.props.file)}}
-			return
-		}
-
-		this.props.payForArtifactFile(this.props.artifact, this.props.file, "buy")
-		if (!this.props.activeFile) {this.props.setCurrentFile(this.props.artifact, this.props.file)}
-		else {if (this.props.file.key !== this.props.activeFile.key) {this.props.setCurrentFile(this.props.artifact, this.props.file)}}
+	payForFile(){
+		this.props.payForArtifactFile(this.props.Artifact, this.props.ArtifactFile, this.props.type)
 	}
 
 	render() {
@@ -44,12 +33,16 @@ class PaymentButton extends Component {
 
 		let button_class = "outline-info";
 		let payment_string = "";
+		let button_icon
+		let button_icon_class = ""
 
 		if (this.props.Artifact && this.props.ArtifactFile && this.props.fileState && (this.props.type === "play" || this.props.type === "buy")){
 			owned = this.props.fileState.owned;
 			hasPaid = this.props.fileState.hasPaid;
 
 			if (this.props.type === "play"){
+				button_icon = faPlay
+
 				if (this.props.fileState.payInProgressPlay)
 					payInProgress = true
 
@@ -61,6 +54,8 @@ class PaymentButton extends Component {
 			}
 
 			if (this.props.type === "buy"){
+				button_icon = faDownload
+
 				if (this.props.fileState.payInProgressBuy)
 					payInProgress = true
 
@@ -81,13 +76,13 @@ class PaymentButton extends Component {
 			button_class = "outline-success";
 		}
 
-		if (hasPaid){
+		if (hasPaid && this.props.type !== "buy"){
 			button_class = "outline-info";
 			payment_string = "View";
 		}
 
 		if (owned) {
-			button_class = "primary";
+			button_class = "outline-info";
 
 			if (this.props.type === "play")
 				payment_string = "View";
@@ -98,17 +93,23 @@ class PaymentButton extends Component {
 		if (payInProgress) {
 			button_class = "outline-info disabled";
 			payment_string = "paying...";
+
+			button_icon = faCircleNotch
+			button_icon_class = "fa-spin"
 		}
 
 		if (payError) {
 			button_class = "outline-danger";
-			payment_string = "Error!";
+			payment_string = "Error";
+
+			button_icon = faExclamationCircle
 		}
+
 		return (
 			<div style={{display: disallowPurchase ? "" : "inline-block", paddingLeft: "3px"}}>
 				{ disallowPurchase ? "" :
-					<button className={"pad-5 btn btn-" + button_class} onClick={() => this.buyFile()} style={this.props.style}>
-						<span className="icon icon-download" style={{marginRight: "5px"}}/>{payment_string}
+					<button className={"pad-5 btn btn-" + button_class} onClick={() => this.payForFile()} style={this.props.style}>
+						<FontAwesomeIcon icon={button_icon} className={button_icon_class} style={{marginRight: "5px"}} />{payment_string}
 					</button>
 				}
 			</div>
