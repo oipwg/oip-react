@@ -37,11 +37,12 @@ class ImageViewer extends Component {
 	
 	render() {
 		let hash = "";
+		let url = "";
 
-		hash = this.buildIPFSShortURL(this.props.artifact.getLocation(), this.props.artifactFile.getFilename());
-		let url = this.buildIPFSURL(hash);
-
-		console.log(url)
+		if (this.props.artifact && this.props.artifactFile) {
+			hash = this.buildIPFSShortURL(this.props.artifact.getLocation(), this.props.artifactFile.getFilename());
+			url = this.buildIPFSURL(hash);
+		}
 		
 
 		return (
@@ -49,13 +50,11 @@ class ImageViewer extends Component {
 		);
 	}
 }
-		ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
-		ImageViewer.propTypes = {
-			artifact: PropTypes.object.isRequired,
-			activeFile: PropTypes.object.isRequired,
-			buildIPFSShortURL: PropTypes.func.isRequired,
-			buildIPFSURL: PropTypes.func.isRequired,
-		};
 
+ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
+ImageViewer.propTypes = {
+	artifact: PropTypes.object.isRequired,
+	artifactFile: PropTypes.object.isRequired
+};
 		
 export default ImageViewer;
