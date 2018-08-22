@@ -105,6 +105,11 @@ class PaymentButton extends Component {
 			button_icon = faExclamationCircle
 		}
 
+		if (!this.props.Artifact || !this.props.ArtifactFile){
+			button_class = "outline-warning"
+			payment_string = "No Artifact/File"
+		}
+
 		return (
 			<div style={{display: disallowPurchase ? "" : "inline-block", paddingLeft: "3px"}}>
 				{ disallowPurchase ? "" :
