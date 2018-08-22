@@ -14,11 +14,10 @@ class VideoPlayer extends React.Component {
         this.defaultVideoOptions = {
 	        poster: "",
 	        sources: [{src: "", type: "video/mp4"}],
-	        // src: {src: "", type: "video/mp4"},
 	        controls: true,
 	        preload: "auto",
 	        fluid: true,
-	        autoplay: true
+	        autoplay: false
         };
 
 		let videoOptions = this.props.options ? {...this.defaultVideoOptions, ...this.props.options} : this.defaultVideoOptions;
