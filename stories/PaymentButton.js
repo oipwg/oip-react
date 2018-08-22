@@ -49,7 +49,7 @@ stories.add('Buy Button', withNotes('Using oip-index to pull in a live artifact 
 
 	let file_state = {
 		owned: boolean("File Owned", false),
-		isPaid: artifact.isPaid(),
+		isPaid: artifact ? artifact.isPaid() : false,
 		hasPaid: boolean("Paid for File", false),
 	}
 
