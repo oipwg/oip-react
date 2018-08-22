@@ -1,3 +1,5 @@
+import { Artifact, ArtifactFile} from 'oip-index'
+
 let formatPriceString = function(price){
 	// This function assumes the scale has already been applied, and you are passing it a float value
 	var priceStr = parseFloat(price.toFixed(3));
@@ -37,8 +39,38 @@ const buildIPFSURL = (hash, fname) => {
 	return "https://gateway.ipfs.io/ipfs/" + trailURL;
 };
 
+const getFileExtension = (file) => {
+	let splitFilename = file.getFilename().split(".");
+	let indexToGrab = splitFilename.length - 1;
+	let extension = splitFilename[indexToGrab].toLowerCase();
+	return extension
+};
+
+const getIPFSImage = (artifact) => {
+	if (artifact instanceof Artifact) {
+		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifact.getThumbnail().getFilename()))
+	} else return new Error("must pass in valid Artifact")
+};
+
+const getIPFSURL = (artifact, artifactFile) => {
+	if (artifact instanceof Artifact && artifactFile instanceof ArtifactFile) {
+		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
+	} else return new Error("must pass in valid Artifact and ArtifactFile")
+};
+
+const getIPFSURLAndImage = (artifact, artifactFile) => {
+	let image = getIPFSImage(artifact);
+	let url = getIPFSURL(artifact, artifactFile);
+	return {image, url}
+};
+
+
 module.exports = {
 	formatPriceString,
+	getFileExtension,
 	buildIPFSShortURL,
-	buildIPFSURL
+	buildIPFSURL,
+	getIPFSImage,
+	getIPFSURL,
+	getIPFSURLAndImage
 }
