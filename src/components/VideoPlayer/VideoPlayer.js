@@ -92,7 +92,8 @@ VideoPlayer.propTypes = {
     artifact: PropTypes.object,
     artifactFile: PropTypes.object,
     style: PropTypes.object,
-    options: PropTypes.object
+    options: PropTypes.object,
+	lockFile: PropTypes.bool
 };
 
 export default VideoPlayer
