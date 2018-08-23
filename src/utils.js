@@ -42,8 +42,7 @@ const buildIPFSURL = (hash, fname) => {
 const getFileExtension = (file) => {
 	let splitFilename = file.getFilename().split(".");
 	let indexToGrab = splitFilename.length - 1;
-	let extension = splitFilename[indexToGrab].toLowerCase();
-	return extension
+	return splitFilename[indexToGrab].toLowerCase();
 };
 
 const getIPFSImage = (artifact) => {
