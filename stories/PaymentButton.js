@@ -23,7 +23,7 @@ stories.addDecorator(withKnobs)
 const type_label = "Type"
 const type_options = {
 	"Buy": "buy",
-	"Play": "play"
+	"View": "view"
 }
 const type_default = "buy"
 
@@ -57,9 +57,9 @@ stories.add('Buy Button', () => {
 		file_state.payInProgressBuy = boolean("Payment in Progress", false)
 		file_state.payErrorBuy = boolean("Payment Error", false)
 	}
-	if (type_value === "play"){
-		file_state.payInProgressPlay = boolean("Payment in Progress", false)
-		file_state.payErrorPlay = boolean("Payment Error", false)
+	if (type_value === "view"){
+		file_state.payInProgressView = boolean("Payment in Progress", false)
+		file_state.payErrorView = boolean("Payment Error", false)
 	}
 	return (
 		<Provider store={store}>

@@ -35,7 +35,7 @@ stories.add('Knobs', () => {
 
 	return (
 		<div style={{width: width_value}}>
-			<ImageViewer artifact={artifact} artifactFile={artifact_file}/>
+			<ImageViewer Artifact={artifact} ArtifactFile={artifact_file}/>
 		</div>
 	)
 }, { notes: 'Passing kobs' })

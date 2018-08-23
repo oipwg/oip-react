@@ -18,13 +18,14 @@ class ImageViewer extends Component {
 		let hash = "";
 		let url = "";
 
-		if (this.props.artifact && this.props.artifactFile) {
-			hash = buildIPFSShortURL(this.props.artifact.getLocation(), this.props.artifactFile.getFilename());
+		if (this.props.Artifact && this.props.ArtifactFile) {
+			hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());
 			url = buildIPFSURL(hash);
 		}
 		
-		if (!this.props.artifact && this.props.artifactFile) {
+		if (!this.props.Artifact && this.props.ArtifactFile) {
 			console.log('Artifact Image was not selected!')
+			return 
 		}
 
 		return (
@@ -35,8 +36,8 @@ class ImageViewer extends Component {
 
 ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
 ImageViewer.propTypes = {
-	// artifact: PropTypes.object.isRequired,
-	// artifactFile: PropTypes.object.isRequired
+	Artifact: PropTypes.object,
+	ArtifactFile: PropTypes.object
 };
 		
 export default ImageViewer;
