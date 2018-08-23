@@ -25,22 +25,25 @@ class VideoPlayer extends React.Component {
         this.state = {
             options: videoOptions,
 	        Artifact: undefined,
-	        ArtifactFile: undefined
+	        ArtifactFile: undefined,
+	        lockFile: undefined
         }
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options;
-	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
+	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.lockFile !== prevState.lockFile) {
 		    options.poster = getIPFSImage(nextProps.Artifact);
 		    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
 
 		    //@ToDo: If paid artifact...
+		    options.controls = !nextProps.lockFile;
 	    }
 	    return {
 	    	options,
 		    Artifact: nextProps.Artifact,
-		    ArtifactFile: nextProps.ArtifactFile
+		    ArtifactFile: nextProps.ArtifactFile,
+		    lockFile: nextProps.lockFile
 	    }
     }
 
@@ -59,6 +62,8 @@ class VideoPlayer extends React.Component {
 		    	this.player.src(this.state.options.sources);
 			    this.player.poster(this.state.options.poster);
 			    this.player.autoplay(this.state.options.autoplay);
+			    this.player.controls(this.state.options.controls)
+			    console.log("Player controls: ", this.player.controls())
 		    }
 	    }
 	}
@@ -89,8 +94,8 @@ class VideoPlayer extends React.Component {
 
 VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
 VideoPlayer.propTypes = {
-    artifact: PropTypes.object,
-    artifactFile: PropTypes.object,
+    Artifact: PropTypes.object,
+    ArtifactFile: PropTypes.object,
     style: PropTypes.object,
     options: PropTypes.object,
 	lockFile: PropTypes.bool
