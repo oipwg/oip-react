@@ -12,7 +12,7 @@ stories.addDecorator(withNotes)
 
 const artifacts = getArtifactOptions([amsterdam, scout])
 
-stories.add('Knobs', withNotes('Passing kobs')( () => {
+stories.add('Knobs', () => {
 
 	
 	const width_value = select("Parent: div.width", {
@@ -38,4 +38,4 @@ stories.add('Knobs', withNotes('Passing kobs')( () => {
 			<ImageViewer artifact={artifact} artifactFile={artifact_file}/>
 		</div>
 	)
-}))
+}, { notes: 'Passing kobs' })
