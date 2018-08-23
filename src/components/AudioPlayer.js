@@ -4,6 +4,7 @@ import ReactAudioPlayer from 'react-audio-player';
 import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
 import ArtifactFile from 'oip-index/lib/ArtifactFile';
+import { buildIPFSURL, buildIPFSShortURL } from './../utils.js'
 
 class AudioPlayer extends React.Component {
     constructor(props){
@@ -14,41 +15,22 @@ class AudioPlayer extends React.Component {
     render() {
 		let hash = "";
 		let url = "";
-
-		if (this.props.Artifact && this.props.ArtifactFile) {
-            url = this.props.ArtifactFile
-        }
-
+            if (this.props.Artifact && this.props.ArtifactFile) {
+                hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());
+                url = buildIPFSURL(hash);
+            }
+        console.log(url)
 		return (
 			<ReactAudioPlayer
             src={url}
+            autoPlay
             controls />
 		);
 	}
 }
 AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
 AudioPlayer.propTypes = {
-    artifact: PropTypes.object,
-    activeFile: PropTypes.object,
-    volumeControls: PropTypes.object,
-    filePlaylist: PropTypes.object,
-    active: PropTypes.string,
-    updateFileCurrentTime: PropTypes.func,
-    isPlayableFile: PropTypes.func,
-    isSeekableFile: PropTypes.func,
-    updateFileDuration: PropTypes.func,
-    setVolume: PropTypes.func,
-    setMute: PropTypes.func,
-    playlistNext: PropTypes.func,
-    isPlayingFile: PropTypes.func,
-    setCurrentFile: PropTypes.func,
-    buildIPFSShortURL: PropTypes.func,
-    buildIPFSURL: PropTypes.func,
-    buyInProgress: PropTypes.func,
-    buyError: PropTypes.func,
-    paymentError: PropTypes.func,
-    paymentInProgress: PropTypes.func,
-    payForFile: PropTypes.func,
-    buyFile: PropTypes.func
+    Artifact: PropTypes.object,
+    ActiveFile: PropTypes.object
 };
 export default AudioPlayer;

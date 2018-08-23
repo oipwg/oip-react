@@ -36,7 +36,7 @@ const buildIPFSURL = (hash, fname) => {
 	} else {
 		trailURL = hash + "/" + encodeURIComponent(fname);
 	}
-	return "https://gateway.ipfs.io/ipfs/" + trailURL;
+	return "https://ipfs-dev.alexandria.io/ipfs/" + trailURL;
 };
 
 const getFileExtension = (file) => {
