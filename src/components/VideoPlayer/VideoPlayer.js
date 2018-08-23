@@ -63,7 +63,6 @@ class VideoPlayer extends React.Component {
 			    this.player.poster(this.state.options.poster);
 			    this.player.autoplay(this.state.options.autoplay);
 			    this.player.controls(this.state.options.controls)
-			    console.log("Player controls: ", this.player.controls())
 		    }
 	    }
 	}
