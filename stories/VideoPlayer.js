@@ -13,6 +13,17 @@ stories.addDecorator(withKnobs);
 
 const artifacts = getArtifactOptions([apocalypse, barbershop]);
 
+const widthLabel = "Height";
+const widthOptions = {
+	"100": "100px",
+	"200": "200px",
+	"300": "300px",
+	"400": "400px",
+	"500": "500px",
+	"600": "600px",
+};
+const widthDefault = '500px';
+
 stories.add('Test against multiple artifacts', withNotes('Use knobs to switch between live artifacts')( () => {
 
 	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
@@ -32,18 +43,18 @@ stories.add('Test against multiple artifacts', withNotes('Use knobs to switch be
 
 stories.add('width: 300px', withNotes('Testing responsive design')( () => (
 	<div style={{width: "300px"}}>
-		<VideoPlayer Artifact={barbershop} ArtifactFile={barbershop.getFiles()[0]} />
+		<VideoPlayer Artifact={apocalypse} ArtifactFile={apocalypse.getFiles()[0]} />
 	</div>
 )));
 
 stories.add('width: 600px', withNotes('Testing responsive design')( () => (
 	<div style={{width: "600px"}}>
-		<VideoPlayer Artifact={barbershop} ArtifactFile={barbershop.getFiles()[0]} />
+		<VideoPlayer Artifact={apocalypse} ArtifactFile={apocalypse.getFiles()[0]} />
 	</div>
 )));
 
 stories.add('width: 900px', withNotes('Testing responsive design')( () => (
 	<div style={{width: "900px"}}>
-		<VideoPlayer Artifact={barbershop} ArtifactFile={barbershop.getFiles()[0]} />
+		<VideoPlayer Artifact={apocalypse} ArtifactFile={apocalypse.getFiles()[0]} />
 	</div>
 )));
