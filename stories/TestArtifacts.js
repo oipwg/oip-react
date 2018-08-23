@@ -287,9 +287,9 @@ const scout = {
 	"txid":"9f02a90bd126bd5b2aa78a06821843eaf1e9ab338430da8fe8003933d317656c",
 	"publisher":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
 	"publisherName":"OstlerDev"
- }
+}
 
- CorMetallicum ={
+const CorMetallicum = {
 	"oip042":{
 	   "artifact":{
 		  "floAddress":"FKGnc5uyuFkcJrp5ZaZaTzAksYPkCuGfkH",
@@ -433,7 +433,8 @@ module.exports = {
 	barbershop: new Artifact(barberShop),
 	barbershop_paid: new Artifact(barberShopPaid),
 	amsterdam: new Artifact(amsterdam),
-	scout: new Artifact(scout)
+	scout: new Artifact(scout),
+	CorMetallicum: new Artifact(CorMetallicum)
 
 }
 
