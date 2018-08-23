@@ -14,13 +14,11 @@ class FilePaymentWrapper extends React.Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let lockFile = prevState.lockFile;
-		if (nextProps.paymentState !== prevState.paymentState) {
-			if (nextProps.paymentState) {
-				let ps = nextProps.paymentState;
-				if (ps.isPaid) {lockFile = true}
-				if (ps.hasPaid && ps.isPaid) {lockFile =false}
-				if (ps.owned) {lockFile = false}
-			}
+		if (nextProps.paymentState && nextProps.paymentState !== prevState.paymentState) {
+			let ps = nextProps.paymentState;
+			lockFile = !!ps.isPaid;
+			if (ps.hasPaid && ps.isPaid) {lockFile = false}
+			if (ps.owned) {lockFile = false}
 		}
 
 		return {
