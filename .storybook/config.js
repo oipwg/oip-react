@@ -1,10 +1,10 @@
 import { configure } from '@storybook/react';
-import '@storybook/addon-console';
 import { addDecorator } from '@storybook/react';
-import { withConsole } from '@storybook/addon-console';
+import { withConsole, setConsoleOptions } from '@storybook/addon-console';
 
 
-addDecorator((storyFn, context) => withConsole()(storyFn)(context));
+addDecorator((storyFn, context) => withConsole({ panelExclude: [/[HMR]/g, /bip32-utils/g, /color/g] })(storyFn)(context));
+
 function loadStories() {
     require('../stories/index.js')
 }
