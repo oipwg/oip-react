@@ -79,4 +79,6 @@ stories.add("Test payment state", () => {
 			<FilePaymentWrapper Artifact={artifact} ArtifactFile={artifact_file} paymentState={payment_state}/>
 		</div>
 	)
-}, {notes: 'Use knobs to test different props'});
+}, {notes: 'The FilePaymentWrapper is a wrapper component that decides whether or not to "lock" the file if it is a paid artifact. For the VideoPlayer, ' +
+		'this means removing the playback controls. Based on whether or not the file is a paid artifact, has been paid for, or is owned, ' +
+		'the wrapper passes down a lockFile variable that the FileViewer component then receives and passes down to a Viewer component.'});
