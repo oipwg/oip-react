@@ -36,17 +36,17 @@ class PaymentButton extends Component {
 		let button_icon
 		let button_icon_class = ""
 
-		if (this.props.Artifact && this.props.ArtifactFile && this.props.fileState && (this.props.type === "play" || this.props.type === "buy")){
+		if (this.props.Artifact && this.props.ArtifactFile && this.props.fileState && (this.props.type === "view" || this.props.type === "buy")){
 			owned = this.props.fileState.owned;
 			hasPaid = this.props.fileState.hasPaid;
 
-			if (this.props.type === "play"){
+			if (this.props.type === "view"){
 				button_icon = faPlay
 
-				if (this.props.fileState.payInProgressPlay)
+				if (this.props.fileState.payInProgressView)
 					payInProgress = true
 
-				if (this.props.fileState.payErrorPlay)
+				if (this.props.fileState.payErrorView)
 					payError = true
 
 				file_cost = this.props.ArtifactFile.getSuggestedPlayCost();
@@ -69,9 +69,7 @@ class PaymentButton extends Component {
 
 		file_cost = formatPriceString(file_cost);
 
-		if (file_cost === 0 || file_cost === "0"){
-			payment_string = "Free";
-		} else {
+		if (file_cost !== 0 && file_cost !== "0"){
 			payment_string = "$" + file_cost;
 			button_class = "outline-success";
 		}
@@ -81,10 +79,10 @@ class PaymentButton extends Component {
 			payment_string = "View";
 		}
 
-		if (owned) {
+		if (owned || (file_cost === 0 || file_cost === "0")) {
 			button_class = "outline-info";
 
-			if (this.props.type === "play")
+			if (this.props.type === "view")
 				payment_string = "View";
 			if (this.props.type === "buy")
 				payment_string = "Download";
