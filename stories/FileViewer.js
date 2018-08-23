@@ -42,4 +42,5 @@ stories.add("Switch between file types", () => {
 			<FileViewer Artifact={artifact} ArtifactFile={artifact_file} />
 		</div>
 	)
-}, {notes: 'Use knobs to test different props'});
+}, {notes: 'The FileViewer is a component that takes in an Artifact and an ArtifactFile and renders the appropriate Viewer with the artifact and file passed ' +
+		'down as props.'});
