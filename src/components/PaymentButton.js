@@ -7,7 +7,7 @@ import { faPlay, faDownload, faCircleNotch, faExclamationCircle } from '@fortawe
 
 import { formatPriceString } from '../utils'
 
-import { payForArtifactFile } from "oip-state/actions/Payment/thunks";
+import { payForArtifactFile } from "oip-state/src/actions/Payment/thunks";
 
 class PaymentButton extends Component {
 	constructor(props){
