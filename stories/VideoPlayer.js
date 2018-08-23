@@ -3,14 +3,14 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
-import { apocalypse, barbershop } from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum } from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
 
 const stories = storiesOf('VideoPlayer', module);
 stories.addDecorator(withKnobs);
 
-const artifacts = getArtifactOptions([apocalypse, barbershop]);
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum]);
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
