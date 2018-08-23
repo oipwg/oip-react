@@ -287,6 +287,145 @@ const scout = {
 	"txid":"9f02a90bd126bd5b2aa78a06821843eaf1e9ab338430da8fe8003933d317656c",
 	"publisher":"FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
 	"publisherName":"OstlerDev"
+}
+
+const CorMetallicum = {
+	"oip042":{
+	   "artifact":{
+		  "floAddress":"FKGnc5uyuFkcJrp5ZaZaTzAksYPkCuGfkH",
+		  "timestamp":1508802693,
+		  "type":"Audio",
+		  "subtype":"Album",
+		  "info":{
+			 "title":"Cor Metallicum",
+			 "description":"\"Cor Metallicum is my third album. It contains tunes I made in Famitracker between February 2009 and December 2010. The genres for this album would be 8-bit, Nintendo, Chiptune and Bitpop. The Album is licensed under a Creative Commons license (CC BY-SA) and you may use it accordingly. If you would like to use the album in a way that goes beyond what the CC-license permits, please contact me. \\nThe album was released December 14th 2010.\\n\\nIf you like my stuff, you can find more at:\\n\\nhttp://ozzed.net or\\nhttp://lastfm.com/music/ozzed\\nhttp://www.jamendo.com/en/artist/Ozzed or\\nhttp://www.myspace.com/ozzedmusic\\n\\nThis time, I'd REALLY like to thank everyone who made this release possible, But now I'm running out of letters //Ozzed\\n\\n(Published by OIP Developer, please contact for rights transfer)\"",
+			 "year":2010
+		  },
+		  "details":{
+			 "artist":"Ozzed",
+			 "genre":"Dance & Electronic"
+		  },
+		  "storage":{
+			 "network":"IPFS",
+			 "location":"QmbedGAyepnPXXyVG7ZUityaG1CQLmWouzfgUbaj2E3SbD",
+			 "files":[
+				{
+				   "dname":"The Misadventure Begins",
+				   "duration":117,
+				   "fname":"01 The Misadventure Begins.mp3",
+				   "fsize":2813240,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"World Nap",
+				   "duration":129,
+				   "fname":"02 World Nap.mp3",
+				   "fsize":3119186,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Ferrous Rage",
+				   "duration":105,
+				   "fname":"03 Ferrous Rage.mp3",
+				   "fsize":2543656,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Cold as Steel",
+				   "duration":132,
+				   "fname":"04 Cold as Steel.mp3",
+				   "fsize":3174984,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Highway Slaughter",
+				   "duration":148,
+				   "fname":"05 Highway Slaughter.mp3",
+				   "fsize":3560551,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Interception",
+				   "duration":155,
+				   "fname":"06 Interception.mp3",
+				   "fsize":3745498,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"City of Iron",
+				   "duration":149,
+				   "fname":"07 City of Iron.mp3",
+				   "fsize":3596914,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Frigid Triumph",
+				   "duration":111,
+				   "fname":"08 Frigid Triumph.mp3",
+				   "fsize":2679075,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Indiscriminate",
+				   "duration":114,
+				   "fname":"09 Indiscriminate.mp3",
+				   "fsize":2749919,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Final Breath",
+				   "duration":183,
+				   "fname":"10 Final Breath.mp3",
+				   "fsize":4400649,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Human Factory Reset",
+				   "duration":221,
+				   "fname":"11 Human Factory Reset.mp3",
+				   "fsize":5314726,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Superbia",
+				   "duration":118,
+				   "fname":"12 Superbia.mp3",
+				   "fsize":2837064,
+				   "type":"Audio"
+				},
+				{
+				   "dname":"Album Back",
+				   "fname":"1 BACK.png",
+				   "fsize":108940,
+				   "type":"Image"
+				},
+				{
+				   "fname":"0 FRONT.png",
+				   "fsize":113482,
+				   "type":"Image",
+				   "subtype":"cover"
+				}
+			 ]
+		  },
+		  "payment":{
+			 "fiat":"USD",
+			 "scale":"1000:1",
+			 "tokens":{
+ 
+			 },
+			 "addresses":{
+ 
+			 },
+			 "platform":15,
+			 "influencer":15,
+			 "maxdisc":30
+		  },
+		  "signature":"IGozdgIGZUiHd7uaPdqIxV8ljb3AMQbIfdGCnydWzbxqCRiNH3Z+eAJjlkRX5MXJQp/vpEdwdFVPoX/4qGySZH4="
+	   }
+	},
+	"txid":"0619517bb5ba75dadfe1487de4e90512d2b234a71ac9ccf1a98370aa9ab7b6a2",
+	"publisher":"FKGnc5uyuFkcJrp5ZaZaTzAksYPkCuGfkH",
+	"publisherName":"Ozzed"
  }
 
 module.exports = {
@@ -294,7 +433,8 @@ module.exports = {
 	barbershop: new Artifact(barberShop),
 	barbershop_paid: new Artifact(barberShopPaid),
 	amsterdam: new Artifact(amsterdam),
-	scout: new Artifact(scout)
+	scout: new Artifact(scout),
+	CorMetallicum: new Artifact(CorMetallicum)
 
 }
 

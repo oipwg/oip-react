@@ -33,7 +33,7 @@ const artifacts = getArtifactOptions([apocalypse, barbershop_paid, barbershop])
 // Setup Store
 const store = state.createStore()
 
-stories.add('Buy Button', withNotes('Using oip-index to pull in a live artifact to pass down as a prop')( () => {
+stories.add('Buy Button', () => {
 	let state = store.getState()
 
 	const type_value = select(type_label, type_options, type_default)
@@ -71,4 +71,4 @@ stories.add('Buy Button', withNotes('Using oip-index to pull in a live artifact 
 			/>
 		</Provider>
 	)
-}));
+});

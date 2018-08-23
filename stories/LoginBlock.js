@@ -22,7 +22,7 @@ stories.addDecorator(withKnobs)
 // Setup Store
 const store = state.createStore()
 
-stories.add('Example', withNotes('')( () => {
+stories.add('Example', () => {
 	button("Dispatch Logout", () => { store.dispatch(logout()) })
 	return (
 		<Provider store={store}>
@@ -35,4 +35,4 @@ stories.add('Example', withNotes('')( () => {
 			</div>
 		</Provider>
 	)
-}));
+});

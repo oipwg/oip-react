@@ -22,7 +22,7 @@ stories.addDecorator(withKnobs)
 // Setup Store
 const store = state.createStore()
 
-stories.add('Login Button', withNotes('Trigger redux store action to showLoginModal')( () => {
+stories.add('Example', () => {
 	button("Dispatch Login", () => { store.dispatch(loginSuccess({_username: "demo_username"})) })
 	button("Dispatch Logout", () => { store.dispatch(logout()) })
 	return (
@@ -36,4 +36,4 @@ stories.add('Login Button', withNotes('Trigger redux store action to showLoginMo
 			</div>
 		</Provider>
 	)
-}));
+}, { notes: "Trigger redux store action to showLoginModal" });
