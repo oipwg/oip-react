@@ -7,7 +7,7 @@ import { faPlay, faDownload, faCircleNotch, faExclamationCircle } from '@fortawe
 
 import { formatPriceString } from '../utils'
 
-// import {payForArtifactFile} from "../actions/Wallet/thunks";
+import { payForArtifactFile } from "oip-state/actions/Payment/thunks";
 
 class PaymentButton extends Component {
 	constructor(props){
@@ -134,6 +134,8 @@ function mapStateToProps(state) {
 	return { }
 }
 
-const mapDispatchToProps = {}
+const mapDispatchToProps = {
+	payForArtifactFile
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentButton)
