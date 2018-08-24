@@ -32,11 +32,14 @@ class ImageViewer extends Component {
 		
 		if (this.props.lockFile === true){
 			return(
-			<Blur className="OIP-ImageViewer" img={url} blurRadius={50}></Blur>
+				<div>
+				
+					<Blur className="OIP-ImageViewer"img={url} blurRadius={50} ></Blur>
+				</div>
 			)}
 
 		return (
-			<Blur className="OIP-ImageViewer" img={url} blurRadius={0}></Blur>
+			<Blur className="OIP-ImageViewer" img={url} blurRadius={0} ></Blur>
 	
 			// <img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
 		);
