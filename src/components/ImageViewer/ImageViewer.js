@@ -39,9 +39,9 @@ class ImageViewer extends Component {
 			)}
 
 		return (
-			<Blur className="OIP-ImageViewer" img={url} blurRadius={0} ></Blur>
+		
 	
-			// <img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
+			<img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
 		);
 	}
 }
