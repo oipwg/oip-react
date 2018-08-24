@@ -3,20 +3,25 @@ import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
 import './assets/css/ImageViewer.css'
 import ArtifactFile from 'oip-index/lib/ArtifactFile';
-import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js'
+import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js';
+import Blur from 'react-blur';
 
 
 class ImageViewer extends Component {
 	constructor(props){
 		super(props)
-
+		this.state = {
+		lockFile: undefined,
 	
+		}
 	}
+	
 
 	
 	render() {
 		let hash = "";
 		let url = "";
+
 
 		if (this.props.Artifact && this.props.ArtifactFile) {
 			hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());
@@ -28,8 +33,15 @@ class ImageViewer extends Component {
 			return 
 		}
 
+		if (this.state.lockfile === true){
+
+			url = undefined
+		}
+
 		return (
-			<img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
+			<Blur className="OIP-ImageViewer" img={url} blurRadius={50}></Blur>
+	
+			// <img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
 		);
 	}
 }
@@ -37,7 +49,9 @@ class ImageViewer extends Component {
 ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
 ImageViewer.propTypes = {
 	Artifact: PropTypes.object,
-	ArtifactFile: PropTypes.object
+	ArtifactFile: PropTypes.object,
+	lockFile: PropTypes.bool
+
 };
 		
 export default ImageViewer;
