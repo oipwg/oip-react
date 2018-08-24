@@ -47,6 +47,7 @@ const widthOptions = {
 	"900": "900px",
 	"1000": "1000px",
 	"1100": "1100px",
+	"100%": "100%"
 };
 const widthDefault = '500px';
 

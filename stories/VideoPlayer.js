@@ -3,14 +3,14 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
-import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum } from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb } from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
 
 const stories = storiesOf('VideoPlayer', module);
 stories.addDecorator(withKnobs);
 
-const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum]);
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb]);
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
@@ -25,11 +25,12 @@ const widthOptions = {
 	"900": "900px",
 	"1000": "1000px",
 	"1100": "1100px",
+	"100%": "100%"
 };
 const widthDefault = '500px';
 
 stories.add('Test against multiple artifacts', () => {
-	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
+	const artifact_value = select(artifacts.title, artifacts.options, "None");
 	const artifact = artifacts.map[artifact_value];
 
 	const artifact_files = getFileOptions(artifact);
