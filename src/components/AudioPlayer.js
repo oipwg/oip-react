@@ -18,8 +18,6 @@ class AudioPlayer extends React.Component {
     render() {
 		let hash = "";
         let url = "";
-        let controls = {}
-        console.log(this.props.lockFile)
 
         if (this.props.Artifact && this.props.ArtifactFile) {
             hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());

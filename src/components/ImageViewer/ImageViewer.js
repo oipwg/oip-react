@@ -10,10 +10,7 @@ import Blur from 'react-blur';
 class ImageViewer extends Component {
 	constructor(props){
 		super(props)
-		this.state = {
-		lockFile: undefined,
-	
-		}
+
 	}
 	
 
@@ -32,14 +29,14 @@ class ImageViewer extends Component {
 			console.log('Artifact Image was not selected!')
 			return 
 		}
-
-		if (this.state.lockfile === true){
-
-			url = undefined
-		}
+		
+		if (this.props.lockFile === true){
+			return(
+			<Blur className="OIP-ImageViewer" img={url} blurRadius={50}></Blur>
+			)}
 
 		return (
-			<Blur className="OIP-ImageViewer" img={url} blurRadius={50}></Blur>
+			<Blur className="OIP-ImageViewer" img={url} blurRadius={0}></Blur>
 	
 			// <img className='OIP-ImageViewer' src={url} alt="OIP-ImageViewer" />
 		);
