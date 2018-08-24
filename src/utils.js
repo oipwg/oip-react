@@ -46,15 +46,17 @@ const getFileExtension = (file) => {
 };
 
 const getIPFSImage = (artifact) => {
-	if (artifact instanceof Artifact) {
+	if (artifact instanceof Artifact && artifact.getThumbnail()) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifact.getThumbnail().getFilename()))
-	} else return "error: invalid Artifact[File]"
+	} else return {error: true, errorMessage: `Artifact instanceof Artifact: ${artifact instanceof Artifact} -- 
+	Artifact has thumbnail: ${!!artifact.getThumbnail()}`}
 };
 
 const getIPFSURL = (artifact, artifactFile) => {
 	if (artifact instanceof Artifact && artifactFile instanceof ArtifactFile) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
-	} else return "error: invalid Artifact[File]"
+	} else return {error: true, errorMessage: `Artifact is instanceof Artifact: ${artifact instanceof Artifact} -- 
+	ArtifactFile is instanceof ArtifactFile: ${artifactFile instanceof ArtifactFile}`}
 };
 
 const getIPFSURLAndImage = (artifact, artifactFile) => {
