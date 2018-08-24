@@ -7,6 +7,8 @@ import PaymentButton from './components/PaymentButton'
 import CoinbaseModal from './components/CoinbaseModal'
 import CoinbaseWrapper from './components/CoinbaseWrapper'
 
+import FilePaymentWrapper from './components/FilePaymentWrapper'
+import FileViewer from './components/FileViewer'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import ImageViewer from './components/ImageViewer/ImageViewer'
 
@@ -18,7 +20,9 @@ module.exports = {
 	PaymentButton,
 	CoinbaseModal,
 	CoinbaseWrapper,
-	
+
+	FilePaymentWrapper,
+	FileViewer,
 	VideoPlayer,
 	ImageViewer
 }
