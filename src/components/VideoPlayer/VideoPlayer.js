@@ -31,7 +31,8 @@ class VideoPlayer extends React.Component {
 	        firstPlayClick: false
         };
 
-        this.loadPlayer = this.loadPlayer.bind(this)
+        this.loadPlayer = this.loadPlayer.bind(this);
+	    // this.resetVideo = this.resetVideo.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -83,7 +84,15 @@ class VideoPlayer extends React.Component {
 		   //do something on player load
 	    });
 	    this.setState({player: this.player})
+	    // this.player.on("play", this.resetVideo)
     }
+	//
+    // resetVideo() {
+    // 	console.log("Video Play")
+	//     this.player.pause();
+	//     this.player.setCurrentTime()
+	//     this.player.play();
+    // }
 
     loadPlayer() {
 	    if (this.player) {
@@ -93,6 +102,7 @@ class VideoPlayer extends React.Component {
 		    if (this.state.Artifact && this.state.ArtifactFile) {
 			    this.player.autoplay(this.state.options.autoplay);
 			    this.player.controls(this.state.options.controls);
+			    this.player.preload(this.state.options.preload);
 			    for (let textTrackObject of this.state.textTrack) {
 				    this.player.addRemoteTextTrack(textTrackObject, true)
 			    }
