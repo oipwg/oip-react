@@ -29,16 +29,16 @@ class VideoPlayer extends React.Component {
 	        lockFile: undefined,
 	        textTrack: []
         }
-
-
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options, textTrack = [];
-	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.lockFile !== prevState.lockFile) {
+	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
+		    nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
 	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
-			    if (nextProps.usePosterFile) {
+			    if (!nextProps.usePosterFile) {
 				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10";
+				    options.poster = "";
 			    } else {
 				    options.poster = getIPFSImage(nextProps.Artifact);
 				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
@@ -60,13 +60,15 @@ class VideoPlayer extends React.Component {
 	    		options = {...options, sources: [{}], poster: ""}
 		    }
 		    options.controls = !nextProps.lockFile;
+	    	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
 	    }
 	    return {
 	    	options,
 		    Artifact: nextProps.Artifact,
 		    ArtifactFile: nextProps.ArtifactFile,
 		    lockFile: nextProps.lockFile,
-		    textTrack
+		    textTrack,
+		    usePosterFile: nextProps.usePosterFile
 	    }
     }
 

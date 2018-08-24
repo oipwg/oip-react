@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select} from '@storybook/addon-knobs';
+import { withKnobs, select, boolean} from '@storybook/addon-knobs';
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb } from './TestArtifacts'
@@ -27,7 +27,11 @@ const widthOptions = {
 	"1100": "1100px",
 	"100%": "100%"
 };
-const widthDefault = '500px';
+const widthDefault = '100%';
+
+const posterLabel = "Load with poster";
+const posterDefault = true;
+
 
 stories.add('Test against multiple artifacts', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
@@ -38,11 +42,11 @@ stories.add('Test against multiple artifacts', () => {
 	const artifact_file = artifact_files.map[file_value];
 
 	const width_value = select(widthLabel, widthOptions, widthDefault)
-
+	const loadWithPoster = boolean(posterLabel, posterDefault)
 	return (
 
 		<div style={{width: width_value}}>
-			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} />
+			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster} />
 		</div>
 	)
 }, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
