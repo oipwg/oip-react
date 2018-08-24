@@ -13,9 +13,9 @@ class VideoPlayer extends React.Component {
 
         this.defaultVideoOptions = {
 	        poster: "",
-	        sources: [{src: "", type: "video/mp4"}],
+	        sources: undefined,
 	        controls: true,
-	        preload: "auto",
+	        preload: "none",
 	        fluid: true,
 	        autoplay: false
         };
@@ -27,8 +27,11 @@ class VideoPlayer extends React.Component {
 	        Artifact: undefined,
 	        ArtifactFile: undefined,
 	        lockFile: undefined,
-	        textTrack: []
-        }
+	        textTrack: [],
+	        firstPlayClick: false
+        };
+
+        this.loadPlayer = this.loadPlayer.bind(this)
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -36,12 +39,14 @@ class VideoPlayer extends React.Component {
 	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
 		    nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
 	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
-			    if (!nextProps.usePosterFile) {
-				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10";
-				    options.poster = "";
-			    } else {
+	    		options.preload = "auto";
+	    		options.sources = [];
+			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
 				    options.poster = getIPFSImage(nextProps.Artifact);
-				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
+				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
+			    } else {
+				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+				    options.poster = "";
 			    }
 
 			    let tmpObj = {};
@@ -57,7 +62,7 @@ class VideoPlayer extends React.Component {
 				    }
 			    }
 		    } else {
-	    		options = {...options, sources: [{}], poster: ""}
+	    		options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 		    }
 		    options.controls = !nextProps.lockFile;
 	    	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
@@ -74,28 +79,40 @@ class VideoPlayer extends React.Component {
 
     componentDidMount() {
 	    // instantiate Video.js
-	    this.player = videojs(this.videoNode, this.state.options, function onPlayerReady() {
-		    //doSomething
+	    this.player = videojs(this.videoNode, this.state.options, () => {
+		   //do something on player load
 	    });
 	    this.setState({player: this.player})
+    }
 
+    loadPlayer() {
+	    if (this.player) {
+		    this.player.src(this.state.options.sources);
+		    this.player.poster(this.state.options.poster);
+
+		    if (this.state.Artifact && this.state.ArtifactFile) {
+			    this.player.autoplay(this.state.options.autoplay);
+			    this.player.controls(this.state.options.controls);
+			    for (let textTrackObject of this.state.textTrack) {
+				    this.player.addRemoteTextTrack(textTrackObject, true)
+			    }
+		    } else {
+			    this.player.reset();
+		    	this.player.cache_ = {
+		    		duration: null,
+				    lastPlaybackRate: 1,
+				    lastVolume: 1
+			    };
+		    	this.player.controls(false)
+			    this.player.load()
+			    // console.log("Player reset and current source: ", this.player.currentSrc())
+		    }
+	    }
     }
 
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
-		    if (this.player) {
-			    this.player.src(this.state.options.sources);
-			    this.player.poster(this.state.options.poster);
-		    	if (this.state.Artifact && this.state.ArtifactFile) {
-				    this.player.autoplay(this.state.options.autoplay);
-				    this.player.controls(this.state.options.controls);
-				    for (let textTrackObject of this.state.textTrack) {
-					    this.player.addRemoteTextTrack(textTrackObject, true)
-				    }
-			    } else {
-		    		this.player.reset()
-			    }
-		    }
+    		this.loadPlayer()
 	    }
 	}
 
