@@ -23,7 +23,7 @@ class AudioPlayer extends React.Component {
 		return (
 			<ReactAudioPlayer
             src={url}
-            autoPlay
+            autoPlay={false}
             controls />
 		);
 	}
