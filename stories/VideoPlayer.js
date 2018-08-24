@@ -30,7 +30,7 @@ const widthOptions = {
 const widthDefault = '500px';
 
 stories.add('Test against multiple artifacts', () => {
-	const artifact_value = select(artifacts.title, artifacts.options, "None");
+	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
 	const artifact = artifacts.map[artifact_value];
 
 	const artifact_files = getFileOptions(artifact);
@@ -47,3 +47,20 @@ stories.add('Test against multiple artifacts', () => {
 	)
 }, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
 
+stories.add('Render from None', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "None");
+	const artifact = artifacts.map[artifact_value];
+
+	const artifact_files = getFileOptions(artifact);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const artifact_file = artifact_files.map[file_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault)
+
+	return (
+
+		<div style={{width: width_value}}>
+			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} />
+		</div>
+	)
+}, {notes: 'Renders a VideoPlayer first with an undefined artifact. Test this.player functionality.'});
