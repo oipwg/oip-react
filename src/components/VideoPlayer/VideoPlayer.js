@@ -2,7 +2,7 @@ import React from 'react'
 import videojs from 'video.js'
 import PropTypes from 'prop-types';
 
-import { getIPFSURL, getIPFSImage } from '../../utils.js'
+import { getIPFSURL, getIPFSImage, getFileExtension } from '../../utils.js'
 
 import 'video.js/dist/video-js.css'
 import './assets/VideoPlayer.css'
@@ -23,27 +23,50 @@ class VideoPlayer extends React.Component {
 		let videoOptions = this.props.options ? {...this.defaultVideoOptions, ...this.props.options} : this.defaultVideoOptions;
 
         this.state = {
-            options: videoOptions,
+	        options: videoOptions,
 	        Artifact: undefined,
 	        ArtifactFile: undefined,
-	        lockFile: undefined
+	        lockFile: undefined,
+	        textTrack: []
         }
+
+
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    let options = prevState.options;
+	    let options = prevState.options, textTrack = [];
 	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.lockFile !== prevState.lockFile) {
-		    options.poster = getIPFSImage(nextProps.Artifact);
-		    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
+	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
+			    if (nextProps.usePosterFile) {
+				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10";
+			    } else {
+				    options.poster = getIPFSImage(nextProps.Artifact);
+				    options.sources[0].src = getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile);
+			    }
 
-		    //@ToDo: If paid artifact...
+			    let tmpObj = {};
+			    let files = nextProps.Artifact.getFiles();
+			    for (let file of files) {
+				    let ext = getFileExtension(file);
+				    if (ext === 'vtt') {
+					    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
+					    tmpObj["kind"] = "subtitles";
+					    tmpObj["srclang"] = "en";
+					    tmpObj["label"] = "English";
+					    textTrack.push(tmpObj)
+				    }
+			    }
+		    } else {
+	    		options = {...options, sources: [{}], poster: ""}
+		    }
 		    options.controls = !nextProps.lockFile;
 	    }
 	    return {
 	    	options,
 		    Artifact: nextProps.Artifact,
 		    ArtifactFile: nextProps.ArtifactFile,
-		    lockFile: nextProps.lockFile
+		    lockFile: nextProps.lockFile,
+		    textTrack
 	    }
     }
 
@@ -59,15 +82,22 @@ class VideoPlayer extends React.Component {
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
 		    if (this.player) {
-		    	this.player.src(this.state.options.sources);
+			    this.player.src(this.state.options.sources);
 			    this.player.poster(this.state.options.poster);
-			    this.player.autoplay(this.state.options.autoplay);
-			    this.player.controls(this.state.options.controls)
+		    	if (this.state.Artifact && this.state.ArtifactFile) {
+				    this.player.autoplay(this.state.options.autoplay);
+				    this.player.controls(this.state.options.controls);
+				    for (let textTrackObject of this.state.textTrack) {
+					    this.player.addRemoteTextTrack(textTrackObject, true)
+				    }
+			    } else {
+		    		this.player.reset()
+			    }
 		    }
 	    }
 	}
 
-    // // destroy player on unmount @ToDo: Uncomment when not testing in storybook
+    // destroy player on unmount @ToDo: Uncomment when not testing in storybook
     // componentWillUnmount() {
     //     if (this.player) {
     //         this.player.dispose()
@@ -97,7 +127,8 @@ VideoPlayer.propTypes = {
     ArtifactFile: PropTypes.object,
     style: PropTypes.object,
     options: PropTypes.object,
-	lockFile: PropTypes.bool
+	lockFile: PropTypes.bool,
+	usePosterFile: PropTypes.bool
 };
 
 export default VideoPlayer
