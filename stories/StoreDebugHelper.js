@@ -15,8 +15,16 @@ class StoreDebugHelper extends Component {
 			debug_value = "undefined"
 		}
 
+		let debug_string
+
+		if (typeof debug_value === "object"){
+			debug_string = JSON.stringify(debug_value, null, 4)
+		} else {
+			debug_string = debug_value.toString()
+		}
+
     	return (
-            <p><strong>{this.props.path.join(".")}:</strong> {debug_value.toString()}</p>
+            <p><strong>{this.props.path.join(".")}:</strong> {debug_string}</p>
         )
 	}
 }

@@ -12,6 +12,7 @@ import React, { Component } from 'react';
  * 			console.log("CoinbaseModal onClose!! ", data)
  * 		}} 
  * 		onCancel={(data) => {
+ * 			console.log("CoinbaseModal onCancel!! ", data)
  * 		}} 
  * 		onSuccess={(data) => {
  * 			console.log("CoinbaseModal onSuccess!! ", data)
