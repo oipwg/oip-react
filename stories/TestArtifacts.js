@@ -428,13 +428,65 @@ const CorMetallicum = {
 	"publisherName":"Ozzed"
  }
 
+ const dweb = {
+	 oip042: {
+		 artifact: {
+			 floAddress: "FEAFV8xroed1CyAx1mUH4iSyXvMZXhj6mZ",
+			 timestamp: 1530821687,
+			 type: "Video",
+			 subtype: "Basic",
+			 info: {
+				 title: "DWEB",
+				 description: "Test video w some frames yew!",
+				 year: 2016
+			 },
+			 details: {
+				 artist: "Alexandria",
+				 genre: "Science & Technology"
+			 },
+			 storage: {
+				 network: "IPFS",
+				 location: "QmRiw7PgXa9rGXGr1cwZH6J2ojR6kQQvvCxuHxyUXtQXJb",
+				 files: [
+					 {
+						 duration: 562,
+						 fname: "2016-06 - Alexandria presentation and demo at the DecentralizedWeb Summit.mp4",
+						 fsize: 176765525,
+						 type: "Video",
+						 subtype: "SD480"
+					 },
+					 {
+						 fname: "2016-06 - Alexandria presentation and demo at the DecentralizedWeb Summit.png",
+						 fsize: 965028,
+						 type: "Image",
+						 subtype: "cover"
+					 }
+				 ]
+			 },
+			 payment: {
+				 fiat: "USD",
+				 scale: "1000:1",
+				 tokens: { },
+				 addresses: { },
+				 platform: 15,
+				 influencer: 15,
+				 maxdisc: 30
+			 },
+			 signature: "H7FcEkUsB9H+aRAMXj9F9sxRY2g0MuJJcEEKSFw8k308XuVWxhvTei2Occl37keu0p8HhFwWEc30tl23lHe1cEk="
+		 }
+	 },
+	 txid: "6ffbffd475c7eabe0acc664087ac56c13ac7c2084746619182b360c2f19e430e",
+	 publisher: "FEAFV8xroed1CyAx1mUH4iSyXvMZXhj6mZ",
+	 publisherName: "publisher1"
+ }
 module.exports = {
 	apocalypse: new Artifact(apocalypse),
 	barbershop: new Artifact(barberShop),
 	barbershop_paid: new Artifact(barberShopPaid),
 	amsterdam: new Artifact(amsterdam),
 	scout: new Artifact(scout),
-	CorMetallicum: new Artifact(CorMetallicum)
+	CorMetallicum: new Artifact(CorMetallicum),
+	dweb: new Artifact(dweb)
 
 }
 
