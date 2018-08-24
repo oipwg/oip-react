@@ -3,13 +3,13 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper';
-import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout} from './TestArtifacts'
+import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util';
 
 const stories = storiesOf("FilePaymentWrapper", module);
 stories.addDecorator(withKnobs);
 
-const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum]);
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb]);
 
 const isPaidLabel = "isPaid";
 const hasPaidLabel = "hasPaid";
