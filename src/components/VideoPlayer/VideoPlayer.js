@@ -32,7 +32,7 @@ class VideoPlayer extends React.Component {
         };
 
         this.loadPlayer = this.loadPlayer.bind(this);
-	    // this.resetVideo = this.resetVideo.bind(this);
+	    this.resetVideo = this.resetVideo.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
@@ -84,15 +84,13 @@ class VideoPlayer extends React.Component {
 		   //do something on player load
 	    });
 	    this.setState({player: this.player})
-	    // this.player.on("play", this.resetVideo)
+	    this.player.on("play", this.resetVideo)
     }
-	//
-    // resetVideo() {
-    // 	console.log("Video Play")
-	//     this.player.pause();
-	//     this.player.setCurrentTime()
-	//     this.player.play();
-    // }
+
+    resetVideo() {
+	    this.player.currentTime(0);
+	    this.player.play();
+    }
 
     loadPlayer() {
 	    if (this.player) {
