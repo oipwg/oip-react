@@ -11,3 +11,34 @@
 	outline: none;
 	opacity: .9;
 	cursor: default; }
+
+
+@media only screen and (max-width: 575px) {
+	.vjs-text-track-display div {
+		font-size: 20px;
+	}
+}
+
+@media only screen and (min-width: 575px) and (max-width: 767px) {
+	.vjs-text-track-display div {
+		font-size: 25px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+	.vjs-text-track-display div {
+		font-size: 30px;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+	.vjs-text-track-display div {
+		font-size: 35px;
+	}
+}
+
+@media only screen and (min-width: 1200px) {
+	.vjs-text-track-display div {
+		font-size: 40px;
+	}
+}
