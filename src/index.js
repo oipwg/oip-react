@@ -5,6 +5,8 @@ import LoginBlock from './components/LoginBlock'
 import RegisterBlock from './components/RegisterBlock'
 import PaymentButton from './components/PaymentButton'
 import CoinbaseModal from './components/CoinbaseModal'
+import CoinbaseWrapper from './components/CoinbaseWrapper'
+
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import ImageViewer from './components/ImageViewer/ImageViewer'
 
@@ -15,6 +17,8 @@ module.exports = {
 	RegisterBlock,
 	PaymentButton,
 	CoinbaseModal,
+	CoinbaseWrapper,
+	
 	VideoPlayer,
 	ImageViewer
 }
