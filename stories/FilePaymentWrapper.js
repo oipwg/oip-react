@@ -49,7 +49,7 @@ const widthOptions = {
 	"1100": "1100px",
 	"100%": "100%"
 };
-const widthDefault = '500px';
+const widthDefault = '100%';
 
 stories.add("Test payment state", () => {
 	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
