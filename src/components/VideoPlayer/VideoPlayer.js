@@ -96,8 +96,10 @@ class VideoPlayer extends React.Component {
 	    }
 	    //Lock and Unlock the file by change autoplay and controls to true/false
 	    if (nextProps.lockFile !== prevState.lockFile) {
+	    	console.log("Lock file!", nextProps.lockFile)
 		    options.controls = !nextProps.lockFile;
 		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+		    console.log(options.controls, options.autoplay)
 	    }
 	    // console.log(`Return variables to state --- options: ${JSON.stringify(options, null, 4)} -- textTracks: ${JSON.stringify(textTracks, null, 4)}`);
 	    return {
@@ -146,9 +148,14 @@ class VideoPlayer extends React.Component {
 			    this.player.preload(this.state.options.preload);
 
 			    let tracks = this.player.textTracks().tracks_;
+			    console.log("Current player tracks: ", tracks)
 			    for (let tt of tracks) {
 			    	this.player.removeRemoteTextTrack(tt)
+				    console.log("Current player tracks: ", this.player.textTracks().length)
+
 			    }
+			    console.log("Current player tracks: ", tracks)
+
 			    for (let textTrackObject of this.state.textTracks) {
 				    this.player.addRemoteTextTrack(textTrackObject, true)
 			    }
@@ -170,10 +177,12 @@ class VideoPlayer extends React.Component {
     }
 
 	componentDidUpdate(prevProps, prevState){
+    	console.log("Component did update")
     	//checks for new player options and updates the player
-    	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks) {
+    	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks ||  prevState.lockFile !== this.state.lockFile) {
+    		console.log("Loading player")
     		this.loadPlayer();
-		    console.log("Text tracks: ", this.player.textTracks())
+		    console.log("Text tracks: ", this.player.textTracks().length)
 	    }
 	    //If there was an artifact/file switch, we need to set back the initialPlay to true so resetVideo() can run
 	    if (this.state.artifactFileSwitch) {
