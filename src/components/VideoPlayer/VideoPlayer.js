@@ -40,38 +40,76 @@ class VideoPlayer extends React.Component {
 
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options, textTrack = [];
-	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
-		    nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
 
-	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
-	    		options.preload = "auto";
-	    		options.sources = [];
-			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
-				    options.poster = getIPFSImage(nextProps.Artifact);
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
-			    } else {
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
-				    options.poster = "";
-			    }
+	    if (nextProps.Artifact !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
+		    options.preload = "auto";
+		    options.sources = [];
 
-			    let tmpObj = {};
-			    let files = nextProps.Artifact.getFiles();
-			    for (let file of files) {
-				    let ext = getFileExtension(file);
-				    if (ext === 'vtt') {
-					    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
-					    tmpObj["kind"] = "subtitles";
-					    tmpObj["srclang"] = "en";
-					    tmpObj["label"] = "English";
-					    textTrack.push(tmpObj)
-				    }
+		    let tmpObj = {};
+		    let files = nextProps.Artifact.getFiles();
+		    for (let file of files) {
+			    let ext = getFileExtension(file);
+			    if (ext === 'vtt') {
+				    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
+				    tmpObj["kind"] = "subtitles";
+				    tmpObj["srclang"] = "en";
+				    tmpObj["label"] = "English";
+				    textTrack.push(tmpObj)
 			    }
-		    } else {
-	    		options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 		    }
-		    options.controls = !nextProps.lockFile;
-	    	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
 	    }
+
+	    if (nextProps.Artifact && nextProps.ArtifactFile && nextProps.usePosterFile !== prevState.usePosterFile) {
+		    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
+			    options.poster = getIPFSImage(nextProps.Artifact);
+			    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
+		    } else {
+			    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+			    options.poster = "";
+		    }
+	    }
+
+	    if (nextProps.lockFile !== prevState.lockFile) {
+		    options.controls = !nextProps.lockFile;
+		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+	    }
+
+	    if (!nextProps.Artifact || !nextProps.ArtifactFile) {
+		    options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
+	    }
+	    
+	    // if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
+		//     nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
+	    //
+	    // 	if (nextProps.ArtifactFile && nextProps.Artifact) {
+	    // 		options.preload = "auto";
+	    // 		options.sources = [];
+		// 	    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
+		// 		    options.poster = getIPFSImage(nextProps.Artifact);
+		// 		    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
+		// 	    } else {
+		// 		    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+		// 		    options.poster = "";
+		// 	    }
+	    //
+		// 	    let tmpObj = {};
+		// 	    let files = nextProps.Artifact.getFiles();
+		// 	    for (let file of files) {
+		// 		    let ext = getFileExtension(file);
+		// 		    if (ext === 'vtt') {
+		// 			    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
+		// 			    tmpObj["kind"] = "subtitles";
+		// 			    tmpObj["srclang"] = "en";
+		// 			    tmpObj["label"] = "English";
+		// 			    textTrack.push(tmpObj)
+		// 		    }
+		// 	    }
+		//     } else {
+	    // 		options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
+		//     }
+		//     options.controls = !nextProps.lockFile;
+	    // 	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+	    // }
 	    // console.log(`Return variables to state --- options: ${JSON.stringify(options, null, 4)} -- textTrack: ${JSON.stringify(textTrack, null, 4)}`);
 	    return {
 	    	options: options,
