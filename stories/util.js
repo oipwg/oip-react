@@ -6,7 +6,7 @@ let getArtifactOptions = function(artifact_array){
 
 	for (let i = 0; i < artifact_array.length; i++){
 		let title = artifact_array[i].getTitle()
-		
+
 		options[title] = title
 		map[title] = artifact_array[i]
 
