@@ -3,14 +3,14 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select, boolean} from '@storybook/addon-knobs';
 
 import VideoPlayer from '../src/components/VideoPlayer/VideoPlayer'
-import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb } from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
 
 const stories = storiesOf('VideoPlayer', module);
 stories.addDecorator(withKnobs);
 
-const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb]);
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
@@ -87,3 +87,22 @@ stories.add('Render without poster', () => {
 		</div>
 	)
 }, {notes: 'Renders a VideoPlayer first with an undefined artifact and no poster.'});
+
+stories.add('Test against subtitles', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
+	const artifact = artifacts.map[artifact_value];
+
+	const artifact_files = getFileOptions(artifact);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const artifact_file = artifact_files.map[file_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault);
+	const loadWithPoster = boolean(posterLabel, poster2Default);
+
+	return (
+
+		<div style={{width: width_value}}>
+			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
+		</div>
+	)
+}, {notes: 'Sintel comes with many subtitle options. Testing here that they work, function, and get handled properly.'});
