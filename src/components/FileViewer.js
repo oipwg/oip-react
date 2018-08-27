@@ -27,7 +27,8 @@ class FileViewer extends React.Component {
 								{
 									Artifact: this.props.Artifact,
 									ArtifactFile: this.props.ArtifactFile,
-									lockFile: this.props.lockFile
+									lockFile: this.props.lockFile,
+									usePosterFile: this.props.usePosterFile
 								})
 						}
 					}

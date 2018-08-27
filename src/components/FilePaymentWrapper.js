@@ -8,12 +8,13 @@ class FilePaymentWrapper extends React.Component {
 
 		this.state = {
 			lockFile: false,
+			usePosterFile: undefined,
 			paymentState: undefined
 		}
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		let lockFile = prevState.lockFile;
+		let lockFile = prevState.lockFile, usePosterFile = prevState.usePosterFile;
 		if (nextProps.paymentState && nextProps.paymentState !== prevState.paymentState) {
 			let ps = nextProps.paymentState;
 			lockFile = !!ps.isPaid;
@@ -21,7 +22,12 @@ class FilePaymentWrapper extends React.Component {
 			if (ps.owned) {lockFile = false}
 		}
 
+		if (nextProps.usePosterFile !== undefined) {
+			usePosterFile = nextProps.usePosterFile
+		}
+
 		return {
+			usePosterFile,
 			lockFile,
 			paymentState: nextProps.paymentState
 		}
@@ -30,7 +36,12 @@ class FilePaymentWrapper extends React.Component {
 	render() {
 		return(
 			<div>
-				<FileViewer Artifact={this.props.Artifact} ArtifactFile={this.props.ArtifactFile} lockFile={this.state.lockFile} />
+				<FileViewer
+					Artifact={this.props.Artifact}
+					ArtifactFile={this.props.ArtifactFile}
+					lockFile={this.state.lockFile}
+					usePosterFile={this.state.usePosterFile}
+				/>
 			</div>
 		)
 	}

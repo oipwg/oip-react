@@ -1,6 +1,6 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
-import { withKnobs, select} from '@storybook/addon-knobs';
+import {withKnobs, select, boolean} from '@storybook/addon-knobs';
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper';
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
@@ -51,8 +51,11 @@ const widthOptions = {
 };
 const widthDefault = '100%';
 
+const posterLabel = "Load with poster";
+const posterDefault = true;
+
 stories.add("Test payment state", () => {
-	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
+	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
 	const artifact = artifacts.map[artifact_value];
 
 	const artifact_files = getFileOptions(artifact);
@@ -74,10 +77,11 @@ stories.add("Test payment state", () => {
 	};
 
 	const width_value = select(widthLabel, widthOptions, widthDefault)
+	const loadWithPoster = boolean(posterLabel, posterDefault);
 
 	return (
 		<div style={{width: width_value}}>
-			<FilePaymentWrapper Artifact={artifact} ArtifactFile={artifact_file} paymentState={payment_state}/>
+			<FilePaymentWrapper Artifact={artifact} ArtifactFile={artifact_file} paymentState={payment_state} usePosterFile={loadWithPoster}/>
 		</div>
 	)
 }, {notes: 'The FilePaymentWrapper is a wrapper component that decides whether or not to "lock" the file if it is a paid artifact. For the VideoPlayer, ' +
