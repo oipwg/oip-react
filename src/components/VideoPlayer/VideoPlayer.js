@@ -42,8 +42,12 @@ class VideoPlayer extends React.Component {
 	    let options = prevState.options, textTrack = [];
 
 	    if (nextProps.Artifact !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
+
 		    options.preload = "auto";
+		    options.controls = true;
 		    options.sources = [];
+		    options.poster = getIPFSImage(nextProps.Artifact);
+		    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
 
 		    let tmpObj = {};
 		    let files = nextProps.Artifact.getFiles();
@@ -59,7 +63,7 @@ class VideoPlayer extends React.Component {
 		    }
 	    }
 
-	    if (nextProps.Artifact && nextProps.ArtifactFile && nextProps.usePosterFile !== prevState.usePosterFile) {
+	    if (nextProps.usePosterFile !== prevState.usePosterFile) {
 		    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
 			    options.poster = getIPFSImage(nextProps.Artifact);
 			    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
@@ -77,7 +81,7 @@ class VideoPlayer extends React.Component {
 	    if (!nextProps.Artifact || !nextProps.ArtifactFile) {
 		    options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 	    }
-	    
+
 	    // if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
 		//     nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
 	    //
