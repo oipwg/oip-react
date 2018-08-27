@@ -65,6 +65,7 @@ class VideoPlayer extends React.Component {
 			    //Get, strip, and load subtitles (textTracks)
 			    let files = nextProps.Artifact.getFiles();
 			    let mainTitle = nextProps.Artifact.getTitle()
+
 			    for (let file of files) {
 				    let ext = getFileExtension(file);
 				    if (ext === 'vtt') {
@@ -96,7 +97,7 @@ class VideoPlayer extends React.Component {
 		    options.controls = !nextProps.lockFile;
 		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
 	    }
-	    // console.log(`Return variables to state --- options: ${JSON.stringify(options, null, 4)} -- textTracks: ${JSON.stringify(textTracks, null, 4)}`);
+
 	    return {
 	    	options: options,
 		    textTracks: textTracks,
@@ -109,12 +110,10 @@ class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
-    	// console.log("component mounting")
 	    // instantiate Video.js
 	    this.player = videojs(this.videoNode, this.state.options, () => {
 		   //do something on player load
 		    this.loadPlayer();
-		    // console.log("Player loaded", this.state.textTracks)
 	    });
 	    this.setState({player: this.player});
 	    this.player.on("play", () => this.resetVideo())
@@ -142,11 +141,9 @@ class VideoPlayer extends React.Component {
 			    this.player.controls(this.state.options.controls);
 			    this.player.preload(this.state.options.preload);
 
-			    let tracks = this.player.textTracks().tracks_;
-			    for (let tt of tracks) {
-			    	this.player.removeRemoteTextTrack(tt)
+			    while (this.player.textTracks().tracks_.length > 0){
+			    	this.player.removeRemoteTextTrack(this.player.textTracks().tracks_[0])
 			    }
-			    // console.log("Current player tracks: ", this.player.textTracks());
 
 			    for (let textTrackObject of this.state.textTracks) {
 				    this.player.addRemoteTextTrack(textTrackObject, true)
@@ -172,7 +169,6 @@ class VideoPlayer extends React.Component {
     	//checks for new player options and updates the player
     	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks ||  prevState.lockFile !== this.state.lockFile) {
     		this.loadPlayer();
-		    // console.log("Text tracks: ", this.player.textTracks().length)
 	    }
 	    //If there was an artifact/file switch, we need to set back the initialPlay to true so resetVideo() can run
 	    if (this.state.artifactFileSwitch) {
