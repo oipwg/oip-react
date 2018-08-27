@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import './assets/css/ImageViewer.css'
 import ArtifactFile from 'oip-index/lib/ArtifactFile';
 import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js';
-import Blur from 'react-blur';
+
 
 
 class ImageViewer extends Component {
@@ -30,11 +30,10 @@ class ImageViewer extends Component {
 			return 
 		}
 		
-		if (this.props.lockFile === true){
+		if (this.props.lockFile){
 			return(
 				<div>
-				
-					<Blur className="OIP-ImageViewer"img={url} blurRadius={50} ></Blur>
+					<img className='OIP-Blur' src={url} alt="OIP-ImageViewer" />
 				</div>
 			)}
 

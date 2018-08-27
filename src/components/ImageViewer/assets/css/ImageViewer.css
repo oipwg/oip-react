@@ -6,3 +6,9 @@
 img[src=""] {
     display: none;
 }
+
+.OIP-Blur {
+    width: 100%;
+    height: auto;
+    filter: blur(50px);
+}
