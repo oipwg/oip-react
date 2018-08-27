@@ -3,13 +3,13 @@ import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
 import FileViewer from '../src/components/FileViewer';
-import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb} from './TestArtifacts'
+import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util';
 
 const stories = storiesOf("FileViewer", module);
 stories.addDecorator(withKnobs);
 
-const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb]);
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {

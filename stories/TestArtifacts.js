@@ -478,7 +478,116 @@ const CorMetallicum = {
 	 txid: "6ffbffd475c7eabe0acc664087ac56c13ac7c2084746619182b360c2f19e430e",
 	 publisher: "FEAFV8xroed1CyAx1mUH4iSyXvMZXhj6mZ",
 	 publisherName: "publisher1"
- }
+ };
+
+const sintel = {
+	oip042: {
+		artifact: {
+			floAddress: "FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+			timestamp: 1535150800,
+			type: "Video",
+			subtype: "Movie",
+			info: {
+				title: "Sintel - Third Open Movie by Blender Foundation",
+				description: "Sintel Blender movie with tons of subtitle options! Yew!",
+				year: 2010
+			},
+		details: {
+			artist: "Blender",
+				genre: "Animation, Adventure"
+		},
+		storage: {
+			network: "IPFS",
+				location: "QmY6PzPkpHgGXinFrLHvQSS9FpGJPvKHNYQG1yrJnp2Mkc",
+				files: [
+				{
+					duration: 888,
+					fname: "Sintel - Third Open Movie by Blender Foundation.mp4",
+					fsize: 295965511,
+					sugPlay: 1,
+					type: "Video",
+					sugBuy: 10
+				},
+				{
+					duration: 52,
+					fname: "'Sintel' Trailer, Durian Open Movie Project.mp4",
+					fsize: 11894767,
+					type: "Video"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.de.vtt",
+					fsize: 1765,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.en.vtt",
+					fsize: 1480,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.es.vtt",
+					fsize: 1667,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.fr.vtt",
+					fsize: 1728,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.it.vtt",
+					fsize: 1660,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.nl.vtt",
+					fsize: 1650,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.pl.vtt",
+					fsize: 1648,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.pt.vtt",
+					fsize: 1686,
+					type: "Other"
+				},
+				{
+					fname: "Sintel - Third Open Movie by Blender Foundation.ru.vtt",
+					fsize: 2130,
+					type: "Other"
+				},
+				{
+					fname: "sintel_poster.jpg",
+					fsize: 457811,
+					type: "Image",
+					subtype: "cover"
+				}
+			]
+		},
+		payment: {
+			fiat: "USD",
+			scale: "1000:1",
+			tokens: { },
+			addresses: {
+				BTC: "1LqBGSKuX5yYUonjxT5qGfpUsXKYYWeabA",
+				FLO: "FTogNNXik7eiHZw5uN2KMe4cvcr7GCEjbZ",
+				LTC: "LUWPbpM43E2p7ZSh8cyTBEkvpHmr3cB8Ez"
+			},
+			platform: 15,
+			influencer: 15,
+			maxdisc: 30
+		},
+		signature: "IFddVJVrsLTcpj+otrB5+B+SHSFE3FsQE/cZHdAOJ1yWQe+9q51FDTLI6FUswMB1fiRrFBDrkKbpG57BKtNT0yI="
+		}
+	},
+	txid: "d48f8336d701b9fe4a2c5f2d39c9b0834a1026e17bb4cefa4b15f233df812ef8",
+	publisher: "FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+	publisherName: "OstlerDev"
+};
+
 module.exports = {
 	apocalypse: new Artifact(apocalypse),
 	barbershop: new Artifact(barberShop),
@@ -486,7 +595,7 @@ module.exports = {
 	amsterdam: new Artifact(amsterdam),
 	scout: new Artifact(scout),
 	CorMetallicum: new Artifact(CorMetallicum),
-	dweb: new Artifact(dweb)
-
+	dweb: new Artifact(dweb),
+	sintel: new Artifact(sintel)
 }
 
