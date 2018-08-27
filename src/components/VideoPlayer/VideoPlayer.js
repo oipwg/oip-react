@@ -13,49 +13,45 @@ class VideoPlayer extends React.Component {
 
         this.defaultVideoOptions = {
 	        poster: "",
-	        sources: undefined,
-	        controls: true,
 	        preload: "none",
 	        fluid: true,
-	        autoplay: false
+	        controls: true,
+	        autoplay: false,
+	        sources: undefined
         };
 
 		let videoOptions = this.props.options ? {...this.defaultVideoOptions, ...this.props.options} : this.defaultVideoOptions;
 
         this.state = {
 	        options: videoOptions,
-	        Artifact: undefined,
-	        ArtifactFile: undefined,
-	        lockFile: undefined,
-	        textTrack: [],
+	        textTracks: [],
 	        initialPlay: true,
 	        setCaptions: true,
-	        artifactFileSwitch: false
+	        artifactFileSwitch: false,
+	        lockFile: undefined,
+	        Artifact: undefined,
+	        ArtifactFile: undefined,
+	        usePosterFile: undefined
         };
 
-        this.loadPlayer = this.loadPlayer.bind(this);
-	    this.resetVideo = this.resetVideo.bind(this);
-
 	    this.initialPlay = true;
+
+	    this.loadPlayer = this.loadPlayer.bind(this);
+	    this.resetVideo = this.resetVideo.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    let options = prevState.options, textTrack = [], artifactFileSwitch = prevState.artifactFileSwitch;
+	    let options = prevState.options, textTracks = [], artifactFileSwitch = false;
 
-	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
-		    nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
-		    artifactFileSwitch = !artifactFileSwitch
-
-	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
-	    		options.preload = "auto";
-	    		options.sources = [];
-			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
-				    options.poster = getIPFSImage(nextProps.Artifact);
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
-			    } else {
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
-				    options.poster = "";
-			    }
+	    if (nextProps.ArtifactFile && nextProps.Artifact) {
+	    	//On Artifact or Artifact File Switch
+		    options.controls = true;
+		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
+			    options.sources = [];
+			    options.preload = "auto";
+			    artifactFileSwitch = true;
+			    options.poster = getIPFSImage(nextProps.Artifact);
+			    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
 
 			    let tmpObj = {};
 			    let files = nextProps.Artifact.getFiles();
@@ -63,27 +59,44 @@ class VideoPlayer extends React.Component {
 				    let ext = getFileExtension(file);
 				    if (ext === 'vtt') {
 					    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
-					    tmpObj["kind"] = "subtitles";
 					    tmpObj["srclang"] = "en";
 					    tmpObj["label"] = "English";
-					    textTrack.push(tmpObj)
+					    tmpObj["kind"] = "subtitles";
+					    textTracks.push(tmpObj)
 				    }
 			    }
-		    } else {
-	    		options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 		    }
-		    options.controls = !nextProps.lockFile;
-	    	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+		    //Run when the poster file is toggled on and off
+		    if (nextProps.usePosterFile !== prevState.usePosterFile) {
+		    	//set artifactFileSwitch to true because we're loading the video with a new source
+			    artifactFileSwitch = true;
+			    options.sources = [];
+			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
+				    options.poster = getIPFSImage(nextProps.Artifact);
+				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
+			    } else {
+				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+				    options.poster = "";
+			    }
+		    }
+	    } else {
+	    	//If the Artifact or ArtifactFile is undefined set the player to undefined and lock it
+		    options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 	    }
-	    // console.log(`Return variables to state --- options: ${JSON.stringify(options, null, 4)} -- textTrack: ${JSON.stringify(textTrack, null, 4)}`);
+	    //Lock and Unlock the file by change autoplay and controls to true/false
+	    if (nextProps.lockFile !== prevState.lockFile) {
+		    options.controls = !nextProps.lockFile;
+		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+	    }
+	    // console.log(`Return variables to state --- options: ${JSON.stringify(options, null, 4)} -- textTracks: ${JSON.stringify(textTracks, null, 4)}`);
 	    return {
 	    	options: options,
+		    textTracks: textTracks,
+		    artifactFileSwitch: artifactFileSwitch,
+		    lockFile: nextProps.lockFile,
 		    Artifact: nextProps.Artifact,
 		    ArtifactFile: nextProps.ArtifactFile,
-		    lockFile: nextProps.lockFile,
-		    textTrack: textTrack,
-		    usePosterFile: nextProps.usePosterFile,
-		    artifactFileSwitch: artifactFileSwitch
+		    usePosterFile: nextProps.usePosterFile
 	    }
     }
 
@@ -92,11 +105,12 @@ class VideoPlayer extends React.Component {
 	    this.player = videojs(this.videoNode, this.state.options, () => {
 		   //do something on player load
 	    });
-	    this.setState({player: this.player})
-	    this.player.on("play", (data) => this.resetVideo(data))
+	    this.setState({player: this.player});
+	    this.player.on("play", () => this.resetVideo())
     }
 
-    resetVideo(data) {
+    //On initial Play, start the video at the beginning
+    resetVideo() {
     	if (this.initialPlay) {
 		    this.player.currentTime(0);
 		    this.player.play()
@@ -105,19 +119,6 @@ class VideoPlayer extends React.Component {
 			    })
 			    .catch( err => {console.log(err)})
 	    }
-
-
-	    // this.initialPlay = this.state.initialPlay
-	    // console.log("Initial play: ", this.initialPlay)
-	    // this.player.play()
-		//     .then( () => {
-		//     	if (this.initialPlay) {
-		// 		    this.player.currentTime(0)
-		// 		    this.initialPlay = false;
-		// 		    console.log("Initial play: ", this.initialPlay)
-		// 	    }
-		//     })
-		//     .catch(err => {console.log(err)});
     }
 
     loadPlayer() {
@@ -134,29 +135,33 @@ class VideoPlayer extends React.Component {
 			    for (let tt of tracks) {
 			    	this.player.removeRemoteTextTrack(tt)
 			    }
-			    for (let textTrackObject of this.state.textTrack) {
+			    for (let textTrackObject of this.state.textTracks) {
 				    this.player.addRemoteTextTrack(textTrackObject, true)
 			    }
 
 		    } else {
+		    	//manually reset the cache (resetting the sources)
 			    this.player.reset();
 		    	this.player.cache_ = {
 		    		duration: null,
 				    lastPlaybackRate: 1,
 				    lastVolume: 1
 			    };
+		    	//hardcode controls to false; bug with getDerived... @ToDo
 		    	this.player.controls(false);
+		    	//Re-loads the audio/video element
 			    this.player.load()
-			    // console.log("Player reset and current source: ", this.player.currentSrc())
 		    }
 	    }
     }
 
 	componentDidUpdate(prevProps, prevState){
-    	if (prevState !== this.state) {
+    	//checks for new player options and updates the player
+    	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks) {
     		this.loadPlayer()
 	    }
-	    if (prevState.artifactFileSwitch !== this.state.artifactFileSwitch) {
+	    //If there was an artifact/file switch, we need to set back the initialPlay to true so resetVideo() can run
+	    if (this.state.artifactFileSwitch) {
 	    	this.initialPlay = true
 	    }
 	}
@@ -189,7 +194,6 @@ VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
 VideoPlayer.propTypes = {
     Artifact: PropTypes.object,
     ArtifactFile: PropTypes.object,
-    style: PropTypes.object,
     options: PropTypes.object,
 	lockFile: PropTypes.bool,
 	usePosterFile: PropTypes.bool
