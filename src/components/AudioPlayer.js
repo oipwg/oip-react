@@ -24,7 +24,7 @@ class AudioPlayer extends React.Component {
             url = buildIPFSURL(hash);
         }
 
-        if (this.props.lockFile == true){
+        if (this.props.lockFile){
          return (
              <ReactAudioPlayer 
              ref={(element) => { this.react_audio_player = element; }}

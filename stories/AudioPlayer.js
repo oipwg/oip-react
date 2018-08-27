@@ -26,6 +26,6 @@ const stories = storiesOf('AudioPlayer', module);
     
 return (
 	<div>
-		<AudioPlayer Artifact={artifact} ArtifactFile={artifact_file} lockfile={this.props.lockfile} />
+		<AudioPlayer Artifact={artifact} ArtifactFile={artifact_file} />
 	</div>
 	)}, { notes: 'Testing of a single song artifact playing' })
