@@ -1,6 +1,7 @@
 import React from 'react'
 import videojs from 'video.js'
 import PropTypes from 'prop-types';
+import ISO6391 from 'iso-639-1';
 
 import { getIPFSURL, getIPFSImage, getFileExtension } from '../../utils.js'
 
@@ -41,42 +42,52 @@ class VideoPlayer extends React.Component {
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    let options = prevState.options, textTracks = [], artifactFileSwitch = false;
+    	console.log("component deriving")
+	    let options = prevState.options, textTracks = prevState.textTracks, artifactFileSwitch = false;
 
 	    if (nextProps.ArtifactFile && nextProps.Artifact) {
 	    	//On Artifact or Artifact File Switch
 		    options.controls = true;
-		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact) {
+		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.usePosterFile !== prevState.usePosterFile) {
+			    console.log("AF Switch");
+			    textTracks = [];
+			    console.log("text tracks in lifecycle: ", textTracks)
 			    options.sources = [];
 			    options.preload = "auto";
 			    artifactFileSwitch = true;
 			    options.poster = getIPFSImage(nextProps.Artifact);
-			    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
-
-			    let tmpObj = {};
-			    let files = nextProps.Artifact.getFiles();
-			    for (let file of files) {
-				    let ext = getFileExtension(file);
-				    if (ext === 'vtt') {
-					    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
-					    tmpObj["srclang"] = "en";
-					    tmpObj["label"] = "English";
-					    tmpObj["kind"] = "subtitles";
-					    textTracks.push(tmpObj)
-				    }
-			    }
-		    }
-		    //Run when the poster file is toggled on and off
-		    if (nextProps.usePosterFile !== prevState.usePosterFile) {
-		    	//set artifactFileSwitch to true because we're loading the video with a new source
-			    artifactFileSwitch = true;
-			    options.sources = [];
+			    //Run when the poster file is toggled on and off
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
 				    options.poster = getIPFSImage(nextProps.Artifact);
 				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
 				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
+			    }
+
+			    //Get, strip, and load subtitles (textTracks)
+			    let files = nextProps.Artifact.getFiles();
+			    let mainTitle = nextProps.Artifact.getTitle()
+			    for (let file of files) {
+				    let ext = getFileExtension(file);
+				    if (ext === 'vtt') {
+				    	console.log("Extension is vtt")
+					    let tmpObj = {};
+					    let fname = file.getFilename();
+					    let splitFname = fname.split('.');
+
+					    let length = splitFname.length - 1;
+					    let title = splitFname[0];
+					    let language = splitFname[length - 1];
+
+					    if (title === mainTitle) {
+						    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
+						    tmpObj["srclang"] = language;
+						    tmpObj["label"] = ISO6391.getName(language);
+						    tmpObj["kind"] = "subtitles";
+						    textTracks.push(tmpObj)
+					    }
+				    }
 			    }
 		    }
 	    } else {
@@ -101,9 +112,12 @@ class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
+    	console.log("component mounting")
 	    // instantiate Video.js
 	    this.player = videojs(this.videoNode, this.state.options, () => {
 		   //do something on player load
+		    this.loadPlayer();
+		    console.log("Player loaded", this.state.textTracks)
 	    });
 	    this.setState({player: this.player});
 	    this.player.on("play", () => this.resetVideo())
@@ -158,7 +172,8 @@ class VideoPlayer extends React.Component {
 	componentDidUpdate(prevProps, prevState){
     	//checks for new player options and updates the player
     	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks) {
-    		this.loadPlayer()
+    		this.loadPlayer();
+		    console.log("Text tracks: ", this.player.textTracks())
 	    }
 	    //If there was an artifact/file switch, we need to set back the initialPlay to true so resetVideo() can run
 	    if (this.state.artifactFileSwitch) {
