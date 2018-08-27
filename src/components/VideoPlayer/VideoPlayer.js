@@ -29,20 +29,22 @@ class VideoPlayer extends React.Component {
 	        lockFile: undefined,
 	        textTrack: [],
 	        initialPlay: true,
-	        setCaptions: true
+	        setCaptions: true,
+	        artifactFileSwitch: false
         };
 
         this.loadPlayer = this.loadPlayer.bind(this);
 	    this.resetVideo = this.resetVideo.bind(this);
 
-	    this.initialPlay = true
+	    this.initialPlay = true;
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
-	    let options = prevState.options, textTrack = [];
+	    let options = prevState.options, textTrack = [], artifactFileSwitch = prevState.artifactFileSwitch;
 
 	    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact ||
 		    nextProps.lockFile !== prevState.lockFile || nextProps.usePosterFile !== prevState.usePosterFile) {
+		    artifactFileSwitch = !artifactFileSwitch
 
 	    	if (nextProps.ArtifactFile && nextProps.Artifact) {
 	    		options.preload = "auto";
@@ -80,7 +82,8 @@ class VideoPlayer extends React.Component {
 		    ArtifactFile: nextProps.ArtifactFile,
 		    lockFile: nextProps.lockFile,
 		    textTrack: textTrack,
-		    usePosterFile: nextProps.usePosterFile
+		    usePosterFile: nextProps.usePosterFile,
+		    artifactFileSwitch: artifactFileSwitch
 	    }
     }
 
@@ -94,29 +97,27 @@ class VideoPlayer extends React.Component {
     }
 
     resetVideo(data) {
-    	this.initialPlay = this.state.initialPlay
-    	// console.log("Play data: ", data)
-	    this.player.play()
-		    .then( () => {
-		    	if (this.initialPlay) {
-				    this.player.currentTime(0)
+    	if (this.initialPlay) {
+		    this.player.currentTime(0);
+		    this.player.play()
+			    .then( () => {
 				    this.initialPlay = false;
-				    // this.setState({initialPlay: false}, () => {
-				    // 	this.player.currentTime(0)
-				    // })
-			    }
-		    })
-		    .catch(err => {console.log(err)})
-    	// if (!this.state.initialPlay) {
-		//     this.setState({initialPlay: true}, () => {
-		// 	    this.player.play()
-		// 		    .then( () => {
-		// 			    this.player.currentTime(0);
-		// 		    })
-		// 		    .catch(err => {console.log(err)})
-	    //
+			    })
+			    .catch( err => {console.log(err)})
+	    }
+
+
+	    // this.initialPlay = this.state.initialPlay
+	    // console.log("Initial play: ", this.initialPlay)
+	    // this.player.play()
+		//     .then( () => {
+		//     	if (this.initialPlay) {
+		// 		    this.player.currentTime(0)
+		// 		    this.initialPlay = false;
+		// 		    console.log("Initial play: ", this.initialPlay)
+		// 	    }
 		//     })
-	    // }
+		//     .catch(err => {console.log(err)});
     }
 
     loadPlayer() {
@@ -129,7 +130,7 @@ class VideoPlayer extends React.Component {
 			    this.player.controls(this.state.options.controls);
 			    this.player.preload(this.state.options.preload);
 
-			    let tracks = this.player.textTracks().tracks_
+			    let tracks = this.player.textTracks().tracks_;
 			    for (let tt of tracks) {
 			    	this.player.removeRemoteTextTrack(tt)
 			    }
@@ -144,7 +145,7 @@ class VideoPlayer extends React.Component {
 				    lastPlaybackRate: 1,
 				    lastVolume: 1
 			    };
-		    	this.player.controls(false)
+		    	this.player.controls(false);
 			    this.player.load()
 			    // console.log("Player reset and current source: ", this.player.currentSrc())
 		    }
@@ -154,6 +155,9 @@ class VideoPlayer extends React.Component {
 	componentDidUpdate(prevProps, prevState){
     	if (prevState !== this.state) {
     		this.loadPlayer()
+	    }
+	    if (prevState.artifactFileSwitch !== this.state.artifactFileSwitch) {
+	    	this.initialPlay = true
 	    }
 	}
 
