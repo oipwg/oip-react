@@ -31,7 +31,7 @@ const widthDefault = '100%';
 
 const posterLabel = "Load with poster";
 const posterDefault = true;
-
+const poster2Default = false;
 
 stories.add('Test against multiple artifacts', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
@@ -42,7 +42,7 @@ stories.add('Test against multiple artifacts', () => {
 	const artifact_file = artifact_files.map[file_value];
 
 	const width_value = select(widthLabel, widthOptions, widthDefault)
-	const loadWithPoster = boolean(posterLabel, posterDefault)
+	const loadWithPoster = boolean(posterLabel, posterDefault);
 	return (
 
 		<div style={{width: width_value}}>
@@ -68,3 +68,22 @@ stories.add('Render from None', () => {
 		</div>
 	)
 }, {notes: 'Renders a VideoPlayer first with an undefined artifact. Test this.player functionality.'});
+
+stories.add('Render without poster', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "(Paid) Agent 327 - Operation Barbershop");
+	const artifact = artifacts.map[artifact_value];
+
+	const artifact_files = getFileOptions(artifact);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const artifact_file = artifact_files.map[file_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault);
+	const loadWithPoster = boolean(posterLabel, poster2Default);
+
+	return (
+
+		<div style={{width: width_value}}>
+			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
+		</div>
+	)
+}, {notes: 'Renders a VideoPlayer first with an undefined artifact and no poster.'});
