@@ -127,7 +127,7 @@ const barberShopPaid = {
 			"type":"Video",
 			"subtype":"Movie",
 			"info":{  
-				"title":"(Paid) Agent 327 - Operation Barbershop",
+				"title":"Agent 327 - Operation Barbershop",
 				"description":"\"Hendrik IJzerbroot \\u2013 Agent 327 \\u2013 is a secret agent working for the Netherlands secret service agency. In the twenty comic books that were published since 1968, Martin Lodewijk created a rich universe with international conspiracies, hilarious characters and a healthy dose of Dutch humour.\\n\\nBlender Institute is currently developing its first animated feature film, based on the celebrated Dutch comic character Agent 327. This adventurous comedy is targeted at an international market.\\n\\nThanks to the Blender open source project, known by millions of people, we have a large network of artists and developers world-wide. We\\u2019ve pioneered crowd-funding and are self-supportive thanks to an innovative cloud platform. Blender Institute seeks for additional funding to kickstart the production in the Netherlands of a high-end 3D animated CG feature film.\"",
 				"year":2018
 			},
