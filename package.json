@@ -25,6 +25,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "0.1.0-11",
     "core-js": "^2.5.7",
+    "iso-639-1": "^2.0.3",
     "oip-index": "^1.1.0",
     "oip-state": "git+https://github.com/oipwg/oip-state.git",
     "prop-types": "^15.6.2",
