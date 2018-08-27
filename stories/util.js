@@ -6,7 +6,7 @@ let getArtifactOptions = function(artifact_array){
 
 	for (let i = 0; i < artifact_array.length; i++){
 		let title = artifact_array[i].getTitle()
-
+		
 		options[title] = title
 		map[title] = artifact_array[i]
 
@@ -35,6 +35,8 @@ let getFileOptions = function(Artifact){
 		let files = Artifact.getFiles()
 		for (let i = 0; i < files.length; i++){
 			let displayName = files[i].getDisplayName()
+
+			displayName = displayName.replace(/[^a-zA-Z ]/g, "");
 
 			options[displayName] = displayName
 			map[displayName] = files[i]
