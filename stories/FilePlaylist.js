@@ -1,6 +1,7 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {withKnobs, select} from '@storybook/addon-knobs';
+import { host } from 'storybook-host';
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -10,6 +11,13 @@ import { getArtifactOptions, getFileOptions } from './util'
 
 const stories = storiesOf('FilePlaylist', module);
 stories.addDecorator(withKnobs);
+stories.addDecorator(
+	host({
+		title: 'FilePlaylist',
+		align: 'center top',
+		cropMarks: false,
+	}),
+)
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
@@ -43,7 +51,7 @@ const heightOptions = {
 	"1100": "1100px",
 	"100%": "100%"
 };
-const heightDefault = '500px';
+const heightDefault = '400px';
 
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 
