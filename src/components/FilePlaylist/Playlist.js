@@ -3,34 +3,21 @@ import { getFileExtension } from '../../utils.js'
 
 
 class Playlist extends Component {
-	constructor(props){
-		super(props);
-
-		this.handleListClick = this.handleListClick.bind(this)
-	}
-
-	handleListClick(file) {
-		console.log("Clicked file: ", file)
-	}
-
 	render() {
-		let _this = this;
-
 		let files = [];
 		if (this.props.Artifact) {
-			let tmpFiles = this.props.Artifact.getFiles()
-			let supportedFileTypes = ["mp4", "mp3", "ogg", "wav"]
+			let tmpFiles = this.props.Artifact.getFiles();
+			let supportedFileTypes = ["mp4", "mp3", "ogg", "wav"];
 			for (let f of tmpFiles) {
-				let ext = getFileExtension(f)
+				let ext = getFileExtension(f);
 				if (supportedFileTypes.includes(ext)) {
 					files.push(f)
 				}
 			}
 		}
-
 		return (
-			<ul className="list-group" style={{width: "442px"}}>
-				<li className="list-group-item" style={{padding: "5px 30px", display:"flex", backgroundColor: this.props.bgColor, border: "1px solid " + this.props.mainColor}}>
+			<ul className="list-group">
+				<li className="list-group-item" style={{padding: "5px 30px", display:"flex", height: "100px"}}>
 					<div style={{margin: "auto"}}>
 						<button className="btn btn-sm btn-outline-info"><span className="icon icon-controller-play"></span>Play All: Free</button>
 						<span style={{paddingLeft: "10px"}}/>
@@ -38,9 +25,11 @@ class Playlist extends Component {
 					</div>
 				</li>
 				{files.map(function(file, i){
-					return <li key={i} onClick={() => {_this.handleListClick(file) } } className="list-group-item">
-						<div>{file.getFilename()}</div>
-					</li>
+					return (
+						<li key={i} className="list-group-item">
+							<div style={{height: "50px"}}>{file.getFilename()}</div>
+						</li>
+					)
 				})}
 			</ul>
 		);
