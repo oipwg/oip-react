@@ -6,25 +6,27 @@ import './assets/FilePlaylist.css'
 class FilePlaylist extends React.Component {
 	render() {
 		return (
-			<div>
+			<div style={{height: "100%"}}>
 				<style dangerouslySetInnerHTML={{
 					__html: [
 						'.scrollbar {',
-						'    border: 1px solid ' + this.props.mainColor + ';',
-						'	 border-radius: 0.25rem;',
+
 						'}',
 						'.scrollbar::-webkit-scrollbar {',
-						'    background-color: ' + this.props.mainColor + ';',
+						'    width: ' + '10px' + ';',
 						'}',
 						'.scrollbar::-webkit-scrollbar-thumb {',
-						'    background-color: ' + this.props.mainColor + ';',
+						'    background-color: ' + 'red' + ';',
+						'}',
+						'.scrollbar::-webkit-scrollbar-thumb:hover {',
+						'    background-color: ' + '#555' + ';',
 						'}',
 						'.scrollbar::-webkit-scrollbar-track {',
-						'    background-color: ' + this.props.bgColor + ';',
+						'    background-color: ' +"#f1f1f1" + ';',
 						'}'
 					].join('\n')
 				}} />
-				<div className="scrollbar" style={{height: "32vh", overflowY: "scroll", margin: "auto", marginTop: "10px", marginBottom: "100px", maxWidth: "450px"}}>
+				<div className="scrollbar" style={{height: "100%", width: "auto", overflowY: "scroll",}}>
 					<Playlist Artifact={this.props.Artifact} ArtifactFile={this.props.ArtifactFile}/>
 				</div>
 			</div>
