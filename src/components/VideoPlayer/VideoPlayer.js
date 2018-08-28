@@ -46,8 +46,11 @@ class VideoPlayer extends React.Component {
 
 	    if (nextProps.ArtifactFile && nextProps.Artifact) {
 	    	//On Artifact or Artifact File Switch
-		    options.controls = true;
 		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.usePosterFile !== prevState.usePosterFile) {
+			    if (prevState.lockFile === undefined || !prevState.lockFile) {
+			    	console.log("Setting controls to true: ", prevState.lockFile)
+			    	options.controls = true;
+			    }
 			    textTracks = [];
 			    options.sources = [];
 			    options.preload = "auto";
@@ -69,7 +72,6 @@ class VideoPlayer extends React.Component {
 			    for (let file of files) {
 				    let ext = getFileExtension(file);
 				    if (ext === 'vtt') {
-				    	console.log("Extension is vtt")
 					    let tmpObj = {};
 					    let fname = file.getFilename();
 					    let splitFname = fname.split('.');
