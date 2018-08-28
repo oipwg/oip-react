@@ -48,7 +48,7 @@ const heightDefault = '500px';
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 
 stories.add('Basic FilePlaylist', () => {
-	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
+	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
 	const artifact = artifacts.map[artifact_value];
 
 	const artifact_files = getFileOptions(artifact);
