@@ -26,6 +26,8 @@ class VideoPlayer extends React.Component {
         this.state = {
 	        options: videoOptions,
 	        textTracks: [],
+	        isPlaying: false,
+	        isPaused: false,
 	        initialPlay: true,
 	        setCaptions: true,
 	        artifactFileSwitch: false,
@@ -38,36 +40,46 @@ class VideoPlayer extends React.Component {
 	    this.initialPlay = true;
 
 	    this.loadPlayer = this.loadPlayer.bind(this);
-	    this.resetVideo = this.resetVideo.bind(this);
+	    this.resetPlayer = this.resetPlayer.bind(this);
+	    this.playerPlaying = this.playerPlaying.bind(this);
+	    this.playerPause = this.playerPause.bind(this);
     }
 
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options, textTracks = prevState.textTracks, artifactFileSwitch = false;
 
 	    if (nextProps.ArtifactFile && nextProps.Artifact) {
-	    	//On Artifact or Artifact File Switch
+	    	//On Artifact or Artifact File Switch or poster switch because it needs most the same logic
 		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.usePosterFile !== prevState.usePosterFile) {
-			    if (prevState.lockFile === undefined || !prevState.lockFile) {
-			    	console.log("Setting controls to true: ", prevState.lockFile)
-			    	options.controls = true;
-			    }
-			    textTracks = [];
-			    options.sources = [];
+		    	//Make sure to give controls to the video if no lockFile is specified
+			    if (prevState.lockFile === undefined) {options.controls = true}
+
+			    //if autoplay was set to true by lockfile, we need to turn it back off on artifact[file]/poster switch so it doesn't play the file automatically
+			    options.autoplay = false;
+			    //though, if an artifact was playing and just the file was switched, autoplay the file
+			    options.autoplay = (nextProps.Artifact === prevState.Artifact && nextProps.ArtifactFile !== prevState.ArtifactFile && prevState.isPlaying);
+
+			    //Suggests to the browser whether or not the video data should begin downloading as soon as the <video> element is loaded. 'auto' - 'true' - 'none'
 			    options.preload = "auto";
+
+			    //on artifact[file] reload/switch we want to run this.resetPlayer()
 			    artifactFileSwitch = true;
-			    options.poster = getIPFSImage(nextProps.Artifact);
-			    //Run when the poster file is toggled on and off
+
+			    //Load sources based on whether we're using the poster file or not
+			    options.sources = [];
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
 				    options.poster = getIPFSImage(nextProps.Artifact);
 				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
+			    	//if no poster file, load src at 10 seconds (#t=10) to get a frame showing. this.resetPlayer() will make sure video starts from beginning
 				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
 			    }
 
 			    //Get, strip, and load subtitles (textTracks)
+			    textTracks = [];
 			    let files = nextProps.Artifact.getFiles();
-			    let mainTitle = nextProps.Artifact.getTitle()
+			    let mainTitle = nextProps.Artifact.getTitle();
 
 			    for (let file of files) {
 				    let ext = getFileExtension(file);
@@ -94,7 +106,8 @@ class VideoPlayer extends React.Component {
 	    	//If the Artifact or ArtifactFile is undefined set the player to undefined and lock it
 		    options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 	    }
-	    //Lock and Unlock the file by change autoplay and controls to true/false
+
+	    //Lock and Unlock the file by changing autoplay and controls to true/false
 	    if (nextProps.lockFile !== prevState.lockFile) {
 		    options.controls = !nextProps.lockFile;
 		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
@@ -112,17 +125,35 @@ class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
-	    // instantiate Video.js
+	    //instantiate Video.js
 	    this.player = videojs(this.videoNode, this.state.options, () => {
 		   //do something on player load
 		    this.loadPlayer();
 	    });
 	    this.setState({player: this.player});
-	    this.player.on("play", () => this.resetVideo())
+	    this.player.on("play", () => this.resetPlayer());
+	    this.player.on("playing", () => this.playerPlaying());
+	    this.player.on("pause", () => this.playerPause());
+    }
+
+    playerPlaying() {
+	    if (!this.state.isPlaying) {
+	    	this.setState({
+			    isPlaying: true,
+			    isPaused: false
+	    	})
+	    }
+    }
+
+    playerPause() {
+	    this.setState({
+		    isPaused: true,
+		    isPlaying: false
+	    })
     }
 
     //On initial Play, start the video at the beginning
-    resetVideo() {
+    resetPlayer() {
     	if (this.initialPlay) {
 		    this.player.currentTime(0);
 		    this.player.play()
@@ -135,6 +166,7 @@ class VideoPlayer extends React.Component {
 
     loadPlayer() {
 	    if (this.player) {
+	    	//Doesn't matter if there's an artifact or not to set source and poster. If undefined, set them to undefined
 		    this.player.src(this.state.options.sources);
 		    this.player.poster(this.state.options.poster);
 
@@ -143,16 +175,16 @@ class VideoPlayer extends React.Component {
 			    this.player.controls(this.state.options.controls);
 			    this.player.preload(this.state.options.preload);
 
+			    //on update, remove all textTracks and add back w/e is in state to ensure the most current textTrack files
 			    while (this.player.textTracks().tracks_.length > 0){
 			    	this.player.removeRemoteTextTrack(this.player.textTracks().tracks_[0])
 			    }
-
 			    for (let textTrackObject of this.state.textTracks) {
 				    this.player.addRemoteTextTrack(textTrackObject, true)
 			    }
 
 		    } else {
-		    	//manually reset the cache (resetting the sources)
+		    	//manually reset the cache (resetting the sources) / player.reset() does not reset sources =/
 			    this.player.reset();
 		    	this.player.cache_ = {
 		    		duration: null,
@@ -172,15 +204,18 @@ class VideoPlayer extends React.Component {
     	if (prevState.options !== this.state.options || prevState.textTracks !== this.state.textTracks ||  prevState.lockFile !== this.state.lockFile) {
     		this.loadPlayer();
 	    }
-	    //If there was an artifact/file switch, we need to set back the initialPlay to true so resetVideo() can run
+	    //If there was an artifact/file switch, we need to set the initialPlay back to true so resetPlayer() can run
 	    if (this.state.artifactFileSwitch) {
 	    	this.initialPlay = true
 	    }
 	}
 
-    // destroy player on unmount @ToDo: Uncomment when not testing in storybook
+    // // destroy player on unmount @ToDo: Breaks in storybook... cannot remove child node
     // componentWillUnmount() {
     //     if (this.player) {
+	//         this.player.off("play", () => this.resetPlayer());
+	//         this.player.off("playing", () => this.playerPlaying());
+	//         this.player.off("pause", () => this.playerPause());
     //         this.player.dispose()
     //     }
     // }
