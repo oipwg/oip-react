@@ -13,8 +13,15 @@ class AudioPlayer extends React.Component {
         this.preventPlay = this.preventPlay.bind(this)
     }
     preventPlay(event){
-        this.react_audio_player.audioEl.pause()
+        if (this.props.lockFile)
+            this.react_audio_player.audioEl.pause()
     }
+
+    componentDidUpdate(prevProps){
+        if (prevProps.lockFile && !this.props.lockFile)
+            this.react_audio_player.audioEl.play()
+    }
+
     render() {
 		let hash = "";
         let url = "";
@@ -24,23 +31,14 @@ class AudioPlayer extends React.Component {
             url = buildIPFSURL(hash);
         }
 
-        if (this.props.lockFile){
-         return (
-             <ReactAudioPlayer 
-             ref={(element) => { this.react_audio_player = element; }}
-             src={url}
-             autoPlay={false}
-             controls={true}
-             onPlay={this.preventPlay}
-             />
-         )           
-        }   
-            
 		return (
 			<ReactAudioPlayer
-            src={url}
-            autoPlay={false}
-            controls={true} />
+                ref={(element) => { this.react_audio_player = element; }}
+                src={url}
+                autoPlay={false}
+                controls={true} 
+                onPlay={this.preventPlay}
+            />
 		);
 	}
 }
