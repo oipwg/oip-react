@@ -68,7 +68,7 @@ stories.add('Basic FilePlaylist', () => {
 
 	return (
 		<div style={{width: width_value, height: height_value}}>
-			<FilePlaylist Artifact={artifact} ArtifactFile={artifact_file} />
+			<FilePlaylist Files={[artifact]} />
 		</div>
 	)
 }, {notes: 'Basic FilePlaylist. Use knobs to switch between Artifacts/Files'});
