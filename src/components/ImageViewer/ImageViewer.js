@@ -45,13 +45,8 @@ class ImageViewer extends React.Component {
 
 			let canvas_context = this.canvas.getContext("2d")
 
-			if(typeof window.chrome != "object" && this.props.lockFile) {
-				return (
-				<img className='OIP-Blur' src={url} alt="OIP-ImageViewer" />
-				)
-			} else {
-		
-			}
+			if (isUnsupportedBrowser())
+				this.canvas.style.filter = "blur(30px)"
 
 			if (this.props.lockFile) 
 				canvas_context.filter = "blur(30px)"
@@ -61,8 +56,20 @@ class ImageViewer extends React.Component {
 
 		image.src = url
 	}
-	
 
+	isUnsupportedBrowser(){
+		let user_agent = window.navigator.userAgent
+		let ie_match_index = user_agent.indexOf("MSIE ")
+		let safari_match_index = user_agent.indexOf("Safari ")
+
+		if (ie_match_index !== -1)
+			return true
+
+		if (safari_match_index !== -1)
+			return true
+
+		return false
+	}
 	
 	render() {
 		return (
