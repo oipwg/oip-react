@@ -57,8 +57,8 @@ class LoginBlock extends Component {
 		this.setState({password: this.password.value, passwordState: newState});
 	}
 
-	updateRememberMe(){
-		this.setState({rememberMe: !this.state.rememberMe });
+	updateRememberMe(remember_me_status){
+		this.setState({rememberMe: remember_me_status });
 	}
 
 	render() {
@@ -95,7 +95,7 @@ class LoginBlock extends Component {
                     </div> : ""
 					}
 				</div>
-				<ButtonCheckbox onClick={this.updateRememberMe} toggleState={this.state.rememberMe} text={"Remember Me"} />
+				<ButtonCheckbox onChange={this.updateRememberMe} text={"Remember Me"} />
 				<hr className="" />
 				<div className="row">
 					<div className="col-12 col-sm-5 col-md-5 order-2 order-sm-1">
