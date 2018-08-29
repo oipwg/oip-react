@@ -17,7 +17,7 @@ class PaymentButton extends Component {
 	}
 
 	payForFile(){
-		this.props.payForArtifactFile(this.props.Artifact, this.props.ArtifactFile, this.props.type)
+		this.props.payForArtifactFile(this.props.ArtifactFile, this.props.type)
 	}
 
 	render() {
@@ -36,7 +36,7 @@ class PaymentButton extends Component {
 		let button_icon
 		let button_icon_class = ""
 
-		if (this.props.Artifact && this.props.ArtifactFile && this.props.fileState && (this.props.type === "view" || this.props.type === "buy")){
+		if (this.props.ArtifactFile && this.props.fileState && (this.props.type === "view" || this.props.type === "buy")){
 			owned = this.props.fileState.owned;
 			hasPaid = this.props.fileState.hasPaid;
 
@@ -103,9 +103,9 @@ class PaymentButton extends Component {
 			button_icon = faExclamationCircle
 		}
 
-		if (!this.props.Artifact || !this.props.ArtifactFile){
+		if (!this.props.ArtifactFile){
 			button_class = "outline-warning"
-			payment_string = "No Artifact/File"
+			payment_string = "No ArtifactFile"
 		}
 
 		return (
@@ -126,7 +126,7 @@ PaymentButton.propTypes = {
 	fileState: PropTypes.object,
 	type: PropTypes.string,
 	style: PropTypes.string
-}
+};
 
 function mapStateToProps(state) {
 	return { }
@@ -134,6 +134,6 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
 	payForArtifactFile
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentButton)
