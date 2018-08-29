@@ -40,11 +40,22 @@ stories.add('Example', () => {
 			</div>
 		</Provider>
 	
-	specs(() => describe("Hello World", () => {
-		it('Should say Login', function(){
-			let output = mount(story)
-			// console.log(output)
-			expect(output.text()).toContain('Hello World')
+	specs(() => describe("Login", () => {
+		let output = mount(story)
+		it('Should say Login', () => {
+			expect(output.find("button").text()).toContain('Login')
+		})
+		it ('Should set showLoginModal on Click', () => {
+			output.find("button").simulate('click')
+			expect(output.text()).toContain('showLoginModal: true')
+		})
+		it ('Should show username after Login', () => {
+			store.dispatch(loginSuccess({_username: "demo_username"}))
+			expect(output.find("button").text()).toContain('demo_username')
+		})
+		it ('Should remove Username after Logout', () => {
+			store.dispatch(logout())
+			expect(output.find("button").text()).toContain('Login')
 		})
 	}))
 

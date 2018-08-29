@@ -186,8 +186,8 @@ class RegisterBlock extends Component {
 
 		this.setState({passwordConfirm: this.passwordConfirm.value, confirmState: newState});
 	}
-	updateVerify(){
-		this.setState({verify: !this.state.verify });
+	updateVerify(verify_state){
+		this.setState({verify: verify_state });
 	}
 	recaptcha(response){
 		if (response)
@@ -296,7 +296,7 @@ class RegisterBlock extends Component {
 					</div>
 					<div className="col-12" style={{margin: "0px 0px"}}>
 						<center>
-							<ButtonCheckbox color={"secondary"} onClick={this.updateVerify} toggleState={this.state.verify} text={"I have taken responsibility for my password"} style={{fontSize: "12px", width: "300px", height: "50px"}} iconStyle={{fontSize: "25px", verticalAlign: "-5px"}} />
+							<ButtonCheckbox color={"secondary"} onChange={this.updateVerify} text={"I have taken responsibility for my password"} style={{fontSize: "12px", width: "300px", height: "50px"}} iconStyle={{fontSize: "25px", verticalAlign: "-5px"}} />
 							{this.state.verifyState === STATUS.INVALID ? 
 							<p id="passwordResponsibilityCheckbox" style={{color: "#dc3545", fontSize: "13.5px", marginTop: "5px", marginBottom: "0px"}}>Please agree that you have saved your password safely!</p>
 							: ""}
