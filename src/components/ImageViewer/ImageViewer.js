@@ -45,6 +45,14 @@ class ImageViewer extends React.Component {
 
 			let canvas_context = this.canvas.getContext("2d")
 
+			if(typeof window.chrome != "object" && this.props.lockFile) {
+				return (
+				<img className='OIP-Blur' src={url} alt="OIP-ImageViewer" />
+				)
+			} else {
+		
+			}
+
 			if (this.props.lockFile) 
 				canvas_context.filter = "blur(30px)"
 
