@@ -1,7 +1,7 @@
 import React from 'react';
 import { storiesOf, addDecorator } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
-import { withKnobs, object, select} from '@storybook/addon-knobs';
+import { withKnobs, object, select, boolean } from '@storybook/addon-knobs';
 import ImageViewer from '../src/components/ImageViewer/ImageViewer.js'
 import { getFileOptions, getArtifactOptions} from './util.js'
 import { amsterdam, apocalypse, barbershop, scout } from './TestArtifacts'
@@ -34,7 +34,7 @@ stories.add('Knobs', () => {
 
 	return (
 		<div style={{width: width_value}}>
-			<ImageViewer Artifact={artifact} ArtifactFile={artifact_file}/>
+			<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />
 		</div>
 	)
 }, { notes: 'Passing kobs' })
