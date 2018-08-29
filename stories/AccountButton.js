@@ -3,6 +3,9 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, button } from '@storybook/addon-knobs';
+import { specs, describe, it } from 'storybook-addon-specifications'
+import {mount} from "enzyme";
+import expect from "expect";
 
 import { Provider } from 'react-redux'
 import state from 'oip-state'
@@ -25,7 +28,8 @@ const store = state.createStore()
 stories.add('Example', () => {
 	button("Dispatch Login", () => { store.dispatch(loginSuccess({_username: "demo_username"})) })
 	button("Dispatch Logout", () => { store.dispatch(logout()) })
-	return (
+
+	const story = 
 		<Provider store={store}>
 			<div>
 				<AccountButton />
@@ -35,5 +39,14 @@ stories.add('Example', () => {
 				<StoreDebugHelper path={['Account', 'Account', '_username']} />
 			</div>
 		</Provider>
-	)
-}, { notes: "Trigger redux store action to showLoginModal" });
+	
+	specs(() => describe("Hello World", () => {
+		it('Should say Login', function(){
+			let output = mount(story)
+			// console.log(output)
+			expect(output.text()).toContain('Hello World')
+		})
+	}))
+
+	return story
+});
