@@ -15,7 +15,7 @@ stories.addDecorator(
 	host({
 		title: 'FilePlaylist',
 		align: 'center top',
-		cropMarks: false,
+		cropMarks: false
 	}),
 )
 
