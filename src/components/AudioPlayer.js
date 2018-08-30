@@ -26,8 +26,8 @@ class AudioPlayer extends React.Component {
 		let hash = "";
         let url = "";
 
-        if (this.props.Artifact && this.props.ArtifactFile) {
-            hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());
+        if (this.props.ArtifactFile) {
+            hash = buildIPFSShortURL(this.props.ArtifactFile.parent.getLocation(), this.props.ArtifactFile.getFilename());
             url = buildIPFSURL(hash);
         }
 
@@ -44,7 +44,6 @@ class AudioPlayer extends React.Component {
 }
 AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
 AudioPlayer.propTypes = {
-    Artifact: PropTypes.object,
     ActiveFile: PropTypes.object,
     lockFile: PropTypes.bool
 };
