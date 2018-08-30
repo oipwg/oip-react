@@ -60,7 +60,7 @@ class PlaylistItem extends React.Component {
 					<span style={{fontWeight: "100", color: "#999"}}> {this.props.index} </span>
 				</div>
 				{/*contentItems*/}
-				<div className={(loadWithPicture ? "col-6" : "col-7") + " d-flex align-items-center"}>
+				<div className={(loadWithPicture ? "col-5" : "col-6") + " d-flex align-items-center"}>
 					<div style={styles.fileInfo}>
 						<a style={{color: "#999"}}>{artist}</a>
 						<span style={{fontWeight: "100", color: "#999"}}> - </span>
@@ -68,7 +68,7 @@ class PlaylistItem extends React.Component {
 					</div>
 				</div>
 				{/*payment buttons*/}
-				<div className="col-3 d-flex align-items-center">
+				<div className="col-4 d-flex align-items-center">
 					<div className="row no-gutters">
 						<div className="col d-flex">
 							<PaymentButton
@@ -102,11 +102,6 @@ const styles = {
 	}
 };
 
-PlaylistItem.propTypes = {
-	File: PropTypes.object,
-	index: PropTypes.number
-};
-
 function mapStateToProps(state) {
 	return {
 		state: state,
@@ -116,6 +111,11 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
 	setActiveFile
+};
+
+PlaylistItem.propTypes = {
+	File: PropTypes.object,
+	index: PropTypes.number
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistItem);
