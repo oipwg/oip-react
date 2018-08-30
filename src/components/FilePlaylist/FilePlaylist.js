@@ -117,28 +117,3 @@ FilePlaylist.propTypes = {
 };
 
 export default FilePlaylist
-//<style dangerouslySetInnerHTML={{
-// 					__html: [
-// 						'.scrollbar {',
-// 						'    border: 1px solid ' + '#f1f1f1' + ';',
-// 						'	 border-radius: 0.25rem;',
-// 						'}',
-// 						'.scrollbar::-webkit-scrollbar {',
-// 						'    width: ' + '10px' + ';',
-// 						'}',
-// 						'.scrollbar::-webkit-scrollbar-thumb {',
-// 						'    background-color: ' + '#555' + ';',
-// 						'	 border-radius: 0.25rem;',
-// 						'}',
-// 						'.scrollbar::-webkit-scrollbar-thumb:hover {',
-// 						'    background-color: ' + '#5E5E5E' + ';',
-// 						'}',
-// 						'.scrollbar::-webkit-scrollbar-track {',
-// 						'    background-color: ' + "#f1f1f1" + ';',
-// 						'	 border-radius: 0.25rem;',
-// 						'}',
-// 						'.scrollbar::-webkit-resizer {',
-// 						'   background-color:  ' + 'transparent' + ';',
-// 						'}'
-// 					].join('\n')
-// 				}} />
