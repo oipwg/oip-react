@@ -38,11 +38,11 @@ stories.add('Example', () => {
 		it("Should be toggle back off", () => {
 			output.find('button').simulate('click')
 			expect(output.find(".btn-outline-danger").length).toBe(1)
-			expect(output.find(".btn-success").length).toBe(0 )
+			expect(output.find(".btn-success").length).toBe(0)
 		})
 		it("Should use text prop", () => {
 			let old_text = output.prop('text')
-			
+
 			output.setProps({"text": "Test"})
 			expect(output.find("button").text()).toContain("Test")
 			output.setProps({"text": old_text})

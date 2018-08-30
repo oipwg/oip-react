@@ -36,25 +36,28 @@ class LoginBlock extends Component {
 	    this.props.accountLogin(this.state.email, this.state.password, { rememberMe: this.state.rememberMe })
     }
 
-	updateEmail(){
-		let newState;
+	updateEmail(event){
+		let new_email = event.target.value
 
-		let isEmail = validator.isEmail(this.email.value);
-		newState = isEmail ? STATUS.VALID : STATUS.INVALID;
+		let isEmail = validator.isEmail(new_email);
 
-		if (this.email.value === "")
+		let newState = isEmail ? STATUS.VALID : STATUS.INVALID;
+
+		if (new_email === "")
 			newState = STATUS.NO_INPUT;
 
-		this.setState({email: this.email.value, emailState: newState});
+		this.setState({email: new_email, emailState: newState});
 	}
 
-	updatePassword(){
+	updatePassword(event){
+		let new_password = event.target.value
+
 		let newState = STATUS.VALID;
 
-		if (this.password.value === "")
+		if (new_password === "")
 			newState = STATUS.NO_INPUT;
 
-		this.setState({password: this.password.value, passwordState: newState});
+		this.setState({password: new_password, passwordState: newState});
 	}
 
 	updateRememberMe(remember_me_status){
@@ -63,11 +66,12 @@ class LoginBlock extends Component {
 
 	render() {
 		return (
-			<div style={{width: "100%"}}>
+			<div style={{width: "100%"}} id="login-block">
                 <h2>Please Login</h2>
 				<hr className="" />
 				<div className="form-group">
-					<input ref={email => this.email = email} onInput={this.updateEmail} type="text" 
+					<input onChange={this.updateEmail}
+						   value={this.state.email} type="text" 
                            name="email" id="email" className={"form-control input-lg" + 
                            (this.state.emailState === STATUS.INVALID ? " is-invalid" : "") + 
                            (this.state.emailState === STATUS.VALID ? " is-valid" : "")} 
@@ -83,8 +87,9 @@ class LoginBlock extends Component {
 					}
 				</div>
 				<div className="form-group">
-					<input  ref={password => this.password = password} onInput={this.updatePassword} 
-                            type="password" className={"form-control input-lg" + 
+					<input  onChange={this.updatePassword}
+							value={this.state.password}
+							id="password" name="password" type="password" className={"form-control input-lg" + 
                             (this.state.passwordState === STATUS.INVALID ? " is-invalid" : "") + 
                             (this.state.passwordState === STATUS.VALID ? " is-valid" : "")} 
                             placeholder="Password" 
@@ -105,7 +110,7 @@ class LoginBlock extends Component {
 					</div>
 					<div className="col-12 col-sm-7 col-md-7 order-1 order-sm-2">
                        {this.props.Account.loginFailure ? this.props.Account.loginErrorMessage : null}
-                        <button id="signinl" className={"btn btn-lg btn" + (this.props.Account.loginFailure ? "-danger" : "-success") + " btn-block"}
+                        <button id="login_button" className={"btn btn-lg btn" + (this.props.Account.loginFailure ? "-danger" : "-success") + " btn-block"}
                                 onClick={this.login}>{this.props.Account.loginFetching ? "Logging in..." : this.props.Account.loginFailure ? "Login Error" : "Login"}</button>
 					</div>
 				</div>
