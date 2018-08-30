@@ -1,13 +1,20 @@
 import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {withKnobs, select, boolean} from '@storybook/addon-knobs';
+import { Provider } from 'react-redux'
+import state from 'oip-state'
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper';
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util';
+import {setActiveArtifact} from "oip-state/src/actions/ActiveArtifact/thunks";
+import {setActiveFile} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
+
 
 const stories = storiesOf("FilePaymentWrapper", module);
 stories.addDecorator(withKnobs);
+
+const store = state.createStore()
 
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 
@@ -54,6 +61,10 @@ const widthDefault = '100%';
 const posterLabel = "Load with poster";
 const posterDefault = true;
 
+const setActiveFiles = {
+
+};
+
 stories.add("Test payment state", () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
 	const artifact = artifacts.map[artifact_value];
@@ -62,27 +73,17 @@ stories.add("Test payment state", () => {
 	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
 	const artifact_file = artifact_files.map[file_value];
 
-	const isPaid_value = select(isPaidLabel, isPaidOptions, isPaidDefault);
-	const hasPaid_value = select(hasPaidLabel, hasPaidOptions, hasPaidDefault);
-	const owned_value = select(ownedLabel, ownedOptions, ownedDefault);
-
-	const bool_state = {
-		"true": true,
-		"false": false
-	}
-	let payment_state = {
-		isPaid: bool_state[isPaid_value],
-		hasPaid: bool_state[hasPaid_value],
-		owned: bool_state[owned_value]
-	};
-
 	const width_value = select(widthLabel, widthOptions, widthDefault)
 	const loadWithPoster = boolean(posterLabel, posterDefault);
 
+	store.dispatch(setActiveArtifact(artifact));
+
 	return (
-		<div style={{width: width_value}}>
-			<FilePaymentWrapper Artifact={artifact} ArtifactFile={artifact_file} paymentState={payment_state} usePosterFile={loadWithPoster}/>
-		</div>
+		<Provider store={store}>
+			<div style={{width: width_value}}>
+				<FilePaymentWrapper usePosterFile={loadWithPoster}/>
+			</div>
+		</Provider>
 	)
 }, {notes: 'The FilePaymentWrapper is a wrapper component that decides whether or not to "lock" the file if it is a paid artifact. For the VideoPlayer, ' +
 		'this means removing the playback controls. Based on whether or not the file is a paid artifact, has been paid for, or is owned, ' +
