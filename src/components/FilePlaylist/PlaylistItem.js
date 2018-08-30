@@ -14,42 +14,46 @@ class PlaylistItem extends React.Component {
 		}
 	}
 	render() {
-		let loadWithPicture = true;
+		let loadWithPicture = false, artifact, poster, artist, filename, file;
+		if (this.props.File) {
+			file = this.props.File;
+			artifact = file.parent;
+			poster = getIPFSImage(artifact);
+			artist = artifact.getDetail('artist');
+			filename = file.getFilename()
+		}
 		return (
 			<div className="row no-gutters file-playlist-item">
-				<div className={loadWithPicture ? "col-1 d-flex align-items-center" : null}>
-					<img style={{maxHeight: '44px', width: 'auto'}} src={getIPFSImage(this.props.File.parent)} alt='poster' />
+				{/*img*/}
+				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image" : "d-none"} >
+					<img className="img-responsive" style={{maxHeight: '38px'}} src={poster} alt='poster' />
 				</div>
-				<div className="col-1 d-flex justify-content-center align-items-center">
+				{/*index/playing*/}
+				<div className="col-1 d-flex justify-content-start align-items-center">
 					<span style={{fontWeight: "100", color: "#999"}}> {this.props.index} </span>
 				</div>
-				<div className="col-7 d-flex align-items-center">
+				{/*contentItems*/}
+				<div className={(loadWithPicture ? "col-6" : "col-7") + " d-flex align-items-center"}>
 					<div style={styles.fileInfo}>
-						<a style={{color: "#999"}}>{this.props.File.parent.getDetail('artist')}</a>
+						<a style={{color: "#999"}}>{artist}</a>
 						<span style={{fontWeight: "100", color: "#999"}}> - </span>
-						<a>{this.props.File.getFilename()}</a>
+						<a>{filename}</a>
 					</div>
 				</div>
-				<div className="col-3">
-					{/*<div className="row no-gutters">*/}
-						{/*/!*row for options button on top right corner*!/*/}
-					{/*</div>*/}
+				{/*payment buttons*/}
+				<div className="col-3 d-flex align-items-center">
 					<div className="row no-gutters">
-						{/*this row should ideally be for favoriting, sharing, AND playing/buying/pausing...*/}
 						<div className="col d-flex">
 							<PaymentButton
-								ArtifactFile={this.props.File}
+								ArtifactFile={file}
 								type="view"
 							/>
 							<PaymentButton
-								ArtifactFile={this.props.File}
+								ArtifactFile={file}
 								type="buy"
 							/>
 						</div>
 					</div>
-					{/*<div className="row no-gutters">*/}
-						{/*/!*row to act as a space holder*!/*/}
-					{/*</div>*/}
 				</div>
 			</div>
 		)
@@ -62,7 +66,7 @@ const styles = {
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
 		wordBreak: 'normal'
-	}
+	},
 };
 
 export default PlaylistItem;
