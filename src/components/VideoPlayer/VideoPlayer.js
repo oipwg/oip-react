@@ -53,6 +53,7 @@ class VideoPlayer extends React.Component {
 		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.usePosterFile !== prevState.usePosterFile) {
 		    	//Make sure to give controls to the video if no lockFile is specified
 			    if (prevState.lockFile === undefined) {options.controls = true}
+			    options.controls = !prevState.lockFile;
 
 			    //if autoplay was set to true by lockfile, we need to turn it back off on artifact[file]/poster switch so it doesn't play the file automatically
 			    options.autoplay = false;
@@ -191,8 +192,8 @@ class VideoPlayer extends React.Component {
 				    lastPlaybackRate: 1,
 				    lastVolume: 1
 			    };
-		    	//hardcode controls to false; bug with getDerived... @ToDo
-		    	this.player.controls(false);
+		    	//make sure this doesn't crash... @ToDo
+		    	this.player.controls(this.state.options.controls);
 		    	//Re-loads the audio/video element
 			    this.player.load()
 		    }
