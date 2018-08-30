@@ -8,6 +8,8 @@ import { faPlay, faDownload, faCircleNotch, faExclamationCircle } from '@fortawe
 import { formatPriceString } from '../utils'
 
 import { payForArtifactFile } from "oip-state/src/actions/Payment/thunks";
+import { fileToUID } from "oip-state/src/actions/ActiveArtifactFiles/thunks";
+
 
 class PaymentButton extends Component {
 	constructor(props){
@@ -21,7 +23,11 @@ class PaymentButton extends Component {
 	}
 
 	render() {
-		console.log(this.props);
+		let fileState;
+		if (this.props.ActiveArtifactFiles && this.props.ArtifactFile) {
+			let uid = fileToUID(this.props.ArtifactFile);
+			fileState = this.props.ActiveArtifactFiles[uid]
+		}
 
 		let hasPaid = false;
 		let owned = false;
@@ -36,17 +42,17 @@ class PaymentButton extends Component {
 		let button_icon
 		let button_icon_class = ""
 
-		if (this.props.ArtifactFile && this.props.fileState && (this.props.type === "view" || this.props.type === "buy")){
-			owned = this.props.fileState.owned;
-			hasPaid = this.props.fileState.hasPaid;
+		if (this.props.ArtifactFile && fileState && (this.props.type === "view" || this.props.type === "buy")){
+			owned = fileState.owned;
+			hasPaid = fileState.hasPaid;
 
 			if (this.props.type === "view"){
 				button_icon = faPlay
 
-				if (this.props.fileState.payInProgressView)
+				if (fileState.payInProgressView)
 					payInProgress = true
 
-				if (this.props.fileState.payErrorView)
+				if (fileState.payErrorView)
 					payError = true
 
 				file_cost = this.props.ArtifactFile.getSuggestedPlayCost();
@@ -56,10 +62,10 @@ class PaymentButton extends Component {
 			if (this.props.type === "buy"){
 				button_icon = faDownload
 
-				if (this.props.fileState.payInProgressBuy)
+				if (fileState.payInProgressBuy)
 					payInProgress = true
 
-				if (this.props.fileState.payErrorBuy)
+				if (fileState.payErrorBuy)
 					payError = true
 
 				file_cost = this.props.ArtifactFile.getSuggestedBuyCost();
@@ -111,8 +117,8 @@ class PaymentButton extends Component {
 		return (
 			<div style={{display: disallowPurchase ? "" : "inline-block", paddingLeft: "3px"}}>
 				{ disallowPurchase ? "" :
-					<button className={"pad-5 btn btn-" + button_class} onClick={() => this.payForFile()} style={this.props.style}>
-						<FontAwesomeIcon icon={button_icon} className={button_icon_class} style={{marginRight: "5px"}} />{payment_string}
+					<button className={"pad-5 btn btn-sm btn-" + button_class} onClick={() => this.payForFile()} style={this.props.style}>
+						<FontAwesomeIcon size="xs" icon={button_icon} className={button_icon_class} style={{marginRight: "5px"}} />{payment_string}
 					</button>
 				}
 			</div>
@@ -121,15 +127,15 @@ class PaymentButton extends Component {
 }
 
 PaymentButton.propTypes = {
-	Artifact: PropTypes.object,
 	ArtifactFile: PropTypes.object,
-	fileState: PropTypes.object,
 	type: PropTypes.string,
 	style: PropTypes.string
 };
 
 function mapStateToProps(state) {
-	return { }
+	return {
+		ActiveArtifactFiles: state.ActiveArtifactFiles
+	}
 }
 
 const mapDispatchToProps = {

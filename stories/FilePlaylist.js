@@ -2,6 +2,10 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {withKnobs, select} from '@storybook/addon-knobs';
 import { host } from 'storybook-host';
+import { Provider } from 'react-redux'
+import state from 'oip-state'
+
+import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -17,7 +21,9 @@ stories.addDecorator(
 		align: 'center top',
 		cropMarks: false
 	}),
-)
+);
+
+const store = state.createStore()
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
@@ -66,9 +72,13 @@ stories.add('Basic FilePlaylist', () => {
 	const width_value = select(widthLabel, widthOptions, widthDefault);
 	const height_value = select(heightLabel, heightOptions, heightDefault);
 
+	store.dispatch(setActiveArtifact(artifact))
 	return (
-		<div style={{width: width_value, height: height_value}}>
-			<FilePlaylist Files={[artifact]} />
-		</div>
+		<Provider store={store}>
+			<div style={{width: width_value, height: height_value}}>
+				<FilePlaylist Files={[artifact]} />
+			</div>
+		</Provider>
+
 	)
 }, {notes: 'Basic FilePlaylist. Use knobs to switch between Artifacts/Files'});

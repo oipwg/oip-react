@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Artifact as A, ArtifactFile as AF } from 'oip-index';
+import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
-import Playlist from './Playlist'
+import PlaylistItem from './PlaylistItem'
 import './assets/FilePlaylist.css'
 
 class FilePlaylist extends React.Component {
@@ -18,7 +19,7 @@ class FilePlaylist extends React.Component {
 				author: undefined,
 				playlistType: undefined
 			}
-		}
+		};
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -69,9 +70,6 @@ class FilePlaylist extends React.Component {
 				if (nextProps.defaultFile && nextProps.defaultFile instanceof AF) {
 					pc.defaultFile = nextProps.defaultFile
 				} else {pc.defaultFile = playlistFiles[0]}
-
-			} else {
-				pc = undefined
 			}
 		}
 
@@ -80,12 +78,21 @@ class FilePlaylist extends React.Component {
 		}
 
 	}
+
 	render() {
+		let pc = this.state.playlistContent;
 		return (
-			<div style={{height: "100%", width: "auto", overflowY: "scroll"}}>
-				<Playlist
-					playlistContent={this.state.playlistContent}
-				/>
+			<div className="file-playlist" style={{height: "100%", width: "auto", overflowY: "scroll"}}>
+				{/*<PlaylistHeader/>*/}
+				{pc.Files.map( (file, i) => {
+					return (
+						<PlaylistItem
+							File={file}
+							key={fileToUID(file)}
+							index={i}
+						/>
+					)
+				})}
 			</div>
 		)
 	}
