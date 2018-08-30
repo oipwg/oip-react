@@ -37,6 +37,7 @@
     "react-google-recaptcha": "^1.0.0",
     "react-redux": "^5.0.7",
     "reactstrap": "^6.4.0",
+    "sinon": "^6.1.5",
     "validator": "^10.6.0",
     "video.js": "^7.1.0"
   },
@@ -49,6 +50,7 @@
     "@storybook/addon-knobs": "^4.0.0-alpha.16",
     "@storybook/addon-links": "^4.0.0-alpha.16",
     "@storybook/addon-notes": "^4.0.0-alpha.16",
+    "@storybook/addon-storyshots": "^3.4.10",
     "@storybook/addon-viewport": "^3.4.10",
     "@storybook/react": "^4.0.0-alpha.16",
     "babel-core": "^7.0.0-bridge.0",
@@ -63,6 +65,7 @@
     "jest": "^23.5.0",
     "moment": "^2.22.2",
     "react-storybook-addon-props-combinations": "^1.1.0",
+    "react-test-renderer": "^16.4.2",
     "storybook-addon-specifications": "^2.1.2",
     "storybook-host": "^5.0.0",
     "storybook-readme": "^4.0.0-beta1",
