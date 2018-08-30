@@ -61,10 +61,6 @@ const widthDefault = '100%';
 const posterLabel = "Load with poster";
 const posterDefault = true;
 
-const setActiveFiles = {
-
-};
-
 stories.add("Test payment state", () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
 	const artifact = artifacts.map[artifact_value];
@@ -77,7 +73,7 @@ stories.add("Test payment state", () => {
 	const loadWithPoster = boolean(posterLabel, posterDefault);
 
 	store.dispatch(setActiveArtifact(artifact));
-
+	store.dispatch(setActiveFile(artifact_file));
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value}}>
