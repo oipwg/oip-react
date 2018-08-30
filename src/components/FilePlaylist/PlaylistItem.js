@@ -48,7 +48,7 @@ class PlaylistItem extends React.Component {
 		return (
 			<div className={`row no-gutters file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
 				{/*img*/}
-				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image" : "d-none"} >
+				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image justify-content-center" : "d-none"} >
 					<img className="img-responsive" style={{maxHeight: '38px'}} src={poster} alt='poster' />
 				</div>
 				{/*index/playing*/}
