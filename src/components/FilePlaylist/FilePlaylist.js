@@ -4,7 +4,7 @@ import { Artifact as A, ArtifactFile as AF } from 'oip-index';
 import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import PlaylistItem from './PlaylistItem'
-import './assets/FilePlaylist.css'
+import './assets/styles/FilePlaylist.css'
 
 class FilePlaylist extends React.Component {
 	constructor(props) {

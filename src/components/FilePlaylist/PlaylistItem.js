@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 import PaymentButton from '../PaymentButton'
 import { getIPFSImage} from '../../utils'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks';
-import './assets/FilePlaylist.css'
+import './assets/styles/FilePlaylist.css'
+import defaultImg from './assets/images/Dull.jpg';
 
 class PlaylistItem extends React.Component {
 	constructor(props) {
@@ -42,15 +43,16 @@ class PlaylistItem extends React.Component {
 			file = this.props.File;
 			artifact = file.parent;
 			poster = getIPFSImage(artifact);
-			artist = artifact.getDetail('artist');
-			filename = file.getFilename()
+			if (poster.error) {poster = defaultImg}
+			artist = artifact.getDetail('artist') || 'unknown';
+			filename = file.getFilename() || 'unknown'
 		}
 		return (
 			<div className={`row no-gutters file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
 				{/*img*/}
 				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image justify-content-center" : "d-none"} >
-					<div className="img-container d-flex justify-content-center" style={{height: '38px', width: '38px', overflow: 'hidden'}}>
-						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='poster' />
+					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden'}}>
+						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='' />
 					</div>
 				</div>
 				{/*index/playing*/}
