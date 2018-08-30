@@ -25,7 +25,6 @@ class FileViewer extends React.Component {
 						if (extension === supportedFileType) {
 							FileViewerComponent = React.createElement(Viewer,
 								{
-									Artifact: this.props.Artifact,
 									ArtifactFile: this.props.ArtifactFile,
 									lockFile: this.props.lockFile,
 									usePosterFile: this.props.usePosterFile
@@ -44,7 +43,6 @@ class FileViewer extends React.Component {
 }
 
 FileViewer.propTypes = {
-	Artifact: PropTypes.object,
 	ArtifactFile: PropTypes.object
 };
 

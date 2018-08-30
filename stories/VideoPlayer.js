@@ -46,7 +46,7 @@ stories.add('Test against multiple artifacts', () => {
 	return (
 
 		<div style={{width: width_value}}>
-			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster} />
+			<VideoPlayer ArtifactFile={artifact_file} usePosterFile={loadWithPoster} />
 		</div>
 	)
 }, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
@@ -64,13 +64,13 @@ stories.add('Render from None', () => {
 	return (
 
 		<div style={{width: width_value}}>
-			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} />
+			<VideoPlayer ArtifactFile={artifact_file} />
 		</div>
 	)
 }, {notes: 'Renders a VideoPlayer first with an undefined artifact. Test this.player functionality.'});
 
 stories.add('Render without poster', () => {
-	const artifact_value = select(artifacts.title, artifacts.options, "(Paid) Agent 327 - Operation Barbershop");
+	const artifact_value = select(artifacts.title, artifacts.options, "Agent 327 - Operation Barbershop");
 	const artifact = artifacts.map[artifact_value];
 
 	const artifact_files = getFileOptions(artifact);
@@ -83,7 +83,7 @@ stories.add('Render without poster', () => {
 	return (
 
 		<div style={{width: width_value}}>
-			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
+			<VideoPlayer ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
 		</div>
 	)
 }, {notes: 'Renders a VideoPlayer first with an undefined artifact and no poster.'});
@@ -102,7 +102,7 @@ stories.add('Test against subtitles', () => {
 	return (
 
 		<div style={{width: width_value}}>
-			<VideoPlayer Artifact={artifact} ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
+			<VideoPlayer ArtifactFile={artifact_file} usePosterFile={loadWithPoster}/>
 		</div>
 	)
 }, {notes: 'Sintel comes with many subtitle options. Testing here that they work, function, and get handled properly.'});

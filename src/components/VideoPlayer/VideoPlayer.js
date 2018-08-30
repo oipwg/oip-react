@@ -32,7 +32,6 @@ class VideoPlayer extends React.Component {
 	        setCaptions: true,
 	        artifactFileSwitch: false,
 	        lockFile: undefined,
-	        Artifact: undefined,
 	        ArtifactFile: undefined,
 	        usePosterFile: undefined
         };
@@ -48,9 +47,9 @@ class VideoPlayer extends React.Component {
     static getDerivedStateFromProps(nextProps, prevState) {
 	    let options = prevState.options, textTracks = prevState.textTracks, artifactFileSwitch = false;
 
-	    if (nextProps.ArtifactFile && nextProps.Artifact) {
+	    if (nextProps.ArtifactFile) {
 	    	//On Artifact or Artifact File Switch or poster switch because it needs most the same logic
-		    if (nextProps.ArtifactFile !== prevState.ArtifactFile || nextProps.Artifact !== prevState.Artifact || nextProps.usePosterFile !== prevState.usePosterFile) {
+		    if (nextProps.ArtifactFile !== prevState.ArtifactFile|| nextProps.usePosterFile !== prevState.usePosterFile) {
 		    	//Make sure to give controls to the video if no lockFile is specified
 			    if (prevState.lockFile === undefined) {options.controls = true}
 			    options.controls = !prevState.lockFile;
@@ -58,7 +57,7 @@ class VideoPlayer extends React.Component {
 			    //if autoplay was set to true by lockfile, we need to turn it back off on artifact[file]/poster switch so it doesn't play the file automatically
 			    options.autoplay = false;
 			    //though, if an artifact was playing and just the file was switched, autoplay the file
-			    options.autoplay = (nextProps.Artifact === prevState.Artifact && nextProps.ArtifactFile !== prevState.ArtifactFile && prevState.isPlaying);
+			    options.autoplay = (nextProps.ArtifactFile !== prevState.ArtifactFile && prevState.isPlaying);
 
 			    //Suggests to the browser whether or not the video data should begin downloading as soon as the <video> element is loaded. 'auto' - 'true' - 'none'
 			    options.preload = "auto";
@@ -69,18 +68,18 @@ class VideoPlayer extends React.Component {
 			    //Load sources based on whether we're using the poster file or not
 			    options.sources = [];
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
-				    options.poster = getIPFSImage(nextProps.Artifact);
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile), type: "video/mp4"});
+				    options.poster = getIPFSImage(nextProps.ArtifactFile.parent);
+				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
 			    	//if no poster file, load src at 10 seconds (#t=10) to get a frame showing. this.resetPlayer() will make sure video starts from beginning
-				    options.sources.push({src: getIPFSURL(nextProps.Artifact, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
 			    }
 
 			    //Get, strip, and load subtitles (textTracks)
 			    textTracks = [];
-			    let files = nextProps.Artifact.getFiles();
-			    let mainTitle = nextProps.Artifact.getTitle();
+			    let files = nextProps.ArtifactFile.parent.getFiles();
+			    let mainTitle = nextProps.ArtifactFile.parent.getTitle();
 
 			    for (let file of files) {
 				    let ext = getFileExtension(file);
@@ -94,7 +93,7 @@ class VideoPlayer extends React.Component {
 					    let language = splitFname[length - 1];
 
 					    if (title === mainTitle) {
-						    tmpObj["src"] = getIPFSURL(nextProps.Artifact, file);
+						    tmpObj["src"] = getIPFSURL(nextProps.ArtifactFile.parent, file);
 						    tmpObj["srclang"] = language;
 						    tmpObj["label"] = ISO6391.getName(language);
 						    tmpObj["kind"] = "subtitles";
@@ -119,7 +118,6 @@ class VideoPlayer extends React.Component {
 		    textTracks: textTracks,
 		    artifactFileSwitch: artifactFileSwitch,
 		    lockFile: nextProps.lockFile,
-		    Artifact: nextProps.Artifact,
 		    ArtifactFile: nextProps.ArtifactFile,
 		    usePosterFile: nextProps.usePosterFile
 	    }
@@ -171,7 +169,7 @@ class VideoPlayer extends React.Component {
 		    this.player.src(this.state.options.sources);
 		    this.player.poster(this.state.options.poster);
 
-		    if (this.state.Artifact && this.state.ArtifactFile) {
+		    if (this.state.ArtifactFile) {
 			    this.player.autoplay(this.state.options.autoplay);
 			    this.player.controls(this.state.options.controls);
 			    this.player.preload(this.state.options.preload);
@@ -240,7 +238,6 @@ class VideoPlayer extends React.Component {
 
 VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
 VideoPlayer.propTypes = {
-    Artifact: PropTypes.object,
     ArtifactFile: PropTypes.object,
     options: PropTypes.object,
 	lockFile: PropTypes.bool,
