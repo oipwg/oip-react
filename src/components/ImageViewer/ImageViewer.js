@@ -45,31 +45,33 @@ class ImageViewer extends React.Component {
 
 			let canvas_context = this.canvas.getContext("2d")
 
-			if (isUnsupportedBrowser())
-				this.canvas.style.filter = "blur(30px)"
+			// if (isUnsupportedBrowser())
+			// 	this.canvas.style.filter = "blur(30px)"
 
 			if (this.props.lockFile) 
 				canvas_context.filter = "blur(30px)"
 
 			canvas_context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
+
+			console.log("image drawn")
 		}
 
 		image.src = url
 	}
 
-	isUnsupportedBrowser(){
-		let user_agent = window.navigator.userAgent
-		let ie_match_index = user_agent.indexOf("MSIE ")
-		let safari_match_index = user_agent.indexOf("Safari ")
+	// isUnsupportedBrowser(){
+	// 	let user_agent = window.navigator.userAgent
+	// 	let ie_match_index = user_agent.indexOf("MSIE ")
+	// 	let safari_match_index = user_agent.indexOf("Safari ")
 
-		if (ie_match_index !== -1)
-			return true
+	// 	if (ie_match_index !== -1)
+	// 		return true
 
-		if (safari_match_index !== -1)
-			return true
+	// 	if (safari_match_index !== -1)
+	// 		return true
 
-		return false
-	}
+	// 	return false
+	// }
 	
 	render() {
 		return (
