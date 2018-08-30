@@ -14,32 +14,9 @@ import {setActiveFile} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
 const stories = storiesOf("FilePaymentWrapper", module);
 stories.addDecorator(withKnobs);
 
-const store = state.createStore()
+const store = state.createStore();
 
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
-
-const isPaidLabel = "isPaid";
-const hasPaidLabel = "hasPaid";
-const ownedLabel = "owned";
-
-const isPaidOptions = {
-	"true": "true",
-	"false": "false"
-};
-
-const hasPaidOptions = {
-	"true": "true",
-	"false": "false"
-};
-
-const ownedOptions = {
-	"true": "true",
-	"false": "false"
-};
-
-const isPaidDefault = "false";
-const hasPaidDefault = "false";
-const ownedDefault = "false";
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {
@@ -61,7 +38,7 @@ const widthDefault = '100%';
 const posterLabel = "Load with poster";
 const posterDefault = true;
 
-stories.add("Test payment state", () => {
+stories.add("Test payment state via redux", () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
 	const artifact = artifacts.map[artifact_value];
 
@@ -81,6 +58,4 @@ stories.add("Test payment state", () => {
 			</div>
 		</Provider>
 	)
-}, {notes: 'The FilePaymentWrapper is a wrapper component that decides whether or not to "lock" the file if it is a paid artifact. For the VideoPlayer, ' +
-		'this means removing the playback controls. Based on whether or not the file is a paid artifact, has been paid for, or is owned, ' +
-		'the wrapper passes down a lockFile variable that the FileViewer component then receives and passes down to a Viewer component.'});
+}, {notes: 'This component is hooked up to redux and is loading files based on the active file'});
