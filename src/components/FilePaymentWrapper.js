@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FileViewer from './FileViewer'
+import {connect} from 'react-redux';
 
 class FilePaymentWrapper extends React.Component {
 	constructor(props) {
@@ -37,7 +38,6 @@ class FilePaymentWrapper extends React.Component {
 		return(
 			<div>
 				<FileViewer
-					Artifact={this.props.Artifact}
 					ArtifactFile={this.props.ArtifactFile}
 					lockFile={this.state.lockFile}
 					usePosterFile={this.state.usePosterFile}
@@ -47,10 +47,19 @@ class FilePaymentWrapper extends React.Component {
 	}
 }
 
+function mapStateToProps(state) {
+	return {
+		state
+	}
+}
+
+const mapDispatchToProps = {
+
+}
+
 FilePaymentWrapper.propTypes = {
-	Artifact: PropTypes.object,
 	ArtifactFile: PropTypes.object,
 	paymentState: PropTypes.object
 };
 
-export default FilePaymentWrapper;
+export default connect(mapStateToProps, mapDispatchToProps)(FilePaymentWrapper);
