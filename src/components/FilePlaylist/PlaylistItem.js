@@ -11,7 +11,7 @@ class PlaylistItem extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.uid = fileToUID(this.props.File);
+		this.uid = this.props.File ? fileToUID(this.props.File) : undefined;
 		this.state = {
 			active: false
 		};
@@ -49,7 +49,9 @@ class PlaylistItem extends React.Component {
 			<div className={`row no-gutters file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
 				{/*img*/}
 				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image justify-content-center" : "d-none"} >
-					<img className="img-responsive" style={{maxHeight: '38px'}} src={poster} alt='poster' />
+					<div className="img-container d-flex justify-content-center" style={{height: '38px', width: '38px', overflow: 'hidden'}}>
+						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='poster' />
+					</div>
 				</div>
 				{/*index/playing*/}
 				<div className="col-1 d-flex justify-content-start align-items-center">
