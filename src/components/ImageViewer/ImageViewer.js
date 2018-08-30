@@ -28,8 +28,8 @@ class ImageViewer extends React.Component {
 		let hash = "";
 		let url = "";
 
-		if (this.props.Artifact && this.props.ArtifactFile) {
-			hash = buildIPFSShortURL(this.props.Artifact.getLocation(), this.props.ArtifactFile.getFilename());
+		if (this.props.ArtifactFile) {
+			hash = buildIPFSShortURL(this.props.ArtifactFile.parent.getLocation(), this.props.ArtifactFile.getFilename());
 			url = buildIPFSURL(hash);
 		}
 
@@ -76,16 +76,13 @@ class ImageViewer extends React.Component {
 	render() {
 		return (
 			// Get Element By ID
-			<canvas ref={(canv) => {
-				this.canvas = canv
-			}} />
+			<canvas ref={canv => {this.canvas = canv}} />
 		);
 	}
 }
 
 ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
 ImageViewer.propTypes = {
-	Artifact: PropTypes.object,
 	ArtifactFile: PropTypes.object,
 	lockFile: PropTypes.bool
 
