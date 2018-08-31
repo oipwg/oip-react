@@ -9,17 +9,37 @@ import { buildIPFSURL, buildIPFSShortURL } from './../utils.js'
 class AudioPlayer extends React.Component {
     constructor(props){
         super(props)
+
+        this.wait_for_play_promise = false
         
         this.preventPlay = this.preventPlay.bind(this)
     }
     preventPlay(event){
-        if (this.props.lockFile)
-            this.react_audio_player.audioEl.pause()
+        if (this.props.lockFile){
+            if (this.wait_for_play_promise){
+                let pause_interval = setInterval(() => {
+                    if (!this.wait_for_play_promise){
+                        clearInterval(pause_interval)
+                        this.react_audio_player.audioEl.pause()
+                    }
+                }, 50)
+            } else {
+                this.react_audio_player.audioEl.pause()
+            }
+        }
     }
 
     componentDidUpdate(prevProps){
-        if (prevProps.lockFile && !this.props.lockFile)
-            this.react_audio_player.audioEl.play()
+        if (prevProps.lockFile && !this.props.lockFile){
+            this.wait_for_play_promise = true
+            this.react_audio_player.audioEl.play().then(() => {
+                this.wait_for_play_promise = false
+                console.log("Play Success!")
+            }).catch((e) => {
+                this.wait_for_play_promise = false
+                console.log("Play Error!!!")
+            })
+        }       
     }
 
     render() {
