@@ -11,10 +11,10 @@ class AudioPlayer extends React.Component {
         super(props)
 
         this.wait_for_play_promise = false
-        
         this.preventPlay = this.preventPlay.bind(this)
     }
     preventPlay(event){
+        // Interval for preventing chrome error of abruptly switching play to pause on the assumption of lockFile 
         if (this.props.lockFile){
             if (this.wait_for_play_promise){
                 let pause_interval = setInterval(() => {
@@ -30,6 +30,7 @@ class AudioPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps){
+        // Updating of the component if audio becomes locked or unlocked 
         if (prevProps.lockFile && !this.props.lockFile){
             this.wait_for_play_promise = true
             this.react_audio_player.audioEl.play().then(() => {
@@ -65,9 +66,9 @@ class AudioPlayer extends React.Component {
 		);
 	}
 }
-AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
-AudioPlayer.propTypes = {
-    ActiveFile: PropTypes.object,
-    lockFile: PropTypes.bool
-};
+        AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
+        AudioPlayer.propTypes = {
+            ActiveFile: PropTypes.object,
+            lockFile: PropTypes.bool
+        };
 export default AudioPlayer;
