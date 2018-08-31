@@ -10,11 +10,12 @@ import { specs, describe, it } from 'storybook-addon-specifications'
 import {mount} from "enzyme";
 import expect from "expect";
 
-const stories = storiesOf('ImageViewer', module);
-stories.addDecorator(withKnobs)
-stories.addDecorator(withNotes)
 
-const artifacts = getArtifactOptions([amsterdam, scout])
+const stories = storiesOf('ImageViewer', module);
+stories.addDecorator(withKnobs);
+stories.addDecorator(withNotes);
+
+const artifacts = getArtifactOptions([amsterdam, scout]);
 
 stories.add('IV-Test', () => {
 	const width_value = select("Parent: div.width", {
@@ -22,26 +23,33 @@ stories.add('IV-Test', () => {
 		"500px": "500px",
 		"900px": "900px"
 
-	},"300px")
+	},"300px");
 
-	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact)
-	const artifact = artifacts.map[artifact_value]
+	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
+	const artifact = artifacts.map[artifact_value];
 
-	const artifact_files = getFileOptions(artifact)
+	const artifact_files = getFileOptions(artifact);
 
-	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file)
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
 
-	const artifact_file = artifact_files.map[file_value]
+	const artifact_file = artifact_files.map[file_value];
 
-	const story = 	<div style={{width: width_value}}>
-						<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />
-					</div>
+	const story = 	
+		<div style={{width: width_value}}>
+			<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />;
+		</div>
 		
-			specs(() => describe("<ImageViewer />", () => {
-				it("Blur on lockfile", () => {
-					const wrapper = mount(story)
-					wrapper.setProps({lockFile: true})
-				expect(wrapper.props().lockFile).toBe(true);
+	specs(() => describe("<ImageViewer />", () => {
+		it("Blur on lockFile", () => {
+			const wrapper = mount(story);
+			wrapper.setProps({lockFile: true});
+			expect(wrapper.props().lockFile).toBe(true);
+		});
+		it("CSS or canvas blur based off what browser the user is on", () => {
+			const wrapper = mount(<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />);
+			wrapper.setProps({lockFile: true});
+			expect(wrapper.props().lockFile).toBe(true);
+			expect(wrapper.find('canvas').props().className).toBe("OIP-Blur");
 		});
 	}));
 
