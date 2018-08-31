@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import ReactAudioPlayer from 'react-audio-player';
 import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
-import ArtifactFile from 'oip-index/lib/ArtifactFile';
 import { buildIPFSURL, buildIPFSShortURL } from './../utils.js'
 
 class AudioPlayer extends React.Component {
@@ -66,9 +65,9 @@ class AudioPlayer extends React.Component {
 		);
 	}
 }
-        AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
-        AudioPlayer.propTypes = {
-            ActiveFile: PropTypes.object,
-            lockFile: PropTypes.bool
-        };
+AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
+AudioPlayer.propTypes = {
+    ArtifactFile: PropTypes.object,
+    lockFile: PropTypes.bool
+};
 export default AudioPlayer;
