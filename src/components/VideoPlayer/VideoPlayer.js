@@ -50,11 +50,10 @@ class VideoPlayer extends React.Component {
 	    if (nextProps.ArtifactFile) {
 	    	//On Artifact or Artifact File Switch or poster switch because it needs most the same logic
 		    if (nextProps.ArtifactFile !== prevState.ArtifactFile|| nextProps.usePosterFile !== prevState.usePosterFile) {
-		    	//Make sure to give controls to the video if no lockFile is specified
-			    if (prevState.lockFile === undefined) {options.controls = true}
+		    	//Set controls to true if lockFile is undefined or false, and false if true
 			    options.controls = !prevState.lockFile;
 
-			    //if autoplay was set to true by lockfile, we need to turn it back off on artifact[file]/poster switch so it doesn't play the file automatically
+			    //if autoplay was set to true by lockfile, we need to turn it back off on ArtifactFile/poster switch so it doesn't play the file automatically
 			    options.autoplay = false;
 			    //though, if an artifact was playing and just the file was switched, autoplay the file
 			    options.autoplay = (nextProps.ArtifactFile !== prevState.ArtifactFile && prevState.isPlaying);
@@ -68,9 +67,11 @@ class VideoPlayer extends React.Component {
 			    //Load sources based on whether we're using the poster file or not
 			    options.sources = [];
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
+			    	// console.log("usePosterFile is: ", nextProps.usePosterFile)
 				    options.poster = getIPFSImage(nextProps.ArtifactFile.parent);
 				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
+			    	// console.log("usePosterFile is: ", nextProps.usePosterFile)
 			    	//if no poster file, load src at 10 seconds (#t=10) to get a frame showing. this.resetPlayer() will make sure video starts from beginning
 				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
@@ -103,14 +104,17 @@ class VideoPlayer extends React.Component {
 			    }
 		    }
 	    } else {
-	    	//If the Artifact or ArtifactFile is undefined set the player to undefined and lock it
+	    	//If the ArtifactFile is undefined set the player to undefined and lock it
 		    options = {...options, controls: false, sources: undefined, poster: "", preload: "none", autoplay: false}
 	    }
 
 	    //Lock and Unlock the file by changing autoplay and controls to true/false
 	    if (nextProps.lockFile !== prevState.lockFile) {
 		    options.controls = !nextProps.lockFile;
-		    options.autoplay = !!(prevState.lockFile && !nextProps.lockFile);
+		    //if the file was paid for, autoplay it
+		    if (nextProps.ArtifactFile === prevState.ArtifactFile) {
+		    	options.autoplay = !!(prevState.lockFile && !nextProps.lockFile)
+		    }
 	    }
 
 	    return {
