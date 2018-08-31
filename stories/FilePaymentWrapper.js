@@ -36,7 +36,7 @@ const widthOptions = {
 const widthDefault = '100%';
 
 const posterLabel = "Load with poster";
-const posterDefault = true;
+const posterDefault = false;
 
 stories.add("Test payment state via redux", () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Sintel - Third Open Movie by Blender Foundation");
@@ -51,10 +51,15 @@ stories.add("Test payment state via redux", () => {
 
 	store.dispatch(setActiveArtifact(artifact));
 	store.dispatch(setActiveFile(artifact_file));
+
+	let filePaymentWrapperOptions = {
+		loadWithPoster: loadWithPoster
+	};
+	console.log("Load with poster: ", loadWithPoster)
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value}}>
-				<FilePaymentWrapper usePosterFile={loadWithPoster}/>
+				<FilePaymentWrapper options={filePaymentWrapperOptions}/>
 			</div>
 		</Provider>
 	)

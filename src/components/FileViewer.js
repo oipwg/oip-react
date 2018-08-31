@@ -25,9 +25,10 @@ class FileViewer extends React.Component {
 						if (extension === supportedFileType) {
 							FileViewerComponent = React.createElement(Viewer,
 								{
-									ArtifactFile: this.props.ArtifactFile,
-									lockFile: this.props.lockFile,
-									usePosterFile: this.props.usePosterFile
+									...this.props
+									// ArtifactFile: this.props.ArtifactFile,
+									// lockFile: this.props.lockFile,
+									// usePosterFile: this.props.usePosterFile
 								})
 						}
 					}

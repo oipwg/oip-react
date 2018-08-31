@@ -9,26 +9,19 @@ class FilePaymentWrapper extends React.Component {
 
 		this.state = {
 			lockFile: false,
-			usePosterFile: undefined,
 			paymentState: undefined
 		}
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		let lockFile = prevState.lockFile, usePosterFile = prevState.usePosterFile;
+		let lockFile = prevState.lockFile;
 		if (nextProps.ArtifactReduxFile && nextProps.ArtifactReduxFile !== prevState.ArtifactReduxFile) {
 			let ps = nextProps.ArtifactReduxFile;
 			lockFile = !!ps.isPaid;
 			if (ps.hasPaid && ps.isPaid) {lockFile = false}
 			if (ps.owned) {lockFile = false}
 		}
-
-		if (nextProps.usePosterFile !== undefined) {
-			usePosterFile = nextProps.usePosterFile
-		}
-
 		return {
-			usePosterFile,
 			lockFile,
 			ArtifactReduxFile: nextProps.ArtifactReduxFile
 		}
@@ -40,7 +33,7 @@ class FilePaymentWrapper extends React.Component {
 				<FileViewer
 					ArtifactFile={this.props.ArtifactReduxFile.ArtifactFile}
 					lockFile={this.state.lockFile}
-					usePosterFile={this.state.usePosterFile}
+					{...this.props.options}
 				/>
 			</div>
 		)
@@ -54,13 +47,9 @@ function mapStateToProps(state) {
 	}
 }
 
-const mapDispatchToProps = {
-
-};
-
 FilePaymentWrapper.propTypes = {
 	ArtifactFile: PropTypes.object,
-	paymentState: PropTypes.object
+	options: PropTypes.object
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilePaymentWrapper);
+export default connect(mapStateToProps)(FilePaymentWrapper);
