@@ -53,7 +53,7 @@ stories.add("Test payment state via redux", () => {
 	store.dispatch(setActiveFile(artifact_file));
 
 	let filePaymentWrapperOptions = {
-		loadWithPoster: loadWithPoster
+		usePosterFile: loadWithPoster
 	};
 	console.log("Load with poster: ", loadWithPoster)
 	return (
