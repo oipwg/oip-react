@@ -6,7 +6,6 @@ import AudioPlayer from '../src/components/AudioPlayer.js';
 import { getFileOptions, getArtifactOptions} from './util.js';
 import { CorMetallicum } from './TestArtifacts';
 import { specs, describe, it } from 'storybook-addon-specifications';
-import sinon from 'sinon';
 import {mount} from "enzyme";
 import { shallow } from 'enzyme';
 import expect from "expect";
