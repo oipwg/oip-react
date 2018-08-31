@@ -40,7 +40,7 @@ stories.add("Switch between file types", () => {
 
 	return (
 		<div style={{width: width_value}}>
-			<FileViewer Artifact={artifact} ArtifactFile={artifact_file} />
+			<FileViewer ArtifactFile={artifact_file} />
 		</div>
 	)
 }, {notes: 'The FileViewer is a component that takes in an Artifact and an ArtifactFile and renders the appropriate Viewer with the artifact and file passed ' +

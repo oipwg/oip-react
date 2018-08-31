@@ -10,21 +10,21 @@ import {mount} from "enzyme";
 import { shallow } from 'enzyme';
 import expect from "expect";
 
-	const stories = storiesOf('AudioPlayer', module);
-	const artifacts = getArtifactOptions([CorMetallicum]);
-    stories.addDecorator(withKnobs);
-	stories.addDecorator(withNotes);
+const stories = storiesOf('AudioPlayer', module);
+const artifacts = getArtifactOptions([CorMetallicum]);
+stories.addDecorator(withKnobs);
+stories.addDecorator(withNotes);
 
-    stories.add('Single Song', () => {
-			const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
-			const artifact = artifacts.map[artifact_value];
+stories.add('Single Song', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact);
+	const artifact = artifacts.map[artifact_value];
 
-			const artifact_files = getFileOptions(artifact);
+	const artifact_files = getFileOptions(artifact);
 
-			const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
 
-			const artifact_file = artifact_files.map[file_value];
-			const story = <AudioPlayer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", true)} />;
+	const artifact_file = artifact_files.map[file_value];
+	const story = <AudioPlayer ArtifactFile={artifact_file} lockFile={boolean("Lock File", true)} />;
 
 	specs(() => describe('<AudioPlayer />', () => {
 		it('Test lockfile on/off', () => {
@@ -62,6 +62,6 @@ import expect from "expect";
 		
 		}); 
 	}));
-    
-return story
+
+	return story
 });

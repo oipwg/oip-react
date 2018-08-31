@@ -36,17 +36,12 @@ stories.add('IV-Test', () => {
 
 	const story = 	
 		<div style={{width: width_value}}>
-			<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />;
+			<ImageViewer ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />
 		</div>
 		
 	specs(() => describe("<ImageViewer />", () => {
-		it("Blur on lockFile", () => {
-			const wrapper = mount(story);
-			wrapper.setProps({lockFile: true});
-			expect(wrapper.props().lockFile).toBe(true);
-		});
-		it("CSS or canvas blur based off what browser the user is on", () => {
-			const wrapper = mount(<ImageViewer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />);
+		it("Should add CSS Class of OIP-Blur if lockFile=true", () => {
+			const wrapper = mount(<ImageViewer ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />);
 			wrapper.setProps({lockFile: true});
 			expect(wrapper.props().lockFile).toBe(true);
 			expect(wrapper.find('canvas').props().className).toBe("OIP-Blur");
