@@ -34,16 +34,37 @@ import expect from "expect";
 		it('Test lockfile on/off', () => {
 			const wrapper = mount(story);
 			wrapper.setProps({ lockFile: true })
+
+			console.log(wrapper.find('audio').getDOMNode().played)
+			console.log(wrapper.find('audio').getDOMNode().paused)
+
 			expect(wrapper.props().lockFile).toBe(true)
 			wrapper.setProps({ lockFile: false })
+
+			console.log(wrapper.find('audio').getDOMNode().played)
+			console.log(wrapper.find('audio').getDOMNode().paused)
+
 			expect(wrapper.props().lockFile).toBe(false);
 			wrapper.setProps({ lockFile: true })
+
+			console.log(wrapper.find('audio').getDOMNode().played)
+			console.log(wrapper.find('audio').getDOMNode().paused)
 		})
 		it('Audio Pause / Play', () => {
 			const wrapper = mount(story);
-			wrapper.find('audio').ref('ref')
+	
+			expect(wrapper.find('audio').getDOMNode().play)
 	
 		})
+		it('Autoplay switches on after lockfile = false', () => {
+			const wrapper = mount(story);
+			wrapper.setProps({ autoPlay: false})
+			wrapper.setProps({ lockFile: false })
+			wrapper.setProps({ autoPlay: true})
+			wrapper.setProps({ lockFile: true })
+
+		
+		}) 
 	}));
     
 return story
