@@ -64,7 +64,7 @@ stories.add("Test payment state via redux", () => {
 	const loadWithPoster = boolean(posterLabel, posterDefault);
 
 	store.dispatch(setActiveArtifact(artifact));
-	store.dispatch(setActiveFile(artifact_file));
+	// store.dispatch(setActiveFile(artifact_file));
 
 	let filePaymentWrapperOptions = {
 		usePosterFile: loadWithPoster
@@ -75,7 +75,9 @@ stories.add("Test payment state via redux", () => {
 		<Provider store={store}>
 			<div className="container-fluid p-0">
 				<div style={{width: width_value}}>
-					<FilePaymentWrapper options={filePaymentWrapperOptions}/>
+					<FilePaymentWrapper
+						ArtifactFile={artifact_file}
+						options={filePaymentWrapperOptions}/>
 				</div>
 				<div className="row justify-content-center" style={{marginTop: "25px"}}>
 					<PaymentButton

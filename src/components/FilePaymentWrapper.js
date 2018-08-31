@@ -28,10 +28,16 @@ class FilePaymentWrapper extends React.Component {
 	}
 
 	render() {
+		let af;
+		if (this.props.ArtifactFile) {
+			af = this.props.ArtifactFile
+		} else {
+			af = this.props.ArtifactReduxFile.ArtifactFile
+		}
 		return(
 			<div>
 				<FileViewer
-					ArtifactFile={this.props.ArtifactReduxFile.ArtifactFile}
+					ArtifactFile={af}
 					lockFile={this.state.lockFile}
 					{...this.props.options}
 				/>
