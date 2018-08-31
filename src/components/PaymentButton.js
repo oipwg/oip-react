@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPlay, faDownload, faCircleNotch, faExclamationCircle } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons'
 
 import { formatPriceString } from '../utils'
 
@@ -48,7 +48,7 @@ class PaymentButton extends Component {
 			hasPaid = fileState.hasPaid;
 
 			if (this.props.type === "view"){
-				button_icon = faPlay
+				button_icon = faCreditCard
 
 				if (fileState.payInProgressView)
 					payInProgress = true
