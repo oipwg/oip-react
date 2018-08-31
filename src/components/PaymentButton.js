@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard, faEye } from '@fortawesome/free-solid-svg-icons'
 
 import { formatPriceString } from '../utils'
 
@@ -90,6 +90,7 @@ class PaymentButton extends Component {
 			button_class = "outline-info";
 
 			if (this.props.type === "view")
+				button_icon = faEye
 				payment_string = "View";
 			if (this.props.type === "buy")
 				payment_string = "Download";
