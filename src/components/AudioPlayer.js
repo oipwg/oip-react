@@ -39,7 +39,10 @@ class AudioPlayer extends React.Component {
                 this.wait_for_play_promise = false
                 console.log("Play Error!!!")
             })
-        }       
+        }
+        if (!prevProps.lockFile && this.props.lockFile){
+            this.react_audio_player.audioEl.pause()
+        }     
     }
 
     render() {
