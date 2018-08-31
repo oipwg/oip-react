@@ -9,8 +9,9 @@ class StoreDebugHelper extends Component {
 		let debug_value = this.props.state
 
 		try {
-			for (var key of this.props.path)
+			for (var key of this.props.path) {
 				debug_value = debug_value[key]
+			}
 		} catch (e) {
 			debug_value = "undefined"
 		}
@@ -23,9 +24,13 @@ class StoreDebugHelper extends Component {
 			debug_string = debug_value.toString()
 		}
 
+		let p = this.props.path;
+		let l = this.props.path.length-1;
+		let m = this.props.minimize;
+
     	return (
-            <p><strong>{this.props.path.join(".")}:</strong> {debug_string}</p>
-        )
+		    <p style={this.props.style}><strong>{m ? p[l] : p.join(".")}:</strong> {debug_string}</p>
+	    )
 	}
 }
 
