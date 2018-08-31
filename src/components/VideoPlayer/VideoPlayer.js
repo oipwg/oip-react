@@ -67,11 +67,9 @@ class VideoPlayer extends React.Component {
 			    //Load sources based on whether we're using the poster file or not
 			    options.sources = [];
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
-			    	// console.log("usePosterFile is: ", nextProps.usePosterFile)
 				    options.poster = getIPFSImage(nextProps.ArtifactFile.parent);
 				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
-			    	// console.log("usePosterFile is: ", nextProps.usePosterFile)
 			    	//if no poster file, load src at 10 seconds (#t=10) to get a frame showing. this.resetPlayer() will make sure video starts from beginning
 				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
