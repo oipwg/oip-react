@@ -11,12 +11,14 @@ import {mount} from "enzyme";
 import { shallow } from 'enzyme';
 import expect from "expect";
 
-const wrapper = shallow(<AudioPlayer />)
-const stories = storiesOf('AudioPlayer', module);
+	const stories = storiesOf('AudioPlayer', module);
+	const artifacts = getArtifactOptions([CorMetallicum])
     stories.addDecorator(withKnobs)
-    stories.addDecorator(withNotes)
+	stories.addDecorator(withNotes)
 
-    const artifacts = getArtifactOptions([CorMetallicum])
+	
+
+
     stories.add('Single Song', () => {
     const artifact_value = select(artifacts.title, artifacts.options, artifacts.default_artifact)
 	const artifact = artifacts.map[artifact_value]
@@ -26,25 +28,23 @@ const stories = storiesOf('AudioPlayer', module);
 	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file)
 
 	const artifact_file = artifact_files.map[file_value]
-	const story = <AudioPlayer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />
+	const story = <AudioPlayer Artifact={artifact} ArtifactFile={artifact_file} lockFile={boolean("Lock File", true)} />
 
-	specs(() => describe("Audio Player", () => {
-		let output = mount(story)
-
-		it("Should load initial artifact file", () => {
-			console.log(output.find("AudioPlayer").children().get(0))
-			expect(output.find("AudioPlayer").children().get(0).props.src).toBe("https://ipfs-dev.alexandria.io/ipfs/QmbedGAyepnPXXyVG7ZUityaG1CQLmWouzfgUbaj2E3SbD/01%20The%20Misadventure%20Begins.mp3" 
-		)})
-
-		it ("Should autoplay on lockFile change", () => {
-			output.setProps({lockFile: true})
-			console.log(output.props())
-			output.setProps({lockFile: false})
-			console.log(output.props())
-			output.setProps({lockFile: true})
-			console.log(output.props())
+	specs(() => describe('<AudioPlayer />', () => {
+		it('Test lockfile on/off', () => {
+			const wrapper = mount(story);
+			wrapper.setProps({ lockFile: true })
+			expect(wrapper.props().lockFile).toBe(true)
+			wrapper.setProps({ lockFile: false })
+			expect(wrapper.props().lockFile).toBe(false);
+			wrapper.setProps({ lockFile: true })
 		})
-	}));	
+		it('Audio Pause / Play', () => {
+			const wrapper = mount(story);
+			wrapper.find('audio').ref('ref')
+	
+		})
+	}));
     
 return story
 })
