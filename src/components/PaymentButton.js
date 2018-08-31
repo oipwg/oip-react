@@ -118,8 +118,16 @@ class PaymentButton extends Component {
 		return (
 			<div style={{display: disallowPurchase ? "" : "inline-block", paddingLeft: "3px"}}>
 				{ disallowPurchase ? "" :
-					<button className={"pad-5 btn btn-sm btn-" + button_class} onClick={(e) => this.payForFile(e)} style={this.props.style}>
-						<FontAwesomeIcon size="xs" icon={button_icon} className={button_icon_class} style={{marginRight: "5px"}} />{payment_string}
+					<button
+						className={"pad-5 btn " + `${this.props.size ? `btn-${this.props.size} ` : ""}` + "btn-" + button_class}
+				        onClick={(e) => this.payForFile(e)}
+				        style={this.props.style}>
+						<FontAwesomeIcon
+							size="xs"
+							icon={button_icon}
+							className={button_icon_class}
+							style={{marginRight: "5px"}} />
+						{payment_string}
 					</button>
 				}
 			</div>
@@ -130,7 +138,8 @@ class PaymentButton extends Component {
 PaymentButton.propTypes = {
 	ArtifactFile: PropTypes.object,
 	type: PropTypes.string,
-	style: PropTypes.object
+	style: PropTypes.object,
+	size: PropTypes.string
 };
 
 function mapStateToProps(state) {
