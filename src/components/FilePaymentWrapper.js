@@ -28,12 +28,14 @@ class FilePaymentWrapper extends React.Component {
 	}
 
 	render() {
+
 		let af;
 		if (this.props.ArtifactFile) {
 			af = this.props.ArtifactFile
-		} else {
+		} else if (this.props.ArtifactReduxFile && this.props.ArtifactReduxFile.ArtifactFile) {
 			af = this.props.ArtifactReduxFile.ArtifactFile
-		}
+		} else {af = undefined}
+
 		return(
 			<div>
 				<FileViewer
