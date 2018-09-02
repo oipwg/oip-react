@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 
-import LoginBlock from './LoginBlock.js';
+import LoginBlock from './LoginBlock/LoginBlock.js';
 import RegisterBlock from './RegisterBlock.js';
 
 import {promptLogin, promptRegister} from 'oip-state/src/actions/Account/actions';

@@ -1,7 +1,7 @@
 // Account Items
 import AccountButton from './components/AccountButton'
 import LoginModal from './components/LoginModal'
-import LoginBlock from './components/LoginBlock'
+import LoginBlock from './components/LoginBlock/LoginBlock'
 import RegisterBlock from './components/RegisterBlock'
 import PaymentButton from './components/PaymentButton'
 import CoinbaseModal from './components/CoinbaseModal'

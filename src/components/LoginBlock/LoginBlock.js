@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import ButtonCheckbox from './ButtonCheckbox.js';
+import ButtonCheckbox from '../ButtonCheckbox.js';
 
 import { accountLogin } from "oip-state/src/actions/Account/thunks";
 
@@ -12,6 +14,11 @@ const STATUS = {
 	INVALID: "INVALID"
 }
 
+/**
+ * The LoginBlock allows users to easily login on any page simply.
+ *
+ * There is full validation of Email states, as well as a button to allow the user to be remembered later.
+ */
 class LoginBlock extends Component {
 	constructor(props){
 		super(props);
@@ -66,7 +73,7 @@ class LoginBlock extends Component {
 
 	render() {
 		return (
-			<div style={{width: "100%"}} id="login-block">
+			<div style={{width: "100%", textAlign: "center"}} id="login-block">
                 <h2>Please Login</h2>
 				<hr className="" />
 				<div className="form-group">
@@ -119,10 +126,23 @@ class LoginBlock extends Component {
 	}
 }
 
+LoginBlock.propTypes = {
+	/** 
+	 * This function is run when the "Register" button inside the LoginBlock is clicked (so that you can handle switching to a new page/component)
+	 * @type {Function}
+	 * @param {Event} event - The Register Button onClick event
+	 */
+	onRegisterClick: PropTypes.func
+}
+LoginBlock.defaultProps = {
+	onRegisterClick: (event) => {
+		console.warn("oip-react | No onRegisterClick prop is being passed to the LoginBlock component. Please check your code.")
+	}
+}
+
 const mapDispatchToProps = {
     accountLogin
 }
-
 function mapStateToProps(state) {
     return {
         Account: state.Account,

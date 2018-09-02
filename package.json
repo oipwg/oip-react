@@ -9,7 +9,9 @@
     "start:prod": "npm run build && node config/production_server.js",
     "build": "webpack --config config/webpack.prod.js",
     "test": "node scripts/test.js --env=jsdom",
-    "storybook": "start-storybook -p 9001 -c .storybook"
+    "storybook": "start-storybook -p 9001 -c .storybook",
+    "docs:start": "npx styleguidist server",
+    "docs:build": "npx styleguidist build"
   },
   "repository": {
     "type": "git",
@@ -63,6 +65,7 @@
     "jest": "^23.5.0",
     "moment": "^2.22.2",
     "react-storybook-addon-props-combinations": "^1.1.0",
+    "react-styleguidist": "^7.3.4",
     "react-test-renderer": "^16.4.2",
     "storybook-addon-specifications": "^2.1.2",
     "storybook-host": "^5.0.0",
