@@ -17,15 +17,6 @@ module.exports = {
   // https://react-styleguidist.js.org/docs/configuration.html#pagepersection
   pagePerSection: true,
 
-  updateExample: function(props, example){
-  	if (props.content.indexOf("render (") !== -1){
-  		props.content.replace("render (", ';')
-  		props.content = props.content.substring(0, props.content.length - 1)
-  	}
-
-  	return props
-  },
-
   // Sections allow grouping of Components together on the docs page!
   // https://react-styleguidist.js.org/docs/components.html#sections
   sections: [
