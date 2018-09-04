@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard, faEye } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard, faEye, faPlay } from '@fortawesome/free-solid-svg-icons'
 
-import { formatPriceString } from '../utils'
+import { formatPriceString, getFileExtension } from '../utils'
 
 import { payForArtifactFile } from "oip-state/src/actions/Payment/thunks";
 import { fileToUID } from "oip-state/src/actions/ActiveArtifactFiles/thunks";
@@ -24,7 +24,18 @@ class PaymentButton extends Component {
 	}
 
 	render() {
-		let fileState;
+		let fileState, ext;
+		ext = getFileExtension(this.props.ArtifactFile);
+		let viewString;
+		switch (ext) {
+			case 'mp4':
+			case 'mp3':
+				viewString = 'Play';
+				break;
+			default:
+				viewString = 'View';
+		}
+
 		if (this.props.ActiveArtifactFiles && this.props.ArtifactFile) {
 			let uid = fileToUID(this.props.ArtifactFile);
 			fileState = this.props.ActiveArtifactFiles[uid]
@@ -48,7 +59,7 @@ class PaymentButton extends Component {
 			hasPaid = fileState.hasPaid;
 
 			if (this.props.type === "view"){
-				button_icon = faCreditCard
+				button_icon = faPlay
 
 				if (fileState.payInProgressView)
 					payInProgress = true
@@ -83,15 +94,15 @@ class PaymentButton extends Component {
 
 		if (hasPaid && this.props.type !== "buy"){
 			button_class = "outline-info";
-			payment_string = "View";
+			payment_string = viewString;
 		}
 
 		if (owned || (file_cost === 0 || file_cost === "0")) {
 			button_class = "outline-info";
 
 			if (this.props.type === "view")
-				button_icon = faEye
-				payment_string = "View";
+				button_icon = faPlay
+				payment_string = viewString;
 			if (this.props.type === "buy")
 				payment_string = "Download";
 		}
