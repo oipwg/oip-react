@@ -6,7 +6,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, button } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
-import state from 'oip-state'
+import { createStore } from 'oip-state'
 
 import { promptCoinbaseModal, setCoinbaseInfo } from 'oip-state/src/actions/Payment/actions'
 
@@ -21,7 +21,7 @@ const stories = storiesOf('CoinbaseWrapper', module);
 stories.addDecorator(withKnobs)
 
 // Setup Store
-const store = state.createStore()
+const store = createStore()
 
 stories.add('Example', () => {
 	button("Dispatch Set Coinbase Info", () => { 

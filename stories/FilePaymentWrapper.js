@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {withKnobs, select, boolean} from '@storybook/addon-knobs';
 import { Provider } from 'react-redux'
-import state from 'oip-state'
+import { createStore } from 'oip-state'
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper';
 import PaymentButton from '../src/components/PaymentButton'
@@ -10,14 +10,15 @@ import PaymentButton from '../src/components/PaymentButton'
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 
 import { getArtifactOptions, getFileOptions } from './util';
-import {setActiveArtifact} from "oip-state/src/actions/ActiveArtifact/thunks";
+import { setActiveArtifact } from "oip-state/src/actions/ActiveArtifact/thunks";
 import {
 	fileToUID,
 	setActiveFile,
 	paymentCancel,
 	paymentError,
 	paymentInProgress,
-	paymentSuccess} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
+	paymentSuccess
+} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
 
 
 
@@ -27,7 +28,7 @@ import StoreDebugHelper from "./StoreDebugHelper";
 const stories = storiesOf("FilePaymentWrapper", module);
 stories.addDecorator(withKnobs);
 
-let store = state.createStore();
+let store = createStore();
 
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
 

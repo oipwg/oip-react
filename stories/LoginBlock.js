@@ -8,7 +8,7 @@ import {mount, shallow, render} from "enzyme";
 import expect from "expect";
 
 import { Provider } from 'react-redux'
-import state from 'oip-state'
+import { createStore } from 'oip-state'
 
 import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
 import { accountLogin } from 'oip-state/src/actions/Account/thunks'
@@ -23,7 +23,7 @@ import StoreDebugHelper from './StoreDebugHelper'
 const stories = storiesOf('LoginBlock', module);
 
 // Setup Store
-const store = state.createStore()
+const store = createStore()
 
 stories.add('Example', () => {
 	let login_block

@@ -5,7 +5,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, select, boolean } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
-import state from 'oip-state'
+import { createStore } from 'oip-state'
 
 import { getArtifactOptions, getFileOptions } from './util'
 import { apocalypse, barbershop, barbershop_paid, amsterdam } from './TestArtifacts'
@@ -31,7 +31,7 @@ const type_default = "buy"
 const artifacts = getArtifactOptions([apocalypse, barbershop_paid, barbershop])
 
 // Setup Store
-const store = state.createStore()
+const store = createStore()
 
 stories.add('Buy Button', () => {
 	let state = store.getState()
