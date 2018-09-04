@@ -5,11 +5,11 @@ import { Provider } from 'react-redux'
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
-import AudioViewer from '../src/components/AudioViewer/AudioViewer'
+import AudioWaveSurfer from '../src/components/AudioViewer/AudioWaveSurfer'
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
-const stories = storiesOf('AudioViewer', module);
+const stories = storiesOf('AudioWaveSurfer', module);
 stories.addDecorator(withKnobs);
 
 const store = createStore();
@@ -64,7 +64,7 @@ stories.add('Test', () => {
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value, height: height_value}}>
-				<AudioViewer ArtifactFile={artifact_file} />
+				<AudioWaveSurfer ArtifactFile={artifact_file} />
 			</div>
 		</Provider>
 	)
