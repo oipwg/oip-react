@@ -57,10 +57,13 @@ stories.add('Single Song', () => {
 			wrapper.setProps({ autoPlay: false});
 			wrapper.setProps({ lockFile: false });
 			wrapper.setProps({ autoPlay: true});
-			wrapper.setProps({ lockFile: true });
+			wrapper.setProps({ lockFile: true }); }); 
 
-		
-		}); 
+		it('URL of each song is updated when another track is rendered', () => {
+			const wrapper = mount(story);
+			console.log('File has switched to',wrapper.props().ArtifactFile)
+			expect(wrapper.props().ArtifactFile)
+		})
 	}));
 
 	return story
