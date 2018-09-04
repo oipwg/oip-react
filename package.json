@@ -37,6 +37,7 @@
     "react-dom": "^16.4.2",
     "react-google-recaptcha": "^1.0.0",
     "react-redux": "^5.0.7",
+    "react-wavesurfer": "^0.8.6",
     "reactstrap": "^6.4.0",
     "validator": "^10.6.0",
     "video.js": "^7.1.0"
