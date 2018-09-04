@@ -68,7 +68,7 @@ module.exports = {
 			content: "styleguide/artifacts/ArtifactFile.md",
 			components: [
 				'src/components/VideoPlayer/VideoPlayer.js',
-				'src/components/AudioPlayer.js',
+				'src/components/AudioPlayer/AudioPlayer.js',
 				'src/components/ImageViewer/ImageViewer.js',
 				'src/components/FileViewer.js'
 			]
