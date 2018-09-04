@@ -51,7 +51,7 @@ class PlaylistItem extends React.Component {
 			<div className={`d-flex justify-content-between align-items-center file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
 				{/*img*/}
 				<div className={"playlist-artifact-image"} >
-					<div className="img-container " style={{height: '34px', width: '34px', overflow: 'hidden'}}>
+					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden'}}>
 						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='' />
 					</div>
 				</div>
