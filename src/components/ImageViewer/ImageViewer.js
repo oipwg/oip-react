@@ -10,7 +10,8 @@ import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js';
  */
 class ImageViewer extends React.Component {
 	constructor(props){
-		super(props)
+		super(props);
+
 		this.state = {
 			image: null
 		};
@@ -88,7 +89,7 @@ class ImageViewer extends React.Component {
 	};
 };
 
-ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"]
+ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"];
 ImageViewer.propTypes = {
 	/**
 	 * An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
