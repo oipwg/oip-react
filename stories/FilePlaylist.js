@@ -58,7 +58,7 @@ const heightOptions = {
 	"100%": "100%"
 };
 const heightDefault = '400px';
-//ry
+
 const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit]);
 
 stories.add('Basic FilePlaylist', () => {
