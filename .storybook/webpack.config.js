@@ -19,6 +19,10 @@ module.exports = {
 				use: ['style-loader', 'css-loader', 'sass-loader']
 			},
 			{
+				test: /\.node$/,
+				use: ['node-loader']
+			},
+			{
 				test: /\.(png|jpg|gif|ttf|woff|woff2|eot|svg)$/,
 				use: [
 					{

@@ -47,7 +47,11 @@ module.exports = {
             loader: 'file-loader'
           }
         ]
-      }
+      },
+	    {
+	    	test: /\.node$/,
+		    use: ['node-loader']
+	    }
     ]
   },
   node: {
