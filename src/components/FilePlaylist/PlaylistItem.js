@@ -48,7 +48,11 @@ class PlaylistItem extends React.Component {
 			filename = file.getFilename() || 'unknown'
 		}
 		return (
-			<div className={`d-flex justify-content-between align-items-center file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
+			<div
+				className={`d-flex justify-content-between align-items-center file-playlist-item ${this.isActive() ? "isActive" : null}  ${this.props.className}`}
+				onClick={this.setActiveFile}
+				style={{...this.props.style}}
+			>
 				{/*img*/}
 				<div className={"playlist-artifact-image"} >
 					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden'}}>
@@ -114,7 +118,9 @@ const mapDispatchToProps = {
 
 PlaylistItem.propTypes = {
 	File: PropTypes.object,
-	index: PropTypes.number
+	index: PropTypes.number,
+	style: PropTypes.object,
+	className: PropTypes.string
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(PlaylistItem);

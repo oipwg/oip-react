@@ -114,7 +114,7 @@ class FilePlaylist extends React.Component {
 		files = this.filterFiles(files);
 
 		return (
-			<div className="file-playlist-container border" style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px"}}>
+			<div className={`file-playlist-container border ${this.props.className}`} style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px", ...this.props.style}}>
 				<ul className="file-playlist p-0 m-0">
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
@@ -145,7 +145,11 @@ FilePlaylist.propTypes = {
 	//custom title
 	title: PropTypes.string,
 	//custom author
-	author: PropTypes.string
+	author: PropTypes.string,
+	//custom className
+	className: PropTypes.string,
+	//custom styles
+	style: PropTypes.object
 };
 
 export default FilePlaylist
