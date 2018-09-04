@@ -3,7 +3,7 @@ import { storiesOf } from '@storybook/react';
 import {withKnobs, select} from '@storybook/addon-knobs';
 import { host } from 'storybook-host';
 import { Provider } from 'react-redux'
-import state from 'oip-state'
+import { createStore } from 'oip-state'
 
 import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
 
@@ -23,7 +23,7 @@ stories.addDecorator(
 	}),
 );
 
-const store = state.createStore()
+const store = createStore()
 
 const widthLabel = "Parent Div Width";
 const widthOptions = {

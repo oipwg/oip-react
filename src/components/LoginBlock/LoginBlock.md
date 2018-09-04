@@ -3,11 +3,11 @@ Here is a simple example of how to hook up the LoginBlock to a Provider in order
 
 ```js
 const { Provider } = require('react-redux')
-const state = require('oip-state').default
+const { createStore } = require('oip-state')
 
 require('bootstrap/dist/css/bootstrap.min.css')
 
-const store = state.createStore()
+const store = createStore()
 
 class LoginBlockExample extends React.Component {
 	render() {
