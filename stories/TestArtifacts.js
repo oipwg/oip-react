@@ -588,6 +588,185 @@ const sintel = {
 	publisherName: "OstlerDev"
 };
 
+const eightbit = {
+	oip042: {
+		artifact: {
+			floAddress: "FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+			timestamp: 1508603921,
+			type: "Audio",
+			subtype: "Basic",
+			info: {
+				title: "8-bit Run 'n Pun",
+				description: "8-bit Run 'n Pun\" is my fifth album. It's made up of tunes made in Famitracker, so they are NES-compliant. The genres for this album would be Chiptune, Lo-Fi, Electro, Cracktro. The album was released on November 13th 2015. The Album is licensed under a Creative Commons license (CC BY-SA) and you may use it accordingly. If you would like to use the album in a way that goes beyond what the CC-license permits, please contact me.\n\nIf you like my stuff, you can find more at:\n\nhttp://ozzed.net or\nhttp://lastfm.com/music/ozzed\nhttp://www.jamendo.com/en/artist/Ozzed or\nhttp://www.myspace.com/ozzedmusic\n\nAs usual I would like to thank everyone who might have been involved with making this album happen, but I can't even remember my own name so it'll have to be another time. //Ozzed\n\n(Published as a Test Artifact by Alexandria Dev, please contact for rights transfer)",
+				year: 2015
+			},
+			details: {
+				artist: "Ozzed",
+					genre: "Soundtrack",
+					tags: [
+					"Ozzed",
+					"8-bit",
+					"Chiptune",
+					"NES",
+					"Famitracker",
+					"Lo-Fi",
+					"Electro",
+					"Cracktro"
+				]
+			},
+			storage: {
+				network: "IPFS",
+					location: "QmVBdxRLe28rUyDE8bhRYMnrh6Q48sZSTpVT2yYKquvWZ2",
+					files: [
+					{
+						dname: "Introjuice",
+						fname: "01 Introjuice.mp3",
+						fsize: 2206206,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Failien Funk",
+						fname: "02 Failien Funk.mp3",
+						fsize: 2770239,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Stroll 'n Roll",
+						fname: "03 Stroll 'n Roll.mp3",
+						fsize: 1987732,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Shell Shock Shake",
+						fname: "04 Shell Shock Shake.mp3",
+						fsize: 2774051,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "I'm a Fighter",
+						fname: "05 I'm a Fighter.mp3",
+						fsize: 2397708,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Going Down Tune",
+						fname: "06 Going Down Tune.mp3",
+						fsize: 2458484,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Cloud Crash",
+						fname: "07 Cloud Crash.mp3",
+						fsize: 3131707,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Filaments and Voids",
+						fname: "08 Filaments and Voids.mp3",
+						fsize: 3051306,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Bonus Rage",
+						fname: "09 Bonus Rage.mp3",
+						fsize: 1496322,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "It's Not My Ship",
+						fname: "10 It's not My Ship.mp3",
+						fsize: 3162078,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Perihelium",
+						fname: "11 Perihelium.mp3",
+						fsize: 3586809,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Shingle Tingle",
+						fname: "12 Shingle Tingle.mp3",
+						fsize: 3819055,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Just a Minuet",
+						fname: "13 Just a Minuet.mp3",
+						fsize: 4307062,
+						sugPlay: 1,
+						type: "Audio",
+						subtype: "Album Track"
+					},
+					{
+						dname: "Album Front",
+						fname: "0 FRONT.png",
+						fsize: 147290,
+						type: "Image",
+						subtype: "album-art"
+					},
+					{
+						dname: "Album Back",
+						fname: "1 BACK.png",
+						fsize: 215483,
+						type: "Image",
+						subtype: "album-art"
+					},
+					{
+						dname: "Magazine feature!",
+						fname: "runpmock92.jpg",
+						fsize: 1352037,
+						type: "Image"
+					},
+					{
+						fname: "PROMO.png",
+						fsize: 15009,
+						type: "Image",
+						subtype: "cover"
+					}
+				]
+			},
+			payment: {
+				fiat: "USD",
+					scale: "1000:1",
+					tokens: { },
+				addresses: { },
+				platform: 15,
+					influencer: 15,
+					maxdisc: 30
+			},
+			signature: "H88V1AmFR8UP0yABAaelvmy38LWmBPbnzrcF45lq+ZUZYamWa+W825Ws7yyTiwtU7y0QaEkMTDCDDGfn3GfMk44="
+		}
+	},
+	txid: "2c53dc93908357d0e56a029944a2239a41dabd2087f0af6ad707ea4c1f56bea2",
+	publisher: "FLZXRaHzVPxJJfaoM32CWT4GZHuj2rx63k",
+	publisherName: "OstlerDev"
+}
+
 module.exports = {
 	apocalypse: new Artifact(apocalypse),
 	barbershop: new Artifact(barberShop),
@@ -596,6 +775,7 @@ module.exports = {
 	scout: new Artifact(scout),
 	CorMetallicum: new Artifact(CorMetallicum),
 	dweb: new Artifact(dweb),
-	sintel: new Artifact(sintel)
+	sintel: new Artifact(sintel),
+	eightbit: new Artifact(eightbit)
 }
 

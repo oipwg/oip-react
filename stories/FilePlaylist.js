@@ -10,7 +10,7 @@ import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 import FilePlaylist from '../src/components/FilePlaylist/FilePlaylist'
-import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel} from './TestArtifacts'
+import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
 const stories = storiesOf('FilePlaylist', module);
