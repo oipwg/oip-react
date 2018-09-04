@@ -8,7 +8,6 @@ import { buildIPFSURL, buildIPFSShortURL } from './../utils.js'
 class AudioPlayer extends React.Component {
     constructor(props){
         super(props)
-
         this.wait_for_play_promise = false
         this.preventPlay = this.preventPlay.bind(this)
     }
@@ -18,9 +17,9 @@ class AudioPlayer extends React.Component {
             if (this.wait_for_play_promise){
                 let pause_interval = setInterval(() => {
                     if (!this.wait_for_play_promise){
-                        clearInterval(pause_interval)
-                        this.react_audio_player.audioEl.pause()
-                    }
+                            clearInterval(pause_interval)
+                            this.react_audio_player.audioEl.pause()
+                        }
                 }, 50)
             } else {
                 this.react_audio_player.audioEl.pause()
@@ -53,7 +52,6 @@ class AudioPlayer extends React.Component {
             hash = buildIPFSShortURL(this.props.ArtifactFile.parent.getLocation(), this.props.ArtifactFile.getFilename());
             url = buildIPFSURL(hash);
         }
-
 		return (
 			<ReactAudioPlayer
                 ref={(element) => { this.react_audio_player = element; }}
