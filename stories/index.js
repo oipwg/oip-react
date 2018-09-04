@@ -1,5 +1,6 @@
 import './AccountButton'
 import './AudioPlayer'
+import './AudioViewer'
 import './ButtonCheckbox'
 import './CoinbaseModal'
 import './CoinbaseWrapper'
