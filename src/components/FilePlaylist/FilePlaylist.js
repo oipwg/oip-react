@@ -83,13 +83,13 @@ class FilePlaylist extends React.Component {
 		let pc = this.state.playlistContent;
 		return (
 			<div className="file-playlist-container" style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px"}}>
-				<ul className="file-playlist p-0 m-0">
+				<ul className="file-playlist p-0 m-0 ">
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
 					{/*</li>*/}
 					{pc.Files.map( (file, i) => {
 						return (
-							<li key={fileToUID(file)} style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
+							<li key={fileToUID(file)} className="p-0 m-0 border-0" style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
 								<PlaylistItem
 									File={file}
 									index={i}
