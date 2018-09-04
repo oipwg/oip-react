@@ -44,8 +44,14 @@ stories.add('IV-Test', () => {
 			const wrapper = mount(<ImageViewer ArtifactFile={artifact_file} lockFile={boolean("Lock File", false)} />);
 			wrapper.setProps({lockFile: true});
 			expect(wrapper.props().lockFile).toBe(true);
-			expect(wrapper.find('canvas').props().className).toBe("OIP-Blur");
-		});
+			expect(wrapper.find('canvas').props().className).toBe("OIP-Blur"); });
+
+		it("Should clear canvas if artifact is undefined", () => {
+			const wrapper = mount(<ImageViewer ArtifactFile={undefined} lockFile={boolean("Lock File", false)} />);
+			expect(wrapper.props().ArtifactFile).toBe(undefined)
+			expect(wrapper.find('canvas').clearRect)
+			
+		})
 	}));
 
 	return story

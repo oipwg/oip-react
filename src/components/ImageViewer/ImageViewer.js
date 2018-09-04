@@ -11,51 +11,52 @@ class ImageViewer extends React.Component {
 		super(props)
 		this.state = {
 			image: null
-		};
+	};
 		
-			this.drawImageToCanvas = this.drawImageToCanvas.bind(this)
-			this.isUnsupportedBrowser = this.isUnsupportedBrowser.bind(this)
-		};
+		this.drawImageToCanvas = this.drawImageToCanvas.bind(this)
+		this.isUnsupportedBrowser = this.isUnsupportedBrowser.bind(this)
+	};
 
-		componentDidMount() {
-			this.drawImageToCanvas()
-		};
+	componentDidMount() {
+		this.drawImageToCanvas()
+	};
 
-			componentDidUpdate(){
-			this.drawImageToCanvas()
-		};
+	componentDidUpdate(){
+		this.drawImageToCanvas()
+	};
 
-		drawImageToCanvas(){
-				let hash = "";
-				let url = "";
+	drawImageToCanvas(){
+			let hash = ""
+			let url = ""
 
-			if (this.props.ArtifactFile) {
-				// Creation of IPFS hash of artifact Image
-				hash = buildIPFSShortURL(this.props.ArtifactFile.parent.getLocation(), this.props.ArtifactFile.getFilename());
-				url = buildIPFSURL(hash);
-			};
-
+	if (this.props.ArtifactFile) {
+			// Creation of IPFS hash of artifact Image
+			hash = buildIPFSShortURL(this.props.ArtifactFile.parent.getLocation(), this.props.ArtifactFile.getFilename());
+			url = buildIPFSURL(hash)
+	};
+			console.log("New URL!", url)
 			const image = new window.Image();
+		image.onload = () => {
+			this.canvas.width = this.canvas.parentElement.clientWidth
+			let width_ratio = this.canvas.parentElement.clientWidth / image.width
+			this.canvas.height = image.height * width_ratio;
+			let canvas_context = this.canvas.getContext("2d")
 		
-			image.onload = () => {
-				this.canvas.width = this.canvas.parentElement.clientWidth
-				let width_ratio = this.canvas.parentElement.clientWidth / image.width
-				this.canvas.height = image.height * width_ratio;
+		if (this.isUnsupportedBrowser())
+			this.canvas.style.filter = "blur(30px)"
 
-				let canvas_context = this.canvas.getContext("2d")
+		if (this.props.lockFile)
+			canvas_context.filter = "blur(30px)"
+			canvas_context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
 
-				if (this.isUnsupportedBrowser())
-					this.canvas.style.filter = "blur(30px)"
-
-				if (this.props.lockFile)
-					canvas_context.filter = "blur(30px)"
-
-				canvas_context.drawImage(image, 0, 0, this.canvas.width, this.canvas.height)
-			};
+		if (this.props.ArtifactFile === undefined){
+			canvas_context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+			url = ""
+		}
+	}
 			// setting of hash to render on image canvas
-				image.src = url
-		};
-
+			image.src = url
+}
 			isUnsupportedBrowser(){
 				// Functionality for 2D render canvas unsupported browsers
 				let user_agent = window.navigator.userAgent
@@ -67,7 +68,7 @@ class ImageViewer extends React.Component {
 
 				if (safari_match_index !== -1)
 					return true
-
+					
 				return false
 		};
 	
