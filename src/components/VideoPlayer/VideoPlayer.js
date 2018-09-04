@@ -67,11 +67,11 @@ class VideoPlayer extends React.Component {
 			    //Load sources based on whether we're using the poster file or not
 			    options.sources = [];
 			    if (nextProps.usePosterFile === undefined || nextProps.usePosterFile) {
-				    options.poster = getIPFSImage(nextProps.ArtifactFile.parent);
-				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile), type: "video/mp4"});
+				    options.poster = getIPFSImage(nextProps.ArtifactFile);
+				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile), type: "video/mp4"});
 			    } else {
 			    	//if no poster file, load src at 10 seconds (#t=10) to get a frame showing. this.resetPlayer() will make sure video starts from beginning
-				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile.parent, nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
+				    options.sources.push({src: getIPFSURL(nextProps.ArtifactFile) + "#t=10", type: "video/mp4"});
 				    options.poster = "";
 			    }
 
@@ -92,7 +92,7 @@ class VideoPlayer extends React.Component {
 					    let language = splitFname[length - 1];
 
 					    if (title === mainTitle) {
-						    tmpObj["src"] = getIPFSURL(nextProps.ArtifactFile.parent, file);
+						    tmpObj["src"] = getIPFSURL(file);
 						    tmpObj["srclang"] = language;
 						    tmpObj["label"] = ISO6391.getName(language);
 						    tmpObj["kind"] = "subtitles";

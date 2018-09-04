@@ -42,7 +42,7 @@ class PlaylistItem extends React.Component {
 		if (this.props.File) {
 			file = this.props.File;
 			artifact = file.parent;
-			poster = getIPFSImage(artifact);
+			poster = getIPFSImage(file);
 			if (poster.error) {poster = defaultImg}
 			artist = artifact.getDetail('artist') || 'unknown';
 			filename = file.getFilename() || 'unknown'
