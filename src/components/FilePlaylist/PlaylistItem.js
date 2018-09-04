@@ -38,7 +38,7 @@ class PlaylistItem extends React.Component {
 		return this.uid === this.props.ActiveArtifactFiles.active;
 	}
 	render() {
-		let loadWithPicture = true, artifact, poster, artist, filename, file;
+		let artifact, poster, artist, filename, file;
 		if (this.props.File) {
 			file = this.props.File;
 			artifact = file.parent;
@@ -48,41 +48,35 @@ class PlaylistItem extends React.Component {
 			filename = file.getFilename() || 'unknown'
 		}
 		return (
-			<div className={`row no-gutters file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
+			<div className={`d-flex justify-content-between align-items-center file-playlist-item ${this.isActive() ? "isActive" : null}`} onClick={this.setActiveFile}>
 				{/*img*/}
-				<div className={loadWithPicture ? "col-2 d-flex align-items-center playlist-artifact-image justify-content-center" : "d-none"} >
-					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden'}}>
+				<div className={"playlist-artifact-image"} >
+					<div className="img-container " style={{height: '34px', width: '34px', overflow: 'hidden'}}>
 						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='' />
 					</div>
 				</div>
 				{/*index/playing*/}
-				<div className="col-1 d-flex justify-content-start align-items-center">
+				<div className="" style={styles.marginLeft15}>
 					<span style={{fontWeight: "100", color: "#999"}}> {this.props.index} </span>
 				</div>
 				{/*contentItems*/}
-				<div className={(loadWithPicture ? "col-5" : "col-6") + " d-flex align-items-center"}>
-					<div style={styles.fileInfo}>
-						<a style={{color: "#999"}}>{artist}</a>
+				<div className={"flex-fill"}  style={{...styles.fileInfo, ...styles.marginLeft15}}>
+						<a style={styles.fileInfo}>{filename}</a>
 						<span style={{fontWeight: "100", color: "#999"}}> - </span>
-						<a>{filename}</a>
-					</div>
+						<a style={{color: "#999"}}>{artist}</a>
 				</div>
 				{/*payment buttons*/}
-				<div className="col-4 d-flex align-items-center">
-					<div className="row no-gutters">
-						<div className="col d-flex">
-							<PaymentButton
-								ArtifactFile={file}
-								type="view"
-								style={styles.paymentButton}
-							/>
-							<PaymentButton
-								ArtifactFile={file}
-								type="buy"
-								style={styles.paymentButton}
-							/>
-						</div>
-					</div>
+				<div className="d-flex">
+					<PaymentButton
+						ArtifactFile={file}
+						type="view"
+						style={styles.paymentButton}
+					/>
+					<PaymentButton
+						ArtifactFile={file}
+						type="buy"
+						style={styles.paymentButton}
+					/>
 				</div>
 			</div>
 		)
@@ -94,11 +88,16 @@ const styles = {
 		overflow: 'hidden',
 		whiteSpace: 'nowrap',
 		textOverflow: 'ellipsis',
-		wordBreak: 'normal'
+		wordBreak: 'normal',
+	},
+	marginLeft15: {
+		marginLeft: '15px'
 	},
 	paymentButton: {
 		fontSize: "12px",
-		border: "none",
+		padding: 5,
+		paddingTop: "3px",
+		paddingBottom: "3px"
 	}
 };
 
