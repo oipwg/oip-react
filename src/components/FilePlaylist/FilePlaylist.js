@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Artifact as A, ArtifactFile as AF } from 'oip-index';
 import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { getFileExtension } from "../../utils";
 
 import PlaylistItem from './PlaylistItem'
 import './assets/styles/FilePlaylist.css'
@@ -9,6 +10,14 @@ import './assets/styles/FilePlaylist.css'
 class FilePlaylist extends React.Component {
 	constructor(props) {
 		super(props);
+
+		this.supportedFileTypes = ['mp3', 'mp4'];
+
+		if (props.supportedFileTypes) {
+			for (let type of props.supportedFileTypes) {
+				this.supportedFileTypes.push(type)
+			}
+		}
 
 		this.state = {
 			playlistContent: {
@@ -20,6 +29,8 @@ class FilePlaylist extends React.Component {
 				playlistType: undefined
 			}
 		};
+
+		this.filterFiles = this.filterFiles.bind(this);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -79,17 +90,38 @@ class FilePlaylist extends React.Component {
 
 	}
 
+	filterFiles(files) {
+		let tmpFiles = [];
+		if (Array.isArray(files)) {
+			for (let file of files) {
+				let ext = getFileExtension(file);
+				if (this.supportedFileTypes.includes(ext)){
+					tmpFiles.push(file)
+				}
+			}
+		} else if (typeof files === 'object' && files !== null) {
+			let ext = getFileExtension(files);
+			if (this.supportedFileTypes.includes(ext)) {
+				tmpFiles.push(files)
+			}
+		}
+		return tmpFiles
+	}
+
 	render() {
 		let pc = this.state.playlistContent;
+		let files = pc.Files;
+		files = this.filterFiles(files);
+
 		return (
-			<div className="file-playlist-container" style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px"}}>
-				<ul className="file-playlist p-0 m-0 ">
+			<div className="file-playlist-container border" style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px"}}>
+				<ul className="file-playlist p-0 m-0">
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
 					{/*</li>*/}
-					{pc.Files.map( (file, i) => {
+					{files.map( (file, i) => {
 						return (
-							<li key={fileToUID(file)} className="p-0 m-0 border-0" style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
+							<li key={fileToUID(file)} className="p-0 m-0 border-bottom" style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
 								<PlaylistItem
 									File={file}
 									index={i}
