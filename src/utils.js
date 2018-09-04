@@ -45,22 +45,30 @@ export const getFileExtension = (file) => {
 	return splitFilename[indexToGrab].toLowerCase();
 };
 
-export const getIPFSImage = (artifact) => {
+export const getIPFSImage = (artifactFile) => {
+	let artifact;
+	if (artifactFile.parent){
+		artifact = artifactFile.parent;
+	} else {return {error: true, errorMessage: 'ArtifactFile.parent is undefined'}}
 	if (artifact instanceof Artifact && artifact.getThumbnail()) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifact.getThumbnail().getFilename()))
 	} else return {error: true, errorMessage: `Artifact instanceof Artifact: ${artifact instanceof Artifact} -- 
 	Artifact has thumbnail: ${!!artifact.getThumbnail()}`}
 };
 
-export const getIPFSURL = (artifact, artifactFile) => {
-	if (artifact instanceof Artifact && artifactFile instanceof ArtifactFile) {
+export const getIPFSURL = (artifactFile) => {
+	let artifact;
+	if (artifactFile.parent){
+		artifact = artifactFile.parent;
+	} else {return {error: true, errorMessage: 'ArtifactFile.parent is undefined'}}
+	if (artifactFile instanceof ArtifactFile) {
 		return buildIPFSURL(buildIPFSShortURL(artifact.getLocation(), artifactFile.getFilename()))
 	} else return {error: true, errorMessage: `Artifact is instanceof Artifact: ${artifact instanceof Artifact} -- 
 	ArtifactFile is instanceof ArtifactFile: ${artifactFile instanceof ArtifactFile}`}
 };
 
-export const getIPFSURLAndImage = (artifact, artifactFile) => {
-	let image = getIPFSImage(artifact);
-	let url = getIPFSURL(artifact, artifactFile);
+export const getIPFSURLAndImage = (artifactFile) => {
+	let image = getIPFSImage(artifactFile);
+	let url = getIPFSURL(artifactFile);
 	return {image, url}
 };
