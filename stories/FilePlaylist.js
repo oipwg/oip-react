@@ -58,8 +58,8 @@ const heightOptions = {
 	"100%": "100%"
 };
 const heightDefault = '400px';
-
-const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel]);
+//ry
+const artifacts = getArtifactOptions([apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit]);
 
 stories.add('Basic FilePlaylist', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");

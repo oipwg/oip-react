@@ -596,7 +596,7 @@ const eightbit = {
 			type: "Audio",
 			subtype: "Basic",
 			info: {
-				title: "8-bit Run 'n Pun",
+				title: "8-bit Run n Pun",
 				description: "8-bit Run 'n Pun\" is my fifth album. It's made up of tunes made in Famitracker, so they are NES-compliant. The genres for this album would be Chiptune, Lo-Fi, Electro, Cracktro. The album was released on November 13th 2015. The Album is licensed under a Creative Commons license (CC BY-SA) and you may use it accordingly. If you would like to use the album in a way that goes beyond what the CC-license permits, please contact me.\n\nIf you like my stuff, you can find more at:\n\nhttp://ozzed.net or\nhttp://lastfm.com/music/ozzed\nhttp://www.jamendo.com/en/artist/Ozzed or\nhttp://www.myspace.com/ozzedmusic\n\nAs usual I would like to thank everyone who might have been involved with making this album happen, but I can't even remember my own name so it'll have to be another time. //Ozzed\n\n(Published as a Test Artifact by Alexandria Dev, please contact for rights transfer)",
 				year: 2015
 			},
