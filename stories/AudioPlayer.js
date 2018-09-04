@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf, addDecorator } from '@storybook/react';
 import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, object, select, boolean} from '@storybook/addon-knobs';
-import AudioPlayer from '../src/components/AudioPlayer.js';
+import AudioPlayer from '../src/components/AudioPlayer/AudioPlayer.js';
 import { getFileOptions, getArtifactOptions} from './util.js';
 import { CorMetallicum } from './TestArtifacts';
 import { specs, describe, it } from 'storybook-addon-specifications';

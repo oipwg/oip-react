@@ -5,7 +5,7 @@ import { getFileExtension } from '../utils'
 
 import VideoPlayer from './VideoPlayer/VideoPlayer';
 import ImageViewer from './ImageViewer/ImageViewer'
-import AudioPlayer from './AudioPlayer'
+import AudioPlayer from './AudioPlayer/AudioPlayer'
 
 let FileViewers = [
 	VideoPlayer,

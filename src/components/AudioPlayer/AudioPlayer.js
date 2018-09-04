@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import ReactAudioPlayer from 'react-audio-player';
 import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
-import { buildIPFSURL, buildIPFSShortURL } from './../utils.js'
-
+import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js'
+/**
+ * This shows how audio files render from the OIP Index and how they can be utilized
+ */
 class AudioPlayer extends React.Component {
     constructor(props){
         super(props)
@@ -14,6 +16,7 @@ class AudioPlayer extends React.Component {
     preventPlay(event){
         // Interval for preventing chrome error of abruptly switching play to pause on the assumption of lockFile 
         if (this.props.lockFile){
+            
             if (this.wait_for_play_promise){
                 let pause_interval = setInterval(() => {
                     if (!this.wait_for_play_promise){
@@ -57,6 +60,7 @@ class AudioPlayer extends React.Component {
                 ref={(element) => { this.react_audio_player = element; }}
                 src={url}
                 autoPlay={false}
+                controlsList="nodownload"
                 controls={true} 
                 onPlay={this.preventPlay}
             />
@@ -65,6 +69,10 @@ class AudioPlayer extends React.Component {
 }
 AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
 AudioPlayer.propTypes = {
+    /**
+     * An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
+     * @type {Object}
+     */
     ArtifactFile: PropTypes.object,
     lockFile: PropTypes.bool
 };
