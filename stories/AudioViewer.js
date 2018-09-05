@@ -29,9 +29,10 @@ const widthOptions = {
 	"900": "900px",
 	"1000": "1000px",
 	"1100": "1100px",
+	"60%": "60%",
 	"100%": "100%"
 };
-const widthDefault = '100%';
+const widthDefault = '1000px';
 
 const heightLabel = "Parent Div Height";
 const heightOptions = {
