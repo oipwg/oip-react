@@ -102,6 +102,7 @@ ImageViewer.propTypes = {
 	 
 	lockFile: PropTypes.bool,
 	//Call back that passes back the imageDOMNode
+	onImageLoad: PropTypes.func
 };
 		
 export default ImageViewer;
