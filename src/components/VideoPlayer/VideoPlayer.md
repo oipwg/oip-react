@@ -1,5 +1,5 @@
 ### Basic Example
-An example of how a Video File renders into VideoPlayer through pulling it from an artifact that was loaded through OIP-Index.
+An example of how a Video File renders into VideoPlayer through pulling it from an artifact that was loaded by OIP-Index.
 
 ```js
 const { Index } = require('oip-index')

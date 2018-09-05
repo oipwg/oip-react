@@ -9,7 +9,7 @@ import { specs, describe, it } from 'storybook-addon-specifications'
 import {mount} from "enzyme";
 import expect from "expect";
 
-import ButtonCheckbox from '../src/components/ButtonCheckbox'
+import ButtonCheckbox from '../src/components/ButtonCheckbox/ButtonCheckbox.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
