@@ -4,6 +4,9 @@ import {connect} from 'react-redux'
 import ColorThief from 'color-thief'
 import { PlayButton, PauseButton } from 'react-player-controls'
 
+import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
+import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+
 import {getIPFSURL} from "../../utils";
 import AudioWaveSurfer from './AudioWaveSurfer';
 import PosterWrapper from '../ImageViewer/PosterWrapper'
@@ -23,7 +26,7 @@ class AudioViewer extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		let paletteGenerated = prevState.paletteGenerated;
+		let paletteGenerated = prevState.paletteGenerated
 		if (nextProps.ArtifactFile !== prevState.ArtifactFile) {
 			paletteGenerated = false
 		}
@@ -31,6 +34,10 @@ class AudioViewer extends Component {
 			paletteGenerated,
 			ArtifactFile: nextProps.ArtifactFile
 		}
+	}
+
+	playPause = (uid, bool) => {
+		this.props.playPauseAudioFile(uid, bool)
 	}
 
 	generateColorPalette = (imageNode) => {
@@ -58,15 +65,15 @@ class AudioViewer extends Component {
 		}
 
 		//@ToDO: add redux variables for play state
-		let isPlaying = false;
+		let isPlaying = this.props.ReduxArtifactFile.isPlaying;
 		const playbackButton = isPlaying ? (
 			<PauseButton
 				isEnabled={true}
-				onClick={() => {console.log("Pause")}}
+				onClick={() => this.playPause(fileToUID(file), false)}
 			/>) : (
 			<PlayButton
 				isEnabled={true}
-				onClick={() => {console.log("Play")}}
+				onClick={() => this.playPause(fileToUID(file), true)}
 			/>);
 
 
@@ -120,7 +127,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-
+	playPauseAudioFile
 }
 
 AudioViewer.propTypes = {
