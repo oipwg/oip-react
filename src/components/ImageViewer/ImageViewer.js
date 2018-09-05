@@ -38,6 +38,7 @@ class ImageViewer extends React.Component {
 		};
 
 		const image = new window.Image();
+		image.crossOrigin = "Anonymous";
 		image.onload = () => {
 			this.canvas.width = this.canvas.parentElement.clientWidth
 			let width_ratio = this.canvas.parentElement.clientWidth / image.width
