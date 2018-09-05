@@ -12,7 +12,7 @@ import { createStore } from 'oip-state'
 
 import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
 
-import AccountButton from '../src/components/AccountButton'
+import AccountButton from '../src/components/AccountButton/AccountButton.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 

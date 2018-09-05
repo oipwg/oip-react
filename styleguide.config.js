@@ -50,7 +50,7 @@ module.exports = {
       		name: "Account Components",
       		content: "styleguide/account/components.md",
       		components: [
-      			'src/components/AccountButton.js',
+      			'src/components/AccountButton/AccountButton.js',
       			'src/components/LoginBlock/LoginBlock.js',
       			'src/components/RegisterBlock/RegisterBlock.js',
             'src/components/LoginModal.js',
