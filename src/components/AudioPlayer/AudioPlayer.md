@@ -1,5 +1,5 @@
 ### Basic Example
-Here is a example of how the audio in OIP function.
+An example of how a Audio File renders into AudioPlayer through pulling it from an artifact that was loaded through OIP-Index.
 
 ```js
 const { Index } = require('oip-index')
@@ -35,7 +35,7 @@ class AudioPlayerExample extends React.Component {
 ```
 
 ### LockFile Example
-When a sound is paid and has not been paid for, it will be locked. User may be able to scroll or turn sound off but will not be able to play or download.
+When an Audio File is suppossed to be paid for, Audio Player will lock it and render it non-playable. User may be able to use the controls but will not be able to play or download, Autoplays once payment has been verified.
 
 ```js
 const { Index } = require('oip-index')
@@ -70,7 +70,7 @@ class AudioPlayerExample extends React.Component {
 ;<AudioPlayerExample />
 ```
 ### Change Example
-When an sound artifact is loaded in, you are able to switch between the audio that is compiled by switching out the file that is rendered in the state.
+When the Artifact File is rendered but has multiple within the Artifact (Album, Playlist, etc...) you are able to switch between each one that is manifested by switching out the file that is to be rendered in the state.
 
 ```js
 const { Index } = require('oip-index')

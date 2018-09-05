@@ -5,7 +5,7 @@ import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
 import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js'
 /**
- * This shows how audio files render from the OIP Index and how they can be utilized
+ * The Audio Player allows the implementation of audio ArtifactFiles that are passed from OIP-Index
  */
 class AudioPlayer extends React.Component {
     constructor(props){
