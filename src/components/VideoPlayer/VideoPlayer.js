@@ -249,7 +249,13 @@ VideoPlayer.propTypes = {
 	*/
 	ArtifactFile: PropTypes.object,
 	/**
-	 * Options are a parameter that can be utilized 
+	 * Options are a parameter that can be utilized
+	 * @param {options}  - Poster
+	 * Preload
+	 * fluid
+	 * controls
+	 * autoplay
+	 * sources
 	 */
 	options: PropTypes.object,
 	/**
