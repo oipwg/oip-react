@@ -4,9 +4,8 @@ import PropTypes from 'prop-types';
 import './assets/css/ImageViewer.css';
 import ArtifactFile from 'oip-index/lib/ArtifactFile';
 import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js';
-
 /**
- * This shows how images render from the OIP Index and how they can be utilized
+ * The Image Viewer manifests image ArtifactFiles that are passed from the OIP-Index
  */
 class ImageViewer extends React.Component {
 	constructor(props){
@@ -28,10 +27,6 @@ class ImageViewer extends React.Component {
 		this.drawImageToCanvas()
 	};
 
-	shouldComponentUpdate(nextProps) {
-		return nextProps.ArtifactFile !== this.props.ArtifactFile || nextProps.lockFile !== this.props.lockFile;
-	}
-
 	drawImageToCanvas(){
 		let hash = ""
 		let url = ""
@@ -43,7 +38,6 @@ class ImageViewer extends React.Component {
 		};
 
 		const image = new window.Image();
-		image.crossOrigin = "Anonymous";
 		image.onload = () => {
 			this.canvas.width = this.canvas.parentElement.clientWidth
 			let width_ratio = this.canvas.parentElement.clientWidth / image.width
@@ -107,7 +101,6 @@ ImageViewer.propTypes = {
 	 
 	lockFile: PropTypes.bool,
 	//Call back that passes back the imageDOMNode
-	onImageLoad: PropTypes.func
 };
 		
 export default ImageViewer;

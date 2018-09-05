@@ -1,5 +1,5 @@
 ### Basic Example
-Here is a example of how the images in OIP function.
+An example of how a Image renders into ImageViewer through pulling it from an artifact loaded from OIP-Index. 
 
 ```js
 const { Index } = require('oip-index')
@@ -35,7 +35,7 @@ class ImageViewerExample extends React.Component {
 ```
 
 ### LockFile Example
-When an image is paid and has not been paid for, A blur is applied so that unpurchased content may not be downloaded
+When an Image is supposed to be payment locked ImageViewer will blur and render it useless until the user pays for the ArtifactFile, or blur will dissipate upon verification that the user owns this particular ArtifactFile already. Lockfile will toggle to false upon either one of these realizations.
 
 ```js
 const { Index } = require('oip-index')

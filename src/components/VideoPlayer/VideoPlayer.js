@@ -8,6 +8,10 @@ import { getIPFSURL, getIPFSImage, getFileExtension } from '../../utils.js'
 import 'video.js/dist/video-js.css'
 import './assets/VideoPlayer.css'
 
+/**
+ * The Video Player manifests Videos that are passed from the OIP-Index
+ */
+
 class VideoPlayer extends React.Component {
     constructor(props) {
         super(props);
