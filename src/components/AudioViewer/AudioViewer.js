@@ -20,18 +20,17 @@ class AudioViewer extends Component {
 			colorTwo: '#000',
 			colorThree: '#000'
 		};
+
 	}
 
-	generateColorPalette(imageNode) {
-		console.log("THIS: ", this.state)
-		console.log("IMAGE NODE: ", imageNode);
+	generateColorPalette = (imageNode) => {
 		let colorThief = new ColorThief();
 		let palette = colorThief.getPalette(imageNode, 2);
 		console.log("Palette: ", palette);
-		// this.setState({colorOne: palette[0]})
-		// this.setState({colorTwo: palette[1]})
-		// this.setState({colorThree: palette[2]})
-	}
+		this.setState({colorOne: palette[0]})
+		this.setState({colorTwo: palette[1]})
+		this.setState({colorThree: palette[2]})
+	};
 
 	render() {
 		let file = this.props.ArtifactFile || this.props.ReduxArtifactFile;
@@ -57,8 +56,11 @@ class AudioViewer extends Component {
 				onClick={() => {console.log("Play")}}
 			/>);
 
+
 		return (
-			<div className="AudioViewer-container container-fluid" style={{height: "100%", width: "100%"}}>
+			<div className="AudioViewer-container container-fluid"
+			     style={{height: "100%", width: "100%",
+				     backgroundImage: `linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`}}>
 				<div className="d-flex no-gutters">
 					<div className="">
 						{playbackButton}
