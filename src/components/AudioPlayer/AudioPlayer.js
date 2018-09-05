@@ -74,6 +74,9 @@ AudioPlayer.propTypes = {
      * @type {Object}
      */
     ArtifactFile: PropTypes.object,
+    /**
+     * True / False if paid content has been paid for or has not
+     */
     lockFile: PropTypes.bool
 };
 export default AudioPlayer;
