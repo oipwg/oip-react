@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import { createStore } from 'oip-state'
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper';
-import PaymentButton from '../src/components/PaymentButton'
+import PaymentButton from '../src/components/PaymentButton/PaymentButton.js'
 
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 

@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard, faEye, faPlay } from '@fortawesome/free-solid-svg-icons'
 
-import { formatPriceString, getFileExtension } from '../utils'
+import { formatPriceString, getFileExtension } from '../../utils'
 
 import { payForArtifactFile } from "oip-state/src/actions/Payment/thunks";
 import { fileToUID } from "oip-state/src/actions/ActiveArtifactFiles/thunks";

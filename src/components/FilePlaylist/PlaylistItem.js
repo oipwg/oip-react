@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 
-import PaymentButton from '../PaymentButton'
+import PaymentButton from '../PaymentButton/PaymentButton.js'
 import { getIPFSImage} from '../../utils'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks';
 import './assets/styles/FilePlaylist.css'

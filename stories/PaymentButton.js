@@ -10,7 +10,7 @@ import { createStore } from 'oip-state'
 import { getArtifactOptions, getFileOptions } from './util'
 import { apocalypse, barbershop, barbershop_paid, amsterdam } from './TestArtifacts'
 
-import PaymentButton from '../src/components/PaymentButton'
+import PaymentButton from '../src/components/PaymentButton/PaymentButton.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 

@@ -78,7 +78,7 @@ module.exports = {
       		name: "Payment Components",
       		content: "styleguide/artifacts/components.md",
       		components: [
-	      		'src/components/PaymentButton.js',
+	      		'src/components/PaymentButton/PaymentButton.js',
 	      		'src/components/FilePlaylist/FilePlaylist.js',
       			'src/components/FilePaymentWrapper.js',
       			'src/components/CoinbaseModal.js',
