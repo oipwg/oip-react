@@ -83,7 +83,7 @@ class AudioViewer extends Component {
 						backgroundImage: `linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`}}/>
 				</div>
 				<div className={"border-box"} style={{position: 'absolute', top: '0', left: '0', right: '0', width: '100%', height: '100%', boxSizing: 'border-box', zIndex: '10',
-					padding: '30px 560px 20px 30px'
+					padding: '30px 400px 20px 30px'
 				}}>
 					<div className={"album-art"} style={{position: 'absolute', top: '20px', right: '20px', zIndex: '1', width: '340px', height: '340px'}}>
 						<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
