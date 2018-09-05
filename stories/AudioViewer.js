@@ -36,7 +36,7 @@ const widthOptions = {
 	"60%": "60%",
 	"100%": "100%"
 };
-const widthDefault = '1000px';
+const widthDefault = '800px';
 
 const heightLabel = "Parent Div Height";
 const heightOptions = {
