@@ -16,18 +16,33 @@ class AudioViewer extends Component {
 		this.state = {
 			colorOne: '#fff',
 			colorTwo: '#000',
-			colorThree: '#000'
+			colorThree: '#000',
+			paletteGenerated: false
 		};
 
 	}
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		let paletteGenerated = prevState.paletteGenerated;
+		if (nextProps.ArtifactFile !== prevState.ArtifactFile) {
+			paletteGenerated = false
+		}
+		return {
+			paletteGenerated,
+			ArtifactFile: nextProps.ArtifactFile
+		}
+	}
+
 	generateColorPalette = (imageNode) => {
-		let colorThief = new ColorThief();
-		let palette = colorThief.getPalette(imageNode, 2);
-		console.log("Palette: ", palette);
-		this.setState({colorOne: palette[0]})
-		this.setState({colorTwo: palette[1]})
-		this.setState({colorThree: palette[2]})
+		if (!this.state.paletteGenerated) {
+			console.log("Color Thieving")
+			let colorThief = new ColorThief();
+			let palette = colorThief.getPalette(imageNode, 2);
+			this.setState({colorOne: palette[0]})
+			this.setState({colorTwo: palette[1]})
+			this.setState({colorThree: palette[2]})
+			this.setState({paletteGenerated: true})
+		}
 	};
 
 	render() {
@@ -113,13 +128,3 @@ AudioViewer.propTypes = {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioViewer);
-
-const styles = {
-	circle: {
-		height: '100px',
-		width: '100px',
-		backgroundColor: '#bbb',
-		borderRadius: '50%',
-		// display: 'inline-block'
-	}
-};
