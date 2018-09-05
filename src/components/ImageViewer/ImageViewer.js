@@ -28,6 +28,10 @@ class ImageViewer extends React.Component {
 		this.drawImageToCanvas()
 	};
 
+	shouldComponentUpdate(nextProps) {
+		return nextProps.ArtifactFile !== this.props.ArtifactFile || nextProps.lockFile !== this.props.lockFile;
+	}
+
 	drawImageToCanvas(){
 		let hash = ""
 		let url = ""
@@ -39,6 +43,7 @@ class ImageViewer extends React.Component {
 		};
 
 		const image = new window.Image();
+		image.crossOrigin = "Anonymous";
 		image.onload = () => {
 			this.canvas.width = this.canvas.parentElement.clientWidth
 			let width_ratio = this.canvas.parentElement.clientWidth / image.width
@@ -56,6 +61,9 @@ class ImageViewer extends React.Component {
 			if (this.props.ArtifactFile === undefined){
 				canvas_context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 				url = ""
+			}
+			if (this.props.onImageLoad) {
+				this.props.onImageLoad(image)
 			}
 		}
 		// setting of hash to render on image canvas
@@ -97,7 +105,8 @@ ImageViewer.propTypes = {
 	 */
 	ArtifactFile: PropTypes.object,
 	 
-	lockFile: PropTypes.bool
+	lockFile: PropTypes.bool,
+	onImageLoad: PropTypes.func
 };
 		
 export default ImageViewer;
