@@ -19,9 +19,11 @@ class AudioWaveSurfer extends Component {
 	componentDidMount() {
 		this.wavesurfer = WaveSurfer.create({
 			container: this.wavesurferNode,
-			waveColor: '#f50',
-			progressColor: 'grey',
-			responsive: true
+			waveColor: 'white',
+			progressColor: '#0F2027',
+			responsive: true,
+			cursorColor: 'grey',
+			// hideScrollbar: true
 		});
 		// let _this = this;
 		this.wavesurfer.on('ready', function () {

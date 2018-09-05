@@ -4,9 +4,7 @@ import {connect} from 'react-redux'
 import ColorThief from 'color-thief'
 import { PlayButton, PauseButton } from 'react-player-controls'
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
-import {getIPFSURL, getIPFSImage} from "../../utils";
+import {getIPFSURL} from "../../utils";
 import AudioWaveSurfer from './AudioWaveSurfer';
 import PosterWrapper from '../ImageViewer/PosterWrapper'
 import './assets/styles/AudioViewer.scss'
@@ -58,27 +56,43 @@ class AudioViewer extends Component {
 
 
 		return (
-			<div className="AudioViewer-container container-fluid"
-			     style={{height: "100%", width: "100%",
-				     backgroundImage: `linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`}}>
-				<div className="d-flex no-gutters">
-					<div className="">
-						{playbackButton}
+			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
+				<div style={{height: '100%'}}>
+					<div className={"background-gradient"} style={{height: "100%", position: 'relative', zIndex: '0',
+						backgroundImage: `linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`}}/>
+				</div>
+				<div className={"border-box"} style={{position: 'absolute', top: '0', left: '0', right: '0', width: '100%', height: '100%', boxSizing: 'border-box', zIndex: '10',
+					padding: '30px 560px 20px 30px'
+				}}>
+					<div className={"album-art"} style={{position: 'absolute', top: '20px', right: '20px', zIndex: '1', width: '340px', height: '340px'}}>
+						<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
 					</div>
-					<div className="">
-							<div>{artist}</div>
-							<div>{title}</div>
-					</div>
-					<div className="ml-auto">
-						<div style={{height: '300px', width: '300px'}}>
-							<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
+					<div className={"album-title"}>
+						<div className={"hyphenate"} style={{overflowWrap: "break-word", wordWrap: 'break-word'}}>
+							<div className={"title-container d-flex"}>
+								<div className={"playback-button"} style={{height: '60px', width: '60px', marginRight: '10px'}}>
+									{playbackButton}
+								</div>
+								<div className={"track-info"} style={{flex: '1', minWidth: '0px'}}>
+									<div className={"artist-info mr-0"} style={{marginBottom: '7px'}}>
+										<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{artist}</span>
+									</div>
+									<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '22px', color: 'white', lineHeight: '36px'}}>{title}</span>
+								</div>
+								<div className={"soundbar"}
+								     style={{position: 'absolute', bottom: '0', 'left': '30px', right: '390px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>
+									<div className={"waveform_"} style={{marginBottom: '30px', height: '100px', zIndex: '1'}}>
+										<div className={"waveform_wrapper"} style={{position: 'relative', 'width': '100%', height: '100%'}}>
+											<div className={"waveform_wrapper_loaded"} style={{position: 'absolute', left: '0', top: '0', right: '0', bottom: '0'}}>
+												<AudioWaveSurfer ArtifactFile={file}/>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div>
-					<AudioWaveSurfer ArtifactFile={file}/>
-				</div>
-
 			</div>
 		);
 	}
