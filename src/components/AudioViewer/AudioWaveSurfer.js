@@ -16,6 +16,7 @@ class AudioWaveSurfer extends Component {
 
 		this.getAudioURL = this.getAudioURL.bind(this);
 	}
+	
 	componentDidMount() {
 		this.wavesurfer = WaveSurfer.create({
 			container: this.wavesurferNode,
@@ -49,17 +50,21 @@ class AudioWaveSurfer extends Component {
 	}
 
 	render() {
+		if (this.props.ReduxArtifactFile.isPlaying) {
+			this.wavesurfer.play()
+		}
+		if (this.props.ReduxArtifactFile.isPaused) {
+			this.wavesurfer.pause()
+		}
 		return (
-			<div className="wavesurfer" ref={node => this.wavesurferNode = node}>
-
-			</div>
+			<div className="wavesurfer" ref={node => this.wavesurferNode = node}/>
 		);
 	}
 }
 
 function mapStateToProps(state) {
 	return {
-		state: state
+		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
 	}
 }
 

@@ -1,10 +1,12 @@
 import React from 'react';
-import { createStore } from 'oip-state'
+import {createStore} from 'oip-state'
 import { Provider } from 'react-redux'
 
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
+import { setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+
 
 import AudioViewer from '../src/components/AudioViewer/AudioViewer'
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
@@ -53,7 +55,30 @@ const heightOptions = {
 };
 const heightDefault = '400px';
 
-stories.add('Test', () => {
+stories.add('Test using redux', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
+	const artifact = artifacts.map[artifact_value];
+
+	const artifact_files = getFileOptions(artifact);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const artifact_file = artifact_files.map[file_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault);
+	const height_value = select(heightLabel, heightOptions, heightDefault);
+
+	store.dispatch(setActiveArtifact(artifact));
+	store.dispatch(setActiveFile(artifact_file));
+
+	return (
+		<Provider store={store}>
+			<div style={{width: width_value, height: height_value}}>
+				<AudioViewer/>
+			</div>
+		</Provider>
+	)
+}, {notes: 'This story uses Redux to supply the Artifact instead of getting passed one manually'});
+
+stories.add('Test with artifact prop', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
 	const artifact = artifacts.map[artifact_value];
 

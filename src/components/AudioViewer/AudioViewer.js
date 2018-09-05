@@ -53,7 +53,7 @@ class AudioViewer extends Component {
 	};
 
 	render() {
-		let file = this.props.ArtifactFile || this.props.ReduxArtifactFile;
+		let file = this.props.ArtifactFile || this.props.ReduxArtifactFile.ArtifactFile;
 		let url, artist, title;
 		if (file) {
 			url = getIPFSURL(file);
@@ -64,7 +64,6 @@ class AudioViewer extends Component {
 			title = "unknown";
 		}
 
-		//@ToDO: add redux variables for play state
 		let isPlaying = this.props.ReduxArtifactFile.isPlaying;
 		const playbackButton = isPlaying ? (
 			<PauseButton
