@@ -12,7 +12,7 @@ class PosterWrapper extends Component {
 			}
 
 		}
-		return <ImageViewer ArtifactFile={posterFile}/>
+		return <ImageViewer ArtifactFile={posterFile} onImageLoad={this.props.onImageLoad}/>
 	}
 }
 
