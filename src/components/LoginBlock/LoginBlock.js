@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import ButtonCheckbox from '../ButtonCheckbox.js';
+import ButtonCheckbox from '../ButtonCheckbox/ButtonCheckbox.js';
 
 import { accountLogin } from "oip-state/src/actions/Account/thunks";
 

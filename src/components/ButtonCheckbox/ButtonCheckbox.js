@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-
+/**
+ * The ButtonCheckbox is being utilized within both the Login and Register Blocks
+ */
 class ButtonCheckbox extends Component {
 	constructor(props){
 		super(props)

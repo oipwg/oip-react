@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import ButtonCheckbox from './ButtonCheckbox.js';
+import ButtonCheckbox from './ButtonCheckbox/ButtonCheckbox.js';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { accountRegister } from "oip-state/src/actions/Account/thunks";
