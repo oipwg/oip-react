@@ -106,6 +106,7 @@ ImageViewer.propTypes = {
 	ArtifactFile: PropTypes.object,
 	 
 	lockFile: PropTypes.bool,
+	//Call back that passes back the imageDOMNode
 	onImageLoad: PropTypes.func
 };
 		
