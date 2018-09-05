@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import validator from 'validator';
 
-import ButtonCheckbox from './ButtonCheckbox/ButtonCheckbox.js';
+import ButtonCheckbox from '../ButtonCheckbox/ButtonCheckbox.js';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import { accountRegister } from "oip-state/src/actions/Account/thunks";
@@ -18,6 +18,10 @@ const STATUS = {
 	ERROR: "ERROR",
 	SUCCESS: "SUCCESS"
 }
+/**
+ * The RegisterBlock allows users to easily create accounts for logging in and then access for any page.
+ *  
+ */
 
 class RegisterBlock extends Component {
 	constructor(props){

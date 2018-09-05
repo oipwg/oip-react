@@ -9,7 +9,7 @@ import { createStore } from 'oip-state'
 
 import { logout } from 'oip-state/src/actions/Account/actions'
 
-import RegisterBlock from '../src/components/RegisterBlock'
+import RegisterBlock from '../src/components/RegisterBlock/RegisterBlock.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 

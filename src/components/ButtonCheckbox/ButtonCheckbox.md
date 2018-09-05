@@ -26,14 +26,7 @@ class ButtonCheckboxExample extends Component {
 	}
 	render() {
 		return (
-			<span className="button-checkbox">
-				<button 
-					type="button" 
-					className={"btn btn" + (this.state.checked ? "-success" : "-danger btn-outline-danger") } 
-					onClick={this._onClick}>
-					{this.props.text}
-				</button>
-			</span>
+			<ButtonCheckbox />
 		);
 	}
 }
