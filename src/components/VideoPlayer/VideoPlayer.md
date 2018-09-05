@@ -70,7 +70,7 @@ class VideoPlayerExample extends React.Component {
 ;<VideoPlayerExample />
 ```
 ### Change Example
-When the Artifact File is rendered but has multiple within the Artifact (Video, Trailer, Poster) you are able to switch between each one that is manifested by switching out the file that is to be rendered in the state.
+When the Artifact File is rendered but has multiple within the Artifact (Video, Trailer, Poster) you are able to switch between each one that is manifested by switching out the file that is to be rendered in the state. In this example, the trailer is being loaded.
 
 ```js
 const { Index } = require('oip-index')

@@ -243,9 +243,18 @@ class VideoPlayer extends React.Component {
 }
 
 VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
-VideoPlayer.propTypes = {
-    ArtifactFile: PropTypes.object,
-    options: PropTypes.object,
+VideoPlayer.propTypes = { 
+	/**
+	* An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
+	*/
+	ArtifactFile: PropTypes.object,
+	/**
+	 * Options are a parameter that can be utilized 
+	 */
+	options: PropTypes.object,
+	/**
+	 * True / False if paid content has been paid for or has not
+	 */
 	lockFile: PropTypes.bool,
 	usePosterFile: PropTypes.bool
 };
