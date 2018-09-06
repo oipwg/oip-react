@@ -7,7 +7,6 @@ import { withKnobs, select} from '@storybook/addon-knobs';
 import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
 import { setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
-
 import AudioViewer from '../src/components/AudioViewer/AudioViewer'
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
@@ -72,7 +71,7 @@ stories.add('Test using redux', () => {
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value, height: height_value}}>
-				<AudioViewer/>
+				<AudioViewer  ArtifactFile={artifact_file} />
 			</div>
 		</Provider>
 	)
