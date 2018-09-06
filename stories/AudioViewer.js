@@ -54,7 +54,7 @@ const heightOptions = {
 };
 const heightDefault = '400px';
 
-stories.add('Test using redux', () => {
+stories.add('Via Redux', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
 	const artifact = artifacts.map[artifact_value];
 
@@ -71,13 +71,13 @@ stories.add('Test using redux', () => {
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value, height: height_value}}>
-				<AudioViewer  ArtifactFile={artifact_file} />
+				<AudioViewer />
 			</div>
 		</Provider>
 	)
 }, {notes: 'This story uses Redux to supply the Artifact instead of getting passed one manually'});
 
-stories.add('Test with artifact prop', () => {
+stories.add('Via Prop', () => {
 	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
 	const artifact = artifacts.map[artifact_value];
 
@@ -89,6 +89,7 @@ stories.add('Test with artifact prop', () => {
 	const height_value = select(heightLabel, heightOptions, heightDefault);
 
 	store.dispatch(setActiveArtifact(artifact));
+
 	return (
 		<Provider store={store}>
 			<div style={{width: width_value, height: height_value}}>

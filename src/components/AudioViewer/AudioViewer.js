@@ -5,9 +5,8 @@ import ColorThief from 'color-thief'
 import { PlayButton, PauseButton } from 'react-player-controls'
 
 import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
-import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
-import {getIPFSURL} from "../../utils";
 import AudioWaveSurfer from './AudioWaveSurfer';
 import PosterWrapper from '../ImageViewer/PosterWrapper'
 import './assets/styles/AudioViewer.scss'
@@ -28,6 +27,7 @@ class AudioViewer extends Component {
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let paletteGenerated = prevState.paletteGenerated
 		if (nextProps.ArtifactFile !== prevState.ArtifactFile) {
+			//we set this variable to stop an infinite loop in the generateColorPalette function in which the image node gets passed repeatedly
 			paletteGenerated = false
 		}
 		return {
@@ -41,6 +41,7 @@ class AudioViewer extends Component {
 	}
 
 	generateColorPalette = (imageNode) => {
+		//if a palette has not been generated already, generate one
 		if (!this.state.paletteGenerated) {
 			console.log("Color Thieving")
 			let colorThief = new ColorThief();
@@ -52,16 +53,23 @@ class AudioViewer extends Component {
 		}
 	};
 
+	setActiveFile = (file) => {
+		this.props.setActiveFile(file)
+	}
+
 	render() {
 		let file = this.props.ArtifactFile || this.props.ReduxArtifactFile.ArtifactFile;
-		let url, artist, title;
+		let artist, title;
 		if (file) {
-			url = getIPFSURL(file);
 			artist = file.parent.getDetail('artist');
 			title = file.getFilename();
 		} else {
 			artist = "unknown";
 			title = "unknown";
+		}
+
+		if (this.props.ArtifactFile && fileToUID(this.props.ArtifactFile) !== this.props.ActiveFileUID) {
+			this.setActiveFile(this.props.ArtifactFile)
 		}
 
 		let isPlaying = this.props.ReduxArtifactFile.isPlaying;
@@ -74,7 +82,6 @@ class AudioViewer extends Component {
 				isEnabled={true}
 				onClick={() => this.playPause(fileToUID(file), true)}
 			/>);
-
 
 		return (
 			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
@@ -121,12 +128,14 @@ class AudioViewer extends Component {
 
 function mapStateToProps(state) {
 	return {
+		ActiveFileUID: state.ActiveArtifactFiles.active,
 		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
 	}
 }
 
 const mapDispatchToProps = {
-	playPauseAudioFile
+	playPauseAudioFile,
+	setActiveFile
 }
 
 AudioViewer.propTypes = {
