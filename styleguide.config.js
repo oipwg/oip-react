@@ -53,7 +53,7 @@ module.exports = {
       			'src/components/AccountButton/AccountButton.js',
       			'src/components/LoginBlock/LoginBlock.js',
       			'src/components/RegisterBlock/RegisterBlock.js',
-            'src/components/LoginModal.js',
+            'src/components/LoginModal/LoginModal.js',
             'src/components/ButtonCheckbox/ButtonCheckbox.js'
       		]
       	},

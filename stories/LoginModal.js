@@ -10,7 +10,7 @@ import { createStore } from 'oip-state'
 import { logout } from 'oip-state/src/actions/Account/actions'
 
 import AccountButton from '../src/components/AccountButton/AccountButton.js'
-import LoginModal from '../src/components/LoginModal'
+import LoginModal from '../src/components/LoginModal/LoginModal.js'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
