@@ -95,15 +95,18 @@ class ImageViewer extends React.Component {
 ImageViewer.SUPPORTED_FILE_TYPES = ["jpeg", "jpg", "gif", "png", "svg", "bmp", "ico"];
 ImageViewer.propTypes = {
 	/**
-	* An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
+	* The artifact that you wish to display
 	*/
 	ArtifactFile: PropTypes.object, 
 	/** 
-	* True / False if paid content has been paid for or has not
+	* Lock or Unlock content
 	*/
 	lockFile: PropTypes.bool,
 
 	//Call back that passes back the imageDOMNode
+	/**
+	* A optional Callback function that passes up the imageDomNode if asked for
+	*/
 	onImageLoad: PropTypes.func
 };
 		
