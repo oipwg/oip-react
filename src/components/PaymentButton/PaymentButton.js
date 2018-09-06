@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faDownload, faCircleNotch, faExclamationCircle, faCreditCard, faEye, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faDownload, faCircleNotch, faExclamationCircle, faPause, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 import { formatPriceString, getFileExtension } from '../../utils'
 
@@ -24,13 +24,19 @@ class PaymentButton extends Component {
 	}
 
 	render() {
-		let fileState, ext;
+		let fileState, ext, uid;
 		ext = getFileExtension(this.props.ArtifactFile);
+		uid = fileToUID(this.props.ArtifactFile);
+		let isPlaying = this.props.fileIsPlaying && uid === this.props.ActiveArtifactFiles.active
 		let viewString;
 		switch (ext) {
 			case 'mp4':
 			case 'mp3':
-				viewString = 'Play';
+				if (isPlaying) {
+					viewString = 'Pause'
+				} else {
+					viewString = 'Play';
+				}
 				break;
 			default:
 				viewString = 'View';
@@ -101,7 +107,7 @@ class PaymentButton extends Component {
 			button_class = "outline-info";
 
 			if (this.props.type === "view")
-				button_icon = faPlay
+				button_icon = isPlaying ? faPause : faPlay
 				payment_string = viewString;
 			if (this.props.type === "buy")
 				payment_string = "Download";
@@ -158,7 +164,8 @@ PaymentButton.propTypes = {
 
 function mapStateToProps(state) {
 	return {
-		ActiveArtifactFiles: state.ActiveArtifactFiles
+		ActiveArtifactFiles: state.ActiveArtifactFiles,
+		fileIsPlaying: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].isPlaying,
 	}
 }
 
