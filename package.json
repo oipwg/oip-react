@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "npm run start:dev",
-    "start:dev": "webpack-dev-server --config .storybook/webpack.dev.js",
+    "start:dev": "npm run storybook",
     "start:prod": "npm run build && node config/production_server.js",
     "build": "webpack --config config/webpack.prod.js",
     "test": "node scripts/test.js --env=jsdom",
@@ -26,7 +26,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.0-14",
     "@fortawesome/free-solid-svg-icons": "^5.1.0-11",
     "@fortawesome/react-fontawesome": "0.1.0-11",
-    "color-thief": "^2.2.3",
+    "@mariotacke/color-thief": "3.0.1",
     "core-js": "^2.5.7",
     "iso-639-1": "^2.0.3",
     "oip-index": "^1.1.0",

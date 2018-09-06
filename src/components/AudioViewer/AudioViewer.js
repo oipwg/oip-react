@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
-import ColorThief from 'color-thief'
+import ColorThief from '@mariotacke/color-thief'
 import { PlayButton, PauseButton } from 'react-player-controls'
 
 import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
