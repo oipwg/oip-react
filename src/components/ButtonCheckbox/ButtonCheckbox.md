@@ -2,33 +2,25 @@
 An example of how a ButtonCheckbox could be utilized
 
 ```js
-
-const { Component } = require('react');
-
-class ButtonCheckboxExample extends Component {
+class ButtonCheckboxExample extends React.Component {
 	constructor(props){
 		super(props)
 
-		this.state = {
-			checked: false
-		}
-
-		this._onClick = this._onClick.bind(this);
+		this.onButtonChange = this.onButtonChange.bind(this);
 	}
-	_onClick(){
-		let new_checked_state = !this.state.checked
-
-		this.setState({ checked: new_checked_state })
-
-		if (this.props.onChange){
-			this.props.onChange(new_checked_state)
-		}
+	onButtonChange(new_value){
+		console.log("Button Has changed! " + new_value)
 	}
 	render() {
 		return (
-			<ButtonCheckbox />
+			<ButtonCheckbox text="my button" onChange={this.onButtonChange} />
 		);
 	}
 }
 ;<ButtonCheckboxExample />
+```
+
+### Test Example
+```js
+<ButtonCheckbox text="my text" onChange={(new_value) => { console.log("Changed! " + new_value) } } />
 ```
