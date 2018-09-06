@@ -245,23 +245,28 @@ class VideoPlayer extends React.Component {
 VideoPlayer.SUPPORTED_FILE_TYPES = ["mp4"];
 VideoPlayer.propTypes = { 
 	/**
-	* An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
+	* The artifact that you wish to display
 	*/
 	ArtifactFile: PropTypes.object,
 	/**
-	 * Options are a parameter that can be utilized
-	 * @param {options}  - Poster
-	 * Preload
-	 * fluid
-	 * controls
-	 * autoplay
-	 * sources
+	 * Parameters that can be utilized
+	 * @param {string} Poster A URL to an image that displays before the video begins playing. This is often a frame of the video or a custom title screen. As soon as the user hits "play" the image will go away.
+	 * 
+	 * @param {string} Preload Suggests to the browser whether or not the video data should begin downloading as soon as the video element is loaded. Supported values are: 'auto', 'metadata', and 'none'
+	 * 
+	 * @param {boolean} fluid When true, the Video.js player will have a fluid size. In other words, it will scale to fit its container. Also, if the video element has the "vjs-fluid", this option is automatically set to true.
+	 * @param {boolean} controls Determines whether or not the player has controls that the user can interact with. Without controls the only way to start the video playing is with the autoplay attribute or through the Player API.  
+	 * @param {boolean} autoplay When true, videojs will autoplay and when false will not autoplay. autoplay is also a string that the values of 'muted', 'play', and 'any' can be passed through. [Strings](https://docs.videojs.com/tutorial-options.html#autoplay)
+	 * @param {Array} sources  An array of objects that mirror the native video element's capability to have a series of child source elements. This should be an array of objects with the src and type properties.
 	 */
 	options: PropTypes.object,
 	/**
-	 * True / False if paid content has been paid for or has not
+	 * Lock or Unlock content
 	 */
 	lockFile: PropTypes.bool,
+	/**
+	 * Choice of showing a poster before playing a video
+	 */
 	usePosterFile: PropTypes.bool
 };
 
