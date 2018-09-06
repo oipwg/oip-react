@@ -5,7 +5,7 @@ import { Index } from 'oip-index';
 import PropTypes from 'prop-types';
 import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js'
 /**
- * The Audio Player allows the implementation of audio ArtifactFiles that are passed from OIP-Index
+ * The Audio Player allows the implementation of ArtifactFiles related to Audio 
  */
 class AudioPlayer extends React.Component {
     constructor(props){
@@ -70,12 +70,12 @@ class AudioPlayer extends React.Component {
 AudioPlayer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "wav"];
 AudioPlayer.propTypes = {
     /**
-     * An ArtifactFile is passed through a Artifact from the OIP Index by a specific TXID
+     * The artifact that you wish to display
      * @type {Object}
      */
     ArtifactFile: PropTypes.object,
     /**
-     * True / False if paid content has been paid for or has not
+     * Lock or Unlock content
      */
     lockFile: PropTypes.bool
 };

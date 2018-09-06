@@ -35,7 +35,7 @@ class AudioPlayerExample extends React.Component {
 ```
 
 ### LockFile Example
-When an Audio File is suppossed to be paid for, Audio Player will lock it and render it non-playable. User may be able to use the controls but will not be able to play or download, Autoplays once payment has been verified.
+If the props of lockFile is passed through and set to true, The Audio will not be accessable to play unless lockFile is set back to false 
 
 ```js
 const { Index } = require('oip-index')
@@ -70,7 +70,7 @@ class AudioPlayerExample extends React.Component {
 ;<AudioPlayerExample />
 ```
 ### Change Example
-When the Artifact File is rendered but has multiple within the Artifact (Album, Playlist, etc...) you are able to switch between each one that is manifested by switching out the file that is to be rendered in the state.
+When the Artifact File is rendered but has multiple within the Artifact (Album, Playlist, etc...) you are able to switch between each one that is displayed by switching out the file that is to be rendered in the state.
 
 ```js
 const { Index } = require('oip-index')
@@ -84,21 +84,32 @@ class AudioPlayerExample extends React.Component {
         this.state = {
             file: undefined
         }
+        this.onButtonClick = this.onButtonClick.bind(this)
     }
     componentDidMount(){
         index.getArtifact("061951").then((artifact) => {
             let files = artifact.getFiles()
 
             this.setState({
-                file: files[1]
+                artifact: artifact,
+                file: files[0]
             })
-        }).catch((e) => {
-            // Error
-        })
+        }).catch((e) => { })
     }
+     onButtonClick(file_index){
+        let files = this.state.artifact.getFiles()
+
+         this.setState({
+            file: files[file_index]
+        })
+     }
 	render() {
 		return (
-			<AudioPlayer ArtifactFile={this.state.file} />
+			<div>  
+            <button className="btn btn-primary" onClick={() => {                this.onButtonClick(0) }}>Previous Song</button>
+            <button className="btn btn-primary" style={{margin: "10px"}}       onClick={() => { this.onButtonClick(1) }}>Next Song</button>
+            <AudioPlayer ArtifactFile={this.state.file} />
+            </div>
 		)
 	}
 }
