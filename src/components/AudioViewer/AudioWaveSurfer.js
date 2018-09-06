@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import WaveSurfer from 'wavesurfer.js';
 // import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 // import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
+import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { setActiveFile, fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import {getFileExtension, getIPFSURL} from "../../utils";
@@ -33,6 +34,8 @@ class AudioWaveSurfer extends Component {
 			ArtifactFile: undefined,
 			ReduxArtifactFile: undefined
 		};
+
+		this.initialLoad = true;
 
 	}
 
@@ -78,6 +81,14 @@ class AudioWaveSurfer extends Component {
 
 		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode});
 		this.wavesurfer.on('ready', () => {
+			console.log("Wavesurfer ready event")
+			if (((!this.state.ReduxArtifactFile.isPaid) || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned)))) {
+				if (this.initialLoad) {
+					this.initialLoad = false;
+				} else {
+					this.props.playPauseAudioFile(fileToUID(this.state.ReduxArtifactFile.ArtifactFile), true)
+				}
+			}
 			// console.log("(6) Wavesurfer is now ready")
 		});
 		//this function checks to see if there's an artifact passed to props and sets it to active. does nothing if no prop
@@ -94,9 +105,20 @@ class AudioWaveSurfer extends Component {
 
 			let r = this.props.ReduxArtifactFile;
 			//play/pause wavesurfer based on redux state that was set to local state by getDerived
-			if (r.isPlaying) {this.wavesurfer.play()}
-			if (r.isPaused) {this.wavesurfer.pause()}
+			if (r.isPlaying) {
+				this.wavesurfer.play()
+				this.isPlaying = true;
+			}
+			if (r.isPaused) {
+				this.wavesurfer.pause()
+				this.isPlaying = false
+			}
+
+			// if (((!this.state.ReduxArtifactFile.isPaid) || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned)))) {
+			//	@ToDo: Add payment logic for paid artifact files
+			// }
 		}
+		//on artifact file switch
 		if (this.state.wavesurfer.stop) {
 			//if there was an artifact switch, either in the store or via props, set it to active it if from props, stop, reset, and load it's url
 
@@ -150,7 +172,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-	setActiveFile
+	setActiveFile,
+	playPauseAudioFile
 }
 
 AudioWaveSurfer.supportedFileTypes = ['wav', 'mp3', 'ogg'];

@@ -136,7 +136,7 @@ class FilePlaylist extends React.Component {
 }
 
 FilePlaylist.propTypes = {
-	//if an Artifact is passed down, the latter two props must not be passed
+	//if an Artifact is passed down, the next two props must not be passed
 	Artifact: PropTypes.object,
 	//can be an array of Artifacts, ArtifactFiles, or both
 	Files: PropTypes.array,

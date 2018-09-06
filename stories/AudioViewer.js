@@ -8,6 +8,8 @@ import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
 import { setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import AudioViewer from '../src/components/AudioViewer/AudioViewer'
+import FilePlaylist from '../src/components/FilePlaylist/FilePlaylist'
+
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
 
@@ -94,6 +96,27 @@ stories.add('Via Prop', () => {
 		<Provider store={store}>
 			<div style={{width: width_value, height: height_value}}>
 				<AudioViewer ArtifactFile={artifact_file} />
+			</div>
+		</Provider>
+	)
+}, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
+
+stories.add('With Playlist', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "Cor Metallicum");
+	const artifact = artifacts.map[artifact_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault);
+	const height_value = select(heightLabel, heightOptions, heightDefault);
+
+	store.dispatch(setActiveArtifact(artifact));
+
+	return (
+		<Provider store={store}>
+			<div style={{width: width_value, height: height_value}}>
+				<AudioViewer />
+				<div>
+					<FilePlaylist Files={artifact}/>
+				</div>
 			</div>
 		</Provider>
 	)
