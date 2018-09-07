@@ -121,3 +121,29 @@ stories.add('With Playlist', () => {
 		</Provider>
 	)
 }, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
+
+stories.add('Load from none', () => {
+	const artifact_value = select(artifacts.title, artifacts.options, "None");
+	const artifact = artifacts.map[artifact_value];
+
+	const artifact_files = getFileOptions(artifact);
+	const file_value = select(artifact_files.title, artifact_files.options, artifact_files.default_file);
+	const artifact_file = artifact_files.map[file_value];
+
+	const width_value = select(widthLabel, widthOptions, widthDefault);
+	const height_value = select(heightLabel, heightOptions, heightDefault);
+
+	store.dispatch(setActiveArtifact(artifact));
+	store.dispatch(setActiveFile(artifact_file));
+
+	return (
+		<Provider store={store}>
+			<div style={{width: width_value, height: height_value}}>
+				<AudioViewer />
+				<div>
+					<FilePlaylist Files={artifact}/>
+				</div>
+			</div>
+		</Provider>
+	)
+}, {notes: 'Use knobs to switch between live artifacts & parent div widths!'});
