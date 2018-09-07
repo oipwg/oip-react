@@ -39,6 +39,10 @@ class FileViewer extends React.Component {
 		if (!FileViewerComponent && this.props.ArtifactFile !== undefined){
 			FileViewerComponent = <div style={{backgroundColor: "black"}}><h1 style={{color: "#fff", textAlign: "center", marginTop: "10%"}}>Unsupported File Format (.{extension})</h1></div>;
 		}
+
+		if (!FileViewerComponent)
+			FileViewerComponent = <div></div>
+
 		return FileViewerComponent
 	}
 }
