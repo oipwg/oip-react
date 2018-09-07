@@ -228,7 +228,7 @@ class VideoPlayer extends React.Component {
     render() {
         return (
             <div data-vjs-player className="videojs-container">
-                <video ref={node => this.videoNode = node} className="video-js vjs-oip vjs-big-play-centered">
+                <video onContextMenu={(e) => {e.preventDefault()}} ref={node => this.videoNode = node} className="video-js vjs-oip vjs-big-play-centered">
                     <p className="vjs-no-js">
                         To view this video please enable JavaScript, and consider upgrading to a
                         web browser that
