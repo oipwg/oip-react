@@ -47,7 +47,7 @@ class MoviePageRecipe extends React.Component {
 				</div>
 				<div className="row">
 					<h3 className="mx-auto">
-						<ArtifactArtist/>
+						By: <ArtifactArtist/>
 					</h3>
 				</div>
 
@@ -57,7 +57,7 @@ class MoviePageRecipe extends React.Component {
 					</div>
 				</div>
 
-				<div className="row">
+				<div className="row" style={{paddingTop: "25px", maxHeight: "360px"}}>
 					<div className="col-12">
 						<FilePlaylist />
 					</div>
