@@ -228,3 +228,7 @@ $color-active: fade-out($color-hover, 0.5);
 		}
 	}
 }
+
+.PlayButton.isEnabled, .PauseButton.isEnabled {
+  outline: none;
+}
