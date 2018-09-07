@@ -119,16 +119,16 @@ class FilePlaylist extends React.Component {
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
 					{/*</li>*/}
-					{files.map( (file, i) => {
+					{this.props.Files ? files.map( (file, i) => {
 						return (
 							<li key={fileToUID(file)} className="p-0 m-0 border-bottom" style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
 								<PlaylistItem
 									File={file}
-									index={i}
+									index={i+1}
 								/>
 							</li>
 						)
-					})}
+					}) : null}
 				</ul>
 			</div>
 		)
@@ -139,7 +139,10 @@ FilePlaylist.propTypes = {
 	//if an Artifact is passed down, the next two props must not be passed
 	Artifact: PropTypes.object,
 	//can be an array of Artifacts, ArtifactFiles, or both
-	Files: PropTypes.array,
+	Files: PropTypes.oneOfType([
+		PropTypes.array,
+		PropTypes.object
+	]),
 	//if passing in an array of files, a default file must be passed down
 	defaultFile: PropTypes.object,
 	//custom title
