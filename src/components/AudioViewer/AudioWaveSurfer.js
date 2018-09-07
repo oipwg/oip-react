@@ -47,11 +47,13 @@ class AudioWaveSurfer extends Component {
 		wavesurfer.stop = false;
 		if (nextProps.ReduxArtifactFile && nextProps.ReduxArtifactFile !== prevState.ReduxArtifactFile) {
 			// console.log("(2) New redux file")
+			console.log("(2) New redux file")
 			// console.log("(2.1) Check redux artifact files: ", JSON.stringify(nextProps.ReduxArtifactFile, null, 4), JSON.stringify(prevState.ReduxArtifactFile, null, 4))
 
 			//want to prevent running this on initial load
 			if (prevState.ReduxArtifactFile) {
 				// console.log("(3) Setting wavesurfer.stop to : ", nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)
+				console.log("(3) Setting wavesurfer.stop to : ", nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)
 				// console.log("(3.1) Check redux artifact files: ", JSON.stringify(nextProps.ReduxArtifactFile.ArtifactFile, null, 4), JSON.stringify(prevState.ReduxArtifactFile.ArtifactFile, null, 4))
 
 				//stop and reset the player if the active file has switched
@@ -148,6 +150,7 @@ class AudioWaveSurfer extends Component {
 			return getIPFSURL(af)
 		} else {
 			console.log(`${af}: unsupported`);
+			console.log(`${ArtifactFile}: unsupported`);
 			return undefined
 		}
 	};
