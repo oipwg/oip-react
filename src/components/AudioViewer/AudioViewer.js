@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
 import { PlayButton, PauseButton } from 'react-player-controls'
 
-import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
+import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import AudioWaveSurfer from './AudioWaveSurfer';
@@ -38,10 +38,6 @@ class AudioViewer extends Component {
 			ArtifactFile: nextProps.ArtifactFile,
 			ReduxArtifactFile: nextProps.ReduxArtifactFile
 		}
-	}
-
-	playPause = (uid, bool) => {
-		this.props.playPauseAudioFile(uid, bool)
 	}
 
 	generateColorPalette = (imageNode) => {
@@ -84,15 +80,13 @@ class AudioViewer extends Component {
 		}
 
 		let isPlaying = this.props.ReduxArtifactFile ? this.props.ReduxArtifactFile.isPlaying : false;
-		const playbackButton = isPlaying ? (
-			<PauseButton
-				isEnabled={true}
-				onClick={() => this.playPause(fileToUID(file), false)}
-			/>) : (
-			<PlayButton
-				isEnabled={true}
-				onClick={() => this.playPause(fileToUID(file), true)}
-			/>);
+		
+		let playbackButton
+
+		if (isPlaying) 
+			playbackButton = <PauseButton isEnabled={true} onClick={() => this.pauseFile(fileToUID(file))} />
+		else
+			playbackButton = <PlayButton isEnabled={true} onClick={() => this.playFile(fileToUID(file))} />
 
 		return (
 			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
@@ -147,7 +141,8 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-	playPauseAudioFile,
+	playFile,
+	pauseFile,
 	setActiveFile
 }
 

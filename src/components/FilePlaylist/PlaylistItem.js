@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import PaymentButton from '../PaymentButton/PaymentButton.js'
 import { getIPFSImage} from '../../utils'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks';
-import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions';
+import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions';
 
 import './assets/styles/FilePlaylist.css'
 import defaultImg from './assets/images/Dull.jpg';
@@ -29,9 +29,9 @@ class PlaylistItem extends React.Component {
 			//@ToDo: instead of setting activeFile to undefined, pause/play it
 			if (activeFiles[activeFiles.active]) {
 				if (activeFiles[activeFiles.active].isPlaying) {
-					this.props.playPauseAudioFile(this.uid, false)
+					this.props.pauseFile(this.uid)
 				} else if (activeFiles[activeFiles.active].isPaused) {
-					this.props.playPauseAudioFile(this.uid, true)
+					this.props.playFile(this.uid)
 				}
 			}
 			// this.props.setActiveFile(undefined)
@@ -124,7 +124,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
 	setActiveFile,
-	playPauseAudioFile
+	playFile,
+	pauseFile
 };
 
 PlaylistItem.propTypes = {

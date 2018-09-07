@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import WaveSurfer from 'wavesurfer.js';
 // import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 // import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
-import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
+import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { setActiveFile, fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import {getFileExtension, getIPFSURL} from "../../utils";
@@ -85,7 +85,7 @@ class AudioWaveSurfer extends Component {
 				if (this.initialLoad) {
 					this.initialLoad = false;
 				} else {
-					this.props.playPauseAudioFile(fileToUID(this.state.ReduxArtifactFile.ArtifactFile), true)
+					this.props.playFile(fileToUID(this.state.ReduxArtifactFile.ArtifactFile))
 				}
 			}
 			// console.log("(6) Wavesurfer is now ready")
@@ -189,7 +189,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = {
 	setActiveFile,
-	playPauseAudioFile
+	playFile,
+	pauseFile
 }
 
 AudioWaveSurfer.supportedFileTypes = ['wav', 'mp3', 'ogg'];
