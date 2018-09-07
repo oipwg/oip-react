@@ -9,7 +9,7 @@ $font: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
 // $color-hover: saturate(lighten($green, 10%), 20%);
 // $color-active: desaturate(darken($green, 20%), 20%);
 
-$color-hover: desaturate(darken($green, 20%), 10%);
+$color-hover: desaturate(darken(white, 20%), 10%);
 $color-active: fade-out($color-hover, 0.5);
 
 
@@ -25,8 +25,8 @@ $color-active: fade-out($color-hover, 0.5);
 .SoundOffButton {
 	margin-right: 10px;
 	padding: 8px;
-	background: $white;
-	border: 2px solid $green;
+	background: #343a40;
+	border: none;
 	border-radius: 100%;
 	outline: none;
 
@@ -62,7 +62,7 @@ $color-active: fade-out($color-hover, 0.5);
 }
 
 .Icon-shape {
-	fill: $green;
+	fill: white;
 }
 
 
