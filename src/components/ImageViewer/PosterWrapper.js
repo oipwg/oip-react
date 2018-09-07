@@ -1,12 +1,19 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+
 import ImageViewer from "./ImageViewer";
 
 class PosterWrapper extends Component {
 	render() {
-		let af = this.props.ArtifactFile;
+		let artifact_file = this.props.ArtifactFile;
 		let posterFile;
-		if (af) {
-			let artifact = af.parent;
+
+		if (!artifact_file && this.props.ActiveReduxFile){
+			artifact_file = this.props.ActiveReduxFile.ArtifactFile
+		}
+
+		if (artifact_file) {
+			let artifact = artifact_file.parent;
 			if (artifact.getThumbnail()) {
 				posterFile = artifact.getThumbnail()
 			}
@@ -16,4 +23,10 @@ class PosterWrapper extends Component {
 	}
 }
 
-export default PosterWrapper;
+function mapStateToProps(state){
+	return {
+		ActiveReduxFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
+	}
+}
+
+export default connect(mapStateToProps)(PosterWrapper);
