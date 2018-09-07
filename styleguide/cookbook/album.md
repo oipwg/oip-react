@@ -22,7 +22,8 @@ class MoviePageRecipe extends React.Component {
 	}
 	fetchArtifact(){
 		// Cor Metallicum: 061951
-		this.props.loadActiveArtifact("061951")
+		// Biddy Bums: b4e6c9
+		this.props.loadActiveArtifact("b4e6c9")
 	}
 	componentDidMount(){
 		this.fetchArtifact()
