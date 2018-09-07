@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Artifact as A, ArtifactFile as AF } from 'oip-index';
+import { connect } from 'react-redux'
+
+import { Artifact, ArtifactFile } from 'oip-index';
 import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 import { getFileExtension } from "../../utils";
 
@@ -34,60 +36,76 @@ class FilePlaylist extends React.Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		let pc = prevState.playlistContent;
+		let playlist_content = prevState.playlistContent;
 
-		if (nextProps.Artifact !== prevState.Artifact || nextProps.Files !== prevState.Files) {
-			if (nextProps.Artifact) {
-				pc.Artifact = nextProps.Artifact;
-				pc.Files = nextProps.Artifact.getFiles();
-				pc.defaultFile = pc.Files[0];
-				pc.title = nextProps.Artifact.getTitle();
-				pc.author = nextProps.Artifact.getDetail("artist");
-				pc.playlistType = "Artifact";
-			} else if (nextProps.Files) {
+		// Check if the Artifact, files, or ReduxActiveFiles have changed
+		if (nextProps.Files !== prevState.Files || nextProps.ReduxActiveFiles !== prevState.ReduxActiveFiles) {
+			// Prefer to build off of the Files prop (an single item/array of ArtifactFiles/Artifacts)
+			if (nextProps.Files) {
 				let playlistFiles = [];
-				//if Files was passed in as an array, break down and organize the array
+
+				// If Files was passed in as an array, break down and organize the array
 				if (Array.isArray(nextProps.Files)) {
 					let files = nextProps.Files;
-					for (let f of files) {
+
+					for (let file of files) {
 						//if the object in the array was an Artifact, get it's files and push them to playlistFiles
 						//@ToDo: would like to push the artifact itself and display a playlist item as an artifact
-						if (f instanceof A) {
-							let artifactFiles = f.getFiles();
-							for (let f of artifactFiles) {
-								playlistFiles.push(f)
+						if (file instanceof Artifact) {
+							let artifactFiles = file.getFiles();
+							for (let afile of artifactFiles) {
+								playlistFiles.push(afile)
 							}
 						}
 						//if the object in the array was an ArtifactFile, just push it to the playlistFiles
-						if (f instanceof AF) {
-							playlistFiles.push(f)
+						if (file instanceof ArtifactFile) {
+							playlistFiles.push(file)
 						}
 					}
-					//set the playlistFiles to Files
-					pc.Files = playlistFiles;
 
-					//set the type to custom so the playlist can function accordingly
-					pc.playlistType = "Custom";
+					// Set the playlistFiles to Files
+					playlist_content.Files = playlistFiles;
 
-					//if someone passed down an Artifact object instead of an array of [mixed] files, do what we did above
-				} else if (nextProps.Files instanceof A) {
-					pc.Artifact = nextProps.Files;
-					pc.Files = nextProps.Files.getFiles();
-					pc.defaultFile = pc.Files[0];
-					pc.title = nextProps.Files.getTitle();
-					pc.author = nextProps.Files.getDetail("artist");
-					pc.playlistType = "Artifact";
+					// Set the type to custom so the playlist can function accordingly
+					playlist_content.playlistType = "Custom";
+
+				// If someone passed down an Artifact object instead of an array of [mixed] files, do what we did above
+				} else if (nextProps.Files instanceof Artifact) {
+					playlist_content.Artifact = nextProps.Files;
+					playlist_content.Files = nextProps.Files.getFiles();
+					playlist_content.defaultFile = playlist_content.Files[0];
+					playlist_content.title = nextProps.Files.getTitle();
+					playlist_content.author = nextProps.Files.getDetail("artist");
+					playlist_content.playlistType = "Artifact";
 				}
-				if (nextProps.defaultFile && nextProps.defaultFile instanceof AF) {
-					pc.defaultFile = nextProps.defaultFile
-				} else {pc.defaultFile = playlistFiles[0]}
+
+			// If there are no Files, use the ReduxActiveFiles to build the state
+			} else if (nextProps.ReduxActiveFiles){
+				playlist_content.playlistType = "ReduxActiveFiles"
+
+				let redux_files = []
+
+				for (let uid in nextProps.ReduxActiveFiles){
+					if (uid !== "active"){
+						// Grab each ArtifactFile
+						redux_files.push(nextProps.ReduxActiveFiles[uid].ArtifactFile)
+					}
+				}
+
+				playlist_content.Files = redux_files
+			}
+
+			// Grab the default file
+			if (nextProps.defaultFile && nextProps.defaultFile instanceof ArtifactFile) {
+				playlist_content.defaultFile = nextProps.defaultFile
+			} else {
+				playlist_content.defaultFile = playlist_content.Files[0]
 			}
 		}
 
 		return {
-			playlistContent: pc
+			playlistContent: playlist_content
 		}
-
 	}
 
 	filterFiles(files) {
@@ -109,8 +127,9 @@ class FilePlaylist extends React.Component {
 	}
 
 	render() {
-		let pc = this.state.playlistContent;
-		let files = pc.Files;
+		let playlist_content = this.state.playlistContent;
+
+		let files = playlist_content.Files;
 		files = this.filterFiles(files);
 
 		return (
@@ -119,7 +138,7 @@ class FilePlaylist extends React.Component {
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
 					{/*</li>*/}
-					{this.props.Files ? files.map( (file, i) => {
+					{files.map( (file, i) => {
 						return (
 							<li key={fileToUID(file)} className="p-0 m-0 border-bottom" style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>
 								<PlaylistItem
@@ -128,7 +147,7 @@ class FilePlaylist extends React.Component {
 								/>
 							</li>
 						)
-					}) : null}
+					})}
 				</ul>
 			</div>
 		)
@@ -136,23 +155,27 @@ class FilePlaylist extends React.Component {
 }
 
 FilePlaylist.propTypes = {
-	//if an Artifact is passed down, the next two props must not be passed
-	Artifact: PropTypes.object,
 	//can be an array of Artifacts, ArtifactFiles, or both
 	Files: PropTypes.oneOfType([
 		PropTypes.array,
 		PropTypes.object
 	]),
-	//if passing in an array of files, a default file must be passed down
+	// A default file can be passed down if you want
 	defaultFile: PropTypes.object,
-	//custom title
+	// Custom title
 	title: PropTypes.string,
-	//custom author
+	// Custom author
 	author: PropTypes.string,
-	//custom className
+	// Custom className
 	className: PropTypes.string,
-	//custom styles
+	// Custom styles
 	style: PropTypes.object
 };
 
-export default FilePlaylist
+function mapStateToProp(state){
+	return {
+		ReduxActiveFiles: state.ActiveArtifactFiles
+	}
+}
+
+export default connect(mapStateToProp)(FilePlaylist)
