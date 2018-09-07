@@ -15,31 +15,31 @@ class FilePaymentWrapper extends React.Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		let lockFile = prevState.lockFile;
-		if (nextProps.ArtifactReduxFile && nextProps.ArtifactReduxFile !== prevState.ArtifactReduxFile) {
-			let ps = nextProps.ArtifactReduxFile;
-			lockFile = !!ps.isPaid;
-			if (ps.hasPaid && ps.isPaid) {lockFile = false}
-			if (ps.owned) {lockFile = false}
+		if (nextProps.ReduxArtifactFile && nextProps.ReduxArtifactFile !== prevState.ReduxArtifactFile) {
+			let fileState = nextProps.ReduxArtifactFile;
+			lockFile = !!fileState.isPaid;
+			if (fileState.hasPaid && fileState.isPaid) {lockFile = false}
+			if (fileState.owned) {lockFile = false}
 		}
 		return {
 			lockFile,
-			ArtifactReduxFile: nextProps.ArtifactReduxFile
+			ReduxArtifactFile: nextProps.ReduxArtifactFile
 		}
 	}
 
 	render() {
 
-		let af;
+		let ArtifactFile;
 		if (this.props.ArtifactFile) {
-			af = this.props.ArtifactFile
-		} else if (this.props.ArtifactReduxFile && this.props.ArtifactReduxFile.ArtifactFile) {
-			af = this.props.ArtifactReduxFile.ArtifactFile
-		} else {af = undefined}
+			ArtifactFile = this.props.ArtifactFile
+		} else if (this.props.ReduxArtifactFile && this.props.ReduxArtifactFile.ArtifactFile) {
+			ArtifactFile = this.props.ReduxArtifactFile.ArtifactFile
+		} else {ArtifactFile = undefined}
 
 		return(
 			<div>
 				<FileViewer
-					ArtifactFile={af}
+					ArtifactFile={ArtifactFile}
 					lockFile={this.state.lockFile}
 					{...this.props.options}
 				/>
@@ -51,7 +51,7 @@ class FilePaymentWrapper extends React.Component {
 function mapStateToProps(state) {
 	return {
 		state,
-		ArtifactReduxFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
+		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
 	}
 }
 
