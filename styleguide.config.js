@@ -85,6 +85,7 @@ module.exports = {
 						'src/components/AudioViewer/AudioViewer.js',
 						'src/components/AudioPlayer/AudioPlayer.js',
 						'src/components/ImageViewer/ImageViewer.js',
+						'src/components/ImageViewer/PosterWrapper.js',
 						'src/components/FileViewer.js'
 					]
 				},
