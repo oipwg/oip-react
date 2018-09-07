@@ -25,14 +25,18 @@ class AudioViewer extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
+		console.log("Audio Viewer::getDerivedStateFromProps")
 		let paletteGenerated = prevState.paletteGenerated
-		if (nextProps.ArtifactFile !== prevState.ArtifactFile) {
+		if (nextProps.ArtifactFile !== prevState.ArtifactFile ||
+			((nextProps.ReduxArtifactFile && prevState.ReduxArtifactFile) && nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)) {
+			console.log("ArtifactFile has switched in AudioViewer")
 			//we set this variable to stop an infinite loop in the generateColorPalette function in which the image node gets passed repeatedly
 			paletteGenerated = false
 		}
 		return {
 			paletteGenerated,
-			ArtifactFile: nextProps.ArtifactFile
+			ArtifactFile: nextProps.ArtifactFile,
+			ReduxArtifactFile: nextProps.ReduxArtifactFile
 		}
 	}
 
