@@ -58,21 +58,28 @@ class AudioViewer extends Component {
 	}
 
 	render() {
-		let file = this.props.ArtifactFile || this.props.ReduxArtifactFile.ArtifactFile;
+		let file;
+		if (this.props.ArtifactFile) {
+			file = this.props.ArtifactFile
+		} else if (this.props.ReduxArtifactFile) {
+			file = this.props.ReduxArtifactFile.ArtifactFile
+		} else {
+			file = undefined;
+		}
 		let artist, title;
 		if (file) {
-			artist = file.parent.getDetail('artist');
-			title = file.getFilename();
+			artist = file.parent.getDetail('artist') || 'unknown';
+			title = file.getFilename() || 'unknown';
 		} else {
-			artist = "unknown";
-			title = "unknown";
+			artist = undefined;
+			title = undefined;
 		}
 
 		if (this.props.ArtifactFile && fileToUID(this.props.ArtifactFile) !== this.props.ActiveFileUID) {
 			this.setActiveFile(this.props.ArtifactFile)
 		}
 
-		let isPlaying = this.props.ReduxArtifactFile.isPlaying;
+		let isPlaying = this.props.ReduxArtifactFile ? this.props.ReduxArtifactFile.isPlaying : false;
 		const playbackButton = isPlaying ? (
 			<PauseButton
 				isEnabled={true}
@@ -87,14 +94,16 @@ class AudioViewer extends Component {
 			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
 				<div style={{height: '100%'}}>
 					<div className={"background-gradient"} style={{height: "100%", position: 'relative', zIndex: '0',
-						backgroundImage: `linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`}}/>
+						backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
+							`linear-gradient(-90deg, #29323c, #485563)`
+					}}/>
 				</div>
 				<div className={"border-box"} style={{position: 'absolute', top: '0', left: '0', right: '0', width: '100%', height: '100%', boxSizing: 'border-box', zIndex: '10',
 					padding: '30px 400px 20px 30px'
 				}}>
-					<div className={"album-art"} style={{position: 'absolute', top: '20px', right: '20px', zIndex: '1', width: '340px', height: '340px'}}>
+					{file ? (<div className={"album-art"} style={{position: 'absolute', top: '20px', right: '20px', zIndex: '1', width: '340px', height: '340px'}}>
 						<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
-					</div>
+					</div>) : null}
 					<div className={"album-title"}>
 						<div className={"hyphenate"} style={{overflowWrap: "break-word", wordWrap: 'break-word'}}>
 							<div className={"title-container d-flex"}>
@@ -103,11 +112,11 @@ class AudioViewer extends Component {
 								</div>
 								<div className={"track-info"} style={{flex: '1', minWidth: '0px'}}>
 									<div className={"artist-info mr-0"} style={{marginBottom: '7px'}}>
-										<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{artist}</span>
+										<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{file ? artist: "No file loaded"}</span>
 									</div>
-									<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '22px', color: 'white', lineHeight: '36px'}}>{title}</span>
+									{file ? <span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '22px', color: 'white', lineHeight: '36px'}}>{title}</span> : null}
 								</div>
-								<div className={"soundbar"}
+								{file ? (<div className={"soundbar"}
 								     style={{position: 'absolute', bottom: '0', 'left': '30px', right: '390px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>
 									<div className={"waveform_"} style={{marginBottom: '30px', height: '100px', zIndex: '1'}}>
 										<div className={"waveform_wrapper"} style={{position: 'relative', 'width': '100%', height: '100%'}}>
@@ -116,7 +125,7 @@ class AudioViewer extends Component {
 											</div>
 										</div>
 									</div>
-								</div>
+								</div>) : null}
 							</div>
 						</div>
 					</div>
