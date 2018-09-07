@@ -81,7 +81,7 @@ class AudioWaveSurfer extends Component {
 		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode});
 		this.wavesurfer.on('ready', () => {
 			// console.log("Wavesurfer ready event")
-			if (((!this.state.ReduxArtifactFile.isPaid) || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned)))) {
+			if (!this.state.ReduxArtifactFile.isPaid || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned))) {
 				if (this.initialLoad) {
 					this.initialLoad = false;
 				} else {
@@ -111,20 +111,17 @@ class AudioWaveSurfer extends Component {
 				}
 			}
 
-			let r = this.props.ReduxArtifactFile;
+			let redux_file = this.props.ReduxArtifactFile;
+
 			//play/pause wavesurfer based on redux state that was set to local state by getDerived
-			if (r && r.isPlaying) {
+			if (redux_file && redux_file.isPlaying) {
 				this.wavesurfer.play()
 				this.isPlaying = true;
 			}
-			if (r && r.isPaused) {
+			if (redux_file && redux_file.isPaused) {
 				this.wavesurfer.pause()
 				this.isPlaying = false
 			}
-
-			// if (((!this.state.ReduxArtifactFile.isPaid) || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned)))) {
-			//	@ToDo: Add payment logic for paid artifact files
-			// }
 		}
 		//on artifact file switch
 		if (this.state.wavesurfer.stop) {
@@ -151,20 +148,22 @@ class AudioWaveSurfer extends Component {
 
 	//self-explanatory title. if an artifact file was passed down via props, it'll use that over the one in the store. (by the prop will be set to store anyway via loadArtifactFileFromProps()
 	getAudioURL = (file) => {
-		let ArtifactFile;
+		let artifact_file;
+
 		if (file) {
-			ArtifactFile = file
+			artifact_file = file
 		} else if (this.props.ArtifactFile) {
-			ArtifactFile = this.props.ArtifactFile
+			artifact_file = this.props.ArtifactFile
 		} else if (this.props.ReduxArtifactFile) {
-			ArtifactFile = this.props.ReduxArtifactFile.ArtifactFile
+			artifact_file = this.props.ReduxArtifactFile.ArtifactFile
 		} else {
-			ArtifactFile = undefined
+			artifact_file = undefined
 		}
-		if (ArtifactFile && AudioWaveSurfer.supportedFileTypes.includes(getFileExtension(ArtifactFile))) {
-			return getIPFSURL(ArtifactFile)
+
+		if (artifact_file && AudioWaveSurfer.supportedFileTypes.includes(getFileExtension(artifact_file))) {
+			return getIPFSURL(artifact_file)
 		} else {
-			console.log(`${ArtifactFile}: unsupported`);
+			console.log(`${artifact_file}: unsupported`);
 			return undefined
 		}
 	};
