@@ -41,6 +41,7 @@ class VideoPlayer extends React.Component {
         };
 
 	    this.initialPlay = true;
+	    this.playerLoaded = false;
 
 	    this.loadPlayer = this.loadPlayer.bind(this);
 	    this.resetPlayer = this.resetPlayer.bind(this);
@@ -132,7 +133,8 @@ class VideoPlayer extends React.Component {
     componentDidMount() {
 	    //instantiate Video.js
 	    this.player = videojs(this.videoNode, this.state.options, () => {
-		   //do something on player load
+		    //do something on player load
+		    this.playerLoaded = true
 		    this.loadPlayer();
 	    });
 	    this.setState({player: this.player});
@@ -170,7 +172,7 @@ class VideoPlayer extends React.Component {
     }
 
     loadPlayer() {
-	    if (this.player) {
+	    if (this.player && this.playerLoaded) {
 	    	//Doesn't matter if there's an artifact or not to set source and poster. If undefined, set them to undefined
 		    this.player.src(this.state.options.sources);
 		    this.player.poster(this.state.options.poster);
