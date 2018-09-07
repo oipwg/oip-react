@@ -25,7 +25,6 @@ class FilePlaylist extends React.Component {
 			playlistContent: {
 				Files: [],
 				Artifact: undefined,
-				defaultFile: undefined,
 				title: undefined,
 				author: undefined,
 				playlistType: undefined
@@ -73,7 +72,6 @@ class FilePlaylist extends React.Component {
 				} else if (nextProps.Files instanceof Artifact) {
 					playlist_content.Artifact = nextProps.Files;
 					playlist_content.Files = nextProps.Files.getFiles();
-					playlist_content.defaultFile = playlist_content.Files[0];
 					playlist_content.title = nextProps.Files.getTitle();
 					playlist_content.author = nextProps.Files.getDetail("artist");
 					playlist_content.playlistType = "Artifact";
@@ -93,13 +91,6 @@ class FilePlaylist extends React.Component {
 				}
 
 				playlist_content.Files = redux_files
-			}
-
-			// Grab the default file
-			if (nextProps.defaultFile && nextProps.defaultFile instanceof ArtifactFile) {
-				playlist_content.defaultFile = nextProps.defaultFile
-			} else {
-				playlist_content.defaultFile = playlist_content.Files[0]
 			}
 		}
 
