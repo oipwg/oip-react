@@ -32,7 +32,7 @@ class AudioWaveSurfer extends Component {
 			},
 			options,
 			ArtifactFile: undefined,
-			ReduxArtifactFile: undefined
+			ReduxArtifactFile: undefined,
 		};
 
 		this.initialLoad = true;
@@ -41,19 +41,16 @@ class AudioWaveSurfer extends Component {
 
 	static getDerivedStateFromProps(nextProps, prevState) {
 		// console.log("(1) get derived state from props");
-
 		let wavesurfer = prevState.wavesurfer;
 		//wavesurfer.stop identifies whether or not the active file has been switched
 		wavesurfer.stop = false;
 		if (nextProps.ReduxArtifactFile && nextProps.ReduxArtifactFile !== prevState.ReduxArtifactFile) {
 			// console.log("(2) New redux file")
-			console.log("(2) New redux file")
 			// console.log("(2.1) Check redux artifact files: ", JSON.stringify(nextProps.ReduxArtifactFile, null, 4), JSON.stringify(prevState.ReduxArtifactFile, null, 4))
 
 			//want to prevent running this on initial load
 			if (prevState.ReduxArtifactFile) {
 				// console.log("(3) Setting wavesurfer.stop to : ", nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)
-				console.log("(3) Setting wavesurfer.stop to : ", nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)
 				// console.log("(3.1) Check redux artifact files: ", JSON.stringify(nextProps.ReduxArtifactFile.ArtifactFile, null, 4), JSON.stringify(prevState.ReduxArtifactFile.ArtifactFile, null, 4))
 
 				//stop and reset the player if the active file has switched
@@ -74,7 +71,7 @@ class AudioWaveSurfer extends Component {
 		return {
 			wavesurfer,
 			ArtifactFile: nextProps.ArtifactFile,
-			ReduxArtifactFile: nextProps.ReduxArtifactFile
+			ReduxArtifactFile: nextProps.ReduxArtifactFile,
 		}
 	}
 
@@ -83,7 +80,7 @@ class AudioWaveSurfer extends Component {
 
 		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode});
 		this.wavesurfer.on('ready', () => {
-			console.log("Wavesurfer ready event")
+			// console.log("Wavesurfer ready event")
 			if (((!this.state.ReduxArtifactFile.isPaid) || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned)))) {
 				if (this.initialLoad) {
 					this.initialLoad = false;
@@ -105,13 +102,22 @@ class AudioWaveSurfer extends Component {
 		if (prevProps.ReduxArtifactFile !== this.props.ReduxArtifactFile) {
 			// console.log("(8) change in redux file state")
 
+			//this block of code loads the surfer with a file if the previous state was undefined
+			if (this.props.ReduxArtifactFile && this.props.ReduxArtifactFile.ArtifactFile) {
+				if (prevProps.ReduxArtifactFile === undefined) {
+					this.loadArtifactFileFromProps();
+					this.wavesurfer.stop();
+					this.wavesurfer.load(this.getAudioURL());
+				}
+			}
+
 			let r = this.props.ReduxArtifactFile;
 			//play/pause wavesurfer based on redux state that was set to local state by getDerived
-			if (r.isPlaying) {
+			if (r && r.isPlaying) {
 				this.wavesurfer.play()
 				this.isPlaying = true;
 			}
-			if (r.isPaused) {
+			if (r && r.isPaused) {
 				this.wavesurfer.pause()
 				this.isPlaying = false
 			}
@@ -145,11 +151,19 @@ class AudioWaveSurfer extends Component {
 
 	//self-explanatory title. if an artifact file was passed down via props, it'll use that over the one in the store. (by the prop will be set to store anyway via loadArtifactFileFromProps()
 	getAudioURL = (file) => {
-		let af = file || this.props.ArtifactFile || this.props.ReduxArtifactFile.ArtifactFile;
-		if (af && AudioWaveSurfer.supportedFileTypes.includes(getFileExtension(af))) {
-			return getIPFSURL(af)
+		let ArtifactFile;
+		if (file) {
+			ArtifactFile = file
+		} else if (this.props.ArtifactFile) {
+			ArtifactFile = this.props.ArtifactFile
+		} else if (this.props.ReduxArtifactFile) {
+			ArtifactFile = this.props.ReduxArtifactFile.ArtifactFile
 		} else {
-			console.log(`${af}: unsupported`);
+			ArtifactFile = undefined
+		}
+		if (ArtifactFile && AudioWaveSurfer.supportedFileTypes.includes(getFileExtension(ArtifactFile))) {
+			return getIPFSURL(ArtifactFile)
+		} else {
 			console.log(`${ArtifactFile}: unsupported`);
 			return undefined
 		}
