@@ -27,7 +27,12 @@ class PaymentButton extends Component {
 		let fileState, ext, uid;
 		ext = getFileExtension(this.props.ArtifactFile);
 		uid = fileToUID(this.props.ArtifactFile);
-		let isPlaying = this.props.fileIsPlaying && uid === this.props.ActiveArtifactFiles.active
+
+		let isPlaying = false
+
+		if (this.props.ActiveArtifactFiles[uid])
+			isPlaying = this.props.ActiveArtifactFiles[uid].isPlaying
+
 		let viewString;
 		switch (ext) {
 			case 'mp4':
@@ -101,14 +106,16 @@ class PaymentButton extends Component {
 		if (hasPaid && this.props.type !== "buy"){
 			button_class = "outline-info";
 			payment_string = viewString;
+			button_icon = isPlaying ? faPause : faPlay;
 		}
 
 		if (owned || (file_cost === 0 || file_cost === "0")) {
 			button_class = "outline-info";
 
-			if (this.props.type === "view")
+			if (this.props.type === "view"){
 				button_icon = isPlaying ? faPause : faPlay
-				payment_string = viewString;
+				payment_string = viewString
+			}
 			if (this.props.type === "buy")
 				payment_string = "Download";
 		}
@@ -166,8 +173,7 @@ function mapStateToProps(state) {
 	//aaf = shorthand for 'ActiveArtifactFiles'
 	let aaf = state.ActiveArtifactFiles
 	return {
-		ActiveArtifactFiles: aaf,
-		fileIsPlaying: aaf[aaf.active] ? aaf[aaf.active].isPlaying : false,
+		ActiveArtifactFiles: aaf
 	}
 }
 
