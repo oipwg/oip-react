@@ -65,7 +65,7 @@ class PlaylistItem extends React.Component {
 			>
 				{/*img*/}
 				<div className={"playlist-artifact-image"} >
-					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden'}}>
+					<div className="img-container d-flex justify-content-center" style={{height: '34px', width: '34px', overflow: 'hidden', marginLeft: "5px"}}>
 						<img className="img-responsive" style={{maxHeight: "100%", maxWidth: "100%"}} src={poster} alt='' />
 					</div>
 				</div>
@@ -80,7 +80,7 @@ class PlaylistItem extends React.Component {
 						<a style={{color: "#999"}}>{artist}</a>
 				</div>
 				{/*payment buttons*/}
-				<div className="d-flex">
+				<div className="d-flex" style={{marginRight: "5px"}}>
 					<PaymentButton
 						ArtifactFile={file}
 						type="view"
