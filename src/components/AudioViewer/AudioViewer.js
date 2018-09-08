@@ -84,9 +84,9 @@ class AudioViewer extends Component {
 		let playbackButton
 
 		if (isPlaying) 
-			playbackButton = <PauseButton isEnabled={true} onClick={() => this.pauseFile(fileToUID(file))} />
+			playbackButton = <PauseButton isEnabled={true} onClick={() => this.props.pauseFile(fileToUID(file))} />
 		else
-			playbackButton = <PlayButton isEnabled={true} onClick={() => this.playFile(fileToUID(file))} />
+			playbackButton = <PlayButton isEnabled={true} onClick={() => this.props.playFile(fileToUID(file))} />
 
 		return (
 			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
