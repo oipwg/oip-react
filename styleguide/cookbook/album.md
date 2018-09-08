@@ -58,7 +58,7 @@ class MoviePageRecipe extends React.Component {
 					</div>
 				</div>
 
-				<div className="row" style={{paddingTop: "25px", maxHeight: "360px"}}>
+				<div className="row" style={{paddingTop: "25px", maxHeight: "400px"}}>
 					<div className="col-12">
 						<FilePlaylist />
 					</div>
