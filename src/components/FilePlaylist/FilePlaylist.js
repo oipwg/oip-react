@@ -13,7 +13,7 @@ class FilePlaylist extends React.Component {
 	constructor(props) {
 		super(props);
 
-		this.supportedFileTypes = ['mp3', 'mp4'];
+		this.supportedFileTypes = ['mp3', 'mp4', 'aac'];
 
 		if (props.supportedFileTypes) {
 			for (let type of props.supportedFileTypes) {

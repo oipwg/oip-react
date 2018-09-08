@@ -78,7 +78,7 @@ class AudioWaveSurfer extends Component {
 	componentDidMount() {
 		// console.log("(5) Component did mount");
 
-		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode});
+		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode, backend: 'MediaElement'});
 		this.wavesurfer.on('ready', () => {
 			// console.log("Wavesurfer ready event")
 			if (!this.state.ReduxArtifactFile.isPaid || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned))) {
@@ -193,7 +193,7 @@ const mapDispatchToProps = {
 	pauseFile
 }
 
-AudioWaveSurfer.supportedFileTypes = ['wav', 'mp3', 'ogg'];
+AudioWaveSurfer.supportedFileTypes = ['wav', 'mp3', 'ogg', 'aac'];
 AudioWaveSurfer.propTypes = {
 	options: PropTypes.object,
 	ArtifactFile: PropTypes.object,
