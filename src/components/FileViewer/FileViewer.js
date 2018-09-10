@@ -48,6 +48,9 @@ class FileViewer extends React.Component {
 }
 
 FileViewer.propTypes = {
+	/**
+	 * The artifact that you wish to display
+	 */
 	ArtifactFile: PropTypes.object
 };
 
