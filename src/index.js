@@ -19,7 +19,7 @@ import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import ImageViewer from './components/ImageViewer/ImageViewer'
 import PosterWrapper from './components/ImageViewer/PosterWrapper'
 
-module.exports = {
+export {
 	AccountButton,
 	LoginModal,
 	LoginBlock,
