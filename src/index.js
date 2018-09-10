@@ -1,18 +1,40 @@
-// Account Items
-export AccountButton from './components/AccountButton/AccountButton'
-export LoginModal from './components/LoginModal/LoginModal'
-export LoginBlock from './components/LoginBlock/LoginBlock'
-export RegisterBlock from './components/RegisterBlock/RegisterBlock'
-export PaymentButton from './components/PaymentButton/PaymentButton'
-export CoinbaseModal from './components/CoinbaseModal'
-export CoinbaseWrapper from './components/CoinbaseWrapper'
+// Account Components
+import AccountButton from './components/AccountButton/AccountButton'
+import LoginModal from './components/LoginModal/LoginModal'
+import LoginBlock from './components/LoginBlock/LoginBlock'
+import RegisterBlock from './components/RegisterBlock/RegisterBlock'
+import PaymentButton from './components/PaymentButton/PaymentButton'
+import CoinbaseModal from './components/CoinbaseModal'
+import CoinbaseWrapper from './components/CoinbaseWrapper'
 
-export ArtifactTitle from './components/ArtifactPieces/pieces/ArtifactTitle'
-export ArtifactDescription from './components/ArtifactPieces/pieces/ArtifactDescription'
-export ArtifactArtist from './components/ArtifactPieces/pieces/ArtifactArtist'
+// Artifact Components
+import ArtifactTitle from './components/ArtifactPieces/pieces/ArtifactTitle'
+import ArtifactDescription from './components/ArtifactPieces/pieces/ArtifactDescription'
+import ArtifactArtist from './components/ArtifactPieces/pieces/ArtifactArtist'
 
-export FilePaymentWrapper from './components/FilePaymentWrapper'
-export FileViewer from './components/FileViewer'
-export VideoPlayer from './components/VideoPlayer/VideoPlayer'
-export ImageViewer from './components/ImageViewer/ImageViewer'
-export PosterWrapper from './components/ImageViewer/PosterWrapper'
+// ArtifactFile Components
+import FilePaymentWrapper from './components/FilePaymentWrapper'
+import FileViewer from './components/FileViewer'
+import VideoPlayer from './components/VideoPlayer/VideoPlayer'
+import ImageViewer from './components/ImageViewer/ImageViewer'
+import PosterWrapper from './components/ImageViewer/PosterWrapper'
+
+// Export Account Components
+export AccountButton
+export LoginModal
+export RegisterBlock
+export PaymentButton
+export CoinbaseModal
+export CoinbaseWrapper
+
+// Export Artifact Components
+export ArtifactTitle
+export ArtifactDescription
+export ArtifactArtist
+
+// Export ArtifactFile Components
+export FilePaymentWrapper
+export FileViewer
+export VideoPlayer
+export ImageViewer
+export PosterWrapper
