@@ -15,6 +15,7 @@ import ArtifactArtist from './components/ArtifactPieces/pieces/ArtifactArtist'
 // File Components
 import FilePaymentWrapper from './components/FilePaymentWrapper'
 import FileViewer from './components/FileViewer'
+import AudioViewer from './components/AudioViewer/AudioViewer'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
 import ImageViewer from './components/ImageViewer/ImageViewer'
 import PosterWrapper from './components/ImageViewer/PosterWrapper'
@@ -34,6 +35,7 @@ export {
 
 	FilePaymentWrapper,
 	FileViewer,
+	AudioViewer,
 	VideoPlayer,
 	ImageViewer,
 	PosterWrapper
