@@ -1,4 +1,6 @@
-$icon-size: 30px;
+$icon-size: 20px;
+$playPause-size: 20px;
+$nextPrev-size: 13px;
 $black: #3D463F;
 $gray: #878C88;
 $lightgray: #d3d3d3;
@@ -23,7 +25,7 @@ $color-active: fade-out($color-hover, 0.5);
 .NextButton,
 .SoundOnButton,
 .SoundOffButton {
-	margin-right: 10px;
+	//margin-right: 10px;
 	padding: 8px;
 	background: #343a40;
 	border: none;
@@ -55,10 +57,18 @@ $color-active: fade-out($color-hover, 0.5);
 	}
 }
 
-.Icon {
+.Icon.PlayIcon,
+.Icon.PauseIcon {
 	display: block;
-	width: $icon-size;
-	height: $icon-size;
+	width: $playPause-size;
+	height: $playPause-size;
+}
+
+.Icon.PreviousIcon,
+.Icon.NextIcon {
+  display: block;
+  width: $nextPrev-size;
+  height: $nextPrev-size;
 }
 
 .Icon-shape {

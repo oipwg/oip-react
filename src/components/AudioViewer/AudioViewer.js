@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
-import { PlayButton, PauseButton } from 'react-player-controls'
+import { PlayButton, PauseButton, NextButton, PrevButton } from 'react-player-controls'
 
 import { playPauseAudioFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
@@ -95,46 +95,35 @@ class AudioViewer extends Component {
 			/>);
 
 		return (
-			<div className="audio-viewer-container" style={{position: 'relative', height: '380px', overflow: 'hidden'}}>
-				<div style={{height: '100%'}}>
-					<div className={"background-gradient"} style={{height: "100%", position: 'relative', zIndex: '0',
-						backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
-							`linear-gradient(-90deg, #29323c, #485563)`
-					}}/>
-				</div>
-				<div className={"border-box"} style={{position: 'absolute', top: '0', left: '0', right: '0', width: '100%', height: '100%', boxSizing: 'border-box', zIndex: '10',
-					padding: '30px 400px 20px 30px'
-				}}>
-					{file ? (<div className={"album-art"} style={{position: 'absolute', top: '20px', right: '20px', zIndex: '1', width: '340px', height: '340px'}}>
-						<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
-					</div>) : null}
-					<div className={"album-title"}>
-						<div className={"hyphenate"} style={{overflowWrap: "break-word", wordWrap: 'break-word'}}>
-							<div className={"title-container d-flex"}>
-								<div className={"playback-button"} style={{height: '60px', width: '60px', marginRight: '10px'}}>
-									{playbackButton}
-								</div>
-								<div className={"track-info"} style={{flex: '1', minWidth: '0px'}}>
-									<div className={"artist-info mr-0"} style={{marginBottom: '7px'}}>
-										<span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{file ? artist: "No file loaded"}</span>
-									</div>
-									{file ? <span style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '22px', color: 'white', lineHeight: '36px'}}>{title}</span> : null}
-								</div>
-								{file ? (<div className={"soundbar"}
-								     style={{position: 'absolute', bottom: '0', 'left': '30px', right: '390px', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end'}}>
-									<div className={"waveform_"} style={{marginBottom: '30px', height: '100px', zIndex: '1'}}>
-										<div className={"waveform_wrapper"} style={{position: 'relative', 'width': '100%', height: '100%'}}>
-											<div className={"waveform_wrapper_loaded"} style={{position: 'absolute', left: '0', top: '0', right: '0', bottom: '0'}}>
-												<AudioWaveSurfer ArtifactFile={file}/>
-											</div>
-										</div>
-									</div>
-								</div>) : null}
+			<div className="container-fluid h-100" style={{backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
+					`linear-gradient(-90deg, #29323c, #485563)`   }}>
+				<div className={"row no-gutters h-100 py-4"}>
+					<div className={"col-7"}>
+						<div className={"d-flex p-3"}>
+							<div className={"d-block ml-2"}>
+								<span className={""} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{file ? artist : "No file loaded"}</span>
+								{file ? <span className={"d-block"} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '20px', color: 'white', lineHeight: '20px'}}>{title}</span> : null}
 							</div>
+						</div>
+					</div>
+					<div className={"col-5 pr-3 d-flex justify-content-center"}>
+						<div  style={{height: '200px', width: '200px'}}>
+							<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
+						</div>
+					</div>
+					<div className={"col-12"} style={{bottom: '0px'}}>
+						<AudioWaveSurfer ArtifactFile={file}/>
+					</div>
+					<div className={"col-12 d-flex justify-content-center"}>
+						<div className={"audio-controls d-flex align-items-center"}>
+							<div className={"mx-1"}><PrevButton isEnabled={true}/></div>
+							<div className={"mx-1"}>{playbackButton}</div>
+							<div className={"mx-1"}><NextButton isEnabled={true}/></div>
 						</div>
 					</div>
 				</div>
 			</div>
+
 		);
 	}
 }
