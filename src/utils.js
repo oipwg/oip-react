@@ -40,6 +40,9 @@ export const buildIPFSURL = (hash, fname) => {
 };
 
 export const getFileExtension = (file) => {
+	if (!file)
+		return ""
+		
 	let splitFilename = file.getFilename().split(".");
 	let indexToGrab = splitFilename.length - 1;
 	return splitFilename[indexToGrab].toLowerCase();

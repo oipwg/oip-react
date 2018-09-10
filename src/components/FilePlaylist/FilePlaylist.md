@@ -4,35 +4,33 @@ Showcasing of multiple audio Artifact Files in the format of a playlist or album
 ```js
 const { Provider } = require('react-redux')
 const { createStore } = require('oip-state')
-const { loginSuccess, logout } = require('oip-state/src/actions/Account/actions')
-const { Index } = require('oip-index')
-const { getArtifactOptions, getFileOptions } = require('../../utils')
-require('bootstrap/dist/css/bootstrap.min.css')
+const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 
-const index = new Index()
 
 require('bootstrap/dist/css/bootstrap.min.css')
 const store = createStore()
 
 class FilePlaylistExample  extends React.Component {
-    componentDidMount(){
-        index.getArtifact("2c53dc").then((artifact) => {
-            artifact.getFiles()
+       constructor(props){
+        super(props)
 
+        this.state = {
+            file: undefined
+        }
+    }
+    componentDidMount(){
+        store.dispatch(loadActiveArtifact("061951", (artifact) => {
             this.setState({
-                artifact: artifact,
-                file: files[0]
+                file: artifact.getFiles()[0]
             })
-        }).catch((e) => {
-            // Error
-        })
-}
+        }))
+    }
 	render() {
 		return (
             <Provider store={store}>
-            <div>
-            <FilePlaylist Files={{artifact}} />
-            </div>
+                <div>
+                    <FilePlaylist Files={this.state.file} />
+                </div>
             </Provider>
 		)
 	}
