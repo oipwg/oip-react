@@ -170,10 +170,9 @@ PaymentButton.propTypes = {
 };
 
 function mapStateToProps(state) {
-	//aaf = shorthand for 'ActiveArtifactFiles'
-	let aaf = state.ActiveArtifactFiles
 	return {
-		ActiveArtifactFiles: aaf
+		ActiveArtifactFiles: state.ActiveArtifactFiles,
+		fileIsPlaying: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active] ? state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].isPlaying : false
 	}
 }
 

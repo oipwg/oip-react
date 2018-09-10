@@ -72,7 +72,7 @@ stories.add('Via Redux', () => {
 
 	return (
 		<Provider store={store}>
-			<div style={{width: width_value, height: height_value}}>
+			<div className={""} style={{width: width_value, height: height_value}}>
 				<AudioViewer />
 			</div>
 		</Provider>

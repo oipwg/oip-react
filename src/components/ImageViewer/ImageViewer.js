@@ -87,7 +87,7 @@ class ImageViewer extends React.Component {
 
 		return (
 			// Get Element By ID
-			<canvas className={classes} ref={canv => {this.canvas = canv}} />
+			<canvas style={{maxWidth: '100%', maxHeight: '100%', height: 'auto', width: 'auto'}} className={classes} ref={canv => {this.canvas = canv}} />
 		);
 	};
 };
