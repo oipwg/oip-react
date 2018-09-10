@@ -8,7 +8,7 @@ import { withKnobs, button } from '@storybook/addon-knobs';
 import { Provider } from 'react-redux'
 import { createStore } from 'oip-state'
 
-import { promptCoinbaseModal, setCoinbaseInfo } from 'oip-state/src/actions/Payment/actions'
+import { promptCoinbaseModal, setCoinbaseInfo, coinbasePending, coinbaseComplete } from 'oip-state/src/actions/Payment/actions'
 
 import CoinbaseWrapper from '../src/components/CoinbaseWrapper'
 
@@ -33,11 +33,16 @@ stories.add('Example', () => {
 	})
 	button("Dispatch Show Coinbase Modal", () => { store.dispatch(promptCoinbaseModal()) })
 	button("Dispatch Hide Coinbase Modal", () => { store.dispatch(promptCoinbaseModal(false)) })
+	button("Dispatch Coinbase Pending", () => { store.dispatch(coinbasePending()) })
+	button("Dispatch Coinbase Success", () => { store.dispatch(coinbaseComplete()) })
 	return (
 		<Provider store={store}>
 			<div>
 				<CoinbaseWrapper />
 				<hr />
+				<button className="btn btn-outline-primary m-1" onClick={() => { store.dispatch(coinbasePending()) }}>Dispatch CoinbasePending</button>
+				<button className="btn btn-outline-primary m-1" onClick={() => { store.dispatch(coinbaseComplete()) }}>Dispatch CoinbaseComplete</button>
+				<StoreDebugHelper path={['Payment', 'coinbasePending']} />
 				<StoreDebugHelper path={['Payment', 'showCoinbaseModal']} />
 				<StoreDebugHelper path={['Payment', 'coinbaseInfo']} />
 			</div>
