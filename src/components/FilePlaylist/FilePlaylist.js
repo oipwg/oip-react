@@ -151,15 +151,25 @@ FilePlaylist.propTypes = {
 		PropTypes.array,
 		PropTypes.object
 	]),
-	// A default file can be passed down if you want
+	/**
+	*  A default file can be passed down if you want
+	*/
 	defaultFile: PropTypes.object,
-	// Custom title
+	/**
+	*  Custom title
+	*/
 	title: PropTypes.string,
-	// Custom author
+	/**
+	*  Custom author
+	*/
 	author: PropTypes.string,
-	// Custom className
+	/**
+	*  Custom className
+	*/
 	className: PropTypes.string,
-	// Custom styles
+	/**
+	*  Custom style
+	*/
 	style: PropTypes.object
 };
 

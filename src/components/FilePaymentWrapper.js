@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import FileViewer from './FileViewer'
+import FileViewer from './FileViewer/FileViewer.js'
 import {connect} from 'react-redux';
 
 class FilePaymentWrapper extends React.Component {

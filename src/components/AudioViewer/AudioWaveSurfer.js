@@ -38,7 +38,6 @@ class AudioWaveSurfer extends Component {
 		};
 
 		this.initialLoad = true;
-
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -95,7 +94,9 @@ class AudioWaveSurfer extends Component {
 		//this function checks to see if there's an artifact passed to props and sets it to active. does nothing if no prop
 		this.loadArtifactFileFromProps();
 		//load the surfer with the audio url
-		this.wavesurfer.load(this.getAudioURL());
+		
+		if (this.props.ArtifactFile || this.props.ReduxArtifactFile)
+			this.wavesurfer.load(this.getAudioURL());
 	}
 
 	componentDidUpdate(prevProps, prevState){

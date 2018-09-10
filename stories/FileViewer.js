@@ -2,7 +2,7 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
 
-import FileViewer from '../src/components/FileViewer';
+import FileViewer from '../src/components/FileViewer/FileViewer.js';
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util';
 
