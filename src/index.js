@@ -7,7 +7,9 @@ import PaymentButton from './components/PaymentButton/PaymentButton'
 import CoinbaseModal from './components/CoinbaseModal'
 import CoinbaseWrapper from './components/CoinbaseWrapper'
 
-import ArtifactTitle from './components/ArtifactTitle'
+import ArtifactTitle from './components/ArtifactPieces/pieces/ArtifactTitle'
+import ArtifactDescription from './components/ArtifactPieces/pieces/ArtifactDescription'
+import ArtifactArtist from './components/ArtifactPieces/pieces/ArtifactArtist'
 
 import FilePaymentWrapper from './components/FilePaymentWrapper'
 import FileViewer from './components/FileViewer'
@@ -25,6 +27,8 @@ module.exports = {
 	CoinbaseWrapper,
 
 	ArtifactTitle,
+	ArtifactDescription,
+	ArtifactArtist,
 
 	FilePaymentWrapper,
 	FileViewer,
