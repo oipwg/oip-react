@@ -95,7 +95,7 @@ module.exports = {
 					components: [
 						'src/components/PaymentButton/PaymentButton.js',
 						'src/components/FilePlaylist/FilePlaylist.js',
-						'src/components/FilePaymentWrapper.js',
+						'src/components/FilePaymentWrapper/FilePaymentWrapper.js',
 						'src/components/CoinbaseModal.js',
 						'src/components/CoinbaseWrapper.js'
 					]
