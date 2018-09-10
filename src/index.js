@@ -14,7 +14,7 @@ import ArtifactArtist from './components/ArtifactPieces/pieces/ArtifactArtist'
 
 // File Components
 import FilePaymentWrapper from './components/FilePaymentWrapper'
-import FileViewer from './components/FileViewer'
+import FileViewer from './components/FileViewer/FileViewer'
 import FilePlaylist from './components/FilePlaylist/FilePlaylist'
 import AudioViewer from './components/AudioViewer/AudioViewer'
 import VideoPlayer from './components/VideoPlayer/VideoPlayer'
