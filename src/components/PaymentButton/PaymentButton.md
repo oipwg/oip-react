@@ -1,44 +1,81 @@
-### Basic Example
+### View Example
 Button that communicates with the redux store for validating purchases
 
 ```js
-const { Provider } = require('react-redux')
+const { connect, Provider } = require('react-redux')
 const { createStore } = require('oip-state')
-const { loginSuccess, logout } = require('oip-state/src/actions/Account/actions')
-const { Index } = require('oip-index')
-require('bootstrap/dist/css/bootstrap.min.css')
 
-const index = new Index()
+const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 
-require('bootstrap/dist/css/bootstrap.min.css')
 const store = createStore()
 
 class PaymentButtonExample  extends React.Component {
-    componentDidMount(){
-        index.getArtifact("21252c").then((artifact) => {
-            artifact.getFiles()
+    constructor(props){
+        super(props)
 
+        this.state = {
+            file: undefined
+        }
+    }
+    componentDidMount(){
+        store.dispatch(loadActiveArtifact("b4e6c9", (artifact) => {
             this.setState({
-                artifact: artifact,
-                file: files[0]
+                file: artifact.getFiles()[0]
             })
-        }).catch((e) => {
-            // Error
-        })
-}
+        }))
+    }
 	render() {
 		return (
             <Provider store={store}>
-                <div>
-                  <PaymentButton 
-				Artifact={artifact} 
-				ArtifactFile={artifact_file} 
-				type={type_value} 
-                fileState={file_state} />
-                </div>
+                <PaymentButton 
+				    ArtifactFile={this.state.file} 
+				    type={"view"}
+                />
             </Provider>
 		)
 	}
 }
+
+;<PaymentButtonExample />
+```
+
+### Buy Example
+Button that communicates with the redux store for validating purchases
+
+```js
+const { connect, Provider } = require('react-redux')
+const { createStore } = require('oip-state')
+
+const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
+
+const store = createStore()
+
+class PaymentButtonExample  extends React.Component {
+    constructor(props){
+        super(props)
+
+        this.state = {
+            file: undefined
+        }
+    }
+    componentDidMount(){
+        store.dispatch(loadActiveArtifact("b4e6c9", (artifact) => {
+            this.setState({
+                file: artifact.getFiles()[0]
+            })
+        }))
+    }
+	render() {
+		return (
+            <Provider store={store}>
+                <PaymentButton 
+				    ArtifactFile={this.state.file} 
+				    type={"buy"}
+                />
+            </Provider>
+		)
+	}
+}
+
 ;<PaymentButtonExample />
 ```

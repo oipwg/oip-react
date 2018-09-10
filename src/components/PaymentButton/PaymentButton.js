@@ -161,10 +161,23 @@ class PaymentButton extends Component {
 	}
 }
 
-PaymentButton.propTypes = {
+PaymentButton.propTypes = { 
+	/**
+	* The artifact that you wish to purchase
+	*/
 	ArtifactFile: PropTypes.object,
+	/**
+	 * The "type" of the Button
+	 * @param {string} type - Either "view" or "buy"
+	 */
 	type: PropTypes.string,
+	/**
+	 * manual customization that can be applied
+	 */
 	style: PropTypes.object,
+	/**
+	 * Size of the PaymentButton 
+	 */
 	size: PropTypes.string,
 	className: PropTypes.string
 };
