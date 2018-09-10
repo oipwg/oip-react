@@ -19,7 +19,9 @@ class AudioWaveSurfer extends Component {
 			progressColor: '#0F2027',
 			responsive: true,
 			cursorColor: 'grey',
-			// hideScrollbar: true
+			height: '100',
+			barWidth: this.props.barWidth,
+			hideScrollbar: true
 		};
 		//user can pass down option props to override and extend default props
 		let options = this.props.options ? {...this.defaultOptions, ...this.props.options} : this.defaultOptions;
