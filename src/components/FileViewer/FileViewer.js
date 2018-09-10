@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { getFileExtension } from '../utils'
+import { getFileExtension } from '../../utils'
 
-import VideoPlayer from './VideoPlayer/VideoPlayer';
-import ImageViewer from './ImageViewer/ImageViewer'
-import AudioPlayer from './AudioPlayer/AudioPlayer'
+import VideoPlayer from '../VideoPlayer/VideoPlayer';
+import ImageViewer from '../ImageViewer/ImageViewer'
+import AudioPlayer from '../AudioPlayer/AudioPlayer'
 
 let FileViewers = [
 	VideoPlayer,
