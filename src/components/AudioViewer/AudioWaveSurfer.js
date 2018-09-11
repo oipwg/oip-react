@@ -4,8 +4,7 @@ import { connect } from 'react-redux'
 import WaveSurfer from 'wavesurfer.js';
 // import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 // import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
-import { playFile, pauseFile, setCurrentTime, setDuration } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
-import { setActiveFile, fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { playFile, pauseFile, setCurrentTime, setDuration, setActiveFile, fileToUID } from 'oip-state'
 
 import {getFileExtension, getIPFSURL} from "../../utils";
 

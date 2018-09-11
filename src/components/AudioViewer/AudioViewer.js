@@ -4,8 +4,7 @@ import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
 import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime } from 'react-player-controls'
 
-import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
-import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { playFile, pauseFile, fileToUID, setActiveFile } from 'oip-state'
 
 import { getIPFSImage } from "../../utils";
 

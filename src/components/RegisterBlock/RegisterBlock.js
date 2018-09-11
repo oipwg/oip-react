@@ -5,7 +5,7 @@ import validator from 'validator';
 import ButtonCheckbox from '../ButtonCheckbox/ButtonCheckbox.js';
 import ReCAPTCHA from 'react-google-recaptcha';
 
-import { accountRegister } from "oip-state/src/actions/Account/thunks";
+import { accountRegister } from "oip-state";
 
 const STATUS = { 
 	NO_INPUT: "NO_INPUT",

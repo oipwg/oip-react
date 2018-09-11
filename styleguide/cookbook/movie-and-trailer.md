@@ -7,10 +7,7 @@ Here is an example of the finished result we will be building in this Recipe
 
 ```js
 const { Provider, connect } = require('react-redux')
-const { createStore } = require('oip-state')
-
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
-const { setActiveFile, fileToUID } = require('oip-state/src/actions/ActiveArtifactFiles/thunks')
+const { createStore, loadActiveArtifact, setActiveFile, fileToUID } = require('oip-state')
 
 const store = createStore()
 

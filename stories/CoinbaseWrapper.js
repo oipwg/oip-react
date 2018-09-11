@@ -6,9 +6,8 @@ import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, button } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
 
-import { promptCoinbaseModal, setCoinbaseInfo, coinbasePending, coinbaseComplete } from 'oip-state/src/actions/Payment/actions'
+import { createStore, promptCoinbaseModal, setCoinbaseInfo, coinbasePending, coinbaseComplete } from 'oip-state'
 
 import CoinbaseWrapper from '../src/components/CoinbaseWrapper'
 

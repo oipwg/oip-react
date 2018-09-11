@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
 import { PropagateLoader } from 'react-spinners'
 
-import CoinbaseModal from './CoinbaseModal'
+import { handleCoinbaseModalEvents } from "oip-state";
 
-import { handleCoinbaseModalEvents } from "oip-state/src/actions/Payment/thunks";
+import CoinbaseModal from './CoinbaseModal'
 
 class CoinbaseWrapper extends Component {
 	constructor(props){

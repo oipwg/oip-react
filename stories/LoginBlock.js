@@ -8,10 +8,7 @@ import {mount, shallow, render} from "enzyme";
 import expect from "expect";
 
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
-
-import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
-import { accountLogin } from 'oip-state/src/actions/Account/thunks'
+import { createStore, loginSuccess, logout, accountLogin } from 'oip-state'
 
 import LoginBlock from '../src/components/LoginBlock/LoginBlock'
 

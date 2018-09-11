@@ -3,9 +3,7 @@ Button that communicates with the redux store for validating purchases
 
 ```js
 const { connect, Provider } = require('react-redux')
-const { createStore } = require('oip-state')
-
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
+const { createStore, loadActiveArtifact } = require('oip-state')
 
 const store = createStore()
 
@@ -44,9 +42,7 @@ Button that communicates with the redux store for validating purchases
 
 ```js
 const { connect, Provider } = require('react-redux')
-const { createStore } = require('oip-state')
-
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
+const { createStore, loadActiveArtifact } = require('oip-state')
 
 const store = createStore()
 

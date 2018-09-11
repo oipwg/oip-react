@@ -3,11 +3,8 @@ Showcasing of multiple audio Artifact Files in the format of a playlist or album
 
 ```js
 const { Provider } = require('react-redux')
-const { createStore } = require('oip-state')
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
+const { createStore, loadActiveArtifact } = require('oip-state')
 
-
-require('bootstrap/dist/css/bootstrap.min.css')
 const store = createStore()
 
 class FilePlaylistExample  extends React.Component {

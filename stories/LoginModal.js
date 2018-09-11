@@ -5,9 +5,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, button } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
-
-import { logout } from 'oip-state/src/actions/Account/actions'
+import { createStore, logout } from 'oip-state'
 
 import AccountButton from '../src/components/AccountButton/AccountButton.js'
 import LoginModal from '../src/components/LoginModal/LoginModal.js'

@@ -4,7 +4,6 @@ Communication to the Redux Store to prompt the LoginModal for users to access co
 ```js
 const { Provider } = require('react-redux')
 const { createStore } = require('oip-state')
-const { loginSuccess, logout } = require('oip-state/src/actions/Account/actions')
 
 require('bootstrap/dist/css/bootstrap.min.css')
 

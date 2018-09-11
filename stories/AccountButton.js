@@ -8,9 +8,7 @@ import {mount} from "enzyme";
 import expect from "expect";
 
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
-
-import { loginSuccess, logout } from 'oip-state/src/actions/Account/actions'
+import { createStore, loginSuccess, logout } from 'oip-state'
 
 import AccountButton from '../src/components/AccountButton/AccountButton.js'
 

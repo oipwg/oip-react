@@ -5,9 +5,7 @@ import { withNotes } from '@storybook/addon-notes';
 import { withKnobs, button } from '@storybook/addon-knobs';
 
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
-
-import { logout } from 'oip-state/src/actions/Account/actions'
+import { createStore, logout } from 'oip-state'
 
 import RegisterBlock from '../src/components/RegisterBlock/RegisterBlock.js'
 

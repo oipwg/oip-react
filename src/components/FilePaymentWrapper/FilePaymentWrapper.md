@@ -2,9 +2,9 @@
 An example of how a Paid Audio File renders from oip-state through redux
 
 ```js
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 const { Provider } = require('react-redux')
-const { createStore } = require('oip-state')
+const { createStore, loadActiveArtifact } = require('oip-state')
+
 const store = createStore()
 
 class FilePaymentWrapperExample extends React.Component {
@@ -37,9 +37,9 @@ class FilePaymentWrapperExample extends React.Component {
 An example of how a free Audio File renders from oip-state through redux
 
 ```js
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 const { Provider } = require('react-redux')
-const { createStore } = require('oip-state')
+const { createStore, loadActiveArtifact } = require('oip-state')
+
 const store = createStore()
 
 class FilePaymentWrapperExample extends React.Component {
@@ -71,9 +71,9 @@ class FilePaymentWrapperExample extends React.Component {
 An example of how a free Video File renders from oip-state through redux
 
 ```js
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 const { Provider } = require('react-redux')
-const { createStore } = require('oip-state')
+const { createStore, loadActiveArtifact } = require('oip-state')
+
 const store = createStore()
 
 class FilePaymentWrapperExample extends React.Component {
@@ -105,9 +105,9 @@ class FilePaymentWrapperExample extends React.Component {
 An example of how a Paid Video File renders from oip-state through redux
 
 ```js
-const { loadActiveArtifact } = require('oip-state/src/actions/ActiveArtifact/thunks')
 const { Provider } = require('react-redux')
-const { createStore } = require('oip-state')
+const { createStore, loadActiveArtifact } = require('oip-state')
+
 const store = createStore()
 
 class FilePaymentWrapperExample extends React.Component {

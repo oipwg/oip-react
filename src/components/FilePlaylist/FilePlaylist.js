@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux'
 
 import { Artifact, ArtifactFile } from 'oip-index';
-import { fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { fileToUID } from 'oip-state'
+
 import { getFileExtension } from "../../utils";
 
 import PlaylistItem from './PlaylistItem'

@@ -4,8 +4,7 @@ import { Provider } from 'react-redux'
 
 import { storiesOf } from '@storybook/react';
 import { withKnobs, select} from '@storybook/addon-knobs';
-import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
-import { setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
+import { setActiveArtifact, setActiveFile } from 'oip-state'
 
 import AudioViewer from '../src/components/AudioViewer/AudioViewer'
 import FilePlaylist from '../src/components/FilePlaylist/FilePlaylist'

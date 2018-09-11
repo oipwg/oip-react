@@ -6,8 +6,7 @@ import validator from 'validator';
 
 import ButtonCheckbox from '../ButtonCheckbox/ButtonCheckbox.js';
 
-import { clearAccountErrors } from "oip-state/src/actions/Account/actions";
-import { accountLogin } from "oip-state/src/actions/Account/thunks";
+import { clearAccountErrors, accountLogin } from "oip-state";
 
 const STATUS = {
 	NO_INPUT: "NO_INPUT",

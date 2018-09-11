@@ -14,9 +14,8 @@ import { withKnobs, select} from '@storybook/addon-knobs';
 import AudioWaveSurfer from '../src/components/AudioViewer/AudioWaveSurfer'
 import { apocalypse, barbershop, barbershop_paid, amsterdam, scout, CorMetallicum, dweb, sintel, eightbit} from './TestArtifacts'
 import { getArtifactOptions, getFileOptions } from './util'
-import {setActiveArtifact} from "oip-state/src/actions/ActiveArtifact/thunks";
-import {playPauseAudioFile} from "oip-state/src/actions/ActiveArtifactFiles/actions";
-import {fileToUID, setActiveFile} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
+
+import { setActiveArtifact, playPauseAudioFile, fileToUID, setActiveFile } from "oip-state";
 
 
 const stories = storiesOf('AudioWaveSurfer', module);

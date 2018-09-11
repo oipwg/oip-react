@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { promptLogin } from 'oip-state/src/actions/Account/actions'
+import { promptLogin } from 'oip-state'
 
 class AccountButton extends Component {
 	constructor(props){

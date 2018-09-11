@@ -3,9 +3,8 @@ import { storiesOf } from '@storybook/react';
 import {withKnobs, select} from '@storybook/addon-knobs';
 import { host } from 'storybook-host';
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
 
-import { setActiveArtifact } from 'oip-state/src/actions/ActiveArtifact/thunks'
+import { createStore, setActiveArtifact } from 'oip-state'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 

@@ -4,7 +4,6 @@ Modal for users to access content and their wallets on confirmation of the Accou
 ```js
 const { Provider } = require('react-redux')
 const { createStore } = require('oip-state')
-const { loginSuccess, logout } = require('oip-state/src/actions/Account/actions')
 
 require('bootstrap/dist/css/bootstrap.min.css')
 

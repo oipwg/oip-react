@@ -2,7 +2,17 @@ import React from 'react';
 import { storiesOf } from '@storybook/react';
 import {withKnobs, select, boolean} from '@storybook/addon-knobs';
 import { Provider } from 'react-redux'
-import { createStore } from 'oip-state'
+
+import {
+	createStore,
+	setActiveArtifact,
+	fileToUID,
+	setActiveFile,
+	paymentCancel,
+	paymentError,
+	paymentInProgress,
+	paymentSuccess
+} from "oip-state";
 
 import FilePaymentWrapper from '../src/components/FilePaymentWrapper/FilePaymentWrapper.js';
 import PaymentButton from '../src/components/PaymentButton/PaymentButton.js'
@@ -10,16 +20,6 @@ import PaymentButton from '../src/components/PaymentButton/PaymentButton.js'
 import {amsterdam, apocalypse, barbershop, barbershop_paid, CorMetallicum, scout, dweb, sintel} from './TestArtifacts'
 
 import { getArtifactOptions, getFileOptions } from './util';
-import { setActiveArtifact } from "oip-state/src/actions/ActiveArtifact/thunks";
-import {
-	fileToUID,
-	setActiveFile,
-	paymentCancel,
-	paymentError,
-	paymentInProgress,
-	paymentSuccess
-} from "oip-state/src/actions/ActiveArtifactFiles/thunks";
-
 
 
 import 'bootstrap/dist/css/bootstrap.min.css'
