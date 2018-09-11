@@ -12,19 +12,37 @@ class ImageViewer extends React.Component {
 		super(props);
 
 		this.state = {
-			image: null
+			image: null,
+			shouldUpdate: false,
+			ArtifactFile: undefined
 		};
+
+		this.initialLoad = true;
 		
 		this.drawImageToCanvas = this.drawImageToCanvas.bind(this)
 		this.isUnsupportedBrowser = this.isUnsupportedBrowser.bind(this)
 	};
 
+	static getDerivedStateFromProps(nextProps, prevState) {
+		let shouldUpdate = false;
+		if (nextProps.ArtifactFile !== prevState.ArtifactFile) {
+			shouldUpdate = true
+		}
+		return {
+			shouldUpdate,
+			ArtifactFile: nextProps.ArtifactFile
+		}
+	}
+
 	componentDidMount() {
 		this.drawImageToCanvas()
+		this.initialLoad = false
 	};
 
 	componentDidUpdate(){
-		this.drawImageToCanvas()
+		if (this.state.shouldUpdate || this.initialLoad) {
+			this.drawImageToCanvas()
+		}
 	};
 
 	drawImageToCanvas(){
