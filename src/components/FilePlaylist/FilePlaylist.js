@@ -122,7 +122,9 @@ class FilePlaylist extends React.Component {
 
 		let files = playlist_content.Files;
 		files = this.filterFiles(files);
-
+		if (this.props.ActiveArtifact === undefined) {
+			files = []
+		}
 		return (
 			<div className={`file-playlist-container border ${this.props.className}`} style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px", ...this.props.style}}>
 				<ul className="file-playlist p-0 m-0">
@@ -175,7 +177,8 @@ FilePlaylist.propTypes = {
 
 function mapStateToProp(state){
 	return {
-		ReduxActiveFiles: state.ActiveArtifactFiles
+		ReduxActiveFiles: state.ActiveArtifactFiles,
+		ActiveArtifact: state.ActiveArtifact.Artifact
 	}
 }
 
