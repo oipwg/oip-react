@@ -26,18 +26,23 @@ const widthOptions = {
 	"100": "100px",
 	"200": "200px",
 	"300": "300px",
+	"iphone": "375px",
 	"400": "400px",
 	"500": "500px",
+	"sm": "576px",
 	"600": "600px",
 	"700": "700px",
+	"md": "768px",
 	"800": "800px",
 	"900": "900px",
+	"lg": "992px",
 	"1000": "1000px",
 	"1100": "1100px",
+	"xl": "1200",
 	"60%": "60%",
 	"100%": "100%"
 };
-const widthDefault = '800px';
+const widthDefault = '100%';
 
 const heightLabel = "Parent Div Height";
 const heightOptions = {
