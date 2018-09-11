@@ -119,7 +119,7 @@ stories.add('Example', () => {
 		// --------------- Test Logging In ---------------
 
 		let testLoginError = () => {
-			it("Should show error on Login failure", (done) => {
+			it("Should show Invalid Password on Password being wrong", (done) => {
 				output.find("#email").simulate('change', {target: {value: "email@example.com"}})
 				output.find("#password").simulate('change', {target: {value: "not_the_password"}})
 				output.find("#login_button").simulate('click')
@@ -136,7 +136,8 @@ stories.add('Example', () => {
 						clearInterval(checker_error)
 
 						try {
-							expect(login_button_text).toBe("Login Error")
+							expect(login_button_text).toBe("Login")
+							expect(output.text()).toContain("Invalid Password")
 							expect(output.text()).toContain("Account.loginFetching: false")
 							expect(output.text()).toContain("Account.isLoggedIn: false")
 							expect(output.text()).toContain("Account.loginFailure: true")
@@ -168,7 +169,7 @@ stories.add('Example', () => {
 				let login_button_text = output.find("#login_button").text()
 				if (login_button_text !== "Logging in..."){
 					clearInterval(checker_success)
-					expect(login_button_text).toBe("Login")
+					expect(login_button_text).toBe("Logged In")
 					expect(output.text()).toContain("Account.loginFetching: false")
 					expect(output.text()).toContain("Account.isLoggedIn: true")
 					expect(output.text()).toContain("Account.Account._username: email@example.com")
