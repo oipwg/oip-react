@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
   "main": "lib/index.js",
   "scripts": {
@@ -89,5 +89,8 @@
     "webpack-dev-server": "^3.1.1",
     "webpack-merge": "^4.1.2"
   },
-  "homepage": "https://github.com/oipwg/oip-react#readme"
+  "homepage": "https://github.com/oipwg/oip-react#readme",
+  "files": [
+    "lib"
+  ]
 }
