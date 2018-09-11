@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
-import { PlayButton, PauseButton, NextButton, PrevButton } from 'react-player-controls'
+import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime } from 'react-player-controls'
 
 import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
@@ -109,7 +109,7 @@ class AudioViewer extends Component {
 		else
 			playbackButton = <PlayButton isEnabled={true} onClick={() => this.props.playFile(fileToUID(file))} />
 
-		let xxs = this.state.windowWidth <= '576';
+		let xxs = this.state.windowWidth < '576';
 
 		const styles = {
 			colorThief: {backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
@@ -134,6 +134,10 @@ class AudioViewer extends Component {
 					{file ? (<div className={"col-12 col-sm-6 col-lg-7 audio-player"} style={{position: "relative", top: "-150px", height: "inherit"}}>
 						<div className={"wavesurfer-container"}>
 							<AudioWaveSurfer ArtifactFile={file}/>
+							<div className={"time duration d-flex position-absolute justify-content-between w-100"}>
+								<FormattedTime style={{fontSize: '12px', fontFamily: 'roboto', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.currentTime}/>
+								<FormattedTime style={{fontSize: '12px', fontFamily: 'roboto', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.duration}/>
+							</div>
 						</div>
 						<div className={"playback-controls d-flex justify-content-center align-items-center"}>
 							<div className={"mx-1"}><PrevButton isEnabled={true}/></div>
@@ -158,7 +162,10 @@ function mapStateToProps(state) {
 	return {
 		state: state,
 		ActiveFileUID: state.ActiveArtifactFiles.active,
-		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
+		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active],
+		currentTime: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].currentTime,
+		duration: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].duration
+
 	}
 }
 
