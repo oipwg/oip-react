@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import WaveSurfer from 'wavesurfer.js';
 // import TimelinePlugin from 'wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js';
 // import MinimapPlugin from 'wavesurfer.js/dist/plugin/wavesurfer.minimap.min.js';
-import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
+import { playFile, pauseFile, setCurrentTime, setDuration } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { setActiveFile, fileToUID } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
 import {getFileExtension, getIPFSURL} from "../../utils";
@@ -22,6 +22,7 @@ class AudioWaveSurfer extends Component {
 			height: '100',
 			barWidth: this.props.barWidth,
 			hideScrollbar: true
+
 		};
 		//user can pass down option props to override and extend default props
 		let options = this.props.options ? {...this.defaultOptions, ...this.props.options} : this.defaultOptions;
@@ -35,9 +36,13 @@ class AudioWaveSurfer extends Component {
 			options,
 			ArtifactFile: undefined,
 			ReduxArtifactFile: undefined,
+			prevTimestamp: 0
 		};
 
 		this.initialLoad = true;
+
+		this.setDuration = this.setDuration.bind(this);
+		this.setCurrentTime = this.setCurrentTime.bind(this);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -81,6 +86,7 @@ class AudioWaveSurfer extends Component {
 
 		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode, backend: 'MediaElement'});
 		this.wavesurfer.on('ready', () => {
+			this.setDuration()
 			// console.log("Wavesurfer ready event")
 			if (!this.state.ReduxArtifactFile.isPaid || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned))) {
 				if (this.initialLoad) {
@@ -91,6 +97,10 @@ class AudioWaveSurfer extends Component {
 			}
 			// console.log("(6) Wavesurfer is now ready")
 		});
+
+		this.wavesurfer.on('audioprocess', () => {
+			this.setCurrentTime()
+		})
 		//this function checks to see if there's an artifact passed to props and sets it to active. does nothing if no prop
 		this.loadArtifactFileFromProps();
 		//load the surfer with the audio url
@@ -99,7 +109,25 @@ class AudioWaveSurfer extends Component {
 			this.wavesurfer.load(this.getAudioURL());
 	}
 
-	componentDidUpdate(prevProps, prevState){
+	setCurrentTime() {
+		let currentTimestamp = Date.now()
+		const timeInterval = 500; //Milliseconds
+
+		if (this.wavesurfer) {
+			if (currentTimestamp >= this.state.prevTimestamp + timeInterval) {
+				this.props.setCurrentTime(this.props.ActiveFileUID, this.wavesurfer.getCurrentTime());
+				this.setState({prevTimestamp: currentTimestamp})
+			}
+		}
+	}
+
+	setDuration() {
+		if (this.wavesurfer) {
+			this.props.setDuration(this.props.ActiveFileUID, this.wavesurfer.getDuration())
+		}
+	}
+
+	componentDidUpdate(prevProps){
 		// console.log("(7) component did update")
 
 		if (prevProps.ReduxArtifactFile !== this.props.ReduxArtifactFile) {
@@ -193,7 +221,9 @@ function mapStateToProps(state) {
 const mapDispatchToProps = {
 	setActiveFile,
 	playFile,
-	pauseFile
+	pauseFile,
+	setCurrentTime,
+	setDuration
 }
 
 AudioWaveSurfer.supportedFileTypes = ['wav', 'mp3', 'ogg', 'aac'];
