@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 
 //audioPlayback controls and css for testing
 import { PlayButton, PauseButton } from 'react-player-controls'
-import '../src/components/AudioViewer/assets/styles/AudioViewer.scss'
+import '../src/components/AudioViewer/assets/styles/PlaybackControls.scss'
 
 //storybook addons
 import { storiesOf } from '@storybook/react';
