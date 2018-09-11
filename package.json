@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "1.5.2",
+  "version": "1.5.4",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
   "main": "lib/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "storybook": "start-storybook -p 9001 -c .storybook",
     "docs:start": "npx styleguidist server",
     "docs:build": "npx styleguidist build",
-    "compile": "npx babel src --out-dir lib",
+    "compile": "npx babel src --out-dir lib --copy-files",
     "prepare": "npm run compile"
   },
   "repository": {
