@@ -7,9 +7,11 @@ import { PlayButton, PauseButton, NextButton, PrevButton } from 'react-player-co
 import { playFile, pauseFile } from 'oip-state/src/actions/ActiveArtifactFiles/actions'
 import { fileToUID, setActiveFile } from 'oip-state/src/actions/ActiveArtifactFiles/thunks'
 
+import { getIPFSImage } from "../../utils";
+
 import AudioWaveSurfer from './AudioWaveSurfer';
 import PosterWrapper from '../ImageViewer/PosterWrapper'
-import './assets/styles/AudioViewer.scss'
+import './assets/styles/PlaybackControls.scss'
 
 class AudioViewer extends Component {
 	constructor(props) {
@@ -19,17 +21,19 @@ class AudioViewer extends Component {
 			colorOne: '#fff',
 			colorTwo: '#000',
 			colorThree: '#000',
-			paletteGenerated: false
+			paletteGenerated: false,
+			windowHeight: '0',
+			windowWidth: '0'
 		};
+
+		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		console.log("Audio Viewer::getDerivedStateFromProps")
 		let paletteGenerated = prevState.paletteGenerated
 		if (nextProps.ArtifactFile !== prevState.ArtifactFile ||
 			((nextProps.ReduxArtifactFile && prevState.ReduxArtifactFile) && nextProps.ReduxArtifactFile.ArtifactFile !== prevState.ReduxArtifactFile.ArtifactFile)) {
-			console.log("ArtifactFile has switched in AudioViewer")
 			//we set this variable to stop an infinite loop in the generateColorPalette function in which the image node gets passed repeatedly
 			paletteGenerated = false
 		}
@@ -38,6 +42,19 @@ class AudioViewer extends Component {
 			ArtifactFile: nextProps.ArtifactFile,
 			ReduxArtifactFile: nextProps.ReduxArtifactFile
 		}
+	}
+
+	componentDidMount() {
+		this.updateWindowDimensions();
+		window.addEventListener('resize', this.updateWindowDimensions);
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.updateWindowDimensions);
+	}
+
+	updateWindowDimensions() {
+		this.setState({ windowWidth: window.innerWidth, windowHeight: window.innerHeight })
 	}
 
 	generateColorPalette = (imageNode) => {
@@ -53,9 +70,13 @@ class AudioViewer extends Component {
 		}
 	};
 
+	getIPFSImage = (file) => {
+		return getIPFSImage(file)
+	};
+
 	setActiveFile = (file) => {
 		this.props.setActiveFile(file)
-	}
+	};
 
 	render() {
 		let file;
@@ -88,42 +109,54 @@ class AudioViewer extends Component {
 		else
 			playbackButton = <PlayButton isEnabled={true} onClick={() => this.props.playFile(fileToUID(file))} />
 
+		let xxs = this.state.windowWidth <= '576';
+
+		const styles = {
+			colorThief: {backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
+					`linear-gradient(-90deg, #29323c, #485563)`   },
+			posterBackground: {backgroundImage: file ? `url(${this.getIPFSImage(file)})` : `linear-gradient(-90deg, #29323c, #485563)`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat'}
+		};
+
 		return (
-			<div className="container-fluid h-100" style={{backgroundImage: file ? (`linear-gradient(-90deg, rgb(${this.state.colorOne.toString()}), rgb(${this.state.colorTwo.toString()}))`) :
-					`linear-gradient(-90deg, #29323c, #485563)`   }}>
-				<div className={"row no-gutters h-100 py-4"}>
-					<div className={"col-7"}>
-						<div className={"d-flex p-3"}>
-							<div className={"d-block ml-2"}>
-								<span className={""} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{file ? artist : "No file loaded"}</span>
-								{file ? <span className={"d-block"} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '20px', color: 'white', lineHeight: '20px'}}>{title}</span> : null}
-							</div>
-						</div>
+			<div className="container-fluid h-100 audio-viewer p-3" style={xxs ? styles.posterBackground : styles.colorThief}>
+				<div className={"row no-gutters"} style={{height: "inherit"}}>
+					<div className={"col-12 col-sm-6 col-lg-7 track-info pl-3 pt-3"} style={{height: "inherit"}}>
+						<span className={"track-artist"} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '4px', color: '#f2f2f2'}}>{file ? artist : "No file loaded"}</span>
+						{file ? <span className={" track-title d-table"} style={{backgroundColor: 'rgb(0,0,0,.7)', padding: '8px 7px 7px', fontSize: '20px', color: 'white', lineHeight: '20px'}}>{title}</span> : null}
 					</div>
-					<div className={"col-5 pr-3 d-flex justify-content-center"}>
-						<div  style={{height: '200px', width: '200px'}}>
+
+					{ file ? (<div className={"d-none d-sm-flex col-sm-6 col-lg-5 album-art justify-content-md-center justify-content-md-end"} style={{height: "inherit"}}>
+						<div className="poster-container p-3 d-flex align-items-center" style={{height: 'inherit', width: 'auto'}}>
 							<PosterWrapper ArtifactFile={file} onImageLoad={this.generateColorPalette}/>
 						</div>
-					</div>
-					<div className={"col-12"} style={{bottom: '0px'}}>
-						<AudioWaveSurfer ArtifactFile={file}/>
-					</div>
-					<div className={"col-12 d-flex justify-content-center"}>
-						<div className={"audio-controls d-flex align-items-center"}>
+					</div>) : null }
+
+					{file ? (<div className={"col-12 col-sm-6 col-lg-7 audio-player"} style={{position: "relative", top: "-150px", height: "inherit"}}>
+						<div className={"wavesurfer-container"}>
+							<AudioWaveSurfer ArtifactFile={file}/>
+						</div>
+						<div className={"playback-controls d-flex justify-content-center align-items-center"}>
 							<div className={"mx-1"}><PrevButton isEnabled={true}/></div>
 							<div className={"mx-1"}>{playbackButton}</div>
 							<div className={"mx-1"}><NextButton isEnabled={true}/></div>
 						</div>
-					</div>
+					</div>) : null }
 				</div>
 			</div>
-
 		);
+	}
+}
+
+const avstyles = {
+	bscards: {
+		backgroundColor: 'unset',
+		border: 'none'
 	}
 }
 
 function mapStateToProps(state) {
 	return {
+		state: state,
 		ActiveFileUID: state.ActiveArtifactFiles.active,
 		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
 	}
@@ -138,5 +171,7 @@ const mapDispatchToProps = {
 AudioViewer.propTypes = {
 	ArtifactFile: PropTypes.object
 };
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AudioViewer);
