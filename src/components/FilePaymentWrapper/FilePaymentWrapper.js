@@ -55,7 +55,10 @@ function mapStateToProps(state) {
 	}
 }
 
-FilePaymentWrapper.propTypes = {
+FilePaymentWrapper.propTypes = { 
+	/**
+	 * The artifact that you wish to purchase
+	 */
 	ArtifactFile: PropTypes.object,
 	options: PropTypes.object
 };
