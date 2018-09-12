@@ -5,7 +5,7 @@ import './assets/css/ImageViewer.css';
 import ArtifactFile from 'oip-index/lib/ArtifactFile';
 import { buildIPFSURL, buildIPFSShortURL } from '../../utils.js';
 /**
- * The Image Viewer manifests image ArtifactFiles that are passed from the OIP-Index
+ * The ImageViewer runs images loaded through artifacts
  */
 class ImageViewer extends React.Component {
 	constructor(props){

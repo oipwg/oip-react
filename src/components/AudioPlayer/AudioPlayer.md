@@ -1,5 +1,5 @@
 ### Basic Example
-An example of how a Audio File renders into AudioPlayer through pulling it from an artifact that was loaded through OIP-Index.
+How a audio file renders in AudioPlayer
 
 ```js
 const { Index } = require('oip-index')
@@ -35,7 +35,7 @@ class AudioPlayerExample extends React.Component {
 ```
 
 ### LockFile Example
-If the props of lockFile is passed through and set to true, The Audio will not be accessable to play unless lockFile is set back to false 
+Lockfile being set to true will render audio non-playable
 
 ```js
 const { Index } = require('oip-index')
@@ -70,7 +70,7 @@ class AudioPlayerExample extends React.Component {
 ;<AudioPlayerExample />
 ```
 ### Change Example
-When the Artifact File is rendered but has multiple within the Artifact (Album, Playlist, etc...) you are able to switch between each one that is displayed by switching out the file that is to be rendered in the state.
+When the Artifact is accessed but has multiple files within (Album, Playlist) you are able to switch by swapping out the file that is to be rendered in the state. In this example, the second song within the album is being loaded once the Next Song button is clicked.
 
 ```js
 const { Index } = require('oip-index')
@@ -106,8 +106,8 @@ class AudioPlayerExample extends React.Component {
 	render() {
 		return (
 			<div>  
-            <button className="btn btn-primary" onClick={() => {                this.onButtonClick(0) }}>Previous Song</button>
-            <button className="btn btn-primary" style={{margin: "10px"}}       onClick={() => { this.onButtonClick(1) }}>Next Song</button>
+            <button className="btn btn-primary" onClick={() => { this.onButtonClick(0) }}>Previous Song</button>
+            <button className="btn btn-primary" style={{margin: "10px"}} onClick={() => { this.onButtonClick(1) }}>Next Song</button>
             <AudioPlayer ArtifactFile={this.state.file} />
             </div>
 		)

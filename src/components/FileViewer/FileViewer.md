@@ -2,9 +2,10 @@
 An example of how a Audio File renders into FileViewer
 
 ```js
-const { Index } = require('oip-index')
+const { Provider } = require('react-redux')
+const { createStore, loadActiveArtifact } = require('oip-state')
 
-const index = new Index()
+const store = createStore()
 
 class FileViewerExample extends React.Component {
     constructor(props){
@@ -15,19 +16,17 @@ class FileViewerExample extends React.Component {
         }
     }
     componentDidMount(){
-        index.getArtifact("061951").then((artifact) => {
-            let files = artifact.getFiles()
-
+        store.dispatch(loadActiveArtifact("061951", (artifact) => {
             this.setState({
-                file: files[0]
+                file: artifact.getFiles()[0]
             })
-        }).catch((e) => {
-            // Error
-        })
+        }))
     }
 	render() {
 		return (
-			<FileViewer ArtifactFile={this.state.file} />
+            <Provider store={store}>
+                <FileViewer ArtifactFile={this.state.file} />
+            </Provider>
 		)
 	}
 }

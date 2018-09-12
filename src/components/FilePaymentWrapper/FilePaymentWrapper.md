@@ -1,5 +1,5 @@
 ### Paid Audio file Example
-An example of how a Paid Audio File renders from oip-state through redux
+How a paid audio file renders from oip-state through redux
 
 ```js
 const { Provider } = require('react-redux')
@@ -34,7 +34,7 @@ class FilePaymentWrapperExample extends React.Component {
 ```
 
 ### Free Audio file Example
-An example of how a free Audio File renders from oip-state through redux
+How a free audio file renders from oip-state through redux
 
 ```js
 const { Provider } = require('react-redux')
@@ -68,7 +68,7 @@ class FilePaymentWrapperExample extends React.Component {
 ;<FilePaymentWrapperExample />
 ```
 ### Free Video file Example
-An example of how a free Video File renders from oip-state through redux
+How a free video file renders from oip-state through redux
 
 ```js
 const { Provider } = require('react-redux')
@@ -102,7 +102,7 @@ class FilePaymentWrapperExample extends React.Component {
 ;<FilePaymentWrapperExample />
 ```
 ### Paid Video file Example
-An example of how a Paid Video File renders from oip-state through redux
+How a Paid video file renders from oip-state through redux
 
 ```js
 const { Provider } = require('react-redux')
