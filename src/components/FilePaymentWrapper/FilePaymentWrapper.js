@@ -37,13 +37,11 @@ class FilePaymentWrapper extends React.Component {
 		} else {ArtifactFile = undefined}
 
 		return(
-			<div>
-				<FileViewer
-					ArtifactFile={ArtifactFile}
-					lockFile={this.state.lockFile}
-					{...this.props.options}
-				/>
-			</div>
+			<FileViewer
+				ArtifactFile={ArtifactFile}
+				lockFile={this.state.lockFile}
+				{...this.props.options}
+			/>
 		)
 	}
 }
