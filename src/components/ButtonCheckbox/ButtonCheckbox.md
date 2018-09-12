@@ -1,5 +1,4 @@
 ### Basic Example
-An example of how a ButtonCheckbox could be utilized
 
 ```js
 class ButtonCheckboxExample extends React.Component {

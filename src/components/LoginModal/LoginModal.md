@@ -1,5 +1,5 @@
 ### Basic Example
-Modal for users to access content and their wallets on confirmation of the AccountButton being triggered
+Allows users to access content and their wallets on confirmation of the AccountButton being triggered
 
 ```js
 const { Provider } = require('react-redux')
