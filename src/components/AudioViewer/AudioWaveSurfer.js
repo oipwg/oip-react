@@ -86,7 +86,7 @@ class AudioWaveSurfer extends Component {
 		// console.log("(5) Component did mount");
 
 		this.wavesurfer = WaveSurfer.create({...this.state.options, container: this.wavesurferNode, backend: 'MediaElement'});
-		this.wavesurfer.on('ready', () => {
+		this.wavesurfer.on('waveform-ready', () => {
 			this.setDuration()
 			// console.log("Wavesurfer ready event")
 			if (!this.state.ReduxArtifactFile.isPaid || (this.state.ReduxArtifactFile.isPaid && (this.state.ReduxArtifactFile.hasPaid || this.state.ReduxArtifactFile.owned))) {
