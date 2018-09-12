@@ -167,6 +167,8 @@ class AudioViewer extends Component {
 	}
 }
 
+AudioViewer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "aac", "wav"];
+
 function mapStateToProps(state) {
 	let currentTime = undefined, duration = undefined, isPlaying = false;
 
