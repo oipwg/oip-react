@@ -5,12 +5,12 @@ import { getFileExtension } from '../../utils'
 
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import ImageViewer from '../ImageViewer/ImageViewer'
-import AudioPlayer from '../AudioPlayer/AudioPlayer'
+import AudioViewer from '../AudioViewer/AudioViewer'
 
 let FileViewers = [
 	VideoPlayer,
 	ImageViewer,
-	AudioPlayer
+	AudioViewer
 ];
 
 class FileViewer extends React.Component {

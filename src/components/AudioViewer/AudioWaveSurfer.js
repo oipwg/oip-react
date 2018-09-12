@@ -116,7 +116,7 @@ class AudioWaveSurfer extends Component {
 		let maxVolume = this.state.volume + increment;
 		let minVolume = this.state.volume - increment;
 		let currentVolume = this.props.volume;
-		
+
 		if (currentVolume >= maxVolume || currentVolume <= minVolume || currentVolume === 0) {
 			this.wavesurfer.setVolume(currentVolume);
 			this.setState({volume: currentVolume});

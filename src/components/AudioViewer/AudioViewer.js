@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
 import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime, VolumeSlider, ControlDirection, MuteToggleButton } from 'react-player-controls'
 
-import {playFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume} from 'oip-state'
+import { payForArtifactFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume } from 'oip-state'
 
 import { getIPFSImage } from "../../utils";
 
@@ -109,7 +109,7 @@ class AudioViewer extends Component {
 		if (isPlaying) 
 			playbackButton = <PauseButton isEnabled={true} onClick={() => this.props.pauseFile(fileToUID(file))} />
 		else
-			playbackButton = <PlayButton isEnabled={true} onClick={() => this.props.playFile(fileToUID(file))} />
+			playbackButton = <PlayButton isEnabled={true} onClick={() => this.props.payForArtifactFile(file, 'view')} />
 
 		let xxs = this.state.windowWidth < '576';
 
@@ -167,6 +167,8 @@ class AudioViewer extends Component {
 	}
 }
 
+AudioViewer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "aac", "wav"];
+
 function mapStateToProps(state) {
 	let currentTime = undefined, duration = undefined, isPlaying = false, volume = 1;
 
@@ -189,7 +191,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-	playFile,
+	payForArtifactFile,
 	pauseFile,
 	setActiveFile,
 	skipForward,
