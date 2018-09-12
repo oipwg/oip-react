@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
-import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime } from 'react-player-controls'
+import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime, VolumeSlider, ControlDirection, MuteToggleButton } from 'react-player-controls'
 
 import { playFile, pauseFile, fileToUID, setActiveFile } from 'oip-state'
 
@@ -26,7 +26,7 @@ class AudioViewer extends Component {
 		};
 
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
-
+		this.handleVolumeChange = this.handleVolumeChange.bind(this);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -77,6 +77,10 @@ class AudioViewer extends Component {
 		this.props.setActiveFile(file)
 	};
 
+	handleVolumeChange(volume) {
+		this.props.setVolume(volume)
+	}
+
 	render() {
 		let file;
 		if (this.props.ArtifactFile) {
@@ -99,10 +103,9 @@ class AudioViewer extends Component {
 			this.setActiveFile(this.props.ArtifactFile)
 		}
 
-		let isPlaying = this.props.ReduxArtifactFile ? this.props.ReduxArtifactFile.isPlaying : false;
+		let isPlaying = this.props.isPlaying;
 		
-		let playbackButton
-
+		let playbackButton;
 		if (isPlaying) 
 			playbackButton = <PauseButton isEnabled={true} onClick={() => this.props.pauseFile(fileToUID(file))} />
 		else
@@ -143,6 +146,20 @@ class AudioViewer extends Component {
 							<div className={"mx-1"}>{playbackButton}</div>
 							<div className={"mx-1"}><NextButton isEnabled={true}/></div>
 						</div>
+						<div className={"volume-slider d-flex justify-content-center mt-2"} >
+							{/*<MuteToggleButton*/}
+								{/*onHover*/}
+								{/*isEnabled={true}*/}
+								{/*isMuted={true}*/}
+								{/*onMuteChange={() => {console.log("On Mute change")}}*/}
+							{/*/>*/}
+							<VolumeSlider
+								volume={'.5'}
+								onVolumeChange={this.handleVolumeChange}
+								direction={ControlDirection.HORIZONTAL}
+								isEnabled={true}
+							/>
+						</div>
 					</div>) : null }
 				</div>
 			</div>
@@ -150,20 +167,21 @@ class AudioViewer extends Component {
 	}
 }
 
-const avstyles = {
-	bscards: {
-		backgroundColor: 'unset',
-		border: 'none'
-	}
-}
-
 function mapStateToProps(state) {
+	let currentTime = undefined, duration = undefined, isPlaying = false;
+
+	if (state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]){
+		currentTime = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].currentTime;
+		duration = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].duration;
+		isPlaying = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].isPlaying;
+	}
 	return {
 		state: state,
 		ActiveFileUID: state.ActiveArtifactFiles.active,
 		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active],
-		currentTime: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].currentTime,
-		duration: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].duration
+		currentTime,
+		duration,
+		isPlaying
 
 	}
 }
