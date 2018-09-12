@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "1.5.4",
+  "version": "1.6.0",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
   "main": "lib/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
     "core-js": "^2.5.7",
     "iso-639-1": "^2.0.3",
     "oip-index": "^1.1.0",
-    "oip-state": "^1.4.1",
+    "oip-state": "^1.5.3",
     "prop-types": "^15.6.2",
     "react": "^16.4.2",
     "react-audio-player": "^0.10.0",
