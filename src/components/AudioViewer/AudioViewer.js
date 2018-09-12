@@ -141,7 +141,7 @@ class AudioViewer extends Component {
 								<FormattedTime style={{fontSize: '12px', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.duration}/>
 							</div>
 						</div>
-						<div className={"playback-controls d-flex justify-content-center align-items-center"}>
+						<div className={"playback-controls d-flex justify-content-center align-items-center position-relative"}>
 							<div className={"mx-1"}><PrevButton isEnabled={true} onClick={() => {this.props.skipBack()}}/></div>
 							<div className={"mx-1"}>{playbackButton}</div>
 							<div className={"mx-1"}><NextButton isEnabled={true} onClick={() => {this.props.skipForward()}}/></div>
