@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
 import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime, VolumeSlider, ControlDirection, MuteToggleButton } from 'react-player-controls'
 
-import { playFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume } from 'oip-state'
+import {playFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume} from 'oip-state'
 
 import { getIPFSImage } from "../../utils";
 
@@ -136,30 +136,30 @@ class AudioViewer extends Component {
 					{file ? (<div className={"col-12 col-sm-6 col-lg-7 audio-player"} style={{position: "relative", top: "-150px", height: "inherit"}}>
 						<div className={"wavesurfer-container"}>
 							<AudioWaveSurfer ArtifactFile={file}/>
-							{/*<div className={"time duration d-flex position-absolute justify-content-between w-100"}>*/}
-								{/*<FormattedTime style={{fontSize: '12px', fontFamily: 'roboto', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.currentTime}/>*/}
-								{/*<FormattedTime style={{fontSize: '12px', fontFamily: 'roboto', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.duration}/>*/}
-							{/*</div>*/}
+							<div className={"time duration d-flex position-absolute justify-content-between w-100"}>
+								<FormattedTime style={{fontSize: '12px', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.currentTime}/>
+								<FormattedTime style={{fontSize: '12px', backgroundColor: 'rgb(0,0,0,.7)', padding: '0px 2px', color: '#fff'}} numSeconds={this.props.duration}/>
+							</div>
 						</div>
 						<div className={"playback-controls d-flex justify-content-center align-items-center"}>
 							<div className={"mx-1"}><PrevButton isEnabled={true} onClick={() => {this.props.skipBack()}}/></div>
 							<div className={"mx-1"}>{playbackButton}</div>
 							<div className={"mx-1"}><NextButton isEnabled={true} onClick={() => {this.props.skipForward()}}/></div>
 						</div>
-						{/*<div className={"volume-slider d-flex justify-content-center mt-2"} >*/}
+						<div className={"volume-slider d-flex justify-content-center mt-2"} >
 							{/*<MuteToggleButton*/}
 								{/*onHover*/}
 								{/*isEnabled={true}*/}
 								{/*isMuted={true}*/}
 								{/*onMuteChange={() => {console.log("On Mute change")}}*/}
 							{/*/>*/}
-							{/*<VolumeSlider*/}
-								{/*volume={'.5'}*/}
-								{/*onVolumeChange={this.handleVolumeChange}*/}
-								{/*direction={ControlDirection.HORIZONTAL}*/}
-								{/*isEnabled={true}*/}
-							{/*/>*/}
-						{/*</div>*/}
+							<VolumeSlider
+								volume={this.props.volume}
+								onVolumeChange={this.handleVolumeChange}
+								direction={ControlDirection.HORIZONTAL}
+								isEnabled={true}
+							/>
+						</div>
 					</div>) : null }
 				</div>
 			</div>
@@ -168,12 +168,13 @@ class AudioViewer extends Component {
 }
 
 function mapStateToProps(state) {
-	let currentTime = undefined, duration = undefined, isPlaying = false;
+	let currentTime = undefined, duration = undefined, isPlaying = false, volume = 1;
 
 	if (state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]){
 		currentTime = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].currentTime;
 		duration = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].duration;
 		isPlaying = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].isPlaying;
+		volume = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].volume;
 	}
 	return {
 		state: state,
@@ -181,7 +182,8 @@ function mapStateToProps(state) {
 		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active],
 		currentTime,
 		duration,
-		isPlaying
+		isPlaying,
+		volume
 
 	}
 }

@@ -35,13 +35,15 @@ class AudioWaveSurfer extends Component {
 			options,
 			ArtifactFile: undefined,
 			ReduxArtifactFile: undefined,
-			prevTimestamp: 0
+			prevTimestamp: 0,
+			volume: 1
 		};
 
 		this.initialLoad = true;
 
 		this.setDuration = this.setDuration.bind(this);
 		this.setCurrentTime = this.setCurrentTime.bind(this);
+		this.updateVolume = this.updateVolume.bind(this);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -99,6 +101,7 @@ class AudioWaveSurfer extends Component {
 
 		this.wavesurfer.on('audioprocess', () => {
 			this.setCurrentTime()
+			this.updateVolume()
 		})
 		//this function checks to see if there's an artifact passed to props and sets it to active. does nothing if no prop
 		this.loadArtifactFileFromProps();
@@ -106,6 +109,19 @@ class AudioWaveSurfer extends Component {
 		
 		if (this.props.ArtifactFile || this.props.ReduxArtifactFile)
 			this.wavesurfer.load(this.getAudioURL());
+	}
+
+	updateVolume() {
+		let increment = 0.05;
+		let maxVolume = this.state.volume + increment;
+		let minVolume = this.state.volume - increment;
+		let currentVolume = this.props.volume;
+		
+		if (currentVolume >= maxVolume || currentVolume <= minVolume || currentVolume === 0) {
+			this.wavesurfer.setVolume(currentVolume);
+			this.setState({volume: currentVolume});
+		}
+
 	}
 
 	setCurrentTime() {
@@ -211,9 +227,14 @@ class AudioWaveSurfer extends Component {
 }
 
 function mapStateToProps(state) {
+	let volume = 1;
+	if (state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]) {
+		volume = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].volume
+	}
 	return {
 		ActiveFileUID: state.ActiveArtifactFiles.active,
-		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]
+		ReduxArtifactFile: state.ActiveArtifactFiles[state.ActiveArtifactFiles.active],
+		volume
 	}
 }
 
