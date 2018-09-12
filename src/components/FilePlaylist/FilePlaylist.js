@@ -127,7 +127,7 @@ class FilePlaylist extends React.Component {
 			files = []
 		}
 		return (
-			<div className={`file-playlist-container border ${this.props.className}`} style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px", ...this.props.style}}>
+			<div className={`file-playlist-container position-relative border ${this.props.className}`} style={{height: "100%", width: "auto", overflowY: "scroll", fontSize: "13px", ...this.props.style}}>
 				<ul className="file-playlist p-0 m-0">
 					{/*<li style={{listStyle: "none", borderBottom: "1px solid #f2f2f2"}}>*/}
 						{/*<PlaylistHeader/>*/}
