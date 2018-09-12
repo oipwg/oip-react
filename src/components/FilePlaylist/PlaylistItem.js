@@ -26,7 +26,6 @@ class PlaylistItem extends React.Component {
 	setActiveFile() {
 		let activeFiles = this.props.ActiveArtifactFiles;
 		if (activeFiles.active === this.uid) {
-			//@ToDo: instead of setting activeFile to undefined, pause/play it
 			if (activeFiles[activeFiles.active]) {
 				if (activeFiles[activeFiles.active].isPlaying) {
 					this.props.pauseFile(this.uid)
@@ -34,7 +33,6 @@ class PlaylistItem extends React.Component {
 					this.props.playFile(this.uid)
 				}
 			}
-			// this.props.setActiveFile(undefined)
 		} else {
 			for (let uid in activeFiles) {
 				if (uid === this.uid) {
