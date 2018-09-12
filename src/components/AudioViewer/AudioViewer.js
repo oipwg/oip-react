@@ -2,15 +2,18 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux'
 import ColorThief from '@mariotacke/color-thief'
-import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime, VolumeSlider, ControlDirection, MuteToggleButton } from 'react-player-controls'
 
-import { payForArtifactFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume } from 'oip-state'
+import { PlayButton, PauseButton, NextButton, PrevButton, FormattedTime, VolumeSlider, ControlDirection, MuteToggleButton } from 'react-player-controls'
+import { faVolumeOff, faVolumeUp } from '@fortawesome/free-solid-svg-icons'
+
+import { payForArtifactFile, pauseFile, fileToUID, setActiveFile, skipForward, skipBack, setVolume, setMute, setUnmute } from 'oip-state'
 
 import { getIPFSImage } from "../../utils";
 
 import AudioWaveSurfer from './AudioWaveSurfer';
 import PosterWrapper from '../ImageViewer/PosterWrapper'
 import './assets/styles/PlaybackControls.scss'
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 class AudioViewer extends Component {
 	constructor(props) {
@@ -27,6 +30,7 @@ class AudioViewer extends Component {
 
 		this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 		this.handleVolumeChange = this.handleVolumeChange.bind(this);
+		this.handleMuteChange = this.handleMuteChange.bind(this);
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
@@ -79,14 +83,32 @@ class AudioViewer extends Component {
 
 	handleVolumeChange(volume) {
 		this.props.setVolume(this.props.ActiveFileUID, volume)
+		if (volume === 0) {
+			this.props.setMute(this.props.ActiveFileUID)
+		} else if (this.props.mute && volume > 0) {
+			this.props.setUnmute(this.props.ActiveFileUID)
+		}
+	}
+
+	handleMuteChange() {
+		console.log('Handle mute change')
+		if (this.props.mute) {
+			this.props.setUnmute(this.props.ActiveFileUID)
+		} else if (!this.props.mute) {
+			this.props.setMute(this.props.ActiveFileUID)
+		}
 	}
 
 	render() {
-		let file;
+		let file, volumeButton, volumeButtonStyle = {};
 		if (this.props.ArtifactFile) {
 			file = this.props.ArtifactFile
 		} else if (this.props.ReduxArtifactFile) {
 			file = this.props.ReduxArtifactFile.ArtifactFile
+			if (this.props.ReduxArtifactFile.mute || this.props.ReduxArtifactFile.volume === 0) {
+				volumeButton = faVolumeOff;
+				volumeButtonStyle = {color: 'gray'}
+			} else {volumeButton = faVolumeUp}
 		} else {
 			file = undefined;
 		}
@@ -146,13 +168,15 @@ class AudioViewer extends Component {
 							<div className={"mx-1"}>{playbackButton}</div>
 							<div className={"mx-1"}><NextButton isEnabled={true} onClick={() => {this.props.skipForward()}}/></div>
 						</div>
-						<div className={"volume-slider d-flex justify-content-center mt-2"} >
-							{/*<MuteToggleButton*/}
-								{/*onHover*/}
-								{/*isEnabled={true}*/}
-								{/*isMuted={true}*/}
-								{/*onMuteChange={() => {console.log("On Mute change")}}*/}
-							{/*/>*/}
+						<div className={"volume-slider d-flex justify-content-center align-items-center mt-1"} >
+							<button style={{border: 'none', background: 'none', outline: 'none'}} onClick={this.handleMuteChange}>
+								<FontAwesomeIcon
+									size="sm"
+									icon={volumeButton}
+									className={"volume-button"}
+									style={{marginRight: "5px", color: 'white', ...volumeButtonStyle}} />
+							</button>
+
 							<VolumeSlider
 								volume={this.props.volume}
 								onVolumeChange={this.handleVolumeChange}
@@ -170,13 +194,14 @@ class AudioViewer extends Component {
 AudioViewer.SUPPORTED_FILE_TYPES = ["mp3", "ogg", "aac", "wav"];
 
 function mapStateToProps(state) {
-	let currentTime = undefined, duration = undefined, isPlaying = false, volume = 1;
+	let currentTime = undefined, duration = undefined, isPlaying = false, volume = 1, mute = false;
 
 	if (state.ActiveArtifactFiles[state.ActiveArtifactFiles.active]){
 		currentTime = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].currentTime;
 		duration = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].duration;
 		isPlaying = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].isPlaying;
 		volume = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].volume;
+		mute = state.ActiveArtifactFiles[state.ActiveArtifactFiles.active].mute;
 	}
 	return {
 		state: state,
@@ -185,8 +210,8 @@ function mapStateToProps(state) {
 		currentTime,
 		duration,
 		isPlaying,
-		volume
-
+		volume,
+		mute
 	}
 }
 
@@ -196,7 +221,9 @@ const mapDispatchToProps = {
 	setActiveFile,
 	skipForward,
 	skipBack,
-	setVolume
+	setVolume,
+	setMute,
+	setUnmute
 }
 
 AudioViewer.propTypes = {
