@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "1.6.5",
+  "version": "1.6.6",
   "description": "Simple React components written using Bootstrap 4 to allow easy use of the OIP stack anywhere!",
   "main": "lib/index.js",
   "scripts": {

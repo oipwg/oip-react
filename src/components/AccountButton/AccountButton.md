@@ -1,5 +1,5 @@
 ### Basic Example
-Communication to the Redux Store to prompt the LoginModal for users to access content and their wallets
+Communication from the Redux Store to prompt the LoginModal for users to access content and their wallets
 
 ```js
 const { Provider } = require('react-redux')

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 /**
- * The ButtonCheckbox is being utilized within both the Login and Register Blocks
+ * The ButtonCheckbox can be utilized in many different ways, for example: within the Login and Register Blocks. It confirms the value by the colors of green and red to show if a new value has been set.
  */
 class ButtonCheckbox extends Component {
 	constructor(props){

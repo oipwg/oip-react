@@ -1,5 +1,5 @@
 ### Basic Example
-Showcasing of multiple audio Artifact Files in the format of a playlist or album 
+The showcasing of multiple audio Artifact Files in the format of a playlist or album 
 
 ```js
 const { Provider } = require('react-redux')

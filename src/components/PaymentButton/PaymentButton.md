@@ -1,5 +1,5 @@
 ### View Example
-Button that communicates with the redux store for validating purchases
+Button that communicates with the redux store for validating pay for play purchases
 
 ```js
 const { connect, Provider } = require('react-redux')
@@ -38,7 +38,7 @@ class PaymentButtonExample  extends React.Component {
 ```
 
 ### Buy Example
-Button that communicates with the redux store for validating purchases
+Button that communicates with the redux store for validating pay for download purchases
 
 ```js
 const { connect, Provider } = require('react-redux')

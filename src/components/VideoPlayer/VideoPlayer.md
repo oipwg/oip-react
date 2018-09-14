@@ -1,5 +1,5 @@
 ### Basic Example
-An example of how a Video File renders into VideoPlayer through pulling it from an artifact that was loaded by OIP-Index.
+How a Video File renders into VideoPlayer 
 
 ```js
 const { Index } = require('oip-index')
@@ -35,7 +35,7 @@ class VideoPlayerExample extends React.Component {
 ```
 
 ### LockFile Example
-When an Video File is suppossed to be paid for, Video Player will lock it and render it non-playable. Autoplays once payment has been verified.
+Lockfile being set to true will render a video non-playable but the poster or where the video begins will be present
 
 ```js
 const { Index } = require('oip-index')
@@ -70,7 +70,7 @@ class VideoPlayerExample extends React.Component {
 ;<VideoPlayerExample />
 ```
 ### Change Example
-When the Artifact File is rendered but has multiple within the Artifact (Video, Trailer, Poster) you are able to switch between each one that is displayed by switching out the file that is to be rendered in the state. In this example, the trailer is being loaded.
+When the Artifact is accessed but has multiple files within (Video, Trailer, Poster) you are able to switch by swapping out the file that is to be rendered in the state. In this example, the trailer is being loaded once the Watch Trailer button is clicked.
 
 ```js
 const { Index } = require('oip-index')
@@ -118,7 +118,7 @@ class VideoPlayerExample extends React.Component {
 
 ```
 ### PosterFile Example
-When an Video File is loaded, you can either show a Poster as the background image or the beginning of the video
+When the Video is loaded, you can either show a Poster as the background image or the beginning of the video
 
 ```js
 const { Index } = require('oip-index')

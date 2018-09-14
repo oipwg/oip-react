@@ -9,7 +9,7 @@ import 'video.js/dist/video-js.css'
 import './assets/VideoPlayer.css'
 
 /**
- * The Video Player manifests Videos that are passed from the OIP-Index
+ * The Video Player runs video files loaded through artifacts
  */
 
 class VideoPlayer extends React.Component {
