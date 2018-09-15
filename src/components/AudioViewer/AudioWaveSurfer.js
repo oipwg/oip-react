@@ -102,6 +102,7 @@ class AudioWaveSurfer extends Component {
 		this.wavesurfer.on('audioprocess', () => {
 			this.setCurrentTime()
 			this.updateVolume()
+			this.setDuration()
 		})
 		//this function checks to see if there's an artifact passed to props and sets it to active. does nothing if no prop
 		this.loadArtifactFileFromProps();
