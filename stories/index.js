@@ -14,4 +14,5 @@ import './LoginModal'
 import './PaymentButton'
 import './RegisterBlock'
 import './VideoPlayer'
+import './SearchComp'
 //please alphabetize, thank you:)
