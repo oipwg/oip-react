@@ -1,34 +1,72 @@
-import React, {useState, useReducer, useRef} from 'react'
+import React, {useReducer, useRef} from 'react'
 import uid from 'uid'
 
+import mapping42 from './042artifactMapping'
+
+function getMapping(index) {
+	//mock: use api to get mapping back from elastic
+	
+	const artifactMapping = mapping42[index]['mappings']['_doc']['properties']['artifact']['properties']
+	const metaMapping = mapping42[index]['mappings']['_doc']['properties']['meta']['properties']
+	
+	const parseMap = mapping => {
+		let tmpObj = {}
+		const loopOverMapping = mapping => {
+			for (let key in mapping) {
+				if (mapping[key].properties) {
+					loopOverMapping(mapping[key].properties)
+				} else {
+					tmpObj[key] = mapping[key].type
+				}
+			}
+		}
+		loopOverMapping(mapping)
+		return tmpObj
+	}
+	
+	let artMap = parseMap(artifactMapping)
+	let metaMap = parseMap(metaMapping)
+	
+	const switchValues = (mapping) => {
+		const switchVal = (value) => {
+			switch (value) {
+				case 'object': //todo ask bits about object type
+					return undefined
+				case 'long':
+					return 'number'
+				case 'keyword':
+					return 'string'
+				case 'text':
+					return 'string'
+				default:
+					return value
+			}
+		}
+		let tmpObj = {}
+		for (let keyField in mapping) {
+			let val = switchVal(mapping[keyField])
+			if (val) {
+				tmpObj[keyField] = val
+			}
+		}
+		return tmpObj
+	}
+	
+	artMap = switchValues(artMap)
+	metaMap = switchValues(metaMap)
+	
+	return [artMap, metaMap]
+}
+
+const [artMap, metaMap] = getMapping("mainnet-oip042_artifact")
+console.log('mymaps!!!!', artMap, metaMap)
+
 const stringFields = ['contains', 'is (exact)', 'startsWith']
-const numFields = ['contains', 'is (exact)', 'startsWith', 'above', 'below', 'between']
+const numFields = ['is (exact)', 'above', 'below', 'between']
 const dateFields = ['is (exact)', 'before', 'after', 'between']
 const booleanFields = ['is', 'is not']
 
-let mockFields = {
-	title: 'string',
-	year: 'number',
-	someBoolean: 'boolean',
-	date: 'wfewgewgq'
-}
-
-const getSelectOptionsForField = (field = '') => {
-	const fieldType = field.toLowerCase() === 'date' ? 'date' : mockFields[field]
-	switch (fieldType) {
-		case 'string':
-			return stringFields
-		case 'number':
-			return numFields
-		case 'boolean':
-			return booleanFields
-		case 'date':
-			return dateFields
-		default:
-			return ['contains']
-	}
-}
-
+//reducer to handle form logic for a complex filter search
 const useComplexFilter = (id) => {
 	const initSimpleRow = {
 		field: '*',
