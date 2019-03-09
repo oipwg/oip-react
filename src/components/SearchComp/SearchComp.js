@@ -147,11 +147,45 @@ const useComplexFilter = (id) => {
 	return [state, add, remove, update]
 }
 
-const SearchComp = (fields) => {
-	const id = useRef(uid()).current
+//the root search component
+const SearchComp = (mapping) => {
+	const id = useRef(uid()).current //set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
 	const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
 	
-	let fieldKeys = Object.keys(mockFields)
+	//remove when using real component
+	mapping = artMap
+	
+	let fieldKeys = Object.keys(mapping)
+	const getFieldOptions = (field = '') => {
+		const fieldType = mapping[field]
+		switch (fieldType) {
+			case 'string':
+				return stringFields
+			case 'number':
+				return numFields
+			case 'boolean':
+				return booleanFields
+			case 'date':
+				return dateFields
+			default:
+				return ['contains']
+		}
+	}
+	
+	const formState = state.forms[id]
+	const field = formState['field']
+	const option = formState['option']
+	
+	// let usedKeys = []
+	// for (let id in state.forms) {
+	// 	let form = state.forms[id]
+	// 	usedKeys.push(form['field'])
+	// }
+	// console.log(usedKeys)
+	//
+	// fieldKeys = fieldKeys.filter((key) => {
+	// 	return usedKeys.indexOf(key) === -1
+	// })
 	
 	return <>
 		<form style={{display: 'block'}}>
@@ -162,20 +196,23 @@ const SearchComp = (fields) => {
 				})}
 			</select>
 			<select name={'option'} onChange={(e) => handleUpdate(e, id)}>
-				{getSelectOptionsForField(state.forms[id]['field']).map((opt, i) => {
+				{getFieldOptions(field).map((opt, i) => {
 					return <option value={opt} key={i}>{opt}</option>
 				})}
 			</select>
 			<input name={'query'} type={'search'} onChange={(e) => handleUpdate(e, id)}/>
+			{option === 'between' ?
+				<input name={'maxQuery'} type={'search'} onChange={(e) => handleUpdate(e, id)}/> : null}
 		</form>
 		{Object.keys(state.forms).filter(uid => uid !== id).map(id => {
 			return <Complex
 				key={id}
 				id={id}
 				fieldKeys={fieldKeys}
-				state={state}
+				formState={state.forms[id]}
 				handleUpdate={handleUpdate}
 				handleRemove={handleRemove}
+				getFieldOptions={getFieldOptions}
 			/>
 		})}
 		<div style={{display: 'flex', flexDirection: 'row'}}>
@@ -183,12 +220,21 @@ const SearchComp = (fields) => {
 				console.log(state)
 			}}>Log State
 			</button>
+			<button onClick={() => console.log('buildQuery')}>Build Query</button>
 			<button onClick={() => add(uid())}>Add Row</button>
 		</div>
 	</>
 }
 
-const Complex = ({id, fieldKeys, state, handleUpdate, handleRemove}) => {
+const OptionInput = ({option, update, type}) => {
+	//type = string, number, boolean, date
+	
+	return <>
+	
+	</>
+}
+
+const Complex = ({id, fieldKeys, formState, handleUpdate, handleRemove, getFieldOptions}) => {
 	return <>
 		<form style={{display: 'block'}}>
 			<select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
@@ -203,12 +249,18 @@ const Complex = ({id, fieldKeys, state, handleUpdate, handleRemove}) => {
 				})}
 			</select>
 			<select name={'option'} onChange={(e) => handleUpdate(e, id)}>
-				{getSelectOptionsForField(state.forms[id]['field']).map((opt, i) => {
+				{getFieldOptions(formState['field']).map((opt, i) => {
 					return <option value={opt} key={i}>{opt}</option>
 				})}
 			</select>
 			<input name={'query'} type={'text'} onChange={(e) => handleUpdate(e, id)}/>
-			<button onClick={(e) => {e.preventDefault(); handleRemove(id)}}> - </button>
+			{formState['option'] === 'between' ?
+				<input name={'maxQuery'} type={'search'} onChange={(e) => handleUpdate(e, id)}/> : null}
+			<button onClick={(e) => {
+				e.preventDefault();
+				handleRemove(id)
+			}}> -
+			</button>
 		</form>
 	</>
 }
