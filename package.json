@@ -44,8 +44,6 @@
     "react-player-controls": "^0.5.21",
     "react-redux": "^5.0.7",
     "react-spinners": "^0.4.5",
-    "react-widgets": "^4.4.10",
-    "react-widgets-moment": "^4.0.26",
     "reactstrap": "^6.4.0",
     "uid": "0.0.2",
     "validator": "^10.6.0",
