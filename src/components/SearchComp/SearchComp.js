@@ -333,38 +333,51 @@ const Complex = ({id, state, fieldKeys, handleUpdate, handleRemove, getFieldOpti
 
 export default SearchComp
 
+const dateObject = {
+	JAN: {days: 31, mm: '01'},
+	FEB: {days: 29, mm: '02'},
+	MAR: {days: 31, mm: '03'},
+	APR: {days: 30, mm: '04'},
+	MAY: {days: 31, mm: '05'},
+	JUN: {days: 30, mm: '06'},
+	JUL: {days: 31, mm: '07'},
+	AUG: {days: 31, mm: '08'},
+	SEP: {days: 30, mm: '09'},
+	OCT: {days: 31, mm: '10'},
+	NOV: {days: 30, mm: '11'},
+	DEC: {days: 31, mm: '12'},
+}
 
 const useDateTimePicker = () => {
-	const [month, setMonth] = useState('JAN')
+	const [month, setMonth] = useState('01')
 	const [day, setDay] = useState('01')
 	const [year, setYear] = useState('1970')
-	const [hour, setHour] = useState(0)
-	const [minute, setMinute] = useState(0)
-	const [second, setSecond] = useState(0)
-	
-	let dateObject = {
-		JAN: 31,
-		FEB: 28,
-		MAR: 31,
-		APR: 30,
-		MAY: 31,
-		JUN: 30,
-		JUL: 31,
-		AUG: 31,
-		SEP: 30,
-		OCT: 31,
-		NOV: 30,
-		DEC: 31,
-	}
+	const [hour, setHour] = useState('00')
+	const [minute, setMinute] = useState('00')
+	const [second, setSecond] = useState('00')
 	
 	const isLeapYear = year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0)
-	dateObject.FEB = isLeapYear ? 29 : 28
+	// dateObject.FEB.days = isLeapYear ? 29 : 28
 	
-	const months = Object.keys(dateObject)
-	const days = []
-	for (let i = 1; i <= dateObject[month]; i++) {
-		days.push(i)
+	let numOfDays
+	for (let m in dateObject) {
+		if (dateObject[m].mm === month) {
+			numOfDays = dateObject[m].days
+			break
+		}
 	}
+	if (isLeapYear) {
+		numOfDays++
+	}
+	const days = []
+	for (let i = 1; i <= numOfDays; i++) {
+		let num = `${i}`
+		if (i < 10) {
+			num = '0' + num
+		}
+		days.push(num)
+	}
+	
 	const years = []
 	for (let i = 2020; i >= 1900; i--) {
 		years.push(i)
@@ -373,6 +386,7 @@ const useDateTimePicker = () => {
 	const hours = []
 	const minutes = []
 	const seconds = []
+	
 	for (let i = 0; i < 60; i++) {
 		let strNum = `${i}`
 		if (i < 10) {
@@ -387,11 +401,11 @@ const useDateTimePicker = () => {
 	
 	return {
 		month, day, year, //state
-		setMonth, setDay, setYear, //setstate
 		hour, minute, second, //state
+		setMonth, setDay, setYear, //setstate
 		setHour, setMinute, setSecond, //setstate
-		months, days, years, //html maps
-		hours, minutes, seconds //html maps
+		days, years, //html maps
+		hours, minutes, seconds, //html maps
 	}
 }
 //check for leap year
@@ -402,12 +416,14 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 		setMonth, setDay, setYear, //setstate
 		hour, minute, second, //state
 		setHour, setMinute, setSecond, //setstate
-		months, days, years, //html maps
+		days, years, //html maps
 		hours, minutes, seconds //html maps
 	} = useDateTimePicker()
 
 	function getUnixTimestamp() {
-		// console.log(moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix())
+		// console.log(year,month,day,hour,minute,second)
+		// console.log(`${year}-${month}-${day} ${hour}:${minute}:${second}`)
+		console.log(moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix())
 		return moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix()
 	}
 	useEffect(() => {
@@ -419,8 +435,8 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 		<select onChange={(e) => {
 			setMonth(e.target.value)
 		}} name={'months'}>
-			{months.map((m, i) => {
-				return <option key={i} value={m}>{m}</option>
+			{Object.keys(dateObject).map((m, i) => {
+				return <option key={i} value={dateObject[m].mm}>{m}</option>
 			})}
 		</select>
 		<select onChange={(e) => {
