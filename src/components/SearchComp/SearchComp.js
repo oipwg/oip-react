@@ -1,4 +1,5 @@
-import React, {useReducer, useRef} from 'react'
+import React, {useReducer, useRef, useEffect, useState} from 'react'
+import moment from 'moment'
 import uid from 'uid'
 
 import mapping42 from './042artifactMapping'
@@ -45,7 +46,7 @@ function getMapping(index) {
 		let tmpObj = {}
 		for (let keyField in mapping) {
 			let val = switchVal(mapping[keyField])
-			if (val) {
+			if (val) { //remove the ones with typed 'object'
 				tmpObj[keyField] = val
 			}
 		}
@@ -61,10 +62,10 @@ function getMapping(index) {
 const [artMap, metaMap] = getMapping("mainnet-oip042_artifact")
 console.log('mymaps!!!!', artMap, metaMap)
 
-const stringFields = ['contains', 'is (exact)', 'startsWith']
-const numFields = ['is (exact)', 'above', 'below', 'between']
+const stringFields = ['contains', 'is (exact)', 'is (not)', 'startsWith']
+const numFields = ['is (exact)', 'is (not)', 'above', 'below', 'between']
 const dateFields = ['is (exact)', 'before', 'after', 'between']
-const booleanFields = ['is', 'is not']
+const booleanFields = ['is']
 
 //reducer to handle form logic for a complex filter search
 const useComplexFilter = (id) => {
@@ -85,12 +86,6 @@ const useComplexFilter = (id) => {
 	const ADD = 'ADD'
 	const REMOVE = 'REMOVE'
 	const UPDATE = 'UPDATE'
-	
-	function init(id) {
-		return {
-			forms: {[id]: initSimpleRow}
-		}
-	}
 	
 	function updateItem(forms, id, key, value) {
 		return {
@@ -123,6 +118,12 @@ const useComplexFilter = (id) => {
 		}
 	}
 	
+	function init(id) {
+		return {
+			forms: {[id]: initSimpleRow}
+		}
+	}
+	
 	const [state, dispatch] = useReducer(reducer, id, init);
 	
 	const _dispatch = (type, id, key, value) => {
@@ -152,7 +153,7 @@ const SearchComp = (mapping) => {
 	const id = useRef(uid()).current //set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
 	const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
 	
-	//remove when using real component
+	//remove when using real component for param input
 	mapping = artMap
 	
 	let fieldKeys = Object.keys(mapping)
@@ -172,49 +173,36 @@ const SearchComp = (mapping) => {
 		}
 	}
 	
-	const formState = state.forms[id]
-	const field = formState['field']
-	const option = formState['option']
-	
-	// let usedKeys = []
-	// for (let id in state.forms) {
-	// 	let form = state.forms[id]
-	// 	usedKeys.push(form['field'])
-	// }
-	// console.log(usedKeys)
-	//
-	// fieldKeys = fieldKeys.filter((key) => {
-	// 	return usedKeys.indexOf(key) === -1
-	// })
+	const getFieldType = (field) => {
+		return field === 'date' ? 'date' : mapping[field]
+	}
 	
 	return <>
 		<form style={{display: 'block'}}>
-			<select name={'field'} onChange={(e) => handleUpdate(e, id)}>
-				<option value={'*'}>All Fields</option>
-				{fieldKeys.map((k, i) => {
-					return <option value={k} key={i}>{k}</option>
-				})}
-			</select>
-			<select name={'option'} onChange={(e) => handleUpdate(e, id)}>
-				{getFieldOptions(field).map((opt, i) => {
-					return <option value={opt} key={i}>{opt}</option>
-				})}
-			</select>
-			<input name={'query'} type={'search'} onChange={(e) => handleUpdate(e, id)}/>
-			{option === 'between' ?
-				<input name={'maxQuery'} type={'search'} onChange={(e) => handleUpdate(e, id)}/> : null}
-		</form>
-		{Object.keys(state.forms).filter(uid => uid !== id).map(id => {
-			return <Complex
-				key={id}
-				id={id}
+			<FormBase
 				fieldKeys={fieldKeys}
-				formState={state.forms[id]}
-				handleUpdate={handleUpdate}
-				handleRemove={handleRemove}
 				getFieldOptions={getFieldOptions}
+				getFieldType={getFieldType}
+				handleUpdate={handleUpdate}
+				id={id}
+				state={state}
 			/>
+		</form>
+		{/*filter out simple form*/}
+		{Object.keys(state.forms).filter(uid => uid !== id).map(uid => {
+			return <form key={uid} style={{display: 'block'}}>
+				<Complex
+					id={uid}
+					state={state}
+					fieldKeys={fieldKeys}
+					handleUpdate={handleUpdate}
+					handleRemove={handleRemove}
+					getFieldOptions={getFieldOptions}
+					getFieldType={getFieldType}
+				/>
+			</form>
 		})}
+		
 		<div style={{display: 'flex', flexDirection: 'row'}}>
 			<button onClick={() => {
 				console.log(state)
@@ -226,43 +214,197 @@ const SearchComp = (mapping) => {
 	</>
 }
 
-const OptionInput = ({option, update, type}) => {
-	//type = string, number, boolean, date
+const FormBase = ({id, state, fieldKeys, handleUpdate, getFieldOptions, getFieldType}) => {
+	const formState = state.forms[id]
+	const field = formState['field']
+	const option = formState['option']
+	
+	const optionRef = useRef(null)
+	
+	//when the field updates, make sure the option gets updated too
+	useEffect(() => {
+		const name = optionRef.current.name
+		const value = optionRef.current.value
+		handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
+	}, [field])
 	
 	return <>
-	
+		<select name={'field'} onChange={(e) => handleUpdate(e, id)}>
+			<option value={'*'}>All Fields</option>
+			{fieldKeys.map((k, i) => {
+				return <option value={k} key={i}>{k}</option>
+			})}
+		</select>
+		<select ref={optionRef} name={'option'} onChange={(e) => handleUpdate(e, id)}>
+			{getFieldOptions(field).map((opt, i) => {
+				return <option value={opt} key={i}>{opt}</option>
+			})}
+		</select>
+		<FormQueryInput
+			handleUpdate={handleUpdate}
+			id={id}
+			option={option}
+			getFieldType={getFieldType}
+			field={field}
+		/>
 	</>
 }
 
-const Complex = ({id, fieldKeys, formState, handleUpdate, handleRemove, getFieldOptions}) => {
+const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
+	const booleanRef = useRef(null)
+	let fieldType = getFieldType(field)
+	
+	if (fieldType === 'string') {
+		fieldType = 'text'
+	}
+	
+	//when the field changes, update option field
+	useEffect(() => {
+		if (fieldType === 'boolean') {
+			const name = booleanRef.current.name
+			const value = booleanRef.current.value
+			handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
+		}
+	}, [field])
+	
+	const input = (type) => {
+		return <>
+			<input name={'query'} type={type} onChange={(e) => handleUpdate(e, id)}/>
+			{option === 'between' ? <>
+				<span>and</span>
+				<input name={'maxQuery'} type={type} onChange={(e) => handleUpdate(e, id)}/> </> : null
+			}
+		</>
+	}
+	
+	const dtp = (name) => <DateTimePicker
+		handleUpdate={handleUpdate}
+		name={name}
+		id={id}
+	/>
+	const renderDateTimePicker = () => <>
+		{dtp('query')}
+	
+		{option === 'between' ? <><span>and</span>{dtp('maxQuery')} </> : null}
+	</>
+	
+	//text, number, boolean, or date
+	const renderFormInput = (fieldType) => {
+		switch (fieldType) {
+			case 'text':
+			case 'number':
+				return input(fieldType)
+			case 'boolean':
+				return <select ref={booleanRef} name={'query'} onChange={(e) => handleUpdate(e, id)}>
+					<option value={true}>True</option>
+					<option value={false}>False</option>
+				</select>
+			case 'date':
+				return renderDateTimePicker()
+			default:
+				return input(fieldType)
+		}
+	}
+	return renderFormInput(fieldType)
+}
+
+const Complex = ({id, state, fieldKeys, handleUpdate, handleRemove, getFieldOptions, getFieldType}) => {
 	return <>
-		<form style={{display: 'block'}}>
-			<select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
-				<option value={'AND'}> AND</option>
-				<option value={'OR'}> OR</option>
-				<option value={'NOT'}> NOT</option>
-			</select>
-			<select name={'field'} onChange={(e) => handleUpdate(e, id)}>
-				<option value={'*'}>All Fields</option>
-				{fieldKeys.map((k, i) => {
-					return <option value={k} key={i}>{k}</option>
-				})}
-			</select>
-			<select name={'option'} onChange={(e) => handleUpdate(e, id)}>
-				{getFieldOptions(formState['field']).map((opt, i) => {
-					return <option value={opt} key={i}>{opt}</option>
-				})}
-			</select>
-			<input name={'query'} type={'text'} onChange={(e) => handleUpdate(e, id)}/>
-			{formState['option'] === 'between' ?
-				<input name={'maxQuery'} type={'search'} onChange={(e) => handleUpdate(e, id)}/> : null}
-			<button onClick={(e) => {
-				e.preventDefault();
-				handleRemove(id)
-			}}> -
-			</button>
-		</form>
+		<select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
+			<option value={'AND'}> AND</option>
+			<option value={'OR'}> OR</option>
+			<option value={'NOT'}> NOT</option>
+		</select>
+		<FormBase
+			id={id}
+			state={state}
+			fieldKeys={fieldKeys}
+			handleUpdate={handleUpdate}
+			getFieldOptions={getFieldOptions}
+			getFieldType={getFieldType}
+		/>
+		<button onClick={(e) => {
+			e.preventDefault();
+			handleRemove(id)
+		}}> -
+		</button>
 	</>
 }
 
 export default SearchComp
+
+
+const useDateTimePicker = () => {
+	const [month, setMonth] = useState('JAN')
+	const [day, setDay] = useState('01')
+	const [year, setYear] = useState('1970')
+	
+	let dateObject = {
+		JAN: 31,
+		FEB: 28,
+		MAR: 31,
+		APR: 30,
+		MAY: 31,
+		JUN: 30,
+		JUL: 31,
+		AUG: 31,
+		SEP: 30,
+		OCT: 31,
+		NOV: 30,
+		DEC: 31,
+	}
+	
+	const isLeapYear = year % 400 === 0 || (year % 4 === 0 && year % 100 !== 0)
+	dateObject.FEB = isLeapYear ? 29 : 28
+	
+	const months = Object.keys(dateObject)
+	const days = []
+	for (let i = 1; i <= dateObject[month]; i++) {
+		days.push(i)
+	}
+	const years = []
+	for (let i = 2020; i >= 1900; i--) {
+		years.push(i)
+	}
+	const times = []
+	
+	return {month, day, year, setMonth, setDay, setYear, months, days, years}
+}
+//check for leap year
+const DateTimePicker = ({name, id, handleUpdate}) => {
+	moment.locale('en')
+	const {month, day, year, setMonth, setDay, setYear, months, days, years} = useDateTimePicker()
+
+	function getMomentValue(month, day, year) {
+		return moment(`${month}.${day}.${year}`, 'MMM.DD.YYYY').unix()
+	}
+	useEffect(() => {
+		const value = getMomentValue(month, day, year)
+		handleUpdate({target:{name, value}}, id)
+	}, [month, day, year])
+	
+	return <>
+		<select onChange={(e) => {
+			setMonth(e.target.value)
+		}} name={'months'}>
+			{months.map((m, i) => {
+				return <option key={i} value={m}>{m}</option>
+			})}
+		</select>
+		<select onChange={(e) => {
+			setDay(e.target.value)
+		}} name={'days'}>
+			{days.map((d, i) => {
+				return <option key={i} value={d}>{d}</option>
+			})}
+		</select>
+		<input onChange={(e) => {
+			setYear(e.target.value)
+		}} type={'number'} list={'years'}/>
+		<datalist id={'years'}>
+			{years.map((y, i) => {
+				return <option key={i} value={y}>{y}</option>
+			})}
+		</datalist>
+	</>
+}
