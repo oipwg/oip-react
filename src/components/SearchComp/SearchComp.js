@@ -338,6 +338,9 @@ const useDateTimePicker = () => {
 	const [month, setMonth] = useState('JAN')
 	const [day, setDay] = useState('01')
 	const [year, setYear] = useState('1970')
+	const [hour, setHour] = useState(0)
+	const [minute, setMinute] = useState(0)
+	const [second, setSecond] = useState(0)
 	
 	let dateObject = {
 		JAN: 31,
@@ -366,22 +369,51 @@ const useDateTimePicker = () => {
 	for (let i = 2020; i >= 1900; i--) {
 		years.push(i)
 	}
-	const times = []
 	
-	return {month, day, year, setMonth, setDay, setYear, months, days, years}
+	const hours = []
+	const minutes = []
+	const seconds = []
+	for (let i = 0; i < 60; i++) {
+		let strNum = `${i}`
+		if (i < 10) {
+			strNum = `0${strNum}`
+		}
+		minutes.push(strNum)
+		seconds.push(strNum)
+		if (i <= 24) {
+			hours.push(strNum)
+		}
+	}
+	
+	return {
+		month, day, year, //state
+		setMonth, setDay, setYear, //setstate
+		hour, minute, second, //state
+		setHour, setMinute, setSecond, //setstate
+		months, days, years, //html maps
+		hours, minutes, seconds //html maps
+	}
 }
 //check for leap year
 const DateTimePicker = ({name, id, handleUpdate}) => {
 	moment.locale('en')
-	const {month, day, year, setMonth, setDay, setYear, months, days, years} = useDateTimePicker()
+	const {
+		month, day, year, //state
+		setMonth, setDay, setYear, //setstate
+		hour, minute, second, //state
+		setHour, setMinute, setSecond, //setstate
+		months, days, years, //html maps
+		hours, minutes, seconds //html maps
+	} = useDateTimePicker()
 
-	function getMomentValue(month, day, year) {
-		return moment(`${month}.${day}.${year}`, 'MMM.DD.YYYY').unix()
+	function getUnixTimestamp() {
+		// console.log(moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix())
+		return moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix()
 	}
 	useEffect(() => {
-		const value = getMomentValue(month, day, year)
+		const value = getUnixTimestamp()
 		handleUpdate({target:{name, value}}, id)
-	}, [month, day, year])
+	}, [month, day, year, hour, minute, second])
 	
 	return <>
 		<select onChange={(e) => {
@@ -406,5 +438,26 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 				return <option key={i} value={y}>{y}</option>
 			})}
 		</datalist>
+		<select onChange={(e) => {
+			setHour(e.target.value)
+		}} name={'hours'}>
+			{hours.map((m, i) => {
+				return <option key={i} value={m}>{m}hr</option>
+			})}
+		</select>
+		<select onChange={(e) => {
+			setMinute(e.target.value)
+		}} name={'minutes'}>
+			{minutes.map((m, i) => {
+				return <option key={i} value={m}>{m}m</option>
+			})}
+		</select>
+		<select onChange={(e) => {
+			setSecond(e.target.value)
+		}} name={'seconds'}>
+			{seconds.map((m, i) => {
+				return <option key={i} value={m}>{m}s</option>
+			})}
+		</select>
 	</>
 }
