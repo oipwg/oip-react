@@ -56,15 +56,15 @@ function getMapping(index) {
 	artMap = switchValues(artMap)
 	metaMap = switchValues(metaMap)
 	
-	return [artMap, metaMap]
+	return [{...artMap, ryan: 'boolean'}, metaMap]
 }
 
 const [artMap, metaMap] = getMapping("mainnet-oip042_artifact")
-console.log('mymaps!!!!', artMap, metaMap)
+// console.log('mymaps!!!!', artMap, metaMap)
 
-const stringFields = ['contains', 'is (exact)', 'is (not)', 'startsWith']
-const numFields = ['is (exact)', 'is (not)', 'above', 'below', 'between']
-const dateFields = ['is (exact)', 'before', 'after', 'between']
+const stringFields = ['contains', 'is (exact)', 'is (not)']
+const numFields = ['contains', 'is (exact)', 'is (not)', 'above', 'below', 'between']
+const dateFields = ['is (exact)', 'before', 'is (not)', 'after', 'between']
 const booleanFields = ['is']
 
 //reducer to handle form logic for a complex filter search
@@ -73,7 +73,9 @@ const useComplexFilter = (id) => {
 		field: '*',
 		option: 'contains',
 		query: '',
+		maxQuery: undefined,
 		type: 'simple',
+		index: 0,
 	}
 	
 	const initCompRow = {
@@ -81,11 +83,13 @@ const useComplexFilter = (id) => {
 		field: '*',
 		option: 'contains',
 		query: '',
+		maxQuery: undefined,
 		type: 'complex',
 	}
 	const ADD = 'ADD'
 	const REMOVE = 'REMOVE'
 	const UPDATE = 'UPDATE'
+	const RESET = 'RESET'
 	
 	function updateItem(forms, id, key, value) {
 		return {
@@ -103,16 +107,21 @@ const useComplexFilter = (id) => {
 		switch (action.type) {
 			case ADD:
 				return {
-					forms: {...state.forms, [action.id]: initCompRow}
+					forms: {...state.forms, [action.id]: {...initCompRow, index: state.count}},
+					count: state.count + 1
 				}
 			case REMOVE:
 				return {
-					forms: removeItem(state.forms, action.id)
+					forms: removeItem(state.forms, action.id),
+					count: state.count
 				}
 			case UPDATE:
 				return {
-					forms: updateItem(state.forms, action.id, action.key, action.value)
+					forms: updateItem(state.forms, action.id, action.key, action.value),
+					count: state.count
 				}
+			case RESET:
+				return init(action.id)
 			default:
 				throw new Error();
 		}
@@ -120,7 +129,8 @@ const useComplexFilter = (id) => {
 	
 	function init(id) {
 		return {
-			forms: {[id]: initSimpleRow}
+			forms: {[id]: initSimpleRow},
+			count: 1,
 		}
 	}
 	
@@ -153,7 +163,7 @@ const SearchComp = (mapping) => {
 	const id = useRef(uid()).current //set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
 	const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
 	
-	//remove when using real component for param input
+	//todo: remove when using real component for param input
 	mapping = artMap
 	
 	let fieldKeys = Object.keys(mapping)
@@ -208,10 +218,95 @@ const SearchComp = (mapping) => {
 				console.log(state)
 			}}>Log State
 			</button>
-			<button onClick={() => console.log('buildQuery')}>Build Query</button>
+			<button onClick={(e) => {
+				e.preventDefault();
+				buildQuery(state)
+			}}>Build Query
+			</button>
 			<button onClick={() => add(uid())}>Add Row</button>
 		</div>
 	</>
+}
+
+function buildQuery(state) {
+	const forms = state.forms
+	let sorted = []
+	for (let uid in forms) {
+		sorted.push([uid, forms[uid].index])
+	}
+	sorted.sort((a, b) => {
+		return a[1] - b[1]
+	})
+	let query = []
+	
+	for (let form of sorted) {
+		const formId = form[0]
+		const formState = forms[formId]
+		
+		let qb = handleQueryBuild(formState)
+		if (formState.type === 'complex') {
+			if (formState.operator === 'NOT') {
+				query.push('AND NOT')
+			} else {
+				query.push(formState.operator)
+			}
+		}
+		query.push(qb)
+	}
+	console.log(query)
+}
+
+function handleContains(form) {
+	if (form.field === '*') {
+		return `${form.query}`
+	}
+	return `${form.field}:${form.query}`
+}
+
+function handleExact(form) {
+	return `${form.field}:"${form.query}"`
+}
+
+function handleIsNot(form) {
+	return `${form.field}:!${form.query}`
+}
+
+function handleGreater(form) {
+	return `${form.field}:>${form.query}`
+}
+
+function handleLesser(form) {
+	return `${form.field}:<${form.query}`
+}
+
+function handleBetween(form) {
+	return `${form.field}:[${form.query} TO ${form.maxQuery}]`
+}
+
+function handleQueryBuild(form) {
+	const type = form.option
+	switch (type) {
+		case 'contains':
+			return handleContains(form)
+		case 'is (exact)':
+			return handleExact(form)
+		case 'is (not)':
+			return handleIsNot(form)
+		case 'above':
+			return handleGreater(form)
+		case 'below':
+			return handleLesser(form)
+		case 'between':
+			return handleBetween(form)
+		case 'before':
+			return handleLesser(form)
+		case 'after':
+			return handleGreater(form)
+		case 'is':
+			return handleExact(form)
+		default:
+			throw new Error('invalid query option')
+	}
 }
 
 const FormBase = ({id, state, fieldKeys, handleUpdate, getFieldOptions, getFieldType}) => {
@@ -221,7 +316,7 @@ const FormBase = ({id, state, fieldKeys, handleUpdate, getFieldOptions, getField
 	
 	const optionRef = useRef(null)
 	
-	//when the field updates, make sure the option gets updated too
+	//when the field updates, make sure the option gets updated too //todo make sure query ref gets updated too
 	useEffect(() => {
 		const name = optionRef.current.name
 		const value = optionRef.current.value
@@ -246,6 +341,7 @@ const FormBase = ({id, state, fieldKeys, handleUpdate, getFieldOptions, getField
 			option={option}
 			getFieldType={getFieldType}
 			field={field}
+			formState={formState}
 		/>
 	</>
 }
@@ -265,6 +361,9 @@ const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 			const value = booleanRef.current.value
 			handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
 		}
+		// if (fieldType === 'text' || fieldType === 'number') {
+		// 	console.log('fieldtype is text/number')
+		// }
 	}, [field])
 	
 	const input = (type) => {
@@ -284,7 +383,6 @@ const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 	/>
 	const renderDateTimePicker = () => <>
 		{dtp('query')}
-	
 		{option === 'between' ? <><span>and</span>{dtp('maxQuery')} </> : null}
 	</>
 	
@@ -419,16 +517,17 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 		days, years, //html maps
 		hours, minutes, seconds //html maps
 	} = useDateTimePicker()
-
+	
 	function getUnixTimestamp() {
 		// console.log(year,month,day,hour,minute,second)
 		// console.log(`${year}-${month}-${day} ${hour}:${minute}:${second}`)
-		console.log(moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix())
+		// console.log(moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix())
 		return moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix()
 	}
+	
 	useEffect(() => {
 		const value = getUnixTimestamp()
-		handleUpdate({target:{name, value}}, id)
+		handleUpdate({target: {name, value}}, id)
 	}, [month, day, year, hour, minute, second])
 	
 	return <>
