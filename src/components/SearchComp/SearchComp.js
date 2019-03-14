@@ -56,7 +56,7 @@ function getMapping(index) {
 	artMap = switchValues(artMap)
 	metaMap = switchValues(metaMap)
 	
-	return [{...artMap, ryan: 'boolean'}, metaMap]
+	return [artMap, metaMap]
 }
 
 const [artMap, metaMap] = getMapping("mainnet-oip042_artifact")
