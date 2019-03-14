@@ -168,6 +168,9 @@ const SearchComp = (mapping) => {
 	
 	let fieldKeys = Object.keys(mapping)
 	const getFieldOptions = (field = '') => {
+		if (field === 'date') {
+			return dateFields
+		}
 		const fieldType = mapping[field]
 		switch (fieldType) {
 			case 'string':
@@ -176,8 +179,6 @@ const SearchComp = (mapping) => {
 				return numFields
 			case 'boolean':
 				return booleanFields
-			case 'date':
-				return dateFields
 			default:
 				return ['contains']
 		}
