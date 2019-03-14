@@ -237,8 +237,11 @@ function buildQuery(state) {
 	sorted.sort((a, b) => {
 		return a[1] - b[1]
 	})
-	let query = []
 	
+	let queryObject = {
+		0: []
+	}
+	let count = 0
 	for (let form of sorted) {
 		const formId = form[0]
 		const formState = forms[formId]
@@ -246,14 +249,24 @@ function buildQuery(state) {
 		let qb = handleQueryBuild(formState)
 		if (formState.type === 'complex') {
 			if (formState.operator === 'NOT') {
-				query.push('AND NOT')
+				queryObject[count].push('AND NOT')
+			} else if (formState.operator === 'AND') {
+				queryObject[count].push(formState.operator)
 			} else {
-				query.push(formState.operator)
+				count+=1
+				queryObject[count] = []
 			}
 		}
-		query.push(qb)
+		queryObject[count].push(qb)
 	}
-	console.log(query)
+	let query = '';
+	for (let q in queryObject) {
+		query+= `(${queryObject[q].join(' ')})`
+		if (Number(q) !== Object.keys(queryObject).length - 1) {
+			query+= ' OR '
+		}
+	}
+	console.log(queryObject, query)
 }
 
 function handleContains(form) {
