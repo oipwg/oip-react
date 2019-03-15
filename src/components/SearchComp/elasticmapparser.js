@@ -1,6 +1,6 @@
 import mapping42 from './042artifactMapping'
 
-export default function getMapping(index, switchValue = true) {
+export default function getMapping({index, onlyAllowEnabled = true, switchValueTypes = true}) {
 	let mapping = {}
 	function parseMapping(obj, stack = '') {
 		for (let prop in obj) {
@@ -8,16 +8,22 @@ export default function getMapping(index, switchValue = true) {
 				if (obj[prop]['properties']) {
 					let updatedStack = stack + (stack === '' ? `${prop}` : `.${prop}`)
 					parseMapping(obj[prop]['properties'], updatedStack )
-				} else if (obj[prop]['fields']) {
-					//toDo: add support for keywords
-					mapping[prop] = {
-						path: stack + `.${prop}`,
-						...obj[prop]
-					}
 				} else {
-					mapping[prop] = {
-						path: stack + `.${prop}`,
-						...obj[prop]
+					if (obj[prop].enabled === false) {
+						return
+					} else {
+						if (obj[prop]['fields']) {
+							//toDo: add support for keywords
+							mapping[prop] = {
+								path: stack + `.${prop}`,
+								...obj[prop]
+							}
+						} else {
+							mapping[prop] = {
+								path: stack + `.${prop}`,
+								...obj[prop]
+							}
+						}
 					}
 				}
 			}
@@ -25,7 +31,7 @@ export default function getMapping(index, switchValue = true) {
 	}
 	
 	parseMapping(mapping42[index]['mappings']['_doc']['properties']) //toDo has to change to live api data
-	if (!switchValue) {
+	if (!switchValueTypes) {
 		return mapping
 	}
 	
