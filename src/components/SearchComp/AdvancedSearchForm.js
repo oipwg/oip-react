@@ -6,10 +6,10 @@ import buildQuery from './querybuilder'
 import getAndParseMapping from './elasticmapparser'
 import {useDateTimePicker, useComplexFilter} from "./hooks";
 
-const stringFields = ['contains', 'is (exact)', 'is (not)']
-const numFields = ['contains', 'is (exact)', 'is (not)', 'above', 'below', 'between']
-const dateFields = ['is (exact)', 'before', 'is (not)', 'after', 'between']
-const booleanFields = ['is']
+const stringFields = ['contains', 'is (exact)', 'is (not)','exists', 'nonexistent']
+const numFields = ['is (exact)', 'is (not)', 'above', 'below', 'between', 'exists', 'nonexistent']
+const dateFields = ['is (exact)', 'before', 'is (not)', 'after', 'between', 'exists', 'nonexistent']
+const booleanFields = ['is', 'exists', 'nonexistent']
 
 //the root search component
 const AdvancedSearchForm = (mapping) => {
@@ -17,8 +17,7 @@ const AdvancedSearchForm = (mapping) => {
 	const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
 	
 	//todo: remove when using real component for param input
-	
-	mapping = getAndParseMapping("mainnet-oip042_artifact")
+	mapping = getAndParseMapping({index: "mainnet-oip042_artifact"})
 	
 	const splitField = (field) => {
 		let split = field.split('.')
@@ -40,7 +39,7 @@ const AdvancedSearchForm = (mapping) => {
 			case 'boolean':
 				return booleanFields
 			default:
-				throw new Error(`Invalid field type: ${fieldType}`)
+				return ['contains']
 		}
 	}
 	
@@ -130,6 +129,8 @@ const FormBase = ({id, state, mapping, handleUpdate, getFieldOptions, getFieldTy
 		handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
 	}, [field])
 	
+	const shouldRenderQueryInput = !(option === 'exists' || option === 'nonexistent')
+	
 	return <>
 		<select name={'field'} onChange={(e) => handleUpdate(e, id)}>
 			<option value={'*'}>All Fields</option>
@@ -142,14 +143,14 @@ const FormBase = ({id, state, mapping, handleUpdate, getFieldOptions, getFieldTy
 				return <option value={opt} key={i}>{opt}</option>
 			})}
 		</select>
-		<FormQueryInput
+		{shouldRenderQueryInput ? <FormQueryInput
 			handleUpdate={handleUpdate}
 			id={id}
 			option={option}
 			getFieldType={getFieldType}
 			field={field}
 			formState={formState}
-		/>
+		/> : null }
 	</>
 }
 
