@@ -27,11 +27,11 @@ const AdvancedSearchForm = (mapping) => {
 		if (field === '*') {
 			return ['contains']
 		}
-		if (field === 'date') {
-			return dateFields
-		}
+		
 		const fieldType = mapping[splitField(field)].type
 		switch (fieldType) {
+			case 'date':
+				return dateFields
 			case 'string':
 				return stringFields
 			case 'number':
