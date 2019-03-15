@@ -67,6 +67,14 @@ function handleBetween(form) {
 	return `${form.field}:[${form.query} TO ${form.maxQuery}]`
 }
 
+function handleExists(form) {
+	return `_exists_:${form.field}`
+}
+
+function handleNonexistent(form) {
+return `-_exists_:${form.field}`
+}
+
 function handleQueryBuild(form) {
 	const type = form.option
 	switch (type) {
@@ -88,6 +96,10 @@ function handleQueryBuild(form) {
 			return handleGreater(form)
 		case 'is':
 			return handleExact(form)
+		case 'exists':
+			return handleExists(form)
+		case 'nonexistent':
+			return handleNonexistent(form)
 		default:
 			throw new Error('invalid query option')
 	}
