@@ -18,7 +18,7 @@ const AdvancedSearchForm = (mapping) => {
 	
 	//todo: remove when using real component for param input
 	mapping = getAndParseMapping({index: "mainnet-oip042_artifact"})
-	
+	// console.log(mapping)
 	const splitField = (field) => {
 		let split = field.split('.')
 		return split[split.length-1]
@@ -122,7 +122,7 @@ const FormBase = ({id, state, mapping, handleUpdate, getFieldOptions, getFieldTy
 	
 	const optionRef = useRef(null)
 	
-	//when the field updates, make sure the option gets updated too //todo make sure query ref gets updated too
+	//when the field updates, make sure the option gets updated too
 	useEffect(() => {
 		const name = optionRef.current.name
 		const value = optionRef.current.value
@@ -156,27 +156,43 @@ const FormBase = ({id, state, mapping, handleUpdate, getFieldOptions, getFieldTy
 
 const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 	const booleanRef = useRef(null)
+	const textNumRef = useRef(null)
+	const textNumBetweenRef = useRef(null)
+	
 	let fieldType = getFieldType(field)
 	
 	if (fieldType === 'string') {
 		fieldType = 'text'
 	}
 	
+	const forceUpdate = (ref) => {
+		const name = ref.current.name
+		const value = ref.current.value
+		handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
+	}
+	
 	//when the field changes, update option field
 	useEffect(() => {
 		if (fieldType === 'boolean') {
-			const name = booleanRef.current.name
-			const value = booleanRef.current.value
-			handleUpdate({target: {name, value}}, id) //simulate e.target.[] event
+			forceUpdate(booleanRef)
+		}
+		if ((fieldType === 'text' || fieldType === 'number') && field !== 'date') {
+			if (textNumRef) {
+				forceUpdate(textNumRef)
+				if (textNumBetweenRef.current) {
+					forceUpdate(textNumBetweenRef)
+				}
+			}
+			
 		}
 	}, [field])
 	
 	const input = (type) => {
 		return <>
-			<input name={'query'} type={type} onChange={(e) => handleUpdate(e, id)}/>
+			<input ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)}/>
 			{option === 'between' ? <>
 				<span>and</span>
-				<input name={'maxQuery'} type={type} onChange={(e) => handleUpdate(e, id)}/> </> : null
+				<input ref={textNumBetweenRef} name={'maxQuery'} type={type} onChange={(e) => handleUpdate(e, id)}/> </> : null
 			}
 		</>
 	}
