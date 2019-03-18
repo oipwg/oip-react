@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react'
+import React, {useRef, useEffect, useLayoutEffect, useState} from 'react'
 import moment from 'moment'
 import uid from 'uid'
 
@@ -6,9 +6,9 @@ import buildQuery from './querybuilder'
 import getAndParseMapping from './elasticmapparser'
 import {useDateTimePicker, useComplexFilter} from "./hooks";
 
-const stringFields = ['contains', 'is (exact)', 'is (not)','exists', 'nonexistent']
+const stringFields = ['contains', 'is (exact)', 'is (not)', 'exists', 'nonexistent']
 const numFields = ['is (exact)', 'is (not)', 'above', 'below', 'between', 'exists', 'nonexistent']
-const dateFields = ['is (exact)', 'before', 'is (not)', 'after', 'between', 'exists', 'nonexistent']
+const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exists', 'nonexistent']
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 //the root search component
@@ -21,14 +21,15 @@ const AdvancedSearchForm = (mapping) => {
 	// console.log(mapping)
 	const splitField = (field) => {
 		let split = field.split('.')
-		return split[split.length-1]
+		return split[split.length - 1]
 	}
 	const getFieldOptions = (field = '') => {
 		if (field === '*') {
 			return ['contains']
 		}
 		
-		const fieldType = mapping[splitField(field)].type
+		const fieldType = splitField(field) === 'date' ? 'date' : mapping[splitField(field)].type
+		
 		switch (fieldType) {
 			case 'date':
 				return dateFields
@@ -150,7 +151,7 @@ const FormBase = ({id, state, mapping, handleUpdate, getFieldOptions, getFieldTy
 			getFieldType={getFieldType}
 			field={field}
 			formState={formState}
-		/> : null }
+		/> : null}
 	</>
 }
 
@@ -192,7 +193,8 @@ const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 			<input ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)}/>
 			{option === 'between' ? <>
 				<span>and</span>
-				<input ref={textNumBetweenRef} name={'maxQuery'} type={type} onChange={(e) => handleUpdate(e, id)}/> </> : null
+				<input ref={textNumBetweenRef} name={'maxQuery'} type={type}
+				       onChange={(e) => handleUpdate(e, id)}/> </> : null
 			}
 		</>
 	}
@@ -201,6 +203,7 @@ const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 		handleUpdate={handleUpdate}
 		name={name}
 		id={id}
+		option={option}
 	/>
 	const renderDateTimePicker = () => <>
 		{dtp('query')}
@@ -227,8 +230,17 @@ const FormQueryInput = ({handleUpdate, id, option, getFieldType, field}) => {
 	return renderFormInput(fieldType)
 }
 
-const DateTimePicker = ({name, id, handleUpdate}) => {
+const DateTimePicker = ({name, id, handleUpdate, option}) => {
 	moment.locale('en')
+	
+	const pickingOnDate = option === 'is (on)' || option === 'is (not on)'
+	const [displayTimePicker, toggleTimePicker] = useState(false)
+	//don't display time picker when picking 'on' dates (see react docs for why we useLayoutEffect here. Or use[Effect])
+	useLayoutEffect(() => {
+		const shouldDisplayTimePicker = !pickingOnDate
+		toggleTimePicker(shouldDisplayTimePicker)
+	}, [option])
+	
 	const {
 		month, day, year, //state
 		setMonth, setDay, setYear, //setstate
@@ -243,11 +255,39 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 		return moment.utc(`${year}-${month}-${day} ${hour}:${minute}:${second}`).unix()
 	}
 	
+	//this takes the local state found in useDateTimePicker and updates the global reducer form state
 	useEffect(() => {
 		const value = getUnixTimestamp()
-		handleUpdate({target: {name, value}}, id)
+		if (pickingOnDate) {
+			const unixDay = 86400 - 1 //minus one to get 12:00am to 11:59pm
+			handleUpdate({target: {name, value}}, id)
+			handleUpdate({target: {name: 'maxQuery', value: value+unixDay}}, id)
+		} else {
+			handleUpdate({target: {name, value}}, id)
+		}
 	}, [month, day, year, hour, minute, second])
 	
+	return <>
+		<DatePicker
+			setMonth={setMonth}
+			dateObject={dateObject}
+			setDay={setDay}
+			days={days}
+			setYear={setYear}
+			years={years}
+		/>
+		{displayTimePicker ? <TimePicker
+			setHour={setHour}
+			hours={hours}
+			setMinute={setMinute}
+			minutes={minutes}
+			setSecond={setSecond}
+			seconds={seconds}
+		/> : null}
+	</>
+}
+
+const DatePicker = ({setMonth, dateObject, setDay, days, setYear, years}) => {
 	return <>
 		<select onChange={(e) => {
 			setMonth(e.target.value)
@@ -271,6 +311,11 @@ const DateTimePicker = ({name, id, handleUpdate}) => {
 				return <option key={i} value={y}>{y}</option>
 			})}
 		</datalist>
+	</>
+}
+
+const TimePicker = ({setHour, hours, setMinute, minutes, setSecond, seconds}) => {
+	return <>
 		<select onChange={(e) => {
 			setHour(e.target.value)
 		}} name={'hours'}>

@@ -100,6 +100,11 @@ function handleQueryBuild(form) {
 			return handleExists(form)
 		case 'nonexistent':
 			return handleNonexistent(form)
+		//date-specific fields
+		case 'is (on)':
+			return handleBetween(form)
+		case 'is (not on)':
+			return handleBetween(form)
 		default:
 			throw new Error('invalid query option')
 	}
