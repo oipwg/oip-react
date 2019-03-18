@@ -1,0 +1,31 @@
+{
+  "name": "oip-react-v2",
+  "version": "1.0.0",
+  "description": "second version of oipwg's component library",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "storybook": "start-storybook",
+    "lint": "standard",
+    "lint:fix": "standard --fix"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.3.4",
+    "@storybook/addon-actions": "^5.0.3",
+    "@storybook/addon-console": "^1.1.0",
+    "@storybook/addons": "^5.0.3",
+    "@storybook/react": "^5.0.3",
+    "babel-eslint": "^10.0.1",
+    "babel-loader": "^8.0.5",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "moment": "^2.24.0",
+    "react": "^16.8.4",
+    "react-dom": "^16.8.4",
+    "uid": "^0.0.2"
+  },
+  "standard": {
+    "parser": "babel-eslint"
+  }
+}
