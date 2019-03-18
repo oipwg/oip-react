@@ -2,7 +2,7 @@
   "name": "oip-react-v2",
   "version": "1.0.0",
   "description": "second version of oipwg's component library",
-  "main": "index.js",
+  "main": "components/index.js",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook",
