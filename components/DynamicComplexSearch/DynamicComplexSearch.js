@@ -12,7 +12,7 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = (mapping) => {
+const DynamicComplexSearch = ({ mapping }) => {
   const id = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
   const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
 
@@ -66,7 +66,7 @@ const DynamicComplexSearch = (mapping) => {
     {/* filter out simple form */}
     {Object.keys(state.forms).filter(uid => uid !== id).map(uid => {
       return <form key={uid} style={{ display: 'block' }}>
-        <Complex
+        <ComplexBase
           id={uid}
           state={state}
           mapping={mapping}
@@ -77,7 +77,7 @@ const DynamicComplexSearch = (mapping) => {
         />
       </form>
     })}
-
+    {/* toDo remove and add callback to get access to query */}
     <div style={{ display: 'flex', flexDirection: 'row' }}>
       <button onClick={() => {
         console.log(state)
@@ -90,29 +90,6 @@ const DynamicComplexSearch = (mapping) => {
       </button>
       <button onClick={() => add(uid())}>Add Row</button>
     </div>
-  </>
-}
-
-const Complex = ({ id, state, mapping, handleUpdate, handleRemove, getFieldOptions, getFieldType }) => {
-  return <>
-    <select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
-      <option value={'AND'}> AND</option>
-      <option value={'OR'}> OR</option>
-      <option value={'NOT'}> NOT</option>
-    </select>
-    <FormBase
-      id={id}
-      state={state}
-      mapping={mapping}
-      handleUpdate={handleUpdate}
-      getFieldOptions={getFieldOptions}
-      getFieldType={getFieldType}
-    />
-    <button onClick={(e) => {
-      e.preventDefault()
-      handleRemove(id)
-    }}> -
-    </button>
   </>
 }
 
@@ -133,8 +110,14 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
   const shouldRenderQueryInput = !(option === 'exists' || option === 'nonexistent')
 
   return <>
-    <select name={'field'} onChange={(e) => handleUpdate(e, id)}>
-      <option value={'*'}>All Fields</option>
+    <select
+      name={'field'}
+      onChange={(e) => handleUpdate(e, id)}
+    >
+      <option
+        value={'*'}>
+            All Fields
+      </option>
       {Object.keys(mapping).map((k, i) => {
         return <option value={mapping[k].path} key={i}>{k}</option>
       })}
@@ -152,6 +135,29 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
       field={field}
       formState={formState}
     /> : null}
+  </>
+}
+
+const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldOptions, getFieldType }) => {
+  return <>
+    <select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
+      <option value={'AND'}> AND</option>
+      <option value={'OR'}> OR</option>
+      <option value={'NOT'}> NOT</option>
+    </select>
+    <FormBase
+      id={id}
+      state={state}
+      mapping={mapping}
+      handleUpdate={handleUpdate}
+      getFieldOptions={getFieldOptions}
+      getFieldType={getFieldType}
+    />
+    <button onClick={(e) => {
+      e.preventDefault()
+      handleRemove(id)
+    }}> -
+    </button>
   </>
 }
 
