@@ -1,7 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-
-import { DynamicComplexSearch } from '../components'
+import { DynamicComplexSearch } from '../src/components'
 
 storiesOf('DynamicComplexSearch', module)
   .add('with oip-mainnet mapping', () => {

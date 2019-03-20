@@ -1,10 +1,12 @@
 import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
+import withStyles from 'react-jss'
 import moment from 'moment'
 import uid from 'uid'
 
-import buildQuery from './querybuilder'
-import getAndParseMapping from './elasticmapparser'
-import { useDateTimePicker, useComplexFilter } from './dcsHooks'
+import buildQuery from './dependencies/querybuilder'
+import getAndParseMapping from './dependencies/elasticmapparser'
+import { useDateTimePicker, useComplexFilter } from './dependencies/dcsHooks'
+import baseStyles from './styles'
 
 const stringFields = ['contains', 'is (exact)', 'is (not)', 'exists', 'nonexistent']
 const numFields = ['is (exact)', 'is (not)', 'above', 'below', 'between', 'exists', 'nonexistent']
@@ -12,9 +14,17 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = ({ mapping }) => {
-  const id = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
-  const [state, add, handleRemove, handleUpdate] = useComplexFilter(id)
+const DynamicComplexSearch = ({ mapping, styles, overrideStyles = false }) => {
+  if (!overrideStyles) {
+    styles = styles ? { ...baseStyles, ...styles } : baseStyles
+  }
+  const StyledFormContainer = withStyles(styles)(FormContainer)
+  return <StyledFormContainer />
+}
+
+const FormContainer = ({ mapping, classes }) => {
+  const rootId = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
+  const [state, add, handleRemove, handleUpdate] = useComplexFilter(rootId)
 
   // todo: remove when using real component for param input
   mapping = getAndParseMapping({ index: 'mainnet-oip042_artifact' })
@@ -52,20 +62,44 @@ const DynamicComplexSearch = ({ mapping }) => {
     return field === 'date' ? 'date' : mapping[field].type
   }
 
-  return <>
-    <form style={{ display: 'block' }}>
+  return <FormWrapper
+    mapping={mapping}
+    getFieldOptions={getFieldOptions}
+    getFieldType={getFieldType}
+    handleUpdate={handleUpdate}
+    handleRemove={handleRemove}
+    add={add}
+    state={state}
+    rootId={rootId}
+    classes={classes}
+  />
+}
+const FormWrapper = ({
+  mapping,
+  getFieldOptions,
+  getFieldType,
+  handleUpdate,
+  handleRemove,
+  add,
+  state,
+  rootId,
+  classes
+}) => {
+  return <div className={classes.root}>
+    <form className={classes.formRow}>
       <FormBase
         mapping={mapping}
         getFieldOptions={getFieldOptions}
         getFieldType={getFieldType}
         handleUpdate={handleUpdate}
-        id={id}
+        id={rootId}
         state={state}
+        classes={classes}
       />
     </form>
     {/* filter out simple form */}
-    {Object.keys(state.forms).filter(uid => uid !== id).map(uid => {
-      return <form key={uid} style={{ display: 'block' }}>
+    {Object.keys(state.forms).filter(uid => uid !== rootId).map(uid => {
+      return <form key={uid} className={classes.formRow}>
         <ComplexBase
           id={uid}
           state={state}
@@ -74,26 +108,23 @@ const DynamicComplexSearch = ({ mapping }) => {
           handleRemove={handleRemove}
           getFieldOptions={getFieldOptions}
           getFieldType={getFieldType}
+          classes={classes}
         />
       </form>
     })}
     {/* toDo remove and add callback to get access to query */}
-    <div style={{ display: 'flex', flexDirection: 'row' }}>
-      <button onClick={() => {
-        console.log(state)
-      }}>Log State
+    <div className={classes.buttonRow}>
+      <button className={classes.addButton} onClick={() => add(uid())}>Add Row</button>
+      <button
+        className={classes.submitButton}
+        onClick={(e) => {e.preventDefault(); buildQuery(state)}}>
+        Submit
       </button>
-      <button onClick={(e) => {
-        e.preventDefault()
-        buildQuery(state)
-      }}>Build Query
-      </button>
-      <button onClick={() => add(uid())}>Add Row</button>
     </div>
-  </>
+  </div>
 }
 
-const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType }) => {
+const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType, classes }) => {
   const formState = state.forms[id]
   const field = formState['field']
   const option = formState['option']
@@ -111,6 +142,7 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
 
   return <>
     <select
+      className={classes.selectField}
       name={'field'}
       onChange={(e) => handleUpdate(e, id)}
     >
@@ -122,7 +154,11 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
         return <option value={mapping[k].path} key={i}>{k}</option>
       })}
     </select>
-    <select ref={optionRef} name={'option'} onChange={(e) => handleUpdate(e, id)}>
+    <select
+      className={classes.selectOption}
+      ref={optionRef}
+      name={'option'}
+      onChange={(e) => handleUpdate(e, id)}>
       {getFieldOptions(field).map((opt, i) => {
         return <option value={opt} key={i}>{opt}</option>
       })}
@@ -134,13 +170,14 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
       getFieldType={getFieldType}
       field={field}
       formState={formState}
+      classes={classes}
     /> : null}
   </>
 }
 
-const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldOptions, getFieldType }) => {
+const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldOptions, getFieldType, classes }) => {
   return <>
-    <select name={'operator'} onChange={(e) => handleUpdate(e, id)}>
+    <select className={classes.selectOp} name={'operator'} onChange={(e) => handleUpdate(e, id)}>
       <option value={'AND'}> AND</option>
       <option value={'OR'}> OR</option>
       <option value={'NOT'}> NOT</option>
@@ -152,8 +189,9 @@ const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldO
       handleUpdate={handleUpdate}
       getFieldOptions={getFieldOptions}
       getFieldType={getFieldType}
+      classes={classes}
     />
-    <button onClick={(e) => {
+    <button className={classes.removeButton} onClick={(e) => {
       e.preventDefault()
       handleRemove(id)
     }}> -
@@ -161,7 +199,7 @@ const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldO
   </>
 }
 
-const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field }) => {
+const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes }) => {
   const booleanRef = useRef(null)
   const textNumRef = useRef(null)
   const textNumBetweenRef = useRef(null)
@@ -195,10 +233,10 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field }) => {
 
   const input = (type) => {
     return <>
-      <input ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)} />
+      <input className={classes.inputQuery} ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)} />
       {option === 'between' ? <>
-        <span>and</span>
-        <input ref={textNumBetweenRef} name={'maxQuery'} type={type}
+        <span className={classes.spanBetween}>and</span>
+        <input className={classes.inputQuery} ref={textNumBetweenRef} name={'maxQuery'} type={type}
           onChange={(e) => handleUpdate(e, id)} /> </> : null
       }
     </>
@@ -209,11 +247,12 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field }) => {
     name={name}
     id={id}
     option={option}
+    classes={classes}
   />
-  const renderDateTimePicker = () => <>
+  const renderDateTimePicker = () => <div className={classes.dateTimePickerContainer}>
     {dtp('query')}
-    {option === 'between' ? <><span>and</span>{dtp('maxQuery')} </> : null}
-  </>
+    {option === 'between' ? <><span className={classes.spanBetween}>and</span>{dtp('maxQuery')} </> : null}
+  </div>
 
   // text, number, boolean, or date
   const renderFormInput = (fieldType) => {
@@ -222,7 +261,7 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field }) => {
       case 'number':
         return input(fieldType)
       case 'boolean':
-        return <select ref={booleanRef} name={'query'} onChange={(e) => handleUpdate(e, id)}>
+        return <select className={classes.selectOption} ref={booleanRef} name={'query'} onChange={(e) => handleUpdate(e, id)}>
           <option value>True</option>
           <option value={false}>False</option>
         </select>
@@ -235,7 +274,7 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field }) => {
   return renderFormInput(fieldType)
 }
 
-const DateTimePicker = ({ name, id, handleUpdate, option }) => {
+const DateTimePicker = ({ name, id, handleUpdate, option, classes }) => {
   moment.locale('en')
 
   const pickingOnDate = option === 'is (on)' || option === 'is (not on)'
@@ -272,7 +311,7 @@ const DateTimePicker = ({ name, id, handleUpdate, option }) => {
     }
   }, [month, day, year, hour, minute, second])
 
-  return <>
+  return <div className={classes.dateTimePicker}>
     <DatePicker
       setMonth={setMonth}
       dateObject={dateObject}
@@ -280,6 +319,7 @@ const DateTimePicker = ({ name, id, handleUpdate, option }) => {
       days={days}
       setYear={setYear}
       years={years}
+      classes={classes}
     />
     {displayTimePicker ? <TimePicker
       setHour={setHour}
@@ -288,27 +328,28 @@ const DateTimePicker = ({ name, id, handleUpdate, option }) => {
       minutes={minutes}
       setSecond={setSecond}
       seconds={seconds}
+      classes={classes}
     /> : null}
-  </>
+  </div>
 }
 
-const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years }) => {
-  return <>
-    <select onChange={(e) => {
+const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classes }) => {
+  return <div className={classes.datePicker}>
+    <select className={classes.selectField} onChange={(e) => {
       setMonth(e.target.value)
     }} name={'months'}>
       {Object.keys(dateObject).map((m, i) => {
         return <option key={i} value={dateObject[m].mm}>{m}</option>
       })}
     </select>
-    <select onChange={(e) => {
+    <select className={classes.selectField} onChange={(e) => {
       setDay(e.target.value)
     }} name={'days'}>
       {days.map((d, i) => {
         return <option key={i} value={d}>{d}</option>
       })}
     </select>
-    <input onChange={(e) => {
+    <input className={classes.inputDatalist} onChange={(e) => {
       setYear(e.target.value)
     }} type={'number'} list={'years'} />
     <datalist id={'years'}>
@@ -316,33 +357,33 @@ const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years }) => {
         return <option key={i} value={y}>{y}</option>
       })}
     </datalist>
-  </>
+  </div>
 }
 
-const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds }) => {
-  return <>
-    <select onChange={(e) => {
+const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds, classes }) => {
+  return <div className={classes.timePicker}>
+    <select className={classes.selectField} onChange={(e) => {
       setHour(e.target.value)
     }} name={'hours'}>
       {hours.map((m, i) => {
         return <option key={i} value={m}>{m}hr</option>
       })}
     </select>
-    <select onChange={(e) => {
+    <select className={classes.selectField} onChange={(e) => {
       setMinute(e.target.value)
     }} name={'minutes'}>
       {minutes.map((m, i) => {
         return <option key={i} value={m}>{m}m</option>
       })}
     </select>
-    <select onChange={(e) => {
+    <select className={classes.selectField} onChange={(e) => {
       setSecond(e.target.value)
     }} name={'seconds'}>
       {seconds.map((m, i) => {
         return <option key={i} value={m}>{m}s</option>
       })}
     </select>
-  </>
+  </div>
 }
 
 export default DynamicComplexSearch
