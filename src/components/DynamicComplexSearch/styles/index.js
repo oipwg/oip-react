@@ -2,11 +2,11 @@
 // most plugins are available without further configuration needed.
 const styles = {
   flex: {
-    display: 'flex',
+    display: 'flex'
   },
   root: {
     display: 'inline-flex',
-    flexDirection: 'column',
+    flexDirection: 'column'
   },
   formRow: {
     display: 'flex',
@@ -29,7 +29,7 @@ const styles = {
   },
   buttonBase: {
     backgroundColor: 'white',
-    border: 'none',
+    border: 'none'
   },
   selectField: {
     extend: 'selectBase'
@@ -48,13 +48,13 @@ const styles = {
   andSpan: {
     margin: 10,
     extend: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   inputDatalist: {
     extend: 'selectBase'
   },
   removeButton: {
-    extend: 'buttonBase',
+    extend: 'buttonBase'
   },
   queryContainer: {
     extend: 'flex',
@@ -62,18 +62,18 @@ const styles = {
     flexWrap: 'wrap'
   },
   dateTimePicker: {
-    extend: 'flex',
+    extend: 'flex'
   },
   datePicker: {
-    extend: 'flex',
+    extend: 'flex'
   },
   timePicker: {
-    extend: 'flex',
+    extend: 'flex'
   },
   buttonRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'flex-start'
   },
   addButton: {
     backgroundColor: 'white',
@@ -81,10 +81,10 @@ const styles = {
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: '#D3D3D3',
-      color: 'white',
+      color: 'white'
     },
     height: 30,
-    width: 80,
+    width: 80
   },
   submitButton: {
     marginLeft: '10px',
@@ -93,11 +93,11 @@ const styles = {
     cursor: 'pointer',
     '&:hover': {
       backgroundColor: '#D3D3D3',
-      color: 'white',
+      color: 'white'
     },
     height: 30,
-    width: 80,
-  },
+    width: 80
+  }
 }
 
 export default styles
