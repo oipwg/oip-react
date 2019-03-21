@@ -20,10 +20,12 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
+    "chroma-js": "^2.0.3",
     "moment": "^2.24.0",
+    "prop-types": "^15.7.2",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-jss": "^8.6.1",
+    "react-jss": "git@github.com:/cssinjs/jss/tree/master/packages/react-jss",
     "uid": "^0.0.2"
   },
   "standard": {
