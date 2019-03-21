@@ -14,18 +14,20 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = ({ mapping, styles, overrideStyles = false }) => {
-  if (!overrideStyles) {
-    styles = styles ? { ...baseStyles, ...styles } : baseStyles
+const DynamicComplexSearch = ({ mapping, onSubmit, styles}) => {
+  if (!onSubmit) {
+    throw new Error('Must pass in an onSubmit callback function')
   }
   const StyledFormContainer = withStyles(styles)(FormContainer)
-  return <StyledFormContainer />
+  return <StyledFormContainer
+    mapping={mapping}
+    onSubmit={onSubmit}
+  />
 }
 
-const FormContainer = ({ mapping, classes }) => {
+const FormContainer = ({ mapping, onSubmit, classes }) => {
   const rootId = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
   const [state, add, handleRemove, handleUpdate] = useComplexFilter(rootId)
-
   // todo: remove when using real component for param input
   mapping = getAndParseMapping({ index: 'mainnet-oip042_artifact' })
   // console.log(mapping)
@@ -61,7 +63,6 @@ const FormContainer = ({ mapping, classes }) => {
     field = splitField(field)
     return field === 'date' ? 'date' : mapping[field].type
   }
-
   return <FormWrapper
     mapping={mapping}
     getFieldOptions={getFieldOptions}
@@ -72,10 +73,11 @@ const FormContainer = ({ mapping, classes }) => {
     state={state}
     rootId={rootId}
     classes={classes}
+    onSubmit={onSubmit}
   />
 }
 
-const FormWrapper = ({
+const FormWrapper = withStyles(baseStyles)(({
   mapping,
   getFieldOptions,
   getFieldType,
@@ -84,7 +86,8 @@ const FormWrapper = ({
   add,
   state,
   rootId,
-  classes
+  classes,
+  onSubmit
 }) => {
   return <div className={classes.root}>
     <form className={classes.formRow}>
@@ -118,12 +121,12 @@ const FormWrapper = ({
       <button className={classes.addButton} onClick={() => add(uid())}>Add Row</button>
       <button
         className={classes.submitButton}
-        onClick={(e) => {e.preventDefault(); buildQuery(state)}}>
+        onClick={(e) => { e.preventDefault(); onSubmit(buildQuery(state)) }}>
         Submit
       </button>
     </div>
   </div>
-}
+})
 
 const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType, classes }) => {
   const formState = state.forms[id]
