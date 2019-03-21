@@ -4,5 +4,7 @@ import { DynamicComplexSearch } from '../src/components'
 
 storiesOf('DynamicComplexSearch', module)
   .add('with oip-mainnet mapping', () => {
-    return <DynamicComplexSearch />
+    return <DynamicComplexSearch
+      onSubmit={(query) => console.log('my query,', query)}
+    />
   })
