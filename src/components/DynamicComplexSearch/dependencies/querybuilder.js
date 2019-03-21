@@ -36,7 +36,7 @@ export default function buildQuery (state) {
       query += ' OR '
     }
   }
-  console.log(query)
+
   return query
 }
 
