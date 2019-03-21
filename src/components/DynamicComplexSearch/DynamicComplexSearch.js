@@ -74,6 +74,7 @@ const FormContainer = ({ mapping, classes }) => {
     classes={classes}
   />
 }
+
 const FormWrapper = ({
   mapping,
   getFieldOptions,
@@ -232,14 +233,14 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
   }, [field])
 
   const input = (type) => {
-    return <>
+    return <div className={classes.queryContainer}>
       <input className={classes.inputQuery} ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)} />
       {option === 'between' ? <>
-        <span className={classes.spanBetween}>and</span>
+        <span className={classes.andSpan}>and</span>
         <input className={classes.inputQuery} ref={textNumBetweenRef} name={'maxQuery'} type={type}
           onChange={(e) => handleUpdate(e, id)} /> </> : null
       }
-    </>
+    </div>
   }
 
   const dtp = (name) => <DateTimePicker
@@ -249,9 +250,9 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
     option={option}
     classes={classes}
   />
-  const renderDateTimePicker = () => <div className={classes.dateTimePickerContainer}>
+  const renderDateTimePicker = () => <div className={classes.queryContainer}>
     {dtp('query')}
-    {option === 'between' ? <><span className={classes.spanBetween}>and</span>{dtp('maxQuery')} </> : null}
+    {option === 'between' ? <><span className={classes.andSpan}>and</span>{dtp('maxQuery')} </> : null}
   </div>
 
   // text, number, boolean, or date

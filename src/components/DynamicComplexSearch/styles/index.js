@@ -11,13 +11,15 @@ const styles = {
   formRow: {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '10px'
+    marginBottom: '10px',
+    width: '500px',
+    flexWrap: 'wrap'
   },
-  baseSelect: {
+  selectBase: {
     backgroundColor: 'white',
     border: 'none',
     borderBottom: '1px solid red',
-    marginRight: '10px',
+    margin: [0, 5, 10],
     fontSize: 14,
     padding: 3,
     cursor: 'default',
@@ -25,37 +27,39 @@ const styles = {
       backgroundColor: '#F8F8F8'
     }
   },
-  baseButton: {
+  buttonBase: {
     backgroundColor: 'white',
     border: 'none',
   },
   selectField: {
-    extend: 'baseSelect'
+    extend: 'selectBase'
   },
   selectOption: {
-    extend: 'baseSelect'
+    extend: 'selectBase'
   },
   selectOp: {
-    extend: 'baseSelect'
+    extend: 'selectBase'
   },
   inputQuery: {
-    extend: 'baseSelect',
+    extend: 'selectBase',
     position: 'relative',
     top: '-1px'
   },
-  spanBetween: {
-    marginRight: '10px',
+  andSpan: {
+    margin: 10,
     extend: 'flex',
     alignItems: 'center',
   },
   inputDatalist: {
-    extend: 'baseSelect'
+    extend: 'selectBase'
   },
   removeButton: {
-    extend: 'baseButton',
+    extend: 'buttonBase',
   },
-  dateTimePickerContainer: {
+  queryContainer: {
     extend: 'flex',
+    maxWidth: 500,
+    flexWrap: 'wrap'
   },
   dateTimePicker: {
     extend: 'flex',
@@ -69,10 +73,10 @@ const styles = {
   buttonRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
   },
   addButton: {
-  backgroundColor: 'white',
+    backgroundColor: 'white',
     border: 'none',
     cursor: 'pointer',
     '&:hover': {
