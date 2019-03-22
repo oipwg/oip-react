@@ -15,7 +15,7 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = ({ mapping, onSubmit, styles }) => {
+const DynamicComplexSearch = ({ mapping, onSubmit, styles, overrideStyles = false }) => {
   if (!onSubmit) {
     throw new Error('Must pass in an onSubmit callback function')
   }
@@ -26,10 +26,11 @@ const DynamicComplexSearch = ({ mapping, onSubmit, styles }) => {
   return <RenderFormContainer
     mapping={mapping}
     onSubmit={onSubmit}
+    overrideStyles={overrideStyles}
   />
 }
 
-const FormContainer = ({ mapping, onSubmit, classes }) => {
+const FormContainer = ({ mapping, onSubmit, classes, overrideStyles }) => {
   const rootId = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
   const [state, add, handleRemove, handleUpdate] = useComplexFilter(rootId)
   // todo: remove when using real component for param input
@@ -67,7 +68,12 @@ const FormContainer = ({ mapping, onSubmit, classes }) => {
     field = splitField(field)
     return field === 'date' ? 'date' : mapping[field].type
   }
-  return <FormWrapper
+
+  let RenderFormWrapper = FormWrapper
+  if (!overrideStyles) {
+    RenderFormWrapper = withStyles(baseStyles)(FormWrapper)
+  }
+  return <RenderFormWrapper
     mapping={mapping}
     getFieldOptions={getFieldOptions}
     getFieldType={getFieldType}
@@ -81,7 +87,7 @@ const FormContainer = ({ mapping, onSubmit, classes }) => {
   />
 }
 
-const FormWrapper = withStyles(baseStyles)(({
+const FormWrapper = ({
   mapping,
   getFieldOptions,
   getFieldType,
@@ -134,7 +140,7 @@ const FormWrapper = withStyles(baseStyles)(({
       </button>
     </div>
   </div>
-})
+}
 
 const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType, classes }) => {
   const formState = state.forms[id]
