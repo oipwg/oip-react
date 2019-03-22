@@ -1,9 +1,7 @@
 // Create your Styles. Remember, since React-JSS uses the default preset,
 // most plugins are available without further configuration needed.
 const styles = {
-  flex: {
-    display: 'flex'
-  },
+  // containers
   root: {
     display: 'inline-flex',
     flexDirection: 'column'
@@ -15,6 +13,26 @@ const styles = {
     width: '500px',
     flexWrap: 'wrap'
   },
+  queryContainer: {
+    display: 'flex',
+    maxWidth: 500,
+    flexWrap: 'wrap'
+  },
+  dateTimePicker: {
+    display: 'flex'
+  },
+  datePicker: {
+    display: 'flex'
+  },
+  timePicker: {
+    display: 'flex'
+  },
+  buttonRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  // selects and inputs
   selectBase: {
     backgroundColor: 'white',
     border: 'none',
@@ -27,9 +45,8 @@ const styles = {
       backgroundColor: '#F8F8F8'
     }
   },
-  buttonBase: {
-    backgroundColor: 'white',
-    border: 'none'
+  inputBase: {
+    extend: 'selectBase'
   },
   selectField: {
     extend: 'selectBase'
@@ -40,63 +57,44 @@ const styles = {
   selectOp: {
     extend: 'selectBase'
   },
+  // inputs
   inputQuery: {
     extend: 'selectBase',
     position: 'relative',
     top: '-1px'
   },
-  andSpan: {
-    margin: 10,
-    extend: 'flex',
-    alignItems: 'center'
-  },
   inputDatalist: {
-    extend: 'selectBase'
+    extend: 'inputBase'
+  },
+  // buttons
+  buttonBase: {
+    backgroundColor: 'white',
+    border: 'none'
+  },
+  fnButtons: {
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#D3D3D3',
+      color: 'white'
+    },
+    height: 30,
+    width: 80
+  },
+  addButton: {
+    extend: ['buttonBase', 'fnButtons']
+  },
+  submitButton: {
+    extend: ['buttonBase', 'fnButtons'],
+    marginLeft: '10px'
   },
   removeButton: {
     extend: 'buttonBase'
   },
-  queryContainer: {
+  // spans
+  andSpan: {
+    margin: 10,
     extend: 'flex',
-    maxWidth: 500,
-    flexWrap: 'wrap'
-  },
-  dateTimePicker: {
-    extend: 'flex'
-  },
-  datePicker: {
-    extend: 'flex'
-  },
-  timePicker: {
-    extend: 'flex'
-  },
-  buttonRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start'
-  },
-  addButton: {
-    backgroundColor: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#D3D3D3',
-      color: 'white'
-    },
-    height: 30,
-    width: 80
-  },
-  submitButton: {
-    marginLeft: '10px',
-    backgroundColor: 'white',
-    border: 'none',
-    cursor: 'pointer',
-    '&:hover': {
-      backgroundColor: '#D3D3D3',
-      color: 'white'
-    },
-    height: 30,
-    width: 80
+    alignItems: 'center'
   }
 }
 

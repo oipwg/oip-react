@@ -15,12 +15,15 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = ({ mapping, onSubmit, styles}) => {
+const DynamicComplexSearch = ({ mapping, onSubmit, styles }) => {
   if (!onSubmit) {
     throw new Error('Must pass in an onSubmit callback function')
   }
-  const StyledFormContainer = withStyles(styles)(FormContainer)
-  return <StyledFormContainer
+  let RenderFormContainer = FormContainer
+  if (styles) {
+    RenderFormContainer = withStyles(styles)(FormContainer)
+  }
+  return <RenderFormContainer
     mapping={mapping}
     onSubmit={onSubmit}
   />
@@ -73,8 +76,8 @@ const FormContainer = ({ mapping, onSubmit, classes }) => {
     add={add}
     state={state}
     rootId={rootId}
-    classes={classes}
     onSubmit={onSubmit}
+    classes={classes}
   />
 }
 
@@ -119,9 +122,13 @@ const FormWrapper = withStyles(baseStyles)(({
     })}
     {/* toDo remove and add callback to get access to query */}
     <div className={classes.buttonRow}>
-      <button className={classes.addButton} onClick={() => add(uid())}>Add Row</button>
       <button
-        className={classes.submitButton}
+        className={__(classes.buttonBase, classes.fnButtons, classes.addButton)}
+        onClick={() => add(uid())}>
+        Add Row
+      </button>
+      <button
+        className={__(classes.buttonBase, classes.fnButtons, classes.submitButton)}
         onClick={(e) => { e.preventDefault(); onSubmit(buildQuery(state)) }}>
         Submit
       </button>
@@ -147,7 +154,7 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
 
   return <>
     <select
-      className={classes.selectField}
+      className={__(classes.selectBase, classes.selectField)}
       name={'field'}
       onChange={(e) => handleUpdate(e, id)}
     >
@@ -160,7 +167,7 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
       })}
     </select>
     <select
-      className={classes.selectOption}
+      className={__(classes.selectBase, classes.selectOption)}
       ref={optionRef}
       name={'option'}
       onChange={(e) => handleUpdate(e, id)}>
@@ -182,7 +189,11 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
 
 const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldOptions, getFieldType, classes }) => {
   return <>
-    <select className={classes.selectOp} name={'operator'} onChange={(e) => handleUpdate(e, id)}>
+    <select
+      className={__(classes.selectBase, classes.selectOp)}
+      name={'operator'}
+      onChange={(e) => handleUpdate(e, id)}
+    >
       <option value={'AND'}> AND</option>
       <option value={'OR'}> OR</option>
       <option value={'NOT'}> NOT</option>
@@ -196,10 +207,11 @@ const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldO
       getFieldType={getFieldType}
       classes={classes}
     />
-    <button className={classes.removeButton} onClick={(e) => {
-      e.preventDefault()
-      handleRemove(id)
-    }}> -
+    <button
+      className={__(classes.buttonBase, classes.removeButton)}
+      onClick={(e) => { e.preventDefault(); handleRemove(id) }}
+    >
+      -
     </button>
   </>
 }
@@ -238,11 +250,27 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
 
   const input = (type) => {
     return <div className={classes.queryContainer}>
-      <input className={classes.inputQuery} ref={textNumRef} name={'query'} type={type} onChange={(e) => handleUpdate(e, id)} />
+      <input
+        className={__(classes.selectBase, classes.inputQuery)}
+        ref={textNumRef}
+        name={'query'}
+        type={type}
+        onChange={(e) => handleUpdate(e, id)}
+      />
       {option === 'between' ? <>
-        <span className={classes.andSpan}>and</span>
-        <input className={classes.inputQuery} ref={textNumBetweenRef} name={'maxQuery'} type={type}
-          onChange={(e) => handleUpdate(e, id)} /> </> : null
+        <span
+          className={classes.andSpan}
+        >
+          and
+        </span>
+        <input
+          className={__(classes.selectBase, classes.inputQuery)}
+          ref={textNumBetweenRef}
+          name={'maxQuery'}
+          type={type}
+          onChange={(e) => handleUpdate(e, id)}
+        />
+      </> : null
       }
     </div>
   }
@@ -266,7 +294,12 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
       case 'number':
         return input(fieldType)
       case 'boolean':
-        return <select className={classes.selectOption} ref={booleanRef} name={'query'} onChange={(e) => handleUpdate(e, id)}>
+        return <select
+          className={__(classes.selectBase, classes.selectOption)}
+          ref={booleanRef}
+          name={'query'}
+          onChange={(e) => handleUpdate(e, id)}
+        >
           <option value>True</option>
           <option value={false}>False</option>
         </select>
@@ -340,23 +373,30 @@ const DateTimePicker = ({ name, id, handleUpdate, option, classes }) => {
 
 const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classes }) => {
   return <div className={classes.datePicker}>
-    <select className={classes.selectField} onChange={(e) => {
-      setMonth(e.target.value)
-    }} name={'months'}>
+    <select
+      className={__(classes.selectBase, classes.selectField)}
+      onChange={(e) => { setMonth(e.target.value) }}
+      name={'months'}
+    >
       {Object.keys(dateObject).map((m, i) => {
         return <option key={i} value={dateObject[m].mm}>{m}</option>
       })}
     </select>
-    <select className={classes.selectField} onChange={(e) => {
-      setDay(e.target.value)
-    }} name={'days'}>
+    <select
+      className={__(classes.selectBase, classes.selectField)}
+      onChange={(e) => { setDay(e.target.value) }}
+      name={'days'}
+    >
       {days.map((d, i) => {
         return <option key={i} value={d}>{d}</option>
       })}
     </select>
-    <input className={classes.inputDatalist} onChange={(e) => {
-      setYear(e.target.value)
-    }} type={'number'} list={'years'} />
+    <input
+      className={__(classes.inputBase, classes.inputDatalist)}
+      onChange={(e) => { setYear(e.target.value) }}
+      type={'number'}
+      list={'years'}
+    />
     <datalist id={'years'}>
       {years.map((y, i) => {
         return <option key={i} value={y}>{y}</option>
@@ -367,23 +407,29 @@ const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classe
 
 const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds, classes }) => {
   return <div className={classes.timePicker}>
-    <select className={classes.selectField} onChange={(e) => {
-      setHour(e.target.value)
-    }} name={'hours'}>
+    <select
+      className={__(classes.selectBase, classes.selectField)}
+      onChange={(e) => { setHour(e.target.value) }}
+      name={'hours'}
+    >
       {hours.map((m, i) => {
         return <option key={i} value={m}>{m}hr</option>
       })}
     </select>
-    <select className={classes.selectField} onChange={(e) => {
-      setMinute(e.target.value)
-    }} name={'minutes'}>
+    <select
+      className={__(classes.selectBase, classes.selectField)}
+      onChange={(e) => { setMinute(e.target.value) }}
+      name={'minutes'}
+    >
       {minutes.map((m, i) => {
         return <option key={i} value={m}>{m}m</option>
       })}
     </select>
-    <select className={classes.selectField} onChange={(e) => {
-      setSecond(e.target.value)
-    }} name={'seconds'}>
+    <select
+      className={__(classes.selectBase, classes.selectField)}
+      onChange={(e) => { setSecond(e.target.value) }}
+      name={'seconds'}
+    >
       {seconds.map((m, i) => {
         return <option key={i} value={m}>{m}s</option>
       })}
