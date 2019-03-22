@@ -2,6 +2,7 @@ import React, { useRef, useEffect, useLayoutEffect, useState } from 'react'
 import withStyles from 'react-jss'
 import moment from 'moment'
 import uid from 'uid'
+import __ from 'classnames'
 
 import buildQuery from './dependencies/querybuilder'
 import getAndParseMapping from './dependencies/elasticmapparser'
