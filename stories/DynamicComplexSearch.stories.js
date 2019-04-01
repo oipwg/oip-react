@@ -15,7 +15,7 @@ const ThemeWrapper = (props) => {
 
 const styles = theme => ({
   selectBase: {
-    borderBottom: `1px solid ${theme.palette.primary.main}`,
+    borderBottom: `1px solid ${theme.palette.primary.main}`
   },
   inputQuery: {
     'border-bottom': `1px solid ${theme.palette.secondary.main}`
@@ -25,7 +25,7 @@ const styles = theme => ({
   }
 })
 
-const StyledDCS = withStyles(styles)(DynamicComplexSearch)
+// const StyledDCS = withStyles(styles)(DynamicComplexSearch)
 storiesOf('DynamicComplexSearch', module)
   .add('with oip-mainnet mapping', () => {
     return <ThemeWrapper>
