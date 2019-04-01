@@ -1,7 +1,7 @@
 {
-  "name": "oip-react-v2",
+  "name": "oip-react-jss",
   "version": "0.1.0",
-  "description": "second version of oipwg's component library",
+  "description": "oip component library built with React/JSS",
   "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
