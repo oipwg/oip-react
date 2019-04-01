@@ -15,20 +15,19 @@ const dateFields = ['is (on)', 'is (not on)', 'after', 'before', 'between', 'exi
 const booleanFields = ['is', 'exists', 'nonexistent']
 
 // the root search component
-const DynamicComplexSearch = ({ mapping, onSubmit, styles, overrideStyles = false }) => {
+const DynamicComplexSearch = ({ mapping, onSubmit, classes }) => {
   if (!onSubmit) {
     throw new Error('Must pass in an onSubmit callback function')
   }
-  let FormContainerComponent = styles ? withStyles(styles)(FormContainer) : FormContainer
-  let FormWrapperComponent = overrideStyles ? FormWrapper : withStyles(baseStyles)(FormWrapper)
-  return <FormContainerComponent
+
+  return <FormContainer
     mapping={mapping}
     onSubmit={onSubmit}
-    FormWrapperComponent={FormWrapperComponent}
+    classes={classes}
   />
 }
 
-const FormContainer = ({ mapping, onSubmit, classes, FormWrapperComponent }) => {
+const FormContainer = ({ mapping, onSubmit, classes }) => {
   const rootId = useRef(uid()).current // set a unique id for the initial simple search form (to distinguish it from incoming complex search forms)
   const [state, add, handleRemove, handleUpdate] = useComplexFilter(rootId)
   // todo: remove when using real component for param input
@@ -66,7 +65,7 @@ const FormContainer = ({ mapping, onSubmit, classes, FormWrapperComponent }) => 
     field = splitField(field)
     return field === 'date' ? 'date' : mapping[field].type
   }
-  return <FormWrapperComponent
+  return <FormWrapper
     mapping={mapping}
     getFieldOptions={getFieldOptions}
     getFieldType={getFieldType}
@@ -80,7 +79,7 @@ const FormContainer = ({ mapping, onSubmit, classes, FormWrapperComponent }) => 
   />
 }
 
-const FormWrapper = ({
+const FormWrapper = withStyles(baseStyles)(({
   mapping,
   getFieldOptions,
   getFieldType,
@@ -133,7 +132,7 @@ const FormWrapper = ({
       </button>
     </div>
   </div>
-}
+})
 
 const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType, classes }) => {
   const formState = state.forms[id]
@@ -210,7 +209,7 @@ const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldO
       className={__(classes.buttonBase, classes.removeButton)}
       onClick={(e) => { e.preventDefault(); handleRemove(id) }}
     >
-      -
+      (delete)
     </button>
   </>
 }
