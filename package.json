@@ -1,16 +1,21 @@
 {
   "name": "oip-react-v2",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "second version of oipwg's component library",
-  "main": "src/components/index.js",
+  "main": "lib/index.js",
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook",
     "lint": "standard",
-    "lint:fix": "standard --fix"
+    "lint:fix": "standard --fix",
+    "compile": "npx babel src --out-dir lib --copy-files"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
+    "@babel/plugin-proposal-class-properties": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "@babel/preset-react": "^7.0.0",
     "@storybook/addon-actions": "^5.0.6",
     "@storybook/addon-console": "^1.1.0",
     "@storybook/addons": "^5.0.6",
