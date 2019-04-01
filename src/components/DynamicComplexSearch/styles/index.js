@@ -1,6 +1,6 @@
 // Create your Styles. Remember, since React-JSS uses the default preset,
 // most plugins are available without further configuration needed.
-const styles = {
+const styles = theme => ({
   // containers
   root: {
     display: 'inline-flex',
@@ -10,7 +10,7 @@ const styles = {
     display: 'flex',
     flexDirection: 'row',
     marginBottom: '10px',
-    width: '500px',
+    width: '530px',
     flexWrap: 'wrap'
   },
   queryContainer: {
@@ -34,15 +34,17 @@ const styles = {
   },
   // selects and inputs
   selectBase: {
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background.main,
+    color: theme.palette.text.main,
     border: 'none',
-    borderBottom: '1px solid red',
+    borderBottom: `1px solid ${theme.palette.primary.main}`,
     margin: [0, 5, 10],
     fontSize: 14,
     padding: 3,
     cursor: 'default',
     '&:hover': {
-      backgroundColor: '#F8F8F8'
+      // backgroundColor: theme.palette.info.bright[3]
+      cursor: 'pointer'
     }
   },
   inputBase: {
@@ -60,21 +62,21 @@ const styles = {
   // inputs
   inputQuery: {
     extend: 'selectBase',
-    position: 'relative',
-    top: '-1px'
+    position: 'relative'
   },
   inputDatalist: {
     extend: 'inputBase'
   },
   // buttons
   buttonBase: {
-    backgroundColor: 'white',
+    backgroundColor: theme.palette.background.main,
+    color: theme.palette.text.main,
     border: 'none'
   },
   fnButtons: {
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: '#D3D3D3',
+      backgroundColor: theme.palette.info.main,
       color: 'white'
     },
     height: 30,
@@ -88,7 +90,11 @@ const styles = {
     marginLeft: '10px'
   },
   removeButton: {
-    extend: 'buttonBase'
+    extend: 'buttonBase',
+    '&:hover': {
+      fontWeight: 'bold',
+      cursor: 'pointer'
+    }
   },
   // spans
   andSpan: {
@@ -96,6 +102,6 @@ const styles = {
     extend: 'flex',
     alignItems: 'center'
   }
-}
+})
 
 export default styles
