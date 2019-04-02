@@ -98,10 +98,10 @@ export default class ThemeGenerator {
           desat: this.desaturate(color, shades),
           bright: this.brighten(color, shades),
           dark: this.darken(color, shades),
-          brighten: (v) => chroma(color).brighten(v),
-          darken: (v) => chroma(color).darken(v),
-          saturate: (v) => chroma(color).darken(v),
-          desaturate: (v) => chroma(color).desaturate(v)
+          brighten: (v) => chroma(color).brighten(v).hex(),
+          darken: (v) => chroma(color).darken(v).hex(),
+          saturate: (v) => chroma(color).darken(v).hex(),
+          desaturate: (v) => chroma(color).desaturate(v).hex()
         }
       }
     }
