@@ -43,7 +43,7 @@ const SelectOptions = React.memo((
     })}
   </select>
 }, (oldProps, newProps) => {
-  return oldProps.state.fieldType === newProps.state.fieldType
+  return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
 const InputField = React.memo((
@@ -60,7 +60,7 @@ const InputField = React.memo((
     placeholder={placeholder}
   />
 }, (oldProps, newProps) => {
-  return oldProps.state.fieldName === newProps.state.fieldName
+  return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
 const FieldRow = ({ gfs, id }) => {
@@ -71,6 +71,7 @@ const FieldRow = ({ gfs, id }) => {
       state={gfs.state.form[id]}
       onChange={gfs.update}
       name={'fieldType'}
+      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
     />
     <InputField
       placeholder={'Field Name'}
@@ -78,6 +79,7 @@ const FieldRow = ({ gfs, id }) => {
       state={gfs.state.form[id]}
       onChange={gfs.update}
       name={'fieldName'}
+      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
     />
     {gfs.state.form[id].index > 0 && <button onClick={() => {gfs.remove(id)}}>-</button>}
   </div>
