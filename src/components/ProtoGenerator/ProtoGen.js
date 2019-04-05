@@ -26,6 +26,10 @@ const protoFields = {
 const SelectOptions = React.memo((
   { state, opts, onChange, onFocus, onBlur, id, name = '' }
 ) => {
+  if (!Array.isArray(opts)) {
+    opts = Object.keys(opts)
+  }
+
   return <select
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => {onFocus(e, id)} : null}
@@ -33,7 +37,7 @@ const SelectOptions = React.memo((
     name={name}
     value={state[name]}
   >
-    {Object.keys(opts).map((opt, i) => {
+    {opts.map((opt, i) => {
       return <option
         key={i}
         value={opt}
