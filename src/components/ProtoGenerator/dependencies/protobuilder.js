@@ -2,6 +2,7 @@ import protobuf  from 'protobufjs'
 import descriptor from 'protobufjs/ext/descriptor'
 
 function protobuilder (form) {
+  // console.log(form)
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
@@ -19,9 +20,14 @@ function protobuilder (form) {
     let rowData = form[id]
     let type = rowData.fieldType
     let name = rowData.fieldName
+    if (!name || name === '') {
+      throw new Error(`Missing field name at position: ${counter} for id: ${id}`)
+    }
+    let rule = rowData.fieldRule === 'repeated' ? 'repeated' : undefined
+    
     let index = counter
     counter += 1
-    P.add(new protobuf.Field(name, index, type))
+    P.add(new protobuf.Field(name, index, type, rule))
   }
 
   let root = new protobuf.Root()
