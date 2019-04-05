@@ -1,0 +1,57 @@
+{
+  "nested": {
+    "oip5": {
+      "nested": {
+        "records": {
+          "options": {
+            "go_package": "records"
+          },
+          "nested": {
+            "RecordTemplate": {
+              "fields": {
+                "friendlyName": {
+                  "type": "string",
+                  "id": 1
+                },
+                "description": {
+                  "type": "string",
+                  "id": 2
+                },
+                "DescriptorSetProto": {
+                  "type": "bytes",
+                  "id": 4
+                },
+                "identifier": {
+                  "type": "fixed64",
+                  "id": 10
+                },
+                "extends": {
+                  "rule": "repeated",
+                  "type": "fixed64",
+                  "id": 11
+                }
+              }
+            },
+            "P": {
+              "fields": {
+                "name": {
+                  "type": "string",
+                  "id": 1
+                },
+                "age": {
+                  "type": "float",
+                  "id": 2
+                },
+                "likes": {
+                  "rule": "repeated",
+                  "type": "string",
+                  "id": 3
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

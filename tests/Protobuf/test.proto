@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package oip5.records;
+
+option go_package = "records";
+
+message RecordTemplate {
+    // Human readable name to quickly identify type (non-unique)
+    string friendlyName = 1;
+
+    // Description of the purpose behind this new type
+    string description = 2;
+
+    // Compiled descriptor including dependencies
+    bytes DescriptorSetProto = 4;
+
+    // Populated by oipd with the unique identifier for this type
+    fixed64 identifier = 10;
+
+    // List of unique template identifiers recommended for use with this template
+    repeated fixed64 extends = 11;
+}
+
+message P {
+    string name = 1;
+    float age = 2;
+    repeated string likes = 3;
+}
