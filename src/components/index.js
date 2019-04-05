@@ -1,5 +1,11 @@
-import DynamicComplexSearch from './DynamicComplexSearch/DynamicComplexSearch'
+import DynamicComplexSearch from './DynamicComplexSearch'
+import ProtoGen from './ProtoGenerator'
+
+// hooks
+import { useGlobalFormState } from './hooks'
 
 export {
-  DynamicComplexSearch
+  DynamicComplexSearch,
+  ProtoGen,
+  useGlobalFormState
 }
