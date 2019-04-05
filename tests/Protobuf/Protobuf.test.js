@@ -13,7 +13,7 @@ describe('protobuf.js', () => {
     let root = await protobuf.load(path.resolve('./', 'tests', 'Protobuf', 'test.proto'))
     expect(root).toBeInstanceOf(Root)
     
-    let TestMessage = root.lookupType('testpackage.TestMessage') // packagename.MessageName
+    let TestMessage = root.lookupType('oip5.RecordTemplate') // packagename.MessageName
     expect(TestMessage).toBeInstanceOf(Type)
     
     let payload = { randomField: 'RandomString' }
