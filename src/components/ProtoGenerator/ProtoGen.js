@@ -70,6 +70,14 @@ const InputField = React.memo((
 const FieldRow = ({ gfs, id }) => {
   return <div>
     <SelectOptions
+      opts={['singular', 'repeated']}
+      id={id}
+      state={gfs.state.form[id]}
+      onChange={gfs.update}
+      name={'fieldRule'}
+      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+    />
+    <SelectOptions
       opts={protoFields}
       id={id}
       state={gfs.state.form[id]}
@@ -93,7 +101,8 @@ const ProtoGen = ({ classes, onBuild }) => {
   const id = useRef(uid()).current
   const initialFormRow = {
     fieldType: 'string',
-    fieldName: ''
+    fieldName: '',
+    fieldRule: 'singular'
   }
   
   const gfs = useGlobalFormState(id, initialFormRow)
