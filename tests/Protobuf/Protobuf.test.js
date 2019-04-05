@@ -131,8 +131,7 @@ describe('protobuf.js', () => {
     expect(err).toBeNull()
   })
   it('use a generated static RecordTemplate module', () => {
-    const rt = require('./compiled').oip5
-    const template = rt.records.RecordTemplate
+    const template = require('./compiled').oip5.records.RecordTemplate
     
     let payload = {
       friendlyName: 'ryan test',
