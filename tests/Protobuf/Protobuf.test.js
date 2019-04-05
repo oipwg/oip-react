@@ -1,4 +1,4 @@
-import protobuf, { Root, Type, Message, Field } from 'protobufjs'
+import protobuf, { Field, Message, Root, Type } from 'protobufjs'
 import descriptor from 'protobufjs/ext/descriptor'
 import path from 'path'
 
@@ -152,5 +152,37 @@ describe('protobuf.js', () => {
     err = template.verify(payload) // with ignore fields
     expect(err).toBeNull()
     
+  })
+  it('create Field using rules', () => {
+    
+    expect(new Field('name', 1, 'string')).toBeInstanceOf(Field)
+    expect(new Field('name', 1, 'string', 'repeated')).toBeInstanceOf(Field)
+    expect(new Field('name', 1, 'string', undefined)).toBeInstanceOf(Field)
+  
+    // expect(new Field('name', 1, 'string', null)).toThrow('rule must be a string rule')
+  
+    try {
+      new Field('name', 1, 'string', 'random')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+
+    try {
+      new Field('name', 1, 'string', 'singular')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+
+    try {
+      new Field('name', 1, 'string', '')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+
+    try {
+      new Field('name', 1, 'string', 2)
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
   })
 })
