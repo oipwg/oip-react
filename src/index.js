@@ -1,10 +1,12 @@
 import { useTheme, withStyles, ThemeProvider, ThemeGenerator } from './theme'
-import { DynamicComplexSearch } from './components'
+import { DynamicComplexSearch, TagsInput, ProtoGen } from './components'
 
 export {
   useTheme,
   ThemeGenerator,
   ThemeProvider,
   withStyles,
-  DynamicComplexSearch
+  DynamicComplexSearch,
+  TagsInput,
+  ProtoGen
 }

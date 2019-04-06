@@ -1,11 +1,9 @@
 import DynamicComplexSearch from './DynamicComplexSearch'
 import ProtoGen from './ProtoGenerator'
-
-// hooks
-import { useGlobalFormState } from './hooks'
+import TagsInput from './TagsInput'
 
 export {
   DynamicComplexSearch,
   ProtoGen,
-  useGlobalFormState
+  TagsInput
 }
