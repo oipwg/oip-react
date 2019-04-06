@@ -30,12 +30,14 @@
   "dependencies": {
     "chroma-js": "^2.0.3",
     "classnames": "^2.2.6",
+    "lodash": "^4.17.11",
     "moment": "^2.24.0",
     "prop-types": "^15.7.2",
     "protobufjs": "~6.8.8",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
     "react-jss": "git@github.com:/cssinjs/jss/tree/master/packages/react-jss",
+    "styled-jss": "^2.2.3",
     "uid": "^0.0.2"
   },
   "standard": {
