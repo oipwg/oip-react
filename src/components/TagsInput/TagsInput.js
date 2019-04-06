@@ -107,6 +107,9 @@ const styles = {
     display: 'inline-flex',
     '& #tags': {
       display: 'flex',
+      '& > span': {
+        padding: 4
+      }
     },
     font: `400 13.3333px Arial`,
     '&:focus-within': {
