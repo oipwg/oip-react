@@ -2,7 +2,7 @@ import React, { useRef } from 'react'
 import { withStyles } from '../../theme'
 import uid from 'uid'
 
-import { useGlobalFormState } from '../index'
+import { useGlobalFormState } from '../../hooks'
 import { protobuilder } from './dependencies'
 
 const protoFields = {
