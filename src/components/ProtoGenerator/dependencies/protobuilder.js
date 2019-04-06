@@ -1,5 +1,6 @@
 import protobuf  from 'protobufjs'
 import descriptor from 'protobufjs/ext/descriptor'
+import _ from 'lodash'
 
 function protobuilder (form) {
   // console.log(form)
@@ -19,7 +20,7 @@ function protobuilder (form) {
     let id = item[0]
     let rowData = form[id]
     let type = rowData.fieldType
-    let name = rowData.fieldName
+    let name = _.camelCase(rowData.fieldName)
     if (!name || name === '') {
       throw new Error(`Missing field name at position: ${counter} for id: ${id}`)
     }
