@@ -123,7 +123,17 @@ const styles = {
     cursor: 'text',
     overflow: 'hidden',
     whiteSpace: 'nowrap',
-    
+  },
+  tagContainer: {
+    backgroundColor: 'rgba(0, 149, 255, 0.15)',
+    borderRadius: 3,
+    margin: [0, 3]
+  },
+  tagName: {},
+  tagRemove: {
+    paddingLeft: 3,
+    fontWeight: 'bold',
+    cursor: 'pointer',
   },
   input: {
     border: 'none',
