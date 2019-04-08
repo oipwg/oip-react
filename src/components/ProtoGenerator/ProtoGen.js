@@ -53,13 +53,21 @@ const SelectOptions = React.memo((
 })
 
 const InputField = React.memo((
-  { state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '' }
+  { state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true }
 ) => {
+  let okd = () => {}
+  if (!allowSpaces) {
+    const onChangeCopy = onChange
+    okd = (e) => {
+      onChange = e.which === 32 ? () => {} : onChangeCopy
+    }
+  }
   return <input
     type={type}
     id={id}
     name={name}
     value={state[name]}
+    onKeyDown={okd}
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => {onFocus(e, id)} : null}
     onBlur={onBlur ? (e) => {onBlur(e, id)} : null}
@@ -95,6 +103,7 @@ const FieldRow = ({ gfs, id }) => {
       onChange={gfs.update}
       name={'fieldName'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      allowSpaces={false}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
