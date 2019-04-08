@@ -15,19 +15,14 @@ const _div = styled('div')({
 const TagsInput = ({ classes }) => {
   const initialState = { tags: [] }
   
-  function removeTag({tags, tag}) {
-    if (!tag) {
+  function removeTag({tags, index}) {
+    if (!index && index !== 0) {
       let newArray = [...tags]
       newArray.pop()
-      console.log('newArray', newArray)
       return newArray
     } else {
-      let newArray = []
-      for (let item of tags) {
-        if (item !== tag) {
-          newArray.push(item)
-        }
-      }
+      let newArray = [...tags]
+      newArray.splice(index, 1)
       return newArray
     }
   }
@@ -40,7 +35,7 @@ const TagsInput = ({ classes }) => {
         }
       case 'REMOVE':
         return {
-          tags: removeTag({tags: state.tags, tag: action.tag})
+          tags: [...removeTag({tags: state.tags, index: action.index})]
         }
       default:
         throw new Error()
@@ -72,7 +67,11 @@ const TagsInput = ({ classes }) => {
     }
   }
 
-  const placeHolderText = state.tags.length === 0 && inputValue === '' ? 'e.g. (tag1 tag2 tag3)' : null
+  const handleRemoveTag = (index) => {
+    dispatch({type: 'REMOVE', index})
+  }
+  
+  const placeHolderText = state.tags.length === 0 && inputValue === '' ? 'e.g. (tag swag mag)' : null
   return <_div
     className={classes.root}
     w={'300px'}
@@ -83,9 +82,9 @@ const TagsInput = ({ classes }) => {
   >
     <div id={'tags'}>
       {state.tags.map((tag, i) => {
-        return <span key={i}>
-          <span>{tag}</span>
-          <span>(x)</span>
+        return <span className={classes.tagContainer} key={i}>
+          <span className={classes.tagName}>{tag}</span>
+          <span onClick={() => handleRemoveTag(i)} className={classes.tagRemove}>x</span>
         </span>
       })}
     </div>
