@@ -4,7 +4,7 @@ import uid from 'uid'
 
 import { useGlobalFormState } from '../../../hooks'
 import { protobuilder } from './dependencies'
-import TagsInput from '../../TagsInput'
+import TagsInput from '../../UI/TagsInput'
 
 const protoFields = {
   'string': 'text',

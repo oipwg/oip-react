@@ -2,15 +2,15 @@ import React, { useState, useReducer, useEffect } from 'react'
 import styled from 'styled-jss'
 import withStyles from 'react-jss'
 
-const _div = styled('div')({
-  width: (props) => props.w,
-  height: (props) => props.h,
-  backgroundColor: (props) => props.bgColor,
-  color: (props) => props.color,
-  border: (props) => props.border,
-  padding: (props) => props.padding,
-  borderRadius: (props) => props.br
-})
+// const _div = styled('div')({
+//   width: (props) => props.w,
+//   height: (props) => props.h,
+//   backgroundColor: (props) => props.bgColor,
+//   color: (props) => props.color,
+//   border: (props) => props.border,
+//   padding: (props) => props.padding,
+//   borderRadius: (props) => props.br
+// })
 
 const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
   const initialState = { tags: [] }
