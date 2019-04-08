@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react'
+import React, { useState, useReducer, useEffect } from 'react'
 import styled from 'styled-jss'
 import withStyles from 'react-jss'
 
@@ -44,6 +44,11 @@ const TagsInput = ({ classes }) => {
   
   const [state, dispatch] = useReducer(reducer, initialState)
   const [inputValue, updateValue] = useState('')
+  useEffect(() => {
+    if (getTags) {
+      getTags(state.tags)
+    }
+  }, [state.tags])
   
   function handleChange(e) {
     let value = e.target.value
