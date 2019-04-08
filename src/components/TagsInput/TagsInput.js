@@ -15,7 +15,7 @@ const _div = styled('div')({
 const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
   const initialState = { tags: [] }
   
-  function removeTag({tags, index}) {
+  function removeTag ({ tags, index }) {
     if (!index && index !== 0) {
       let newArray = [...tags]
       newArray.pop()
@@ -35,7 +35,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
         }
       case 'REMOVE':
         return {
-          tags: [...removeTag({tags: state.tags, index: action.index})]
+          tags: [...removeTag({ tags: state.tags, index: action.index })]
         }
       default:
         throw new Error()
@@ -76,13 +76,13 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
       updateValue('')
     } else if (/(8)/.test(e.which)) {
       if (inputValue === '' && state.tags.length > 0) {
-        dispatch({type: 'REMOVE'})
+        dispatch({ type: 'REMOVE' })
       }
     }
   }
-
+  
   const handleRemoveTag = (index) => {
-    dispatch({type: 'REMOVE', index})
+    dispatch({ type: 'REMOVE', index })
   }
   
   const placeHolderText = state.tags.length === 0 && inputValue === '' ? placeholder ?
@@ -90,11 +90,6 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
   
   return <div
     className={classes.root}
-    w={'300px'}
-    h={'30px'}
-    padding={'4px'}
-    border={'1px solid grey'}
-    br={'3px'}
   >
     <div id={'tags'}>
       {state.tags.map((tag, i) => {
