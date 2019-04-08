@@ -50,13 +50,18 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
     }
   }, [state.tags])
   
-  function handleChange(e) {
+  function handleChange (e) {
     let value = e.target.value
-    if (value[value.length-1] !== ',') {
+    if (!allowSpaces) {
+      if (value[value.length - 1] === ' ') {
+        return false
+      }
+    }
+    if (value[value.length - 1] !== ',') {
       updateValue(e.target.value)
     }
-
   }
+  
   function handleKeyUp (e) {
     if (/(188|13)/.test(e.which)) { // test for comma or enter
       // add tag
