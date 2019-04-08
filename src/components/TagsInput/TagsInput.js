@@ -12,7 +12,7 @@ const _div = styled('div')({
   borderRadius: (props) => props.br
 })
 
-const TagsInput = ({ classes }) => {
+const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
   const initialState = { tags: [] }
   
   function removeTag({tags, index}) {
@@ -80,8 +80,10 @@ const TagsInput = ({ classes }) => {
     dispatch({type: 'REMOVE', index})
   }
   
-  const placeHolderText = state.tags.length === 0 && inputValue === '' ? 'e.g. (tag swag mag)' : null
-  return <_div
+  const placeHolderText = state.tags.length === 0 && inputValue === '' ? placeholder ?
+    placeholder : 'e.g. (tag swag mag)' : null
+  
+  return <div
     className={classes.root}
     w={'300px'}
     h={'30px'}
