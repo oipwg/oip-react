@@ -114,12 +114,17 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
         placeholder={placeHolderText}
       />
     </div>
-  </_div>
+  </div>
 }
 
 const styles = {
   root: {
     display: 'inline-flex',
+    width: '300px',
+    height: 30,
+    padding: 4,
+    border: '1px solid grey',
+    borderRadius: '3px',
     '& #tags': {
       display: 'flex',
       '& > span': {
