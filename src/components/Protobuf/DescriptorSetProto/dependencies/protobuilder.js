@@ -1,9 +1,10 @@
-import protobuf  from 'protobufjs'
-import descriptor from 'protobufjs/ext/descriptor'
+import protobuf from 'protobufjs/index'
+import descriptor from 'protobufjs/ext/descriptor/index'
 import _ from 'lodash'
+import toPascalCase from 'js-pascalcase'
 
 function protobuilder (form) {
-  // console.log(form)
+  console.log(form)
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
@@ -17,6 +18,7 @@ function protobuilder (form) {
   const P = new protobuf.Type('P')
   let counter = 1
   for (let item of sorted) {
+    let index = counter
     let id = item[0]
     let rowData = form[id]
     let type = rowData.fieldType
@@ -26,11 +28,26 @@ function protobuilder (form) {
     }
     let rule = rowData.fieldRule === 'repeated' ? 'repeated' : undefined
     
-    let index = counter
+    let ENUM = rowData.enumValue ? rowData.enumValue : undefined,
+      EnumProto
+    
+    if (ENUM) {
+      name = toPascalCase(name)
+      let enumValues = {}
+      enumValues['UNDEFINED'] = 0 // set default value
+      for (let entry in ENUM) {
+        enumValues[`${name}_${ENUM[entry].toUpperCase()}`] = Number(entry+1)
+      }
+  
+      EnumProto = new protobuf.Enum(name, enumValues)
+      P.add(EnumProto)
+    } else {
+      P.add(new protobuf.Field(name, index, type, rule))
+    }
+    
     counter += 1
-    P.add(new protobuf.Field(name, index, type, rule))
   }
-
+  
   let root = new protobuf.Root()
   root.define('oip5.record.templates').add(P)
   let descriptorFromRoot = root.toDescriptor('proto3')

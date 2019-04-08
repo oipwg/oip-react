@@ -1,9 +1,9 @@
 import DynamicComplexSearch from './DynamicComplexSearch'
-import ProtoGen from './ProtoGenerator'
+import {DescriptorSetProto} from './Protobuf'
 import TagsInput from './TagsInput'
 
 export {
   DynamicComplexSearch,
-  ProtoGen,
+  DescriptorSetProto,
   TagsInput
 }

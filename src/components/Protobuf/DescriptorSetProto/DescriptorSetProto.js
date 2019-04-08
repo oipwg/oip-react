@@ -1,10 +1,10 @@
 import React, { useRef } from 'react'
-import { withStyles } from '../../theme'
+import withStyles  from 'react-jss'
 import uid from 'uid'
 
-import { useGlobalFormState } from '../../hooks'
+import { useGlobalFormState } from '../../../hooks'
 import { protobuilder } from './dependencies'
-import TagsInput from '../TagsInput'
+import TagsInput from '../../TagsInput'
 
 const protoFields = {
   'string': 'text',
@@ -121,7 +121,7 @@ const FieldRow = ({ gfs, id }) => {
   </div>
 }
 
-const ProtoGen = ({ classes, onBuild }) => {
+const DescriptorSetProto = ({ classes, onBuild }) => {
   const id = useRef(uid()).current
   const initialFormRow = {
     fieldType: 'string',
@@ -150,4 +150,4 @@ const styles = {
   root: {}
 }
 
-export default withStyles(styles)(ProtoGen)
+export default withStyles(styles)(DescriptorSetProto)
