@@ -4,6 +4,7 @@ import uid from 'uid'
 
 import { useGlobalFormState } from '../../hooks'
 import { protobuilder } from './dependencies'
+import TagsInput from '../TagsInput'
 
 const protoFields = {
   'string': 'text',
@@ -11,6 +12,7 @@ const protoFields = {
   'bytes': 'test',
   'double': 'number',
   'float': 'number',
+  'enum': 'misc',
   'int32': 'number',
   'int64': 'number',
   'uint32': 'number',
@@ -29,7 +31,7 @@ const SelectOptions = React.memo((
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
-
+  
   return <select
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => {onFocus(e, id)} : null}
@@ -68,6 +70,7 @@ const InputField = React.memo((
 })
 
 const FieldRow = ({ gfs, id }) => {
+  const isEnum = gfs.state.form[id].fieldType === 'enum'
   return <div>
     <SelectOptions
       opts={['singular', 'repeated']}
@@ -93,6 +96,18 @@ const FieldRow = ({ gfs, id }) => {
       name={'fieldName'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
     />
+    {isEnum ? <TagsInput
+      placeholder={'(i.e. type enum fields here)'}
+      getTags={(tags) => {
+        const e = {
+          target: {
+            name: 'enumValue',
+            value: tags
+          }
+        }
+        gfs.update(e, id)
+      }}
+    /> : null}
     {gfs.state.form[id].index > 0 && <button onClick={() => {gfs.remove(id)}}>-</button>}
   </div>
 }
