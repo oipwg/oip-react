@@ -61,7 +61,11 @@ const TagsInput = ({ classes }) => {
     if (/(188|13)/.test(e.which)) { // test for comma or enter
       // add tag
       if (inputValue !== '') {
-        dispatch({ type: 'ADD', tag: inputValue })
+        if (state.tags.includes(inputValue)) {
+          alert('Tag already exists')
+        } else {
+          dispatch({ type: 'ADD', tag: inputValue })
+        }
       }
       // clear field
       updateValue('')
