@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { DescriptorSetProto } from '../src/components'
+import { DescriptorSetProto, RecordTemplate } from '../src/components'
 import { useTheme, ThemeProvider } from '../src/theme'
 
 const ThemeWrapper = (props) => {
@@ -15,6 +15,14 @@ storiesOf('Protobuf', module)
   return <ThemeWrapper>
     <DescriptorSetProto
       onBuild={(proto) => console.log(proto.toString('base64'))}
+    />
+  </ThemeWrapper>
+})
+
+.add('RecordTemplate', () => {
+  return <ThemeWrapper>
+    <RecordTemplate
+    
     />
   </ThemeWrapper>
 })
