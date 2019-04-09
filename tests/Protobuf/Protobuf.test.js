@@ -9,48 +9,49 @@ const protoScalarValues = [
 ]
 
 describe('protobuf.js', () => {
-  it('test docs example', async () => {
-    let root = await protobuf.load(path.resolve('./', 'tests', 'Protobuf', 'test.proto'))
+  it('default load proto file', async () => {
+    let root = await protobuf.load(path.resolve('./', 'tests', 'Protobuf', 'resources', 'proto', 'RecordTemplate.proto'))
     expect(root).toBeInstanceOf(Root)
     
-    let TestMessage = root.lookupType('oip5.RecordTemplate') // packagename.MessageName
-    expect(TestMessage).toBeInstanceOf(Type)
+    let MessageType = root.lookupType('oip5.RecordTemplateProto') // packagename.MessageName
+    expect(MessageType).toBeInstanceOf(Type)
     
-    let payload = { randomField: 'RandomString' }
-    let err = TestMessage.verify(payload)
+    let payload = { friendlyName: 'RandomString' }
+    let err = MessageType.verify(payload)
     expect(err).toBeNull()
     
-    let messageFromPayload = TestMessage.create(payload)
+    let messageFromPayload = MessageType.create(payload)
     expect(messageFromPayload).toBeInstanceOf(Message)
     
-    let buffer = TestMessage.encode(messageFromPayload).finish()
+    let buffer = MessageType.encode(messageFromPayload).finish()
     expect(buffer).toBeInstanceOf(Buffer)
     
-    let decodedBuffer = TestMessage.decode(buffer)
+    let decodedBuffer = MessageType.decode(buffer)
     expect(decodedBuffer).toBeInstanceOf(Message)
     
-    let object = TestMessage.toObject(decodedBuffer, {
+    let object = MessageType.toObject(decodedBuffer, {
       longs: String,
       enums: String,
       bytes: String
     })
-    expect(object).toEqual({})
+    expect(object).toEqual({
+      "friendlyName": "RandomString"
+    })
   })
-  it('proto -> json && json -> proto', async () => {
-    let root = await protobuf.load(path.resolve('./', 'tests', 'Protobuf', 'recordTemplate.proto'))
+  it('load proto, toJSON === compiled fromJSON', async () => {
+    let root = await protobuf.load(path.resolve('./', 'tests', 'Protobuf', 'resources', 'proto', 'RecordTemplate.proto'))
     expect(root).toBeInstanceOf(Root)
-    expect(root.lookupType('oip5.RecordTemplate')).toBeInstanceOf(Type)
-    expect(root.toJSON()).toEqual(require('./recordTemplate'))
+    expect(root.lookupType('oip5.RecordTemplateProto')).toBeInstanceOf(Type)
+    expect(root.toJSON().nested.oip5).toEqual(require('./resources/compiled/json/compiled.json').nested.oip5)
     
-    let root2 = Root.fromJSON(require('./recordTemplate'))
+    let root2 = Root.fromJSON(require('./resources/compiled/json/compiled.json').nested.oip5)
     expect(root2).toBeInstanceOf(Root)
-    expect(root2.lookupType('oip5.RecordTemplate')).toBeInstanceOf(Type)
+    expect(root2.lookupType('record.RecordTemplateProto')).toBeInstanceOf(Type)
   })
   it('JsonDescriptor >> FileDescriptorSet', () => {
-    let root = protobuf.Root.fromJSON(require('./recordTemplate'))
+    let root = protobuf.Root.fromJSON(require('./resources/compiled/json/compiled'))
     expect(root).toBeInstanceOf(Root)
-    
-    let RecordTemplateType = root.lookupType('oip5.RecordTemplate')
+    let RecordTemplateType = root.lookupType('oip5.RecordTemplateProto')
     expect(RecordTemplateType).toBeInstanceOf(Type)
     
     // let desc = RecordTemplateType.toDescriptor('proto3')
@@ -63,7 +64,7 @@ describe('protobuf.js', () => {
     expect(descriptorFromRoot).toBeDefined()
     let buffer = descriptor.FileDescriptorSet.encode(descriptorFromRoot).finish()
     expect(buffer).toBeDefined()
-  
+    
     let decodedDescriptor = descriptor.FileDescriptorSet.decode(buffer)
     expect(decodedDescriptor).toEqual(descriptorFromRoot)
     
@@ -81,15 +82,14 @@ describe('protobuf.js', () => {
     let buffer = descriptor.FileDescriptorSet.encode(descriptorFromRoot).finish()
     expect(buffer).toBeInstanceOf(Buffer)
   })
-  
   it('create Message from Type', () => {
     let messageTemp = {
       friendlyName: 'sir',
       description: 'wut',
       DescriptorSetProto: 'shouldBeBytes'
     }
-    let root = protobuf.Root.fromJSON(require('./recordTemplate'))
-    let type_recordTemplate = root.lookupType('oip5.records.RecordTemplate')
+    let root = protobuf.Root.fromJSON(require('./resources/compiled/json/compiled'))
+    let type_recordTemplate = root.lookupType('oip5.RecordTemplateProto')
     let err = type_recordTemplate.verify(messageTemp)
     if (err) {
       console.log(err)
@@ -116,22 +116,54 @@ describe('protobuf.js', () => {
     let ReflectMessage = new Type('P')
     
     for (let i = 0; i < protoScalarValues.length; i++) {
-      ReflectMessage.add(new Field(protoScalarValues[i], i+1, protoScalarValues[i]))
+      ReflectMessage.add(new Field(protoScalarValues[i], i + 1, protoScalarValues[i]))
     }
     
     let root = new Root().define('oip5.record.templates').add(ReflectMessage)
     let type = root.lookupType('oip5.record.templates.P')
-
+    
     expect(type).toBeInstanceOf(Type)
-
+    
     let tempObj = {
       sint32: 1
     }
     let err = type.verify(tempObj)
     expect(err).toBeNull()
   })
-  it('use a generated static RecordTemplate module', () => {
-    const template = require('./compiled').oip5.records.RecordTemplate
+  it('create Field using rules', () => {
+    
+    expect(new Field('name', 1, 'string')).toBeInstanceOf(Field)
+    expect(new Field('name', 1, 'string', 'repeated')).toBeInstanceOf(Field)
+    expect(new Field('name', 1, 'string', undefined)).toBeInstanceOf(Field)
+    
+    // expect(new Field('name', 1, 'string', null)).toThrow('rule must be a string rule')
+    
+    try {
+      new Field('name', 1, 'string', 'random')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+    
+    try {
+      new Field('name', 1, 'string', 'singular')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+    
+    try {
+      new Field('name', 1, 'string', '')
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+    
+    try {
+      new Field('name', 1, 'string', 2)
+    } catch (err) {
+      expect(err).toBeDefined()
+    }
+  })
+  it('require compiled static-module', () => {
+    const template = require('./resources/compiled/module/compiled').oip5.record.RecordTemplateProto
     
     let payload = {
       friendlyName: 'ryan test',
@@ -153,36 +185,13 @@ describe('protobuf.js', () => {
     expect(err).toBeNull()
     
   })
-  it('create Field using rules', () => {
-    
-    expect(new Field('name', 1, 'string')).toBeInstanceOf(Field)
-    expect(new Field('name', 1, 'string', 'repeated')).toBeInstanceOf(Field)
-    expect(new Field('name', 1, 'string', undefined)).toBeInstanceOf(Field)
-  
-    // expect(new Field('name', 1, 'string', null)).toThrow('rule must be a string rule')
-  
-    try {
-      new Field('name', 1, 'string', 'random')
-    } catch (err) {
-      expect(err).toBeDefined()
+  it.skip('load compiled static-module', async () => {
+      let ROOT = await protobuf.load(require('./resources/compiled/module/compiled'))
+      console.log(ROOT)
     }
-
-    try {
-      new Field('name', 1, 'string', 'singular')
-    } catch (err) {
-      expect(err).toBeDefined()
-    }
-
-    try {
-      new Field('name', 1, 'string', '')
-    } catch (err) {
-      expect(err).toBeDefined()
-    }
-
-    try {
-      new Field('name', 1, 'string', 2)
-    } catch (err) {
-      expect(err).toBeDefined()
-    }
+  )
+  it.skip('load compiled json', async () => {
+    let ROOT = await protobuf.load(require('./resources/compiled/json/compiled'))
+    console.log(ROOT)
   })
 })

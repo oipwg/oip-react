@@ -1,10 +1,9 @@
 syntax = "proto3";
+package oip5.record;
 
-package oip5.records;
+option go_package = "oip5";
 
-option go_package = "records";
-
-message RecordTemplate {
+message RecordTemplateProto {
     // Human readable name to quickly identify type (non-unique)
     string friendlyName = 1;
 
@@ -18,5 +17,8 @@ message RecordTemplate {
     fixed64 identifier = 10;
 
     // List of unique template identifiers recommended for use with this template
-    repeated fixed64 extends = 11;
+    repeated fixed64 recommended = 11;
+
+    // List of unique template identifiers required for use with this template
+    repeated fixed64 required = 12;
 }

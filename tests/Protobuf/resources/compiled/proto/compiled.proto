@@ -1,0 +1,50 @@
+syntax = "proto3";
+
+message oip5 {
+
+    message record {
+
+        option go_package = "oip5";
+
+        message RecordTemplateProto {
+
+            string friendly_name = 1;
+            string description = 2;
+            bytes Descriptor_set_proto = 4;
+            fixed64 identifier = 10;
+            repeated fixed64 recommended = 11;
+            repeated fixed64 required = 12;
+        }
+    }
+}
+
+message oipProto {
+
+    option go_package = "oipProto";
+
+    message SignedMessage {
+
+        bytes Serialized_message = 1;
+        MessageTypes Message_type = 2;
+        SignatureTypes Signature_type = 3;
+        bytes Pub_key = 4;
+        bytes Signature = 5;
+    }
+
+    enum MessageTypes {
+
+        InvalidMessage = 0;
+        OIP05 = 1;
+        Historian = 2;
+        Multipart = 3;
+    }
+
+    enum SignatureTypes {
+
+        InvalidSignature = 0;
+        Flo = 1;
+        Btc = 2;
+        Rvn = 3;
+        Tx = 4;
+    }
+}
