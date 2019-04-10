@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import withStyles  from 'react-jss'
 import uid from 'uid'
 
@@ -77,7 +77,7 @@ const InputField = React.memo((
   return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
-const FieldRow = ({ gfs, id }) => {
+const FieldRow = ({ gfs, id, liftDescriptor }) => {
   const isEnum = gfs.state.form[id].fieldType === 'enum'
   return <div>
     <SelectOptions
@@ -87,6 +87,7 @@ const FieldRow = ({ gfs, id }) => {
       onChange={gfs.update}
       name={'fieldRule'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      onBlur={liftDescriptor}
     />
     <SelectOptions
       opts={protoFields}
@@ -95,6 +96,7 @@ const FieldRow = ({ gfs, id }) => {
       onChange={gfs.update}
       name={'fieldType'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      onBlur={liftDescriptor}
     />
     <InputField
       placeholder={'Field Name'}
@@ -104,9 +106,11 @@ const FieldRow = ({ gfs, id }) => {
       name={'fieldName'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
       allowSpaces={false}
+      onBlur={liftDescriptor}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
+      onBlur={liftDescriptor}
       getTags={(tags) => {
         const e = {
           target: {
@@ -121,28 +125,48 @@ const FieldRow = ({ gfs, id }) => {
   </div>
 }
 
-const DescriptorSetProto = ({ classes, onBuild }) => {
+const DescriptorSetProto = ({ classes, getDescriptor }) => {
   const id = useRef(uid()).current
+  
   const initialFormRow = {
     fieldType: 'string',
     fieldName: '',
     fieldRule: 'singular'
   }
-  
   const gfs = useGlobalFormState(id, initialFormRow)
+  
+  const liftDescriptor = () => {
+    if (getDescriptor) {
+      let descriptor
+      try {
+        descriptor = protobuilder(gfs.state.form)
+      } catch (err) {
+        // dismiss error
+      }
+      if (descriptor) {
+        getDescriptor(descriptor)
+      }
+    }
+  }
   
   return <div className={classes.root}>
     <FieldRow
       gfs={gfs}
       id={id}
+      liftDescriptor={liftDescriptor}
     />
     {Object.keys(gfs.state.form).map((formId) => {
       if (formId !== id) {
-        return <FieldRow gfs={gfs} id={formId} key={formId}/>
+        return <FieldRow
+          gfs={gfs}
+          id={formId}
+          key={formId}
+          liftDescriptor={liftDescriptor}
+        />
       }
     })}
     <button onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
-    <button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button>
+    {/*<button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button>*/}
   </div>
 }
 
