@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect } from 'react'
-import styled from 'styled-jss'
+// import styled from 'styled-jss'
 import withStyles from 'react-jss'
 
 // const _div = styled('div')({
@@ -12,7 +12,7 @@ import withStyles from 'react-jss'
 //   borderRadius: (props) => props.br
 // })
 
-const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
+const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur }) => {
   const initialState = { tags: [] }
   
   function removeTag ({ tags, index }) {
@@ -107,6 +107,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false }) => {
         value={inputValue}
         onChange={handleChange}
         placeholder={placeHolderText}
+        onBlur={onBlur || null}
       />
     </div>
   </div>
