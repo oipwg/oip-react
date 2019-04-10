@@ -32,6 +32,7 @@
     "bitcoinjs-message": "^2.0.0",
     "chroma-js": "^2.0.3",
     "classnames": "^2.2.6",
+    "js-oip": "^2.1.0",
     "js-pascalcase": "^1.2.1",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",

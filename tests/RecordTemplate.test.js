@@ -41,21 +41,18 @@ describe('RecordTemplate', () => {
     expect(SignedMessage64).toBeDefined()
     expect(SignedMessage64).toEqual('CmMKBHJ5YW4SCHdoYXRldmVyIlEKTwobb2lwNV9yZWNvcmRfdGVtcGxhdGVzLnByb3RvEhVvaXA1LnJlY29yZC50ZW1wbGF0ZXMiEQoBUBIMCgR0ZXN0GAEgASgJYgZwcm90bzMQARgBIiEDCXMzHJNc8d0agySl5YBD3oVQC0NdQkwX9hS2XBLzT+EqQR8ZOJw6TrRqFuBeQO0COWkmgWcYjVcrZCC52es5TELrHArnb8ekhZfcChqh2QbezAof14vjRuILZDtIflDLZ7V6')
   })
-  it('publish record test template', async () => {
+  it.skip('publish record test template', async () => {
     let signedMessage = 'CmMKBHJ5YW4SCHdoYXRldmVyIlEKTwobb2lwNV9yZWNvcmRfdGVtcGxhdGVzLnByb3RvEhVvaXA1LnJlY29yZC50ZW1wbGF0ZXMiEQoBUBIMCgR0ZXN0GAEgASgJYgZwcm90bzMQARgBIiEDCXMzHJNc8d0agySl5YBD3oVQC0NdQkwX9hS2XBLzT+EqQR8ZOJw6TrRqFuBeQO0COWkmgWcYjVcrZCC52es5TELrHArnb8ekhZfcChqh2QbezAof14vjRuILZDtIflDLZ7V6'
     // console.log(`p64:${signedMessage}`)
-    // const oip = new OIP(wif, 'testnet')
-    // const wallet = oip.wallet
-    //
-    // let res
-    // try {
-    //   res = await wallet.sendDataToChain(`p64:${signedMessage}`)
-    // } catch (err) {
-    //   console.error('Error sending message to blockchain', err)
-    // }
-    //
-    // // toDo manually set explorer api
-    //
-    // console.log('res: ', res)
+    const oip = new OIP(wif, 'testnet', {explorerUrl: 'https://testnet.explorer.mediciland.com/api'})
+    const wallet = oip.wallet
+
+    let res
+    try {
+      res = await wallet.sendDataToChain(`p64:${signedMessage}`)
+    } catch (err) {
+      console.error('Error sending message to blockchain', err)
+    }
+    expect(res).toBeDefined()
   })
 })

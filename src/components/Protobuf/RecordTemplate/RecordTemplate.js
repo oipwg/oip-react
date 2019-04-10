@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
-
+import {OIP} from 'js-oip'
 import styles from './styles'
 import { DescriptorSetProto } from '../index'
 import { templatebuilder } from './dependencies'
@@ -39,11 +39,17 @@ const RecordTemplate = ({ classes }) => {
       const prefix = 'p64:'
       const message = `${prefix}:${template}`
       
+      const oip = new OIP(privateKey, 'testnet', {explorerUrl: 'https://testnet.explorer.mediciland.com/api'}) // toDo: switch to flochain
+      const wallet = oip.wallet
+      
+      let res
       try {
-        // let res = await new OIP(...).sendToChain(message)
+        res = await wallet.sendDataToChain(message)
       } catch (err) {
-        throw new Error(`failed to send template message to chain: ${err}`)
+        alert(`failed to send template message to chain: ${err}`)
+        // throw new Error(`failed to send template message to chain: ${err}`)
       }
+      alert(res)
     }
   }
   
