@@ -28,6 +28,8 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
+    "bitcoinjs-lib": "^5.0.1",
+    "bitcoinjs-message": "^2.0.0",
     "chroma-js": "^2.0.3",
     "classnames": "^2.2.6",
     "js-pascalcase": "^1.2.1",
@@ -39,7 +41,8 @@
     "react-dom": "^16.8.4",
     "react-jss": "git@github.com:/cssinjs/jss/tree/master/packages/react-jss",
     "styled-jss": "^2.2.3",
-    "uid": "^0.0.2"
+    "uid": "^0.0.2",
+    "wif": "^2.0.6"
   },
   "standard": {
     "parser": "babel-eslint"
