@@ -163,13 +163,14 @@ describe('protobuf.js', () => {
     }
   })
   it('require compiled static-module', () => {
-    const template = require('./resources/compiled/module/compiled').oip5.record.RecordTemplateProto
+    const rootmodules = require('./resources/compiled/module/compiled')
+    const RecordTemplateProto = rootmodules.oip5.record.RecordTemplateProto
     
     let payload = {
       friendlyName: 'ryan test',
       description: 'yah',
     }
-    let err = template.verify(payload) // verify with proper fields
+    let err = RecordTemplateProto.verify(payload) // verify with proper fields
     expect(err).toBeNull()
     
     payload = {
@@ -177,13 +178,15 @@ describe('protobuf.js', () => {
       description: 2
     }
     
-    err = template.verify(payload) // with incorrect field types
+    err = RecordTemplateProto.verify(payload) // with incorrect field types
     expect(err).not.toBeNull()
     
     payload = {}
-    err = template.verify(payload) // with ignore fields
+    err = RecordTemplateProto.verify(payload) // with ignore fields
     expect(err).toBeNull()
     
+    // const SignedMessage = rootmodules.oipProto.SignedMessage
+  
   })
   it.skip('load compiled static-module', async () => {
       let ROOT = await protobuf.load(require('./resources/compiled/module/compiled'))
