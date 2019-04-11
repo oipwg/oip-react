@@ -3,3 +3,4 @@ node_modules/*
 .idea
 src/components/AudioViewer/scratch.js
 lib/*
+localStorage/
