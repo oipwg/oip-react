@@ -24,7 +24,7 @@ const RecordTemplate = ({ classes }) => {
   const handlePublish = async () => {
     let template
     try {
-      template = templatebuilder({
+      template = templateBuilder({
         friendlyName: name,
         DescriptorSetProto: descriptor,
         wif: privateKey,

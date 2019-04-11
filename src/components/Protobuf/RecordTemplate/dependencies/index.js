@@ -1,5 +1,5 @@
-import templatebuilder from './templatebuilder'
+import templateBuilder from './templatebuilder'
 
 export {
-  templatebuilder
+  templateBuilder
 }

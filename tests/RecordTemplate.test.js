@@ -8,10 +8,10 @@ const network = {
   flo_testnet: floTestnet.network
 }
 
-import {
+import templateBuilder, {
   buildRecordTemplate,
   signMessage,
-  buildSignedMessage
+  buildSignedMessage,
 } from '../src/components/Protobuf/RecordTemplate/dependencies/templatebuilder'
 
 const wif = 'cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B'
