@@ -4,7 +4,7 @@ import _ from 'lodash'
 import toPascalCase from 'js-pascalcase'
 
 function protobuilder (form) {
-  console.log(form)
+  // console.log(form)
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
