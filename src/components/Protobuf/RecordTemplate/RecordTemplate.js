@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
-import {OIP} from 'js-oip'
+import { OIP } from 'js-oip'
 import styles from './styles'
 import { DescriptorSetProto } from '../index'
-import { templatebuilder } from './dependencies'
+import { templateBuilder } from './dependencies'
 import { isValidWIF } from '../../../util'
 
 const RecordTemplate = ({ classes }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [privateKey, setPrivateKey] = useState('')
+  const [privateKey, setPrivateKey] = useState('cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B')
   const [disableSubmit, toggleDisable] = useState(true)
   const [descriptor, setProtoDescriptor] = useState(undefined)
   
@@ -29,19 +29,19 @@ const RecordTemplate = ({ classes }) => {
         DescriptorSetProto: descriptor,
         wif: privateKey,
         description,
-        network: 'testnet'
+        network: 'testnet' // toDo: switch to mainnet
       })
     } catch (err) {
       throw Error(err)
     }
-    
-    if (template) {
+    const {signedMessage64} = template
+    if (signedMessage64) {
       const prefix = 'p64:'
-      const message = `${prefix}${template}`
+      const message = `${prefix}${signedMessage64}`
       
-      const oip = new OIP(privateKey, 'testnet', {explorerUrl: 'https://testnet.explorer.mediciland.com/api'}) // toDo: switch to flochain
+      const oip = new OIP(privateKey, 'testnet', { explorerUrl: 'https://testnet.explorer.mediciland.com/api' }) // toDo: switch to flochain
       const wallet = oip.wallet
-      
+
       let res
       try {
         res = await wallet.sendDataToChain(message)
@@ -49,7 +49,7 @@ const RecordTemplate = ({ classes }) => {
         alert(`failed to send template message to chain: ${err}`)
         // throw new Error(`failed to send template message to chain: ${err}`)
       }
-      alert(res)
+      alert(`Publish success/TXID: ${res}`)
     }
   }
   
