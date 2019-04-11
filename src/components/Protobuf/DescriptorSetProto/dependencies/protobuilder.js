@@ -36,9 +36,9 @@ function protobuilder (form) {
       let enumValues = {}
       enumValues['UNDEFINED'] = 0 // set default value
       for (let entry in ENUM) {
-        enumValues[`${name}_${ENUM[entry].toUpperCase()}`] = Number(entry+1)
+        enumValues[`${name}_${ENUM[entry].toUpperCase()}`] = Number(Number(entry)+1)
       }
-  
+     
       EnumProto = new protobuf.Enum(name, enumValues)
       P.add(EnumProto)
     } else {
