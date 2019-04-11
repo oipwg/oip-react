@@ -1,7 +1,9 @@
-import {ECPair, payments} from 'bitcoinjs-lib'
-import {Networks, OIP} from 'js-oip'
+import { ECPair } from 'bitcoinjs-lib'
+import { Networks, OIP } from 'js-oip'
+import { util as protoUtil } from 'protobufjs'
+import { verify } from 'bitcoinjs-message'
 
-const {floMainnet, floTestnet} = Networks
+const { floMainnet, floTestnet } = Networks
 
 const network = {
   flo_mainnet: floMainnet.network,
@@ -14,6 +16,10 @@ import templateBuilder, {
   buildSignedMessage,
 } from '../src/components/Protobuf/RecordTemplate/dependencies/templatebuilder'
 
+const protomodules = require('./Protobuf/resources/compiled/module/compiled')
+const RecordTemplateProto = protomodules.oip5.record.RecordTemplateProto
+const SignedMessage = protomodules.oipProto.SignedMessage
+
 const wif = 'cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B'
 const p2pkh = 'ofbB67gqjgaYi45u8Qk2U3hGoCmyZcgbN4'
 const ecpair = ECPair.fromWIF(wif, network.flo_testnet)
@@ -22,31 +28,95 @@ const ecpair = ECPair.fromWIF(wif, network.flo_testnet)
 // console.log(ECPair.makeRandom({network: network.flo_testnet}).toWIF())
 
 describe('RecordTemplate', () => {
-  it('build and sign a generated Record Template', () => {
-    let fileDescriptor = Buffer.from([10, 79, 10, 27, 111, 105, 112, 53, 95, 114, 101, 99, 111, 114, 100, 95, 116, 101, 109, 112, 108, 97, 116, 101, 115, 46, 112, 114, 111, 116, 111, 18, 21, 111, 105, 112, 53, 46, 114, 101, 99, 111, 114, 100, 46, 116, 101, 109, 112, 108, 97, 116, 101, 115, 34, 17, 10, 1, 80, 18, 12, 10, 4, 116, 101, 115, 116, 24, 1, 32, 1, 40, 9, 98, 6, 112, 114, 111, 116, 111, 51])
+  it('build record template', () => {
+    const friendlyName = 'Test Template'
+    const description = 'description for test template'
+    const fileDescriptor = Buffer.from([10, 79, 10, 27, 111, 105, 112, 53, 95, 114, 101, 99, 111, 114, 100, 95, 116, 101, 109, 112, 108, 97, 116, 101, 115, 46, 112, 114, 111, 116, 111, 18, 21, 111, 105, 112, 53, 46, 114, 101, 99, 111, 114, 100, 46, 116, 101, 109, 112, 108, 97, 116, 101, 115, 34, 17, 10, 1, 80, 18, 12, 10, 4, 116, 101, 115, 116, 24, 1, 32, 1, 40, 9, 98, 6, 112, 114, 111, 116, 111, 51])
     
-    // 1 build template message
-    let { buffer, b64 } = buildRecordTemplate({
-      friendlyName: 'ryan',
-      DescriptorSetProto: fileDescriptor,
-      description: 'whatever'
+    let { templateBuffer, template64, templateMessage } = buildRecordTemplate({
+      friendlyName,
+      description,
+      DescriptorSetProto: fileDescriptor
     })
     
-    // 2 sign b64 message
-    const {PubKey, Signature} = signMessage({ECPair: ecpair, message: b64})
-    // console.log(PubKey, Signature)
+    let targetBuffer = new Uint8Array(129)
+    expect(protoUtil.base64.decode(template64, targetBuffer, 0)).toEqual(templateBuffer.length)
+    expect(targetBuffer.buffer).toEqual(templateBuffer.buffer)
+    expect(protoUtil.base64.encode(targetBuffer, 0, targetBuffer.length)).toEqual(template64)
     
-    // 3 build SignedMessageProto
-    const SignedMessage64 = buildSignedMessage({ SerializedMessage: buffer, PubKey, Signature })
-    expect(SignedMessage64).toBeDefined()
-    expect(SignedMessage64).toEqual('CmMKBHJ5YW4SCHdoYXRldmVyIlEKTwobb2lwNV9yZWNvcmRfdGVtcGxhdGVzLnByb3RvEhVvaXA1LnJlY29yZC50ZW1wbGF0ZXMiEQoBUBIMCgR0ZXN0GAEgASgJYgZwcm90bzMQARgBIiEDCXMzHJNc8d0agySl5YBD3oVQC0NdQkwX9hS2XBLzT+EqQR8ZOJw6TrRqFuBeQO0COWkmgWcYjVcrZCC52es5TELrHArnb8ekhZfcChqh2QbezAof14vjRuILZDtIflDLZ7V6')
+    let decodedMessageFromBuffer = RecordTemplateProto.decode(templateBuffer)
+    expect(decodedMessageFromBuffer).toEqual(templateMessage)
+    expect(decodedMessageFromBuffer.friendlyName).toEqual(friendlyName)
+    expect(decodedMessageFromBuffer.description).toEqual(description)
+    expect(decodedMessageFromBuffer.DescriptorSetProto).toEqual(fileDescriptor)
+  })
+  it('sign record template message', () => {
+    const friendlyName = 'Test Template'
+    const description = 'description for test template'
+    const fileDescriptor = Buffer.from([10, 79, 10, 27, 111, 105, 112, 53, 95, 114, 101, 99, 111, 114, 100, 95, 116, 101, 109, 112, 108, 97, 116, 101, 115, 46, 112, 114, 111, 116, 111, 18, 21, 111, 105, 112, 53, 46, 114, 101, 99, 111, 114, 100, 46, 116, 101, 109, 112, 108, 97, 116, 101, 115, 34, 17, 10, 1, 80, 18, 12, 10, 4, 116, 101, 115, 116, 24, 1, 32, 1, 40, 9, 98, 6, 112, 114, 111, 116, 111, 51])
+    
+    let { template64 } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto: fileDescriptor })
+    
+    const { signature, p2pkh: pubKeyHash } = signMessage({ message: template64, ECPair: ecpair })
+    expect(pubKeyHash).toEqual(p2pkh)
+    
+    expect(verify(template64, p2pkh, signature, ecpair.network.messagePrefix)).toBeTruthy()
+  })
+  it('build proto signed message', () => {
+    const friendlyName = 'Test Template'
+    const description = 'description for test template'
+    const fileDescriptor = Buffer.from([10, 79, 10, 27, 111, 105, 112, 53, 95, 114, 101, 99, 111, 114, 100, 95, 116, 101, 109, 112, 108, 97, 116, 101, 115, 46, 112, 114, 111, 116, 111, 18, 21, 111, 105, 112, 53, 46, 114, 101, 99, 111, 114, 100, 46, 116, 101, 109, 112, 108, 97, 116, 101, 115, 34, 17, 10, 1, 80, 18, 12, 10, 4, 116, 101, 115, 116, 24, 1, 32, 1, 40, 9, 98, 6, 112, 114, 111, 116, 111, 51])
+    
+    let { templateBuffer, template64 } = buildRecordTemplate({
+      friendlyName,
+      description,
+      DescriptorSetProto: fileDescriptor
+    })
+    expect(template64).toEqual('Cg1UZXN0IFRlbXBsYXRlEh1kZXNjcmlwdGlvbiBmb3IgdGVzdCB0ZW1wbGF0ZSJRCk8KG29pcDVfcmVjb3JkX3RlbXBsYXRlcy5wcm90bxIVb2lwNS5yZWNvcmQudGVtcGxhdGVzIhEKAVASDAoEdGVzdBgBIAEoCWIGcHJvdG8z')
+    
+    const { signature, publicKeyAscii } = signMessage({ message: template64, ECPair: ecpair })
+    expect(signature.toString('base64')).toEqual('IOUn58kfqOfPvilxruqLd5ZXDm3jXFLBuOi0AydoXvBudJDDFf6VGnup7eLjtJIklRFLKYO7EtRSpvmprOmpzmY=')
+    
+    const {
+      signedMessage64,
+      signedMessageBuffer
+    } = buildSignedMessage({ Signature: signature, PubKey: publicKeyAscii, SerializedMessage: templateBuffer })
+    expect(signedMessage64).toEqual('CoEBCg1UZXN0IFRlbXBsYXRlEh1kZXNjcmlwdGlvbiBmb3IgdGVzdCB0ZW1wbGF0ZSJRCk8KG29pcDVfcmVjb3JkX3RlbXBsYXRlcy5wcm90bxIVb2lwNS5yZWNvcmQudGVtcGxhdGVzIhEKAVASDAoEdGVzdBgBIAEoCWIGcHJvdG8zEAEYASIib2ZiQjY3Z3FqZ2FZaTQ1dThRazJVM2hHb0NteVpjZ2JONCpBIOUn58kfqOfPvilxruqLd5ZXDm3jXFLBuOi0AydoXvBudJDDFf6VGnup7eLjtJIklRFLKYO7EtRSpvmprOmpzmY=')
+    
+    const byteSize = 239
+    let rawSignedMessage = new Uint8Array(byteSize)
+    let numOfBytesWritten = protoUtil.base64.decode(signedMessage64, rawSignedMessage, 0)
+    expect(numOfBytesWritten).toEqual(byteSize)
+    
+    const decodedMessage = SignedMessage.decode(rawSignedMessage)
+    expect(SignedMessage.encode(decodedMessage).finish()).toEqual(signedMessageBuffer)
+    
+    expect(decodedMessage.Signature.buffer).toEqual(signature.buffer)
+    expect(decodedMessage.SerializedMessage.buffer).toEqual(templateBuffer.buffer)
+    expect(decodedMessage.MessageType).toEqual(1)
+    expect(decodedMessage.SignatureType).toEqual(1)
+    expect(decodedMessage.PubKey).toEqual(publicKeyAscii)
+  })
+  it('templateBuilder function', () => {
+    const friendlyName = 'Test Template'
+    const description = 'description for test template'
+    const fileDescriptor = Buffer.from([10, 79, 10, 27, 111, 105, 112, 53, 95, 114, 101, 99, 111, 114, 100, 95, 116, 101, 109, 112, 108, 97, 116, 101, 115, 46, 112, 114, 111, 116, 111, 18, 21, 111, 105, 112, 53, 46, 114, 101, 99, 111, 114, 100, 46, 116, 101, 109, 112, 108, 97, 116, 101, 115, 34, 17, 10, 1, 80, 18, 12, 10, 4, 116, 101, 115, 116, 24, 1, 32, 1, 40, 9, 98, 6, 112, 114, 111, 116, 111, 51])
+    
+    let { signedMessage64 } = templateBuilder({
+      friendlyName,
+      description,
+      DescriptorSetProto: fileDescriptor,
+      wif,
+      network: 'testnet'
+    })
+    expect(signedMessage64).toEqual('CoEBCg1UZXN0IFRlbXBsYXRlEh1kZXNjcmlwdGlvbiBmb3IgdGVzdCB0ZW1wbGF0ZSJRCk8KG29pcDVfcmVjb3JkX3RlbXBsYXRlcy5wcm90bxIVb2lwNS5yZWNvcmQudGVtcGxhdGVzIhEKAVASDAoEdGVzdBgBIAEoCWIGcHJvdG8zEAEYASIib2ZiQjY3Z3FqZ2FZaTQ1dThRazJVM2hHb0NteVpjZ2JONCpBIOUn58kfqOfPvilxruqLd5ZXDm3jXFLBuOi0AydoXvBudJDDFf6VGnup7eLjtJIklRFLKYO7EtRSpvmprOmpzmY=')
   })
   it.skip('publish record test template', async () => {
     let signedMessage = 'CmMKBHJ5YW4SCHdoYXRldmVyIlEKTwobb2lwNV9yZWNvcmRfdGVtcGxhdGVzLnByb3RvEhVvaXA1LnJlY29yZC50ZW1wbGF0ZXMiEQoBUBIMCgR0ZXN0GAEgASgJYgZwcm90bzMQARgBIiEDCXMzHJNc8d0agySl5YBD3oVQC0NdQkwX9hS2XBLzT+EqQR8ZOJw6TrRqFuBeQO0COWkmgWcYjVcrZCC52es5TELrHArnb8ekhZfcChqh2QbezAof14vjRuILZDtIflDLZ7V6'
     // console.log(`p64:${signedMessage}`)
-    const oip = new OIP(wif, 'testnet', {explorerUrl: 'https://testnet.explorer.mediciland.com/api'})
+    const oip = new OIP(wif, 'testnet', { explorerUrl: 'https://testnet.explorer.mediciland.com/api' })
     const wallet = oip.wallet
-
+    
     let res
     try {
       res = await wallet.sendDataToChain(`p64:${signedMessage}`)
