@@ -1,6 +1,6 @@
 import { util } from 'protobufjs'
 import { sign } from 'bitcoinjs-message'
-import { ECPair } from 'bitcoinjs-lib'
+import { ECPair, payments } from 'bitcoinjs-lib'
 import networks from '../../../../networks'
 import {isValidWIF} from '../../../../util'
 
@@ -26,7 +26,7 @@ export function buildRecordTemplate ({ friendlyName, description, DescriptorSetP
   return { buffer, b64 }
 }
 
-export function signMessage ({ message, ECPair }) {
+export function signMessage ({ message, ECPair}) {
   let privateKeyBuffer = ECPair.privateKey
   let compressed = ECPair.compressed || true
   
@@ -37,7 +37,7 @@ export function signMessage ({ message, ECPair }) {
     throw new Error(e)
   }
   
-  return { Signature, PubKey: ECPair.publicKey }
+  return { Signature, PubKey: payments.p2pkh({pubkey: ECPair.publicKey, network: ECPair.network}).address }
 }
 
 export function buildSignedMessage ({
