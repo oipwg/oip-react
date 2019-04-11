@@ -2,7 +2,7 @@ import { util } from 'protobufjs'
 import { sign } from 'bitcoinjs-message'
 import { ECPair, payments } from 'bitcoinjs-lib'
 import networks from '../../../../networks'
-import {isValidWIF} from '../../../../util'
+import { isValidWIF } from '../../../../util'
 
 const protomodules = require('./protofiles/compiled/module/compiled')
 export const RecordTemplateProto = protomodules.oip5.record.RecordTemplateProto
@@ -20,24 +20,36 @@ export function buildRecordTemplate ({ friendlyName, description, DescriptorSetP
     throw new Error(err)
   }
   
-  const message = RecordTemplateProto.create(templatePayload)
-  const buffer = RecordTemplateProto.encode(message).finish()
-  const b64 = util.base64.encode(buffer, 0, buffer.length)
-  return { buffer, b64 }
+  const templateMessage = RecordTemplateProto.create(templatePayload)
+  const templateBuffer = RecordTemplateProto.encode(templateMessage).finish()
+  const template64 = util.base64.encode(templateBuffer, 0, templateBuffer.length)
+  return { templateBuffer, template64, templateMessage }
 }
 
-export function signMessage ({ message, ECPair}) {
+export function signMessage ({ message, ECPair }) {
   let privateKeyBuffer = ECPair.privateKey
   let compressed = ECPair.compressed || true
   
-  let Signature
+  let signature
   try {
-    Signature = sign(message, privateKeyBuffer, compressed, ECPair.network.messagePrefix)
+    signature = sign(message, privateKeyBuffer, compressed, ECPair.network.messagePrefix)
   } catch (e) {
     throw new Error(e)
   }
   
-  return { Signature, PubKey: payments.p2pkh({pubkey: ECPair.publicKey, network: ECPair.network}).address }
+  const p2pkh = payments.p2pkh({ pubkey: ECPair.publicKey, network: ECPair.network }).address
+  const publicKey = ECPair.publicKey
+  let publicKeyAscii = new Uint8Array(p2pkh.length)
+  for (let i in p2pkh) {
+    publicKeyAscii[i] = (p2pkh.charCodeAt(i))
+  }
+  
+  return {
+    signature,
+    p2pkh,
+    publicKey,
+    publicKeyAscii
+  }
 }
 
 export function buildSignedMessage ({
@@ -59,14 +71,19 @@ export function buildSignedMessage ({
   if (err) {
     throw new Error(`Error verifying message payload as valid proto -- ${err}`)
   }
-  
-  const message = SignedMessage.create(signedMessagePayload)
-  const buffer = SignedMessage.encode(message).finish()
+  const signedMessage = SignedMessage.create(signedMessagePayload)
+  const signedMessageBuffer = SignedMessage.encode(signedMessage).finish()
   // returns base64 encoded message ready for chain
-  return util.base64.encode(buffer, 0, buffer.length)
+  const signedMessage64 = util.base64.encode(signedMessageBuffer, 0, signedMessageBuffer.length)
+  
+  return {
+    signedMessage,
+    signedMessageBuffer,
+    signedMessage64
+  }
 }
 
-export function templatebuilder ({ friendlyName, description, DescriptorSetProto, wif, network = 'mainnet' }) {
+export default function templateBuilder ({ friendlyName, description, DescriptorSetProto, wif, network = 'mainnet' }) {
   if (!friendlyName || friendlyName === '') {
     throw new Error(`template name must be defined; was passed: ${friendlyName}`)
   }
@@ -87,11 +104,9 @@ export function templatebuilder ({ friendlyName, description, DescriptorSetProto
   const keypair = ECPair.fromWIF(wif, network)
   
   // 1 build and encode record template
-  let { buffer, b64 } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto })
+  let { templateBuffer, template64 } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto })
   // 2 sign b64 message
-  const { PubKey, Signature } = signMessage({ ECPair: keypair, message: b64 })
+  const { publicKeyAscii, signature } = signMessage({ ECPair: keypair, message: template64 })
   // 3 build SignedMessageProto
-  return buildSignedMessage({ SerializedMessage: buffer, PubKey, Signature })
+  return buildSignedMessage({ SerializedMessage: templateBuffer, PubKey: publicKeyAscii, Signature: signature })
 }
-
-export default templatebuilder
