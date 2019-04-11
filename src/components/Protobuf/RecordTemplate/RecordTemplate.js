@@ -37,7 +37,7 @@ const RecordTemplate = ({ classes }) => {
     
     if (template) {
       const prefix = 'p64:'
-      const message = `${prefix}:${template}`
+      const message = `${prefix}${template}`
       
       const oip = new OIP(privateKey, 'testnet', {explorerUrl: 'https://testnet.explorer.mediciland.com/api'}) // toDo: switch to flochain
       const wallet = oip.wallet
