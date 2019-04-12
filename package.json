@@ -1,6 +1,6 @@
 {
   "name": "oip-react-jss",
-  "version": "1.0.0",
+  "version": "1.1.2",
   "description": "oip component library built with React/JSS",
   "main": "lib/index.js",
   "files": [
