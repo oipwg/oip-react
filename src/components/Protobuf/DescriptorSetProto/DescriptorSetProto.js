@@ -184,7 +184,7 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
   </div>
 }
 
-const styles = {
+const styles = theme => ({
   descriptorRoot: {},
   buttonBase: {},
   addRowButton: {},
@@ -193,6 +193,6 @@ const styles = {
   descriptorInputField: {},
   selectBase: {},
   descriptorSelect: {},
-}
+})
 
 export default withStyles(styles)(DescriptorSetProto)

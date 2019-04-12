@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
 import { OIP } from 'js-oip'
-import styles from './styles'
 import { DescriptorSetProto } from '../index'
 import { templateBuilder } from './dependencies'
 import { isValidWIF } from '../../../util'
@@ -111,8 +110,11 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       >Create & Publish
       </button>
     </div>
-    
   </div>
 }
+
+const styles = theme => ({
+
+})
 
 export default withStyles(styles)(RecordTemplate)
