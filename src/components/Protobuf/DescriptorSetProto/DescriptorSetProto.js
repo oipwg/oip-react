@@ -32,7 +32,7 @@ const SelectOptions = React.memo((
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
-
+  
   return <select
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => { onFocus(e, id) } : null}
@@ -86,11 +86,10 @@ const shouldUpdate = (oldProps, newProps) => {
   return nameDidNotChange && classesDidNotChange
 }
 
-
 const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
   const isEnum = gfs.state.form[id].fieldType === 'enum'
- 
-  return <div>
+  
+  return <div className={classes.descriptorFieldRowContainer}>
     <SelectOptions
       opts={['singular', 'repeated']}
       id={id}
@@ -145,14 +144,14 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
 
 const DescriptorSetProto = ({ classes, getDescriptor }) => {
   const id = useRef(uid()).current
-
+  
   const initialFormRow = {
     fieldType: 'string',
     fieldName: '',
     fieldRule: 'singular'
   }
   const gfs = useGlobalFormState(id, initialFormRow)
-
+  
   const liftDescriptor = () => {
     if (getDescriptor) {
       let descriptor
@@ -166,7 +165,7 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
       }
     }
   }
-
+  
   return <div className={classes.descriptorRoot}>
     <FieldRow
       gfs={gfs}
@@ -187,12 +186,14 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     })}
     <button
       className={classNames(classes.buttonBase, classes.addRowButton)}
-      onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
+      onClick={() => gfs.add(uid(), initialFormRow)}>+
+    </button>
   </div>
 }
 
 const styles = theme => ({
   descriptorRoot: {},
+  descriptorFieldRowContainer: {},
   buttonBase: {},
   addRowButton: {},
   removeRowButton: {},
