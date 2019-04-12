@@ -1,10 +1,11 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
 import { useGlobalFormState } from '../../../hooks'
 import { protobuilder } from './dependencies'
 import TagsInput from '../../UI/TagsInput'
+import classNames from 'classnames'
 
 const protoFields = {
   'string': 'text',
@@ -38,6 +39,7 @@ const SelectOptions = React.memo((
     onBlur={onBlur ? (e) => { onBlur(e, id) } : null}
     name={name}
     value={state[name]}
+    className={classNames(classes.selectBase, classes.descriptorSelect)}
   >
     {opts.map((opt, i) => {
       return <option
@@ -72,12 +74,13 @@ const InputField = React.memo((
     onFocus={onFocus ? (e) => { onFocus(e, id) } : null}
     onBlur={onBlur ? (e) => { onBlur(e, id) } : null}
     placeholder={placeholder}
+    className={classNames(classes.inputFieldBase, classes.descriptorInputField)}
   />
 }, (oldProps, newProps) => {
   return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
-const FieldRow = ({ gfs, id, liftDescriptor }) => {
+const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
   const isEnum = gfs.state.form[id].fieldType === 'enum'
   return <div>
     <SelectOptions
@@ -88,6 +91,7 @@ const FieldRow = ({ gfs, id, liftDescriptor }) => {
       name={'fieldRule'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
       onBlur={liftDescriptor}
+      classes={classes}
     />
     <SelectOptions
       opts={protoFields}
@@ -97,6 +101,7 @@ const FieldRow = ({ gfs, id, liftDescriptor }) => {
       name={'fieldType'}
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
       onBlur={liftDescriptor}
+      classes={classes}
     />
     <InputField
       placeholder={'Field Name'}
@@ -107,10 +112,12 @@ const FieldRow = ({ gfs, id, liftDescriptor }) => {
       shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
       allowSpaces={false}
       onBlur={liftDescriptor}
+      classes={classes}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
       onBlur={liftDescriptor}
+      classes={classes}
       getTags={(tags) => {
         const e = {
           target: {
@@ -121,7 +128,10 @@ const FieldRow = ({ gfs, id, liftDescriptor }) => {
         gfs.update(e, id)
       }}
     /> : null}
-    {gfs.state.form[id].index > 0 && <button onClick={() => { gfs.remove(id) }}>-</button>}
+    {gfs.state.form[id].index > 0 && <button
+      onClick={() => { gfs.remove(id) }}
+      className={classNames(classes.buttonBase, classes.removeRowButton)}
+    >-</button>}
   </div>
 }
 
@@ -149,15 +159,17 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     }
   }
 
-  return <div className={classes.root}>
+  return <div className={classes.descriptorRoot}>
     <FieldRow
       gfs={gfs}
       id={id}
       liftDescriptor={liftDescriptor}
+      classes={classes}
     />
     {Object.keys(gfs.state.form).map((formId) => {
       if (formId !== id) {
         return <FieldRow
+          classes={classes}
           gfs={gfs}
           id={formId}
           key={formId}
@@ -165,13 +177,22 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
         />
       }
     })}
-    <button onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
+    <button
+      className={classNames(classes.buttonBase, classes.addRowButton)}
+      onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
     {/* <button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button> */}
   </div>
 }
 
 const styles = {
-  root: {}
+  descriptorRoot: {},
+  buttonBase: {},
+  addRowButton: {},
+  removeRowButton: {},
+  inputFieldBase: {},
+  descriptorInputField: {},
+  selectBase: {},
+  descriptorSelect: {},
 }
 
 export default withStyles(styles)(DescriptorSetProto)
