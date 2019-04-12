@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "oip component library built with React/JSS",
   "main": "lib/index.js",
+  "files": [
+    "lib"
+  ],
   "license": "MIT",
   "scripts": {
     "storybook": "start-storybook",
