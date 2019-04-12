@@ -16,6 +16,947 @@ export const oip5 = $root.oip5 = (() => {
      */
     const oip5 = {};
 
+    oip5.OipFive = (function() {
+
+        /**
+         * Properties of an OipFive.
+         * @memberof oip5
+         * @interface IOipFive
+         * @property {oip5.record.IRecordTemplateProto|null} [recordTemplate] OipFive recordTemplate
+         * @property {oip5.IRecordProto|null} [record] OipFive record
+         * @property {oip5.ITransfer|null} [transfer] OipFive transfer
+         * @property {oip5.IDeactivate|null} [deactivate] OipFive deactivate
+         * @property {oip5.IEdit|null} [edit] OipFive edit
+         */
+
+        /**
+         * Constructs a new OipFive.
+         * @memberof oip5
+         * @classdesc Represents an OipFive.
+         * @implements IOipFive
+         * @constructor
+         * @param {oip5.IOipFive=} [properties] Properties to set
+         */
+        function OipFive(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * OipFive recordTemplate.
+         * @member {oip5.record.IRecordTemplateProto|null|undefined} recordTemplate
+         * @memberof oip5.OipFive
+         * @instance
+         */
+        OipFive.prototype.recordTemplate = null;
+
+        /**
+         * OipFive record.
+         * @member {oip5.IRecordProto|null|undefined} record
+         * @memberof oip5.OipFive
+         * @instance
+         */
+        OipFive.prototype.record = null;
+
+        /**
+         * OipFive transfer.
+         * @member {oip5.ITransfer|null|undefined} transfer
+         * @memberof oip5.OipFive
+         * @instance
+         */
+        OipFive.prototype.transfer = null;
+
+        /**
+         * OipFive deactivate.
+         * @member {oip5.IDeactivate|null|undefined} deactivate
+         * @memberof oip5.OipFive
+         * @instance
+         */
+        OipFive.prototype.deactivate = null;
+
+        /**
+         * OipFive edit.
+         * @member {oip5.IEdit|null|undefined} edit
+         * @memberof oip5.OipFive
+         * @instance
+         */
+        OipFive.prototype.edit = null;
+
+        /**
+         * Creates a new OipFive instance using the specified properties.
+         * @function create
+         * @memberof oip5.OipFive
+         * @static
+         * @param {oip5.IOipFive=} [properties] Properties to set
+         * @returns {oip5.OipFive} OipFive instance
+         */
+        OipFive.create = function create(properties) {
+            return new OipFive(properties);
+        };
+
+        /**
+         * Encodes the specified OipFive message. Does not implicitly {@link oip5.OipFive.verify|verify} messages.
+         * @function encode
+         * @memberof oip5.OipFive
+         * @static
+         * @param {oip5.IOipFive} message OipFive message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        OipFive.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.recordTemplate != null && message.hasOwnProperty("recordTemplate"))
+                $root.oip5.record.RecordTemplateProto.encode(message.recordTemplate, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.record != null && message.hasOwnProperty("record"))
+                $root.oip5.RecordProto.encode(message.record, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.transfer != null && message.hasOwnProperty("transfer"))
+                $root.oip5.Transfer.encode(message.transfer, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.deactivate != null && message.hasOwnProperty("deactivate"))
+                $root.oip5.Deactivate.encode(message.deactivate, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+            if (message.edit != null && message.hasOwnProperty("edit"))
+                $root.oip5.Edit.encode(message.edit, writer.uint32(/* id 9, wireType 2 =*/74).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified OipFive message, length delimited. Does not implicitly {@link oip5.OipFive.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof oip5.OipFive
+         * @static
+         * @param {oip5.IOipFive} message OipFive message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        OipFive.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an OipFive message from the specified reader or buffer.
+         * @function decode
+         * @memberof oip5.OipFive
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {oip5.OipFive} OipFive
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        OipFive.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.oip5.OipFive();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.recordTemplate = $root.oip5.record.RecordTemplateProto.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.record = $root.oip5.RecordProto.decode(reader, reader.uint32());
+                    break;
+                case 7:
+                    message.transfer = $root.oip5.Transfer.decode(reader, reader.uint32());
+                    break;
+                case 8:
+                    message.deactivate = $root.oip5.Deactivate.decode(reader, reader.uint32());
+                    break;
+                case 9:
+                    message.edit = $root.oip5.Edit.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an OipFive message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof oip5.OipFive
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {oip5.OipFive} OipFive
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        OipFive.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an OipFive message.
+         * @function verify
+         * @memberof oip5.OipFive
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        OipFive.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.recordTemplate != null && message.hasOwnProperty("recordTemplate")) {
+                let error = $root.oip5.record.RecordTemplateProto.verify(message.recordTemplate);
+                if (error)
+                    return "recordTemplate." + error;
+            }
+            if (message.record != null && message.hasOwnProperty("record")) {
+                let error = $root.oip5.RecordProto.verify(message.record);
+                if (error)
+                    return "record." + error;
+            }
+            if (message.transfer != null && message.hasOwnProperty("transfer")) {
+                let error = $root.oip5.Transfer.verify(message.transfer);
+                if (error)
+                    return "transfer." + error;
+            }
+            if (message.deactivate != null && message.hasOwnProperty("deactivate")) {
+                let error = $root.oip5.Deactivate.verify(message.deactivate);
+                if (error)
+                    return "deactivate." + error;
+            }
+            if (message.edit != null && message.hasOwnProperty("edit")) {
+                let error = $root.oip5.Edit.verify(message.edit);
+                if (error)
+                    return "edit." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates an OipFive message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof oip5.OipFive
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {oip5.OipFive} OipFive
+         */
+        OipFive.fromObject = function fromObject(object) {
+            if (object instanceof $root.oip5.OipFive)
+                return object;
+            let message = new $root.oip5.OipFive();
+            if (object.recordTemplate != null) {
+                if (typeof object.recordTemplate !== "object")
+                    throw TypeError(".oip5.OipFive.recordTemplate: object expected");
+                message.recordTemplate = $root.oip5.record.RecordTemplateProto.fromObject(object.recordTemplate);
+            }
+            if (object.record != null) {
+                if (typeof object.record !== "object")
+                    throw TypeError(".oip5.OipFive.record: object expected");
+                message.record = $root.oip5.RecordProto.fromObject(object.record);
+            }
+            if (object.transfer != null) {
+                if (typeof object.transfer !== "object")
+                    throw TypeError(".oip5.OipFive.transfer: object expected");
+                message.transfer = $root.oip5.Transfer.fromObject(object.transfer);
+            }
+            if (object.deactivate != null) {
+                if (typeof object.deactivate !== "object")
+                    throw TypeError(".oip5.OipFive.deactivate: object expected");
+                message.deactivate = $root.oip5.Deactivate.fromObject(object.deactivate);
+            }
+            if (object.edit != null) {
+                if (typeof object.edit !== "object")
+                    throw TypeError(".oip5.OipFive.edit: object expected");
+                message.edit = $root.oip5.Edit.fromObject(object.edit);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an OipFive message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof oip5.OipFive
+         * @static
+         * @param {oip5.OipFive} message OipFive
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        OipFive.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.recordTemplate = null;
+                object.record = null;
+                object.transfer = null;
+                object.deactivate = null;
+                object.edit = null;
+            }
+            if (message.recordTemplate != null && message.hasOwnProperty("recordTemplate"))
+                object.recordTemplate = $root.oip5.record.RecordTemplateProto.toObject(message.recordTemplate, options);
+            if (message.record != null && message.hasOwnProperty("record"))
+                object.record = $root.oip5.RecordProto.toObject(message.record, options);
+            if (message.transfer != null && message.hasOwnProperty("transfer"))
+                object.transfer = $root.oip5.Transfer.toObject(message.transfer, options);
+            if (message.deactivate != null && message.hasOwnProperty("deactivate"))
+                object.deactivate = $root.oip5.Deactivate.toObject(message.deactivate, options);
+            if (message.edit != null && message.hasOwnProperty("edit"))
+                object.edit = $root.oip5.Edit.toObject(message.edit, options);
+            return object;
+        };
+
+        /**
+         * Converts this OipFive to JSON.
+         * @function toJSON
+         * @memberof oip5.OipFive
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        OipFive.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return OipFive;
+    })();
+
+    oip5.RecordProto = (function() {
+
+        /**
+         * Properties of a RecordProto.
+         * @memberof oip5
+         * @interface IRecordProto
+         */
+
+        /**
+         * Constructs a new RecordProto.
+         * @memberof oip5
+         * @classdesc Represents a RecordProto.
+         * @implements IRecordProto
+         * @constructor
+         * @param {oip5.IRecordProto=} [properties] Properties to set
+         */
+        function RecordProto(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new RecordProto instance using the specified properties.
+         * @function create
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {oip5.IRecordProto=} [properties] Properties to set
+         * @returns {oip5.RecordProto} RecordProto instance
+         */
+        RecordProto.create = function create(properties) {
+            return new RecordProto(properties);
+        };
+
+        /**
+         * Encodes the specified RecordProto message. Does not implicitly {@link oip5.RecordProto.verify|verify} messages.
+         * @function encode
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {oip5.IRecordProto} message RecordProto message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RecordProto.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified RecordProto message, length delimited. Does not implicitly {@link oip5.RecordProto.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {oip5.IRecordProto} message RecordProto message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        RecordProto.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a RecordProto message from the specified reader or buffer.
+         * @function decode
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {oip5.RecordProto} RecordProto
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RecordProto.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.oip5.RecordProto();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a RecordProto message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {oip5.RecordProto} RecordProto
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        RecordProto.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a RecordProto message.
+         * @function verify
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        RecordProto.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a RecordProto message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {oip5.RecordProto} RecordProto
+         */
+        RecordProto.fromObject = function fromObject(object) {
+            if (object instanceof $root.oip5.RecordProto)
+                return object;
+            return new $root.oip5.RecordProto();
+        };
+
+        /**
+         * Creates a plain object from a RecordProto message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof oip5.RecordProto
+         * @static
+         * @param {oip5.RecordProto} message RecordProto
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        RecordProto.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this RecordProto to JSON.
+         * @function toJSON
+         * @memberof oip5.RecordProto
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        RecordProto.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return RecordProto;
+    })();
+
+    oip5.Transfer = (function() {
+
+        /**
+         * Properties of a Transfer.
+         * @memberof oip5
+         * @interface ITransfer
+         */
+
+        /**
+         * Constructs a new Transfer.
+         * @memberof oip5
+         * @classdesc Represents a Transfer.
+         * @implements ITransfer
+         * @constructor
+         * @param {oip5.ITransfer=} [properties] Properties to set
+         */
+        function Transfer(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new Transfer instance using the specified properties.
+         * @function create
+         * @memberof oip5.Transfer
+         * @static
+         * @param {oip5.ITransfer=} [properties] Properties to set
+         * @returns {oip5.Transfer} Transfer instance
+         */
+        Transfer.create = function create(properties) {
+            return new Transfer(properties);
+        };
+
+        /**
+         * Encodes the specified Transfer message. Does not implicitly {@link oip5.Transfer.verify|verify} messages.
+         * @function encode
+         * @memberof oip5.Transfer
+         * @static
+         * @param {oip5.ITransfer} message Transfer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Transfer.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Transfer message, length delimited. Does not implicitly {@link oip5.Transfer.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof oip5.Transfer
+         * @static
+         * @param {oip5.ITransfer} message Transfer message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Transfer.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Transfer message from the specified reader or buffer.
+         * @function decode
+         * @memberof oip5.Transfer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {oip5.Transfer} Transfer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Transfer.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.oip5.Transfer();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Transfer message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof oip5.Transfer
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {oip5.Transfer} Transfer
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Transfer.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Transfer message.
+         * @function verify
+         * @memberof oip5.Transfer
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Transfer.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a Transfer message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof oip5.Transfer
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {oip5.Transfer} Transfer
+         */
+        Transfer.fromObject = function fromObject(object) {
+            if (object instanceof $root.oip5.Transfer)
+                return object;
+            return new $root.oip5.Transfer();
+        };
+
+        /**
+         * Creates a plain object from a Transfer message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof oip5.Transfer
+         * @static
+         * @param {oip5.Transfer} message Transfer
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Transfer.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this Transfer to JSON.
+         * @function toJSON
+         * @memberof oip5.Transfer
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Transfer.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Transfer;
+    })();
+
+    oip5.Deactivate = (function() {
+
+        /**
+         * Properties of a Deactivate.
+         * @memberof oip5
+         * @interface IDeactivate
+         */
+
+        /**
+         * Constructs a new Deactivate.
+         * @memberof oip5
+         * @classdesc Represents a Deactivate.
+         * @implements IDeactivate
+         * @constructor
+         * @param {oip5.IDeactivate=} [properties] Properties to set
+         */
+        function Deactivate(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new Deactivate instance using the specified properties.
+         * @function create
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {oip5.IDeactivate=} [properties] Properties to set
+         * @returns {oip5.Deactivate} Deactivate instance
+         */
+        Deactivate.create = function create(properties) {
+            return new Deactivate(properties);
+        };
+
+        /**
+         * Encodes the specified Deactivate message. Does not implicitly {@link oip5.Deactivate.verify|verify} messages.
+         * @function encode
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {oip5.IDeactivate} message Deactivate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Deactivate.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Deactivate message, length delimited. Does not implicitly {@link oip5.Deactivate.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {oip5.IDeactivate} message Deactivate message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Deactivate.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a Deactivate message from the specified reader or buffer.
+         * @function decode
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {oip5.Deactivate} Deactivate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Deactivate.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.oip5.Deactivate();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a Deactivate message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {oip5.Deactivate} Deactivate
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Deactivate.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a Deactivate message.
+         * @function verify
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Deactivate.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a Deactivate message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {oip5.Deactivate} Deactivate
+         */
+        Deactivate.fromObject = function fromObject(object) {
+            if (object instanceof $root.oip5.Deactivate)
+                return object;
+            return new $root.oip5.Deactivate();
+        };
+
+        /**
+         * Creates a plain object from a Deactivate message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof oip5.Deactivate
+         * @static
+         * @param {oip5.Deactivate} message Deactivate
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Deactivate.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this Deactivate to JSON.
+         * @function toJSON
+         * @memberof oip5.Deactivate
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Deactivate.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Deactivate;
+    })();
+
+    oip5.Edit = (function() {
+
+        /**
+         * Properties of an Edit.
+         * @memberof oip5
+         * @interface IEdit
+         */
+
+        /**
+         * Constructs a new Edit.
+         * @memberof oip5
+         * @classdesc Represents an Edit.
+         * @implements IEdit
+         * @constructor
+         * @param {oip5.IEdit=} [properties] Properties to set
+         */
+        function Edit(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new Edit instance using the specified properties.
+         * @function create
+         * @memberof oip5.Edit
+         * @static
+         * @param {oip5.IEdit=} [properties] Properties to set
+         * @returns {oip5.Edit} Edit instance
+         */
+        Edit.create = function create(properties) {
+            return new Edit(properties);
+        };
+
+        /**
+         * Encodes the specified Edit message. Does not implicitly {@link oip5.Edit.verify|verify} messages.
+         * @function encode
+         * @memberof oip5.Edit
+         * @static
+         * @param {oip5.IEdit} message Edit message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Edit.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified Edit message, length delimited. Does not implicitly {@link oip5.Edit.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof oip5.Edit
+         * @static
+         * @param {oip5.IEdit} message Edit message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        Edit.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an Edit message from the specified reader or buffer.
+         * @function decode
+         * @memberof oip5.Edit
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {oip5.Edit} Edit
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Edit.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.oip5.Edit();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an Edit message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof oip5.Edit
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {oip5.Edit} Edit
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        Edit.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an Edit message.
+         * @function verify
+         * @memberof oip5.Edit
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        Edit.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates an Edit message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof oip5.Edit
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {oip5.Edit} Edit
+         */
+        Edit.fromObject = function fromObject(object) {
+            if (object instanceof $root.oip5.Edit)
+                return object;
+            return new $root.oip5.Edit();
+        };
+
+        /**
+         * Creates a plain object from an Edit message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof oip5.Edit
+         * @static
+         * @param {oip5.Edit} message Edit
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        Edit.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this Edit to JSON.
+         * @function toJSON
+         * @memberof oip5.Edit
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        Edit.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return Edit;
+    })();
+
     oip5.record = (function() {
 
         /**

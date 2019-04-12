@@ -7,6 +7,7 @@ import { isValidWIF } from '../../../../util'
 const protomodules = require('./protofiles/compiled/module/compiled')
 export const RecordTemplateProto = protomodules.oip5.record.RecordTemplateProto
 export const SignedMessage = protomodules.oipProto.SignedMessage
+const OipFiveProto = protomodules.oip5.OipFive
 
 export function buildRecordTemplate ({ friendlyName, description, DescriptorSetProto }) {
   const templatePayload = {
@@ -83,6 +84,23 @@ export function buildSignedMessage ({
   }
 }
 
+export function buildOipFiveTemplate( templateMessage ) {
+  const templatePayload = {
+    recordTemplate: templateMessage
+  }
+  
+  let err = OipFiveProto.verify(templatePayload)
+  if (err) {
+    throw new Error(err)
+  }
+  
+  const oip5message = OipFiveProto.create(templatePayload)
+  const oip5messageBuffer = OipFiveProto.encode(oip5message).finish()
+  const oip5message64 = util.base64.encode(oip5messageBuffer, 0, oip5messageBuffer.length)
+  return { oip5messageBuffer, oip5message64, oip5message }
+}
+
+
 export default function templateBuilder ({ friendlyName, description, DescriptorSetProto, wif, network = 'mainnet' }) {
   if (!friendlyName || friendlyName === '') {
     throw new Error(`template name must be defined; was passed: ${friendlyName}`)
@@ -103,10 +121,15 @@ export default function templateBuilder ({ friendlyName, description, Descriptor
   network = network === 'mainnet' ? networks.floMainnet : networks.floTestnet
   const keypair = ECPair.fromWIF(wif, network)
   
-  // 1 build and encode record template
-  let { templateBuffer, template64 } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto })
-  // 2 sign b64 message
-  const { publicKeyAscii, signature } = signMessage({ ECPair: keypair, message: template64 })
-  // 3 build SignedMessageProto
-  return buildSignedMessage({ SerializedMessage: templateBuffer, PubKey: publicKeyAscii, Signature: signature })
+  // 1 build template message
+  let { templateMessage } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto })
+  
+  // 2 build OIP5
+  const { oip5messageBuffer, oip5message64 } = buildOipFiveTemplate(templateMessage)
+  
+  // 3 sign oip5b64 message
+  const { publicKeyAscii, signature } = signMessage({ ECPair: keypair, message: oip5message64 })
+  
+  // 4 build SignedMessageProto
+  return buildSignedMessage({ SerializedMessage: oip5messageBuffer, PubKey: publicKeyAscii, Signature: signature })
 }

@@ -1,7 +1,46 @@
 {
   "nested": {
     "oip5": {
+      "options": {
+        "go_package": "oip5"
+      },
       "nested": {
+        "OipFive": {
+          "fields": {
+            "recordTemplate": {
+              "type": "record.RecordTemplateProto",
+              "id": 1
+            },
+            "record": {
+              "type": "RecordProto",
+              "id": 2
+            },
+            "transfer": {
+              "type": "Transfer",
+              "id": 7
+            },
+            "deactivate": {
+              "type": "Deactivate",
+              "id": 8
+            },
+            "edit": {
+              "type": "Edit",
+              "id": 9
+            }
+          }
+        },
+        "RecordProto": {
+          "fields": {}
+        },
+        "Transfer": {
+          "fields": {}
+        },
+        "Deactivate": {
+          "fields": {}
+        },
+        "Edit": {
+          "fields": {}
+        },
         "record": {
           "options": {
             "go_package": "oip5"
