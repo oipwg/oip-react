@@ -44,7 +44,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       const prefix = 'p64:'
       const message = `${prefix}${signedMessage64}`
       
-      const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.flocha.in/api'
+      const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
       
       const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
       const wallet = oip.wallet
@@ -81,7 +81,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       />
     </div>
     <div className={classNames(classes.templateFieldRow, classes.descriptionRow)}>
-      <span>Description</span>
+      <span className={classes.inputTitle}>Description</span>
       <input
         type={'text'}
         value={description}
@@ -94,7 +94,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       classes={classes}
     />
     <div className={classNames(classes.templateFieldRow, classes.wifRow)}>
-      <span>Input private key (WIF)</span>
+      <span className={classes.inputTitle}>Input private key (WIF)</span>
       <input
         type={'text'}
         onChange={handlePrivateKey}
