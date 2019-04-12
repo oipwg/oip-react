@@ -27,7 +27,7 @@ const protoFields = {
 }
 
 const SelectOptions = React.memo((
-  { state, opts, onChange, onFocus, onBlur, id, name = '' }
+  { classes, state, opts, onChange, onFocus, onBlur, id, name = '' }
 ) => {
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
@@ -55,7 +55,7 @@ const SelectOptions = React.memo((
 })
 
 const InputField = React.memo((
-  { state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true }
+  { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true }
 ) => {
   let okd = () => {}
   if (!allowSpaces) {
@@ -74,14 +74,22 @@ const InputField = React.memo((
     onFocus={onFocus ? (e) => { onFocus(e, id) } : null}
     onBlur={onBlur ? (e) => { onBlur(e, id) } : null}
     placeholder={placeholder}
-    className={classNames(classes.inputFieldBase, classes.descriptorInputField)}
+    className={classNames(classes.inputBase, classes.descriptorInputField)}
   />
 }, (oldProps, newProps) => {
   return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
+const shouldUpdate = (oldProps, newProps) => {
+  const nameDidNotChange = oldProps.state[oldProps.name] === newProps.state[newProps.name]
+  const classesDidNotChange = oldProps.classes === newProps.classes
+  return nameDidNotChange && classesDidNotChange
+}
+
+
 const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
   const isEnum = gfs.state.form[id].fieldType === 'enum'
+ 
   return <div>
     <SelectOptions
       opts={['singular', 'repeated']}
@@ -89,7 +97,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
       state={gfs.state.form[id]}
       onChange={gfs.update}
       name={'fieldRule'}
-      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      shouldUpdate={shouldUpdate}
       onBlur={liftDescriptor}
       classes={classes}
     />
@@ -99,7 +107,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
       state={gfs.state.form[id]}
       onChange={gfs.update}
       name={'fieldType'}
-      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      shouldUpdate={shouldUpdate}
       onBlur={liftDescriptor}
       classes={classes}
     />
@@ -109,7 +117,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
       state={gfs.state.form[id]}
       onChange={gfs.update}
       name={'fieldName'}
-      shouldUpdate={(o, n) => o.state[o.name] === n.state[o.name]}
+      shouldUpdate={shouldUpdate}
       allowSpaces={false}
       onBlur={liftDescriptor}
       classes={classes}
@@ -180,7 +188,6 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     <button
       className={classNames(classes.buttonBase, classes.addRowButton)}
       onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
-    {/* <button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button> */}
   </div>
 }
 
@@ -189,7 +196,7 @@ const styles = theme => ({
   buttonBase: {},
   addRowButton: {},
   removeRowButton: {},
-  inputFieldBase: {},
+  inputBase: {},
   descriptorInputField: {},
   selectBase: {},
   descriptorSelect: {},

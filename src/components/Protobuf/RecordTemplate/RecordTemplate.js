@@ -4,6 +4,7 @@ import { OIP } from 'js-oip'
 import { DescriptorSetProto } from '../index'
 import { templateBuilder } from './dependencies'
 import { isValidWIF } from '../../../util'
+import classNames from 'classnames'
 
 const RecordTemplate = ({ classes, getPubResponse }) => {
   const [name, setName] = useState('')
@@ -12,11 +13,11 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
   const [disableSubmit, toggleDisable] = useState(true)
   const [descriptor, setProtoDescriptor] = useState(undefined)
   const [network, changeNetwork] = useState('mainnet')
-
+  
   useEffect(() => {
     toggleDisable(!isValidWIF(privateKey, network))
   }, [privateKey, network])
-
+  
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value)
   }
@@ -24,7 +25,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
   const handleNetworkChange = (e) => {
     changeNetwork(e.target.value)
   }
-
+  
   const handlePublish = async () => {
     let template
     try {
@@ -42,10 +43,12 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
     if (signedMessage64) {
       const prefix = 'p64:'
       const message = `${prefix}${signedMessage64}`
-
-      const oip = new OIP(privateKey, 'testnet', { explorerUrl: 'https://testnet.explorer.mediciland.com/api' }) // toDo: switch to flochain
+      
+      const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.flocha.in/api'
+      
+      const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
       const wallet = oip.wallet
-
+      
       let res
       try {
         res = await wallet.sendDataToChain(message)
@@ -62,41 +65,48 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       alert(`Publish success/TXID: ${res}`)
     }
   }
-
+  
   const getProtoDescriptor = (descriptor) => {
     setProtoDescriptor(descriptor)
   }
-
-  return <div className={classes.root}>
-    <div>
-      <span>Friendly Name</span>
+  
+  return <div className={classes.recordTemplateRoot}>
+    <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
+      <span className={classes.inputTitle}>Friendly Name</span>
       <input
         type={'text'}
         value={name}
+        className={classes.inputBase}
         onChange={(e) => setName(e.target.value)}
       />
     </div>
-    <div>
+    <div className={classNames(classes.templateFieldRow, classes.descriptionRow)}>
       <span>Description</span>
       <input
         type={'text'}
         value={description}
+        className={classes.inputBase}
         onChange={(e) => setDescription(e.target.value)}
       />
     </div>
     <DescriptorSetProto
       getDescriptor={getProtoDescriptor}
+      classes={classes}
     />
-    <div>
+    <div className={classNames(classes.templateFieldRow, classes.wifRow)}>
       <span>Input private key (WIF)</span>
       <input
         type={'text'}
         onChange={handlePrivateKey}
         value={privateKey}
+        className={classes.inputBase}
       />
     </div>
-    <div className={classes.publishRow}>
-      <select value={network} onChange={handleNetworkChange} className={classes.networkSelect}>
+    <div className={classNames(classes.templateFieldRow, classes.publishRow)}>
+      <select
+        value={network}
+        onChange={handleNetworkChange}
+        className={classNames(classes.selectBase, classes.selectNetwork)}>
         <option value={'mainnet'}>
           mainnet
         </option>
@@ -105,6 +115,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
         </option>
       </select>
       <button
+        className={classNames(classes.buttonBase, classes.publishButton)}
         disabled={disableSubmit}
         onClick={handlePublish}
       >Create & Publish
@@ -114,7 +125,18 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
 }
 
 const styles = theme => ({
-
+  recordTemplateRoot: {},
+  selectBase: {},
+  inputBase: {},
+  buttonBase: {},
+  templateFieldRow: {},
+  inputTitle: {},
+  nameRow: {},
+  descriptionRow: {},
+  wifRow: {},
+  publishRow: {},
+  selectNetwork: {},
+  publishButton: {}
 })
 
 export default withStyles(styles)(RecordTemplate)
