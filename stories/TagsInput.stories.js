@@ -11,8 +11,8 @@ const ThemeWrapper = (props) => {
 }
 
 storiesOf('TagsInput', module)
-.add('default', () => {
-  return <ThemeWrapper>
-    <TagsInput/>
-  </ThemeWrapper>
-})
+  .add('default', () => {
+    return <ThemeWrapper>
+      <TagsInput />
+    </ThemeWrapper>
+  })

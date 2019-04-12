@@ -15,12 +15,12 @@ export function buildRecordTemplate ({ friendlyName, description, DescriptorSetP
     description,
     DescriptorSetProto
   }
-  
+
   let err = RecordTemplateProto.verify(templatePayload)
   if (err) {
     throw new Error(err)
   }
-  
+
   const templateMessage = RecordTemplateProto.create(templatePayload)
   const templateBuffer = RecordTemplateProto.encode(templateMessage).finish()
   const template64 = util.base64.encode(templateBuffer, 0, templateBuffer.length)
@@ -30,21 +30,21 @@ export function buildRecordTemplate ({ friendlyName, description, DescriptorSetP
 export function signMessage ({ message, ECPair }) {
   let privateKeyBuffer = ECPair.privateKey
   let compressed = ECPair.compressed || true
-  
+
   let signature
   try {
     signature = sign(message, privateKeyBuffer, compressed, ECPair.network.messagePrefix)
   } catch (e) {
     throw new Error(e)
   }
-  
+
   const p2pkh = payments.p2pkh({ pubkey: ECPair.publicKey, network: ECPair.network }).address
   const publicKey = ECPair.publicKey
   let publicKeyAscii = new Uint8Array(p2pkh.length)
   for (let i in p2pkh) {
     publicKeyAscii[i] = (p2pkh.charCodeAt(i))
   }
-  
+
   return {
     signature,
     p2pkh,
@@ -65,9 +65,9 @@ export function buildSignedMessage ({
     MessageType,
     SignatureType,
     PubKey,
-    Signature,
+    Signature
   }
-  
+
   let err = SignedMessage.verify(signedMessagePayload)
   if (err) {
     throw new Error(`Error verifying message payload as valid proto -- ${err}`)
@@ -76,7 +76,7 @@ export function buildSignedMessage ({
   const signedMessageBuffer = SignedMessage.encode(signedMessage).finish()
   // returns base64 encoded message ready for chain
   const signedMessage64 = util.base64.encode(signedMessageBuffer, 0, signedMessageBuffer.length)
-  
+
   return {
     signedMessage,
     signedMessageBuffer,
@@ -84,22 +84,21 @@ export function buildSignedMessage ({
   }
 }
 
-export function buildOipFiveTemplate( templateMessage ) {
+export function buildOipFiveTemplate (templateMessage) {
   const templatePayload = {
     recordTemplate: templateMessage
   }
-  
+
   let err = OipFiveProto.verify(templatePayload)
   if (err) {
     throw new Error(err)
   }
-  
+
   const oip5message = OipFiveProto.create(templatePayload)
   const oip5messageBuffer = OipFiveProto.encode(oip5message).finish()
   const oip5message64 = util.base64.encode(oip5messageBuffer, 0, oip5messageBuffer.length)
   return { oip5messageBuffer, oip5message64, oip5message }
 }
-
 
 export default function templateBuilder ({ friendlyName, description, DescriptorSetProto, wif, network = 'mainnet' }) {
   if (!friendlyName || friendlyName === '') {
@@ -117,19 +116,19 @@ export default function templateBuilder ({ friendlyName, description, Descriptor
   if (!isValidWIF(wif, network)) {
     throw new Error(`Invalid WIF: ${wif}. network: ${network}`)
   }
-  
+
   network = network === 'mainnet' ? networks.floMainnet : networks.floTestnet
   const keypair = ECPair.fromWIF(wif, network)
-  
+
   // 1 build template message
   let { templateMessage } = buildRecordTemplate({ friendlyName, description, DescriptorSetProto })
-  
+
   // 2 build OIP5
   const { oip5messageBuffer, oip5message64 } = buildOipFiveTemplate(templateMessage)
-  
+
   // 3 sign oip5b64 message
   const { publicKeyAscii, signature } = signMessage({ ECPair: keypair, message: oip5message64 })
-  
+
   // 4 build SignedMessageProto
   return buildSignedMessage({ SerializedMessage: oip5messageBuffer, PubKey: publicKeyAscii, Signature: signature })
 }

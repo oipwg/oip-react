@@ -6,21 +6,26 @@ import { DescriptorSetProto } from '../index'
 import { templateBuilder } from './dependencies'
 import { isValidWIF } from '../../../util'
 
-const RecordTemplate = ({ classes }) => {
+const RecordTemplate = ({ classes, getPubResponse }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [privateKey, setPrivateKey] = useState('cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B')
+  const [privateKey, setPrivateKey] = useState('')
   const [disableSubmit, toggleDisable] = useState(true)
   const [descriptor, setProtoDescriptor] = useState(undefined)
-  
+  const [network, changeNetwork] = useState('mainnet')
+
   useEffect(() => {
-    toggleDisable(!isValidWIF(privateKey, 'testnet'))
-  }, [privateKey])
-  
+    toggleDisable(!isValidWIF(privateKey, network))
+  }, [privateKey, network])
+
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value)
   }
   
+  const handleNetworkChange = (e) => {
+    changeNetwork(e.target.value)
+  }
+
   const handlePublish = async () => {
     let template
     try {
@@ -29,16 +34,16 @@ const RecordTemplate = ({ classes }) => {
         DescriptorSetProto: descriptor,
         wif: privateKey,
         description,
-        network: 'testnet' // toDo: switch to mainnet
+        network
       })
     } catch (err) {
       throw Error(err)
     }
-    const {signedMessage64} = template
+    const { signedMessage64 } = template
     if (signedMessage64) {
       const prefix = 'p64:'
       const message = `${prefix}${signedMessage64}`
-      
+
       const oip = new OIP(privateKey, 'testnet', { explorerUrl: 'https://testnet.explorer.mediciland.com/api' }) // toDo: switch to flochain
       const wallet = oip.wallet
 
@@ -46,17 +51,23 @@ const RecordTemplate = ({ classes }) => {
       try {
         res = await wallet.sendDataToChain(message)
       } catch (err) {
+        if (getPubResponse) {
+          getPubResponse(err)
+        }
         alert(`failed to send template message to chain: ${err}`)
         // throw new Error(`failed to send template message to chain: ${err}`)
+      }
+      if (getPubResponse) {
+        getPubResponse(res)
       }
       alert(`Publish success/TXID: ${res}`)
     }
   }
-  
+
   const getProtoDescriptor = (descriptor) => {
     setProtoDescriptor(descriptor)
   }
-  
+
   return <div className={classes.root}>
     <div>
       <span>Friendly Name</span>
@@ -85,11 +96,22 @@ const RecordTemplate = ({ classes }) => {
         value={privateKey}
       />
     </div>
-    <button
-      disabled={disableSubmit}
-      onClick={handlePublish}
-    >Create & Publish
-    </button>
+    <div className={classes.publishRow}>
+      <select value={network} onChange={handleNetworkChange} className={classes.networkSelect}>
+        <option value={'mainnet'}>
+          mainnet
+        </option>
+        <option value={'testnet'}>
+          testnet
+        </option>
+      </select>
+      <button
+        disabled={disableSubmit}
+        onClick={handlePublish}
+      >Create & Publish
+      </button>
+    </div>
+    
   </div>
 }
 

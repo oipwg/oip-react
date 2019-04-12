@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react'
-import withStyles  from 'react-jss'
+import withStyles from 'react-jss'
 import uid from 'uid'
 
 import { useGlobalFormState } from '../../../hooks'
@@ -22,7 +22,7 @@ const protoFields = {
   'fixed32': 'number',
   'fixed64': 'number',
   'sfixed32': 'number',
-  'sfixed64': 'number',
+  'sfixed64': 'number'
 }
 
 const SelectOptions = React.memo((
@@ -31,11 +31,11 @@ const SelectOptions = React.memo((
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
-  
+
   return <select
     onChange={onChange ? (e) => onChange(e, id) : null}
-    onFocus={onFocus ? (e) => {onFocus(e, id)} : null}
-    onBlur={onBlur ? (e) => {onBlur(e, id)} : null}
+    onFocus={onFocus ? (e) => { onFocus(e, id) } : null}
+    onBlur={onBlur ? (e) => { onBlur(e, id) } : null}
     name={name}
     value={state[name]}
   >
@@ -69,8 +69,8 @@ const InputField = React.memo((
     value={state[name]}
     onKeyDown={okd}
     onChange={onChange ? (e) => onChange(e, id) : null}
-    onFocus={onFocus ? (e) => {onFocus(e, id)} : null}
-    onBlur={onBlur ? (e) => {onBlur(e, id)} : null}
+    onFocus={onFocus ? (e) => { onFocus(e, id) } : null}
+    onBlur={onBlur ? (e) => { onBlur(e, id) } : null}
     placeholder={placeholder}
   />
 }, (oldProps, newProps) => {
@@ -121,20 +121,20 @@ const FieldRow = ({ gfs, id, liftDescriptor }) => {
         gfs.update(e, id)
       }}
     /> : null}
-    {gfs.state.form[id].index > 0 && <button onClick={() => {gfs.remove(id)}}>-</button>}
+    {gfs.state.form[id].index > 0 && <button onClick={() => { gfs.remove(id) }}>-</button>}
   </div>
 }
 
 const DescriptorSetProto = ({ classes, getDescriptor }) => {
   const id = useRef(uid()).current
-  
+
   const initialFormRow = {
     fieldType: 'string',
     fieldName: '',
     fieldRule: 'singular'
   }
   const gfs = useGlobalFormState(id, initialFormRow)
-  
+
   const liftDescriptor = () => {
     if (getDescriptor) {
       let descriptor
@@ -148,7 +148,7 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
       }
     }
   }
-  
+
   return <div className={classes.root}>
     <FieldRow
       gfs={gfs}
@@ -166,7 +166,7 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
       }
     })}
     <button onClick={() => gfs.add(uid(), initialFormRow)}>+</button>
-    {/*<button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button>*/}
+    {/* <button onClick={onBuild ? () => onBuild(protobuilder(gfs.state.form)) : null}>Create</button> */}
   </div>
 }
 

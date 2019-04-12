@@ -11,18 +11,18 @@ const ThemeWrapper = (props) => {
 }
 
 storiesOf('Protobuf', module)
-.add('DescriptorSetProto', () => {
-  return <ThemeWrapper>
-    <DescriptorSetProto
-      onBuild={(proto) => console.log(proto.toString('base64'))}
-    />
-  </ThemeWrapper>
-})
+  .add('DescriptorSetProto', () => {
+    return <ThemeWrapper>
+      <DescriptorSetProto
+        onBuild={(proto) => console.log(proto.toString('base64'))}
+      />
+    </ThemeWrapper>
+  })
 
-.add('RecordTemplate', () => {
-  return <ThemeWrapper>
-    <RecordTemplate
-    
-    />
-  </ThemeWrapper>
-})
+  .add('RecordTemplate', () => {
+    return <ThemeWrapper>
+      <RecordTemplate
+
+      />
+    </ThemeWrapper>
+  })

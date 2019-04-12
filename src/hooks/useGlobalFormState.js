@@ -5,7 +5,7 @@ const useGlobalFormState = (id, initialRow) => {
   const DELETE = 'DELETE'
   const UPDATE = 'UPDATE'
   const RESET = 'RESET'
-  
+
   const initialState = {
     form: {
       [id]: {
@@ -14,20 +14,19 @@ const useGlobalFormState = (id, initialRow) => {
     },
     count: 0
   }
-  
-  
+
   function updateItem (state, id, key, value) {
     return {
       ...state.form,
       [id]: { ...state.form[id], [key]: value }
     }
   }
-  
+
   function deleteItem (form, id) {
     let { [id]: _, ...rest } = form
     return rest
   }
-  
+
   function reducer (state, action) {
     switch (action.type) {
       case ADD:
@@ -51,28 +50,28 @@ const useGlobalFormState = (id, initialRow) => {
         throw new Error()
     }
   }
-  
+
   const [state, dispatch] = useReducer(reducer, initialState)
-  
-  const _dispatch = ({type, id, key, value, obj}) => {
+
+  const _dispatch = ({ type, id, key, value, obj }) => {
     dispatch({ type, id, key, value, obj })
   }
-  
+
   function update (e, id) {
     const key = e.target.name
     const value = e.target.value
-    
-    _dispatch({type: UPDATE, id, key, value})
+
+    _dispatch({ type: UPDATE, id, key, value })
   }
-  
+
   function add (id, obj) {
-    _dispatch({type: ADD, id, obj})
+    _dispatch({ type: ADD, id, obj })
   }
-  
+
   function remove (id) {
-    _dispatch({type: DELETE, id})
+    _dispatch({ type: DELETE, id })
   }
-  
+
   return { state, add, remove, update }
 }
 

@@ -14,7 +14,7 @@ import withStyles from 'react-jss'
 
 const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur }) => {
   const initialState = { tags: [] }
-  
+
   function removeTag ({ tags, index }) {
     if (!index && index !== 0) {
       let newArray = [...tags]
@@ -26,7 +26,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
       return newArray
     }
   }
-  
+
   function reducer (state, action) {
     switch (action.type) {
       case 'ADD':
@@ -41,7 +41,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
         throw new Error()
     }
   }
-  
+
   const [state, dispatch] = useReducer(reducer, initialState)
   const [inputValue, updateValue] = useState('')
   useEffect(() => {
@@ -49,7 +49,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
       getTags(state.tags)
     }
   }, [state.tags])
-  
+
   function handleChange (e) {
     let value = e.target.value
     if (!allowSpaces) {
@@ -61,7 +61,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
       updateValue(e.target.value)
     }
   }
-  
+
   function handleKeyUp (e) {
     if (/(188|13)/.test(e.which)) { // test for comma or enter
       // add tag
@@ -80,14 +80,13 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
       }
     }
   }
-  
+
   const handleRemoveTag = (index) => {
     dispatch({ type: 'REMOVE', index })
   }
-  
-  const placeHolderText = state.tags.length === 0 && inputValue === '' ? placeholder ?
-    placeholder : 'e.g. (tag swag mag)' : null
-  
+
+  const placeHolderText = state.tags.length === 0 && inputValue === '' ? placeholder || 'e.g. (tag swag mag)' : null
+
   return <div
     className={classes.root}
   >
@@ -138,7 +137,7 @@ const styles = {
     justifyContent: 'flex-start',
     cursor: 'text',
     overflow: 'hidden',
-    whiteSpace: 'nowrap',
+    whiteSpace: 'nowrap'
   },
   tagContainer: {
     backgroundColor: 'rgba(0, 149, 255, 0.15)',
@@ -149,12 +148,12 @@ const styles = {
   tagRemove: {
     paddingLeft: 3,
     fontWeight: 'bold',
-    cursor: 'pointer',
+    cursor: 'pointer'
   },
   input: {
     border: 'none',
     outline: 'none',
-    padding: '4px',
+    padding: '4px'
   }
 }
 

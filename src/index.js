@@ -1,5 +1,5 @@
 import { useTheme, withStyles, ThemeProvider, ThemeGenerator } from './theme'
-import { DynamicComplexSearch, TagsInput, ProtoGen } from './components'
+import { DynamicComplexSearch, TagsInput, RecordTemplate } from './components'
 
 export {
   useTheme,
@@ -8,5 +8,5 @@ export {
   withStyles,
   DynamicComplexSearch,
   TagsInput,
-  ProtoGen
+  RecordTemplate
 }

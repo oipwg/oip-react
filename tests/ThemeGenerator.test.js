@@ -117,7 +117,7 @@ describe('ThemeGenerator', () => {
         success: 'green',
         warning: 'orange',
         danger: 'red',
-        info: 'blue',
+        info: 'blue'
       },
       dark: {
         primary: 'blue',
@@ -128,7 +128,7 @@ describe('ThemeGenerator', () => {
         success: 'green',
         warning: 'orange',
         danger: 'red',
-        info: 'blue',
+        info: 'blue'
       }
     }
     const themegen = new ThemeGenerator(p)
@@ -143,7 +143,7 @@ describe('ThemeGenerator', () => {
   it('use chroma functions', () => {
     const themegen = new ThemeGenerator()
     let theme = themegen.getTheme('light')
-    let brighten = theme.palette.primary.brighten(.3)
+    let brighten = theme.palette.primary.brighten(0.3)
     expect(typeof brighten).toEqual('string')
   })
 })

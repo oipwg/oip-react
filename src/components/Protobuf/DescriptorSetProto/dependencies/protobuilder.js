@@ -14,7 +14,7 @@ function protobuilder (form) {
   sorted.sort((a, b) => {
     return a[1] - b[1]
   })
-  
+
   const P = new protobuf.Type('P')
   let counter = 1
   for (let item of sorted) {
@@ -27,32 +27,33 @@ function protobuilder (form) {
       throw new Error(`Missing field name at position: ${counter} for id: ${id}`)
     }
     let rule = rowData.fieldRule === 'repeated' ? 'repeated' : undefined
-    
-    let ENUM = rowData.enumValue ? rowData.enumValue : undefined,
-      EnumProto
-    
+
+    let ENUM = rowData.enumValue ? rowData.enumValue : undefined
+
+    let EnumProto
+
     if (ENUM) {
       name = toPascalCase(name)
       let enumValues = {}
       enumValues['UNDEFINED'] = 0 // set default value
       for (let entry in ENUM) {
-        enumValues[`${name}_${ENUM[entry].toUpperCase()}`] = Number(Number(entry)+1)
+        enumValues[`${name}_${ENUM[entry].toUpperCase()}`] = Number(Number(entry) + 1)
       }
-     
+
       EnumProto = new protobuf.Enum(name, enumValues)
       P.add(EnumProto)
     } else {
       P.add(new protobuf.Field(name, index, type, rule))
     }
-    
+
     counter += 1
   }
-  
+
   let root = new protobuf.Root()
   root.define('oip5.record.templates').add(P)
   let descriptorFromRoot = root.toDescriptor('proto3')
   let buffer = descriptor.FileDescriptorSet.encode(descriptorFromRoot).finish()
-  
+
   return buffer
 }
 

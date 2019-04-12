@@ -9,10 +9,10 @@ import networks from '../networks'
  */
 export default function isValidWIF (key, network) {
   network = network === 'mainnet' ? networks.floMainnet : networks.floTestnet
-  
+
   try {
     let dec = wif.decode(key)
-    
+
     if (network) {
       return dec.version === network.wif
     } else {
