@@ -18,18 +18,21 @@ const SEND = 'Send'
 function renderBodyContent ({
   activeNavLink,
   activeCoin,
-  wallet
+  wallet,
+  coins
 }) {
   switch (activeNavLink) {
     case ADDRESSES:
       return <Addresses
         wallet={wallet}
         coin={activeCoin}
+        coins={coins}
       />
     default:
       return <Addresses
         wallet={wallet}
         coin={activeCoin}
+        coins={coins}
       />
   }
 }
@@ -40,7 +43,8 @@ const WalletBody = ({
   onNavLinkClick,
   navItems,
   activeNavLink,
-  activeCoin
+  activeCoin,
+  coins
 }) => {
   return <div className={classes.root}>
     <ActionNavBar
@@ -51,7 +55,8 @@ const WalletBody = ({
     {renderBodyContent({
       activeNavLink,
       activeCoin,
-      wallet
+      wallet,
+      coins
     })}
   </div>
 }

@@ -53,6 +53,7 @@ const WalletInterface = ({
       navItems={navigationLinks}
       wallet={wallet}
       activeCoin={activeCoin}
+      coins={coins}
     />
   </div>
 }
