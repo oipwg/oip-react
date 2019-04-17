@@ -5,7 +5,7 @@ import classNames from 'classnames'
 const styles = theme => ({
   root: {
     display: 'flex',
-    flex: '4',
+    flex: '3',
     flexDirection: 'column',
     borderRight: '1px solid grey',
     overflowY: 'auto'
