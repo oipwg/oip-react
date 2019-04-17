@@ -1,4 +1,4 @@
-import { ECPair } from 'bitcoinjs-lib'
+import { ECPair, payments } from 'bitcoinjs-lib'
 import { Networks, OIP } from 'js-oip'
 import { util as protoUtil } from 'protobufjs'
 import { verify } from 'bitcoinjs-message'
@@ -26,9 +26,14 @@ const wif = 'cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B'
 const p2pkh = 'ofbB67gqjgaYi45u8Qk2U3hGoCmyZcgbN4'
 const ecpair = ECPair.fromWIF(wif, network.flo_testnet)
 
-// const p2pkh = payments.p2pkh({pubkey: ecpair.publicKey, network: network.flo_testnet}).address
-// console.log(ECPair.makeRandom({network: network.flo_testnet}).toWIF())
-
+//cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq
+//oRpmeYvjgfhkSpPWGL8eP5ePupyop3hz9j
+it('make random ECPair', () => {
+  const randomWIF = ECPair.makeRandom({network: network.flo_testnet}).toWIF()
+  // console.log(randomWIF)
+  const EC = ECPair.fromWIF(randomWIF, network.flo_testnet)
+  // console.log(payments.p2pkh({pubkey: EC.publicKey, network: network.flo_testnet}).address)
+})
 describe('RecordTemplate', () => {
   it('build record template', () => {
     const friendlyName = 'Test Template'
