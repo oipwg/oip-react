@@ -12,13 +12,13 @@ const styles = theme => ({
     justifyContent: 'space-between',
     padding: [0, 10],
     alignItems: 'center',
-    color: 'white'
+    color: 'white',
   }
 })
-const WalletHeader = ({ classes }) => {
+const WalletHeader = ({ classes, resetWallet }) => {
   return <div className={classes.root}>
     <h5>hdmw-module</h5>
-    <span>toggle</span>
+    <span onClick={resetWallet} style={{cursor: 'pointer'}}>reset</span>
   </div>
 }
 
