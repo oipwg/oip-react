@@ -13,19 +13,19 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
   const [disableSubmit, toggleDisable] = useState(true)
   const [descriptor, setProtoDescriptor] = useState(undefined)
   const [network, changeNetwork] = useState('mainnet')
-  
+
   useEffect(() => {
     toggleDisable(!isValidWIF(privateKey, network))
   }, [privateKey, network])
-  
+
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value)
   }
-  
+
   const handleNetworkChange = (e) => {
     changeNetwork(e.target.value)
   }
-  
+
   const handlePublish = async () => {
     let template
     try {
@@ -43,12 +43,12 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
     if (signedMessage64) {
       const prefix = 'p64:'
       const message = `${prefix}${signedMessage64}`
-      
+
       const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
-      
+
       const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
       const wallet = oip.wallet
-      
+
       let res
       try {
         res = await wallet.sendDataToChain(message)
@@ -65,11 +65,11 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       alert(`Publish success/TXID: ${res}`)
     }
   }
-  
+
   const getProtoDescriptor = (descriptor) => {
     setProtoDescriptor(descriptor)
   }
-  
+
   return <div className={classes.recordTemplateRoot}>
     <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
       <span className={classes.inputTitle}>Friendly Name</span>
