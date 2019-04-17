@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import withStyles from 'react-jss'
 import { validateMnemonic, generateMnemonic } from 'bip39'
 import classNames from 'classnames'
@@ -54,19 +54,10 @@ const styles = theme => ({
 
 const LoadWallet = ({
   classes,
-  children,
-  errorMessage,
-  mnemonic,
-  headerSize,
   onMnemonicSubmit
 }) => {
   const [mnemonicState, setMnemonic] = useState('')
   const [isValidMnemonic, setMnemonicValidToBe] = useState(false)
-
-  if (mnemonic) {
-    setMnemonic(mnemonic)
-    mnemonic = undefined
-  }
 
   useEffect(() => {
     const isValid = validateMnemonic(mnemonicState)
@@ -80,7 +71,7 @@ const LoadWallet = ({
   function genMnemonic () {
     setMnemonic(generateMnemonic())
   }
-  console.log(isValidMnemonic)
+
   return <div className={classes.root}>
     <div className={classes.contentContainer}>
       <h3 style={{ color: '#989898' }}>enter your mnemonic or create a new wallet</h3>
@@ -105,7 +96,6 @@ const LoadWallet = ({
         >
           Load Wallet
         </button>
-
       </div>
     </div>
   </div>
