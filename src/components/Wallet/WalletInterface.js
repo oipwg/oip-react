@@ -19,7 +19,6 @@ const WalletInterface = ({
   const [activeCoin, setActiveCoin] = useState(coins[0])
 
   const handleSetActiveCoin = (coin) => {
-    console.log('set active coin', coin)
     setActiveCoin(coin)
   }
 
