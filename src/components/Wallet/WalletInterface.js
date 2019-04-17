@@ -17,21 +17,24 @@ const WalletInterface = ({
   coins = []
 }) => {
   const [activeCoin, setActiveCoin] = useState(coins[0])
-  
+
   const handleSetActiveCoin = (coin) => {
+    console.log('set active coin', coin)
     setActiveCoin(coin)
   }
-  
+
   useEffect(() => {
     //
   }, [activeCoin])
+  
   return <div className={classes.root}>
     <Coins
       wallet={wallet}
       coins={coins}
       setActiveCoin={handleSetActiveCoin}
+      activeCoin={activeCoin}
     />
-    <WalletBody/>
+    <WalletBody />
   </div>
 }
 

@@ -33,7 +33,8 @@ const Coins = ({
   classes,
   coins,
   wallet,
-  setActiveCoin
+  setActiveCoin,
+  activeCoin
 }) => {
   if (!coins || coins.length === 0) {
     coins = Object.keys(wallet.getCoins())
@@ -56,13 +57,22 @@ const Coins = ({
     }
     getBalancesAndRates()
   }, [])
+  
+  const activeCoinStyle = (coin) => {
+    if (coin === activeCoin) {
+      return {
+        borderLeft: '2px solid blue'
+      }
+    }
+  }
 
   return <div className={classes.root}>
     {coins.map((coin, i) => {
       return <div
         key={i}
         className={classes.coinContainer}
-        onClick={setActiveCoin}
+        onClick={() => setActiveCoin(coin)}
+        style={activeCoinStyle(coin)}
       >
         <span
           className={classNames(classes.coinInfoItem, classes.coinTitle)}
