@@ -7,7 +7,7 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '15 1 auto',
+    flex: '15 1',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
