@@ -18,7 +18,6 @@ const ModuleWallet = ({
   classes,
   mnemonic,
   coins,
-  withoutCoins
 }) => {
   const walletRef = useRef(null)
   const [lock, setLock] = useState(true)
@@ -44,7 +43,6 @@ const ModuleWallet = ({
         resetWallet={resetWallet}
         wallet={walletRef.current}
         coins={coins}
-        withoutCoins={withoutCoins}
       />}
   </div>
 }
