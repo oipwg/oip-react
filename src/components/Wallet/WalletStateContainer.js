@@ -28,7 +28,7 @@ const WalletStateContainer = ({
   const addresses = activeNavLink === ADDRESSES
   const transactions = activeNavLink === TRANSACTIONS
   const send = activeNavLink === SEND
-
+  
   function init ({ wallet, coins }) {
     const __coins = coins || Object.keys(wallet.getCoins())
     let stateObj = {}
@@ -114,9 +114,33 @@ const WalletStateContainer = ({
         }
       }
     }
-
+    async function getTransactions (addresses) {
+      const explorer = wallet.getNetworks()[activeCoin].explorer
+      let transactions
+      try {
+        transactions = await explorer.getTransactionsForAddresses(addresses)
+      } catch (err) {
+        console.error(`Failed to get transactions for coin: ${activeCoin} from explorer: ${err}`)
+      }
+      console.log(transactions)
+      dispatch({
+        type: ADD_TRANSACTIONS,
+        coin: activeCoin,
+        transactions: transactions.items
+      })
+    }
     if (activeNavLink === TRANSACTIONS) {
       // handle transactions
+
+      // if transactions already in state do nothing
+      if (state[activeCoin].transactions.length === 0) {
+        const addresses = state[activeCoin].addresses
+        let pubAddresses = []
+        for (let addr of addresses) {
+          pubAddresses.push(addr.getPublicAddress())
+        }
+        getTransactions(pubAddresses)
+      }
     }
   }, [activeCoin, activeNavLink])
 
@@ -136,19 +160,21 @@ const WalletStateContainer = ({
       addresses: [address]
     })
   }
+
   return <div className={classes.root}>
     {addresses && <Addresses
       addresses={state[activeCoin].addresses}
       addAddress={handleAddAddress}
       explorerUrl={wallet.getExplorerUrls()[activeCoin]}
     />}
-    {/* {transactions && <Transactions */}
-    {/*  transactions={state[coin.transactions]} */}
-    {/* />} */}
+    {transactions && <Transactions
+      transactions={state[activeCoin].transactions}
+      explorerUrl={wallet.getExplorerUrls()[activeCoin]}
+      addresses={state[activeCoin].addresses}
+    />}
     {/* {send && <Send */}
 
     {/* />} */}
-
   </div>
 }
 
