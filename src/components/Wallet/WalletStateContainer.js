@@ -28,7 +28,7 @@ const WalletStateContainer = ({
   const addresses = activeNavLink === ADDRESSES
   const transactions = activeNavLink === TRANSACTIONS
   const send = activeNavLink === SEND
-  
+
   function init ({ wallet, coins }) {
     const __coins = coins || Object.keys(wallet.getCoins())
     let stateObj = {}
@@ -88,6 +88,24 @@ const WalletStateContainer = ({
 
   const [state, dispatch] = useReducer(reducer, { coins, wallet }, init)
 
+  function getUsedAddresses ({ activeCoin, wallet }) {
+    const __COIN = wallet.getCoin(activeCoin)
+    const __MAIN_ACCOUNT = __COIN.getAccount(0)
+    const usedAddresses = __MAIN_ACCOUNT.getUsedAddresses()
+
+    if (usedAddresses.length > 0) {
+      return usedAddresses
+    } else {
+      return [__MAIN_ACCOUNT.getMainAddress()]
+    }
+  }
+  function setUsedAddresses (usedAddresses) {
+    dispatch({
+      type: ADD_ADDRESSES,
+      coin: activeCoin,
+      addresses: usedAddresses
+    })
+  }
   // onMount/Update
   // when the coin changes and when the nav link changes
   useEffect(() => {
@@ -96,22 +114,8 @@ const WalletStateContainer = ({
 
       // if addresses already in state do nothing
       if (state[activeCoin].addresses.length === 0) {
-        const __COIN = wallet.getCoin(activeCoin)
-        const __MAIN_ACCOUNT = __COIN.getAccount(0)
-        const usedAddresses = __MAIN_ACCOUNT.getUsedAddresses()
-        if (usedAddresses.length > 0) {
-          dispatch({
-            type: ADD_ADDRESSES,
-            coin: activeCoin,
-            addresses: usedAddresses
-          })
-        } else {
-          dispatch({
-            type: ADD_ADDRESSES,
-            coin: activeCoin,
-            addresses: [__MAIN_ACCOUNT.getMainAddress()]
-          })
-        }
+        const addresses = getUsedAddresses({ activeCoin, wallet })
+        setUsedAddresses(addresses)
       }
     }
     async function getTransactions (addresses) {
@@ -134,12 +138,22 @@ const WalletStateContainer = ({
 
       // if transactions already in state do nothing
       if (state[activeCoin].transactions.length === 0) {
-        const addresses = state[activeCoin].addresses
-        let pubAddresses = []
-        for (let addr of addresses) {
-          pubAddresses.push(addr.getPublicAddress())
+        if (state[activeCoin].addresses.length === 0) {
+          const addresses = getUsedAddresses({ activeCoin, wallet })
+          setUsedAddresses(addresses)
+          let pubAddresses = []
+          for (let addr of addresses) {
+            pubAddresses.push(addr.getPublicAddress())
+          }
+          getTransactions(pubAddresses)
+        } else {
+          const addresses = state[activeCoin].addresses
+          let pubAddresses = []
+          for (let addr of addresses) {
+            pubAddresses.push(addr.getPublicAddress())
+          }
+          getTransactions(pubAddresses)
         }
-        getTransactions(pubAddresses)
       }
     }
   }, [activeCoin, activeNavLink])
