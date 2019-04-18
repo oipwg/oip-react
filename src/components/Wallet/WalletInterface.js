@@ -23,9 +23,16 @@ const navigationLinks = [
 const WalletInterface = ({
   classes,
   wallet,
-  coins = []
+  coins
 }) => {
-  const [activeCoin, setActiveCoin] = useState(coins[0] || 'flo')
+  let defaultCoin
+  if (!coins) {
+    coins = Object.keys(wallet.getCoins())
+    defaultCoin = 'flo'
+  } else {
+    defaultCoin = coins[0]
+  }
+  const [activeCoin, setActiveCoin] = useState(defaultCoin)
   const [activeNavLink, setActiveNavLink] = useState(ADDRESSES)
 
   const handleSetActiveCoin = (coin) => {

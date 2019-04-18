@@ -36,9 +36,6 @@ const Coins = ({
   setActiveCoin,
   activeCoin
 }) => {
-  if (!coins || coins.length === 0) {
-    coins = Object.keys(wallet.getCoins())
-  }
   const [coinBalances, setCoinBalances] = useState({})
   const [xRates, setXRates] = useState({})
   const [err, setError] = useState(undefined)
@@ -57,7 +54,7 @@ const Coins = ({
     }
     getBalancesAndRates()
   }, [])
-  
+
   const activeCoinStyle = (coin) => {
     if (coin === activeCoin) {
       return {
