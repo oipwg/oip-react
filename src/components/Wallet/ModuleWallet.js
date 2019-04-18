@@ -17,7 +17,7 @@ const styles = theme => ({
 const ModuleWallet = ({
   classes,
   mnemonic,
-  coins,
+  coins
 }) => {
   const walletRef = useRef(null)
   const [lock, setLock] = useState(true)
