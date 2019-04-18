@@ -1,3 +1,4 @@
+/* eslint-env jest */
 import { ECPair, payments } from 'bitcoinjs-lib'
 import { Networks, OIP } from 'js-oip'
 import { util as protoUtil } from 'protobufjs'
@@ -26,13 +27,14 @@ const wif = 'cRVa9rNx5N1YKBw8PhavegJPFCiYCfC4n8cYmdc3X1Y6TyFZGG4B'
 const p2pkh = 'ofbB67gqjgaYi45u8Qk2U3hGoCmyZcgbN4'
 const ecpair = ECPair.fromWIF(wif, network.flo_testnet)
 
-//cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq
-//oRpmeYvjgfhkSpPWGL8eP5ePupyop3hz9j
+// cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq
+// oRpmeYvjgfhkSpPWGL8eP5ePupyop3hz9j
+
 it('make random ECPair', () => {
-  const randomWIF = ECPair.makeRandom({network: network.flo_testnet}).toWIF()
-  // console.log(randomWIF)
+  const randomWIF = ECPair.makeRandom({ network: network.flo_testnet }).toWIF()
   const EC = ECPair.fromWIF(randomWIF, network.flo_testnet)
-  // console.log(payments.p2pkh({pubkey: EC.publicKey, network: network.flo_testnet}).address)
+  const p2pkh = payments.p2pkh({ pubkey: EC.publicKey, network: network.flo_testnet }).address
+  // console.log(randomWIF, p2pkh
 })
 describe('RecordTemplate', () => {
   it('build record template', () => {
