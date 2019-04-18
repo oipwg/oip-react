@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useReducer, useRef } from 'react'
+import React, { useEffect, useReducer } from 'react'
 import withStyles from 'react-jss'
 import Addresses from './Addresses'
 import Transactions from './Transactions'
