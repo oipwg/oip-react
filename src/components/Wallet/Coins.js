@@ -65,6 +65,7 @@ const Coins = ({
 
   return <div className={classes.root}>
     {coins.map((coin, i) => {
+      const COIN = wallet.getCoin(coin)
       return <div
         key={i}
         className={classes.coinContainer}
@@ -74,12 +75,12 @@ const Coins = ({
         <span
           className={classNames(classes.coinInfoItem, classes.coinTitle)}
         >
-          {coin} wallet
+          {COIN.coin.displayName} wallet
         </span>
         <span
           className={classNames(classes.coinInfoItem, classes.coinRateInfo)}
         >
-          {coinBalances[coin]} {coin} ≈ ${coinBalances[coin] * xRates[coin]}
+          {coinBalances[coin]} {COIN.coin.ticker} ≈ ${coinBalances[coin] * xRates[coin]}
         </span>
       </div>
     })}
