@@ -14,7 +14,8 @@ const styles = theme => ({
     flexDirection: 'row',
     flex: '1',
     padding: [5, 10],
-    cursor: 'pointer'
+    cursor: 'pointer',
+    justifyContent: 'center'
   }
 })
 
