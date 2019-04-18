@@ -31,6 +31,8 @@
     "standard": "^12.0.1"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/icons": "^3.0.2",
     "bip39": "^3.0.1",
     "bitcoinjs-lib": "^5.0.1",
     "bitcoinjs-message": "^2.0.0",
