@@ -42,12 +42,12 @@ const Coins = ({
   useEffect(() => {
     async function getBalancesAndRates () {
       try {
-        // setCoinBalances(await wallet.getCoinBalances({ coins, discover: true, testnet: true }))
+        setCoinBalances(await wallet.getCoinBalances({ coins, discover: true, testnet: true }))
       } catch (err) {
         setError(err)
       }
       try {
-        // setXRates(await wallet.getExchangeRates({ coins }))
+        setXRates(await wallet.getExchangeRates({ coins }))
       } catch (err) {
         setError(err)
       }
