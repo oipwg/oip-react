@@ -15,13 +15,14 @@ const styles = theme => ({
     flex: '0 0 30px',
     fontFamily: 'monospace',
     alignItems: 'center',
-    margin: [16, 5],
+    margin: [16, 16],
     fontSize: '11px'
   },
   txBalance: {
     display: 'flex',
     justifyContent: 'center',
-    flex: '2'
+    flex: '2',
+    margin: [0, 34]
   },
   timeAndTxid: {
     display: 'flex',
@@ -64,32 +65,36 @@ const capDecimals = (num, cap = 8, maxLen = 8) => {
   }
 }
 
-const calculateAmount = (vin, vout, usedPubAddresses) => {
+const calculateAmount = (vin, vout, addresses) => {
+  let usedPubAddresses = []
+  for (let addr of addresses) {
+    usedPubAddresses.push(addr.getPublicAddress())
+  }
   let vinData = []
   for (let vi of vin) {
-    vinData.push({address: vi.addr, valueSat: vi.valueSat})
+    vinData.push({ address: vi.addr, valueSat: vi.valueSat })
   }
-  
+
   let voutData = []
   for (let vo of vout) {
-    const value = vo.value * 1e8 //convert to satoshi
+    const value = vo.value * 1e8 // convert to satoshi
     let addresses = []
-    
+
     let addressesInVout = vo.scriptPubKey.addresses
     for (let addr of addressesInVout) {
       addresses.push(addr)
     }
-    
-    voutData.push({value, addresses})
+
+    voutData.push({ value, addresses })
   }
-  
+
   let moneySentFromMe = 0
   for (let vind of vinData) {
     if (usedPubAddresses.includes(vind.address)) {
       moneySentFromMe += Number(vind.valueSat)
     }
   }
-  
+
   let moneySentToMe = 0
   for (let voutd of voutData) {
     for (let addr of voutd.addresses) {
@@ -98,12 +103,12 @@ const calculateAmount = (vin, vout, usedPubAddresses) => {
       }
     }
   }
-  
+
   let amount = (moneySentToMe) - (moneySentFromMe)
   amount /= 1e8
   let type = amount > 0 ? 'Received' : 'Sent'
   amount = capDecimals(amount, 8)
-  return {amount, type}
+  return { amount, type }
 }
 
 const Transactions = ({
@@ -115,7 +120,7 @@ const Transactions = ({
   explorerUrl = explorerUrl.split('api')[0]
   return <div className={classes.root}>
     {transactions.map((tx, i) => {
-      console.log(calculateAmount(tx.vin, tx.vout, addresses))
+      const { amount } = calculateAmount(tx.vin, tx.vout, addresses)
       return <div
         key={i}
         className={classes.txContainer}
@@ -126,8 +131,8 @@ const Transactions = ({
             onClick={() => window.open(`${explorerUrl}/tx/${tx.txid}`, '_blank')}
           >{tx.txid}</span>
         </div>
-        <div className={classes.txBalance}>
-          3
+        <div style={{ color: amount >= 0 ? 'green' : 'red' }} className={classes.txBalance}>
+          {amount > 0 ? '+' : null }{amount}
         </div>
       </div>
     })}
