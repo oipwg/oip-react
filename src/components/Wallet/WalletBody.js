@@ -7,7 +7,8 @@ const styles = theme => ({
   root: {
     display: 'flex',
     flexDirection: 'column',
-    flex: '9'
+    flex: '9',
+    overflow: 'auto'
   }
 })
 
