@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
 import classNames from 'classnames'
+import capDecimals from '../../util/capDecimals'
 
 const styles = theme => ({
   root: {
@@ -63,6 +64,13 @@ const Coins = ({
     }
   }
 
+  function displayBalance (coinname, COIN) {
+    if (coinname.includes('_testnet')) {
+      return `${coinBalances[coinname]} ${COIN.coin.ticker}`
+    } else {
+      return `${coinBalances[coinname]} ${COIN.coin.ticker} ≈ $${capDecimals((coinBalances[coinname] * xRates[coinname]), 2)}`
+    }
+  }
   return <div className={classes.root}>
     {coins.map((coin, i) => {
       const COIN = wallet.getCoin(coin)
@@ -80,7 +88,7 @@ const Coins = ({
         <span
           className={classNames(classes.coinInfoItem, classes.coinRateInfo)}
         >
-          {coinBalances[coin]} {COIN.coin.ticker} ≈ ${coinBalances[coin] * xRates[coin]}
+          {displayBalance(coin, COIN)}
         </span>
       </div>
     })}
