@@ -23,9 +23,13 @@ const ModuleWallet = ({
   const [lock, setLock] = useState(true)
 
   function onMnemonicSubmit (mnemonic) {
-    walletRef.current = new Wallet(mnemonic, { discover: false })
+    walletRef.current = new Wallet(mnemonic, {
+      discover: true,
+      supported_coins: coins
+    })
     setLock(false)
   }
+
   const resetWallet = () => {
     walletRef.current = null
     setLock(true)

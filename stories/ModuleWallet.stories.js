@@ -22,10 +22,13 @@ storiesOf('ModuleWallet', module)
         flexDirection: 'row',
         height: '300px',
         width: '600px',
-        borderTopLeftRadius: '10px',
-        borderTopRightRadius: '10px'
+        // borderTopLeftRadius: '10px',
+        // borderTopRightRadius: '10px'
+        borderRadius: '10px'
       }}>
-        <ModuleWallet />
+        <ModuleWallet
+          coins={['flo', 'flo_testnet']}
+        />
       </div>
     </ThemeWrapper>
   })
