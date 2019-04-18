@@ -20,8 +20,8 @@ storiesOf('ModuleWallet', module)
       <div style={{
         display: 'flex',
         flexDirection: 'row',
-        height: '300px',
-        width: '600px',
+        height: '339px',
+        width: '744px',
         // borderTopLeftRadius: '10px',
         // borderTopRightRadius: '10px'
         borderRadius: '10px'
