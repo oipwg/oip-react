@@ -7,18 +7,19 @@ const styles = theme => ({
     flexDirection: 'row',
     flex: '1 1 30px',
     backgroundColor: 'blue',
-    borderRadius: 'inherit',
+    borderTopRightRadius: 'inherit',
+    borderTopLeftRadius: 'inherit',
     overflow: 'hidden',
     justifyContent: 'space-between',
     padding: [0, 10],
     alignItems: 'center',
-    color: 'white',
+    color: 'white'
   }
 })
 const WalletHeader = ({ classes, resetWallet }) => {
   return <div className={classes.root}>
     <h5>hdmw-module</h5>
-    <span onClick={resetWallet} style={{cursor: 'pointer'}}>reset</span>
+    <span onClick={resetWallet} style={{ cursor: 'pointer' }}>reset</span>
   </div>
 }
 
