@@ -37,7 +37,8 @@ const styles = theme => ({
   cycleArrow: {
     display: 'flex',
     flex: '1',
-    cursor: 'pointer'
+    cursor: 'pointer',
+    justifyContent: 'center'
   },
   formContainer: {
     display: 'flex',
