@@ -87,76 +87,75 @@ const WalletStateContainer = ({
   }
 
   const [state, dispatch] = useReducer(reducer, { coins, wallet }, init)
-
-  function getUsedAddresses ({ activeCoin, wallet }) {
-    const __COIN = wallet.getCoin(activeCoin)
-    const __MAIN_ACCOUNT = __COIN.getAccount(0)
-    const usedAddresses = __MAIN_ACCOUNT.getUsedAddresses()
-
-    if (usedAddresses.length > 0) {
-      return usedAddresses
-    } else {
-      return [__MAIN_ACCOUNT.getMainAddress()]
-    }
-  }
-  function setUsedAddresses (usedAddresses) {
-    dispatch({
-      type: ADD_ADDRESSES,
-      coin: activeCoin,
-      addresses: usedAddresses
-    })
-  }
-  // onMount/Update
-  // when the coin changes and when the nav link changes
+  
   useEffect(() => {
-    if (activeNavLink === ADDRESSES) {
-      // handle addresses
-
-      // if addresses already in state do nothing
-      if (state[activeCoin].addresses.length === 0) {
-        const addresses = getUsedAddresses({ activeCoin, wallet })
-        setUsedAddresses(addresses)
-      }
+    function setUsedAddresses (usedAddresses) {
+      dispatch({
+        type: ADD_ADDRESSES,
+        coin: activeCoin,
+        addresses: usedAddresses
+      })
     }
     async function getTransactions (addresses) {
       const explorer = wallet.getNetworks()[activeCoin].explorer
+      console.log('addresses to get transactions', addresses)
+      let pubAddresses = []
+      for (let addr of addresses) {
+        pubAddresses.push( addr.getPublicAddress() )
+      }
       let transactions
       try {
-        transactions = await explorer.getTransactionsForAddresses(addresses)
+        transactions = await explorer.getTransactionsForAddresses(pubAddresses)
       } catch (err) {
         console.error(`Failed to get transactions for coin: ${activeCoin} from explorer: ${err}`)
       }
-      console.log(transactions)
+      console.log('trans', transactions)
       dispatch({
         type: ADD_TRANSACTIONS,
         coin: activeCoin,
         transactions: transactions.items
       })
     }
-    if (activeNavLink === TRANSACTIONS) {
-      // handle transactions
-
-      // if transactions already in state do nothing
-      if (state[activeCoin].transactions.length === 0) {
-        if (state[activeCoin].addresses.length === 0) {
-          const addresses = getUsedAddresses({ activeCoin, wallet })
-          setUsedAddresses(addresses)
-          let pubAddresses = []
-          for (let addr of addresses) {
-            pubAddresses.push(addr.getPublicAddress())
-          }
-          getTransactions(pubAddresses)
-        } else {
-          const addresses = state[activeCoin].addresses
-          let pubAddresses = []
-          for (let addr of addresses) {
-            pubAddresses.push(addr.getPublicAddress())
-          }
-          getTransactions(pubAddresses)
+    async function getAddrsAndTxs ({ activeCoin, wallet }) {
+      let addrs = []
+      if (state[activeCoin].addresses.length === 0) {
+        const __COIN = wallet.getCoin(activeCoin)
+        const __MAIN_ACCOUNT = __COIN.getAccount(0)
+  
+        let account
+        try {
+          account = await __MAIN_ACCOUNT.discoverChains()
+        } catch (err) {
+          console.error(`Error discovering chains for account: ${err}`)
         }
+  
+        let addresses
+        if (account) {
+          const usedAddresses = account.getUsedAddresses()
+          if (usedAddresses.length > 0) {
+            addresses = usedAddresses
+          } else {
+            addresses = [account.getMainAddress()]
+          }
+        } else {
+          const usedAddresses = __MAIN_ACCOUNT.getUsedAddresses()
+          if (usedAddresses.length > 0) {
+            addresses = usedAddresses
+          } else {
+            addresses = [__MAIN_ACCOUNT.getMainAddress()]
+          }
+        }
+        addrs = addresses
+        setUsedAddresses(addrs)
+      }
+      
+      if (state[activeCoin].transactions.length === 0) {
+        await getTransactions(addrs)
       }
     }
-  }, [activeCoin, activeNavLink])
+  
+    getAddrsAndTxs({activeCoin, wallet})
+  }, [activeCoin])
 
   function handleAddAddress () {
     const addresses = state[activeCoin].addresses
