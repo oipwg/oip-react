@@ -18,7 +18,8 @@ const styles = theme => ({
     flex: '3',
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%'
+    width: '100%',
+    fontSize: '22px'
   },
   sendBody: {
     display: 'flex',

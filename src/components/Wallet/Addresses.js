@@ -2,7 +2,7 @@ import React from 'react'
 import withStyles from 'react-jss'
 import ClipboardJS from 'clipboard'
 import classNames from 'classnames'
-import { Link } from '@material-ui/icons'
+import { Link, Fingerprint } from '@material-ui/icons'
 
 const styles = theme => ({
   root: {
@@ -18,17 +18,18 @@ const styles = theme => ({
     fontFamily: 'monospace',
     alignItems: 'center',
     marginRight: [5, 5],
+    padding: [0, 7],
     '& span': {
       justifyContent: 'center'
     }
   },
   addressIndex: {
     display: 'flex',
-    flex: '2'
+    flex: '1'
   },
   pubAddress: {
     display: 'flex',
-    flex: '8',
+    flex: '9',
     cursor: 'copy',
     '&:hover': {
       color: 'blue'
@@ -36,10 +37,18 @@ const styles = theme => ({
   },
   explorerLink: {
     display: 'flex',
-    flex: '2',
+    flex: '1',
     cursor: 'pointer',
     '&:hover': {
       color: 'red'
+    }
+  },
+  copyWIF: {
+    display: 'flex',
+    flex: '1',
+    cursor: 'copy',
+    '&:hover': {
+      color: 'orange'
     }
   },
   addAddress: {
@@ -61,23 +70,23 @@ const Addresses = ({
   addresses,
   explorerUrl
 }) => {
-  new ClipboardJS('.copy-to-clipboard')
+  new ClipboardJS('.copy-p2pkh')
   explorerUrl = explorerUrl.split('api')[0]
   return <div className={classes.root}>
     {addresses.map((addr) => {
       return <div
+        className={classes.addressContainer}
         key={addr.address.index}
-        className={classNames('copy-to-clipboard', classes.addressContainer)}
-        data-clipboard-target={`#addr-${addr.address.index}`}
       >
         <span className={classes.addressIndex}>/{addr.address.index}</span>
         <span
+          data-clipboard-target={`#addr-${addr.address.index}`}
           id={`addr-${addr.address.index}`}
-          className={classes.pubAddress}
+          className={classNames('copy-p2pkh', classes.pubAddress)}
           onClick={() => {
             let sel = window.getSelection()
             sel.empty()
-            window.alert('copied to clipboard')
+            window.alert('copied address to clipboard')
           }}
         >
           {addr.getPublicAddress()}
@@ -86,8 +95,18 @@ const Addresses = ({
           className={classes.explorerLink}
           onClick={() => window.open(`${explorerUrl}/address/${addr.getPublicAddress()}`, '_blank')}
         >
-          <Link />
+          <Link/>
         </span>
+        <span
+          className={classes.copyWIF}
+          onClick={() => {
+            navigator.clipboard.writeText(addr.getPrivateAddress())
+            window.alert('Copied Private Key in WIF format to clipboard')
+          }}
+        >
+          <Fingerprint/>
+        </span>
+      
       </div>
     })}
     {/* give it a split second to load =D */}
@@ -97,7 +116,7 @@ const Addresses = ({
         onClick={() => addAddress()}>
         + Show next address
       </span>
-    </div> : null }
+    </div> : null}
   </div>
 }
 
