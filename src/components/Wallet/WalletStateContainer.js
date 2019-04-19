@@ -121,14 +121,14 @@ const WalletStateContainer = ({
       if (state[activeCoin].addresses.length === 0) {
         const __COIN = wallet.getCoin(activeCoin)
         const __MAIN_ACCOUNT = __COIN.getAccount(0)
-  
+
         let account
         try {
           account = await __MAIN_ACCOUNT.discoverChains()
         } catch (err) {
           console.error(`Error discovering chains for account: ${err}`)
         }
-  
+
         let addresses
         if (account) {
           const usedAddresses = account.getUsedAddresses()
@@ -148,12 +148,12 @@ const WalletStateContainer = ({
         addrs = addresses
         setUsedAddresses(addrs)
       }
-      
+
       if (state[activeCoin].transactions.length === 0) {
         await getTransactions(addrs)
       }
     }
-  
+
     getAddrsAndTxs({activeCoin, wallet})
   }, [activeCoin])
 
@@ -185,9 +185,10 @@ const WalletStateContainer = ({
       explorerUrl={wallet.getExplorerUrls()[activeCoin]}
       addresses={state[activeCoin].addresses}
     />}
-    {/* {send && <Send */}
-
-    {/* />} */}
+     {send && <Send
+      activeCoin={activeCoin}
+      wallet={wallet}
+     />}
   </div>
 }
 

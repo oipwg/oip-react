@@ -16,7 +16,6 @@ const styles = theme => ({
 
 const ModuleWallet = ({
   classes,
-  mnemonic,
   coins
 }) => {
   const walletRef = useRef(null)
@@ -24,7 +23,7 @@ const ModuleWallet = ({
 
   function onMnemonicSubmit (mnemonic) {
     walletRef.current = new Wallet(mnemonic, {
-      discover: true,
+      discover: false,
       supported_coins: coins
     })
     setLock(false)
@@ -34,13 +33,12 @@ const ModuleWallet = ({
     walletRef.current = null
     setLock(true)
   }
-
+  
   return <div className={classes.root}>
     <WalletHeader
       resetWallet={resetWallet}
     />
     {lock ? <LoadWallet
-      mnemonic={mnemonic}
       onMnemonicSubmit={onMnemonicSubmit}
     />
       : <WalletInterface
