@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
-import classNames from 'classnames'
 import capDecimals from '../../util/capDecimals'
+import { Refresh } from '@material-ui/icons'
 
 const styles = theme => ({
   root: {
@@ -14,20 +14,45 @@ const styles = theme => ({
   coinContainer: {
     display: 'flex',
     cursor: 'pointer',
-    flex: '0 0 50px',
+    flex: '0 0 80px',
     justifyContent: 'space-around',
     alignItems: 'flex-start',
     flexDirection: 'column',
     padding: 10,
-    borderBottom: '1px solid lightgrey'
+    borderBottom: '1px solid lightgrey',
+    '& #coinTitle': {
+      fontWeight: 'bold',
+      marginBottom: '2px',
+      width: '100%',
+      justifyContent: 'space-between',
+      color: 'grey',
+      '& #refresh-button': {
+        '&:hover': {
+          color: 'red',
+          cursor: 'default'
+        },
+        '&:active': {
+          color: 'blue',
+          cursor: 'pointer'
+        }
+      }
+    },
+    '& #actionRow': {
+      justifyContent: 'flex-end',
+      width: '100%'
+    }
   },
-  coinInfoItem: {
-    marginBottom: '3px'
+  balanceContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    flex: '1'
   },
-  coinTitle: {
-    fontWeight: 'bold'
+  coinInfoRow: {
+    display: 'flex',
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center'
   },
-  coinRateInfo: {}
 })
 
 const Coins = ({
@@ -40,6 +65,7 @@ const Coins = ({
   const [coinBalances, setCoinBalances] = useState({})
   const [xRates, setXRates] = useState({})
   const [err, setError] = useState(undefined)
+  
   useEffect(() => {
     async function getBalancesAndRates () {
       try {
@@ -53,9 +79,10 @@ const Coins = ({
         setError(err)
       }
     }
+    
     getBalancesAndRates()
   }, [])
-
+  
   const activeCoinStyle = (coin) => {
     if (coin === activeCoin) {
       return {
@@ -63,14 +90,12 @@ const Coins = ({
       }
     }
   }
-
-  function displayBalance (coinname, COIN) {
-    if (coinname.includes('_testnet')) {
-      return `${coinBalances[coinname]} ${COIN.coin.ticker}`
-    } else {
-      return `${coinBalances[coinname]} ${COIN.coin.ticker} ≈ $${capDecimals((coinBalances[coinname] * xRates[coinname]), 2)}`
-    }
+  
+  function handleRefresh(e) {
+    e.stopPropagation()
+    
   }
+  
   return <div className={classes.root}>
     {coins.map((coin, i) => {
       const COIN = wallet.getCoin(coin)
@@ -80,16 +105,33 @@ const Coins = ({
         onClick={() => setActiveCoin(coin)}
         style={activeCoinStyle(coin)}
       >
-        <span
-          className={classNames(classes.coinInfoItem, classes.coinTitle)}
+        <div
+          className={classes.coinInfoRow}
+          id={'coinTitle'}
         >
           {COIN.coin.displayName} wallet
-        </span>
-        <span
-          className={classNames(classes.coinInfoItem, classes.coinRateInfo)}
+          <span
+            id={'refresh-button'}
+            onClick={handleRefresh}
+          >
+            <Refresh />
+          </span>
+        </div>
+        <div
+          className={classes.balanceContainer}
         >
-          {displayBalance(coin, COIN)}
-        </span>
+          <div className={classes.coinInfoRow}>
+            {COIN.coin.ticker}: {coinBalances[coin]}
+          </div>
+          {coin.includes('testnet') ? null : <div className={classes.coinInfoRow}>
+            USD: ${capDecimals((coinBalances[coin] * xRates[coin]), 2)}
+          </div>}
+        </div>
+        {/*<div*/}
+        {/*  className={classes.coinInfoRow}*/}
+        {/*  id={'actionRow'}*/}
+        {/*>*/}
+        {/*</div>*/}
       </div>
     })}
   </div>
