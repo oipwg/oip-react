@@ -23,25 +23,16 @@ const navigationLinks = [
 const WalletInterface = ({
   classes,
   wallet,
-  coins
+  coins,
+  handleSetActiveCoin,
+  activeCoin,
+  handleNavLinkClick,
+  activeNavLink,
+  state,
+  refreshCoins,
+  handleAddAddress
 }) => {
-  let defaultCoin
-  if (!coins) {
-    coins = Object.keys(wallet.getCoins())
-    defaultCoin = 'flo'
-  } else {
-    defaultCoin = coins[0]
-  }
-  const [activeCoin, setActiveCoin] = useState(defaultCoin)
-  const [activeNavLink, setActiveNavLink] = useState(ADDRESSES)
 
-  const handleSetActiveCoin = (coin) => {
-    setActiveCoin(coin)
-  }
-
-  function handleNavLinkClick (navItem) {
-    setActiveNavLink(navItem)
-  }
 
   return <div className={classes.root}>
     <Coins
@@ -49,6 +40,8 @@ const WalletInterface = ({
       coins={coins}
       setActiveCoin={handleSetActiveCoin}
       activeCoin={activeCoin}
+      state={state}
+      refreshCoins={refreshCoins}
     />
     <WalletBody
       onNavLinkClick={handleNavLinkClick}
@@ -57,6 +50,8 @@ const WalletInterface = ({
       wallet={wallet}
       activeCoin={activeCoin}
       coins={coins}
+      state={state}
+      handleAddAddress={handleAddAddress}
     />
   </div>
 }

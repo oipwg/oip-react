@@ -60,29 +60,10 @@ const Coins = ({
   coins,
   wallet,
   setActiveCoin,
-  activeCoin
+  activeCoin,
+  state,
+  refreshCoins
 }) => {
-  const [coinBalances, setCoinBalances] = useState({})
-  const [xRates, setXRates] = useState({})
-  const [err, setError] = useState(undefined)
-  
-  useEffect(() => {
-    async function getBalancesAndRates () {
-      try {
-        setCoinBalances(await wallet.getCoinBalances({ coins, discover: true, testnet: true }))
-      } catch (err) {
-        setError(err)
-      }
-      try {
-        setXRates(await wallet.getExchangeRates({ coins }))
-      } catch (err) {
-        setError(err)
-      }
-    }
-    
-    getBalancesAndRates()
-  }, [])
-  
   const activeCoinStyle = (coin) => {
     if (coin === activeCoin) {
       return {
@@ -91,13 +72,15 @@ const Coins = ({
     }
   }
   
-  function handleRefresh(e) {
+  function handleRefresh(e, coin) {
     e.stopPropagation()
-    
+    refreshCoins(coin)
   }
   
   return <div className={classes.root}>
     {coins.map((coin, i) => {
+      const balance = state[coin].balance
+      const xrRate = state[coin].exchangeRate
       const COIN = wallet.getCoin(coin)
       return <div
         key={i}
@@ -112,7 +95,7 @@ const Coins = ({
           {COIN.coin.displayName} wallet
           <span
             id={'refresh-button'}
-            onClick={handleRefresh}
+            onClick={(e) => handleRefresh(e, coin)}
           >
             <Refresh />
           </span>
@@ -121,17 +104,12 @@ const Coins = ({
           className={classes.balanceContainer}
         >
           <div className={classes.coinInfoRow}>
-            {COIN.coin.ticker}: {coinBalances[coin]}
+            {COIN.coin.ticker}: {balance}
           </div>
           {coin.includes('testnet') ? null : <div className={classes.coinInfoRow}>
-            USD: ${capDecimals((coinBalances[coin] * xRates[coin]), 2)}
+            USD: ${capDecimals((balance * xrRate), 2)}
           </div>}
         </div>
-        {/*<div*/}
-        {/*  className={classes.coinInfoRow}*/}
-        {/*  id={'actionRow'}*/}
-        {/*>*/}
-        {/*</div>*/}
       </div>
     })}
   </div>

@@ -1,7 +1,8 @@
 import React from 'react'
 import withStyles from 'react-jss'
 import ActionNavBar from './ActionNavBar'
-import WalletStateContainer from './WalletStateContainer'
+import WalletPages from './WalletPages'
+import WalletInterface from './WalletInterface'
 
 const styles = theme => ({
   root: {
@@ -19,7 +20,9 @@ const WalletBody = ({
   navItems,
   activeNavLink,
   activeCoin,
-  coins
+  coins,
+  state,
+  handleAddAddress
 }) => {
   return <div className={classes.root}>
     <ActionNavBar
@@ -27,11 +30,13 @@ const WalletBody = ({
       onNavLinkClick={onNavLinkClick}
       activeNavLink={activeNavLink}
     />
-    <WalletStateContainer
+    <WalletPages
       activeCoin={activeCoin}
       wallet={wallet}
       coins={coins}
       activeNavLink={activeNavLink}
+      state={state}
+      handleAddAddress={handleAddAddress}
     />
   </div>
 }

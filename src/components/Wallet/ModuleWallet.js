@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
 import withStyles from 'react-jss'
 import { Wallet } from 'oip-hdmw'
-import { LoadWallet, WalletInterface } from './index'
+import { LoadWallet } from './index'
 import WalletHeader from './WalletHeader'
+import WalletStateContainer from './WalletStateContainer'
 
 const styles = theme => ({
   root: {
@@ -20,7 +21,7 @@ const ModuleWallet = ({
 }) => {
   const walletRef = useRef(null)
   const [lock, setLock] = useState(true)
-
+  
   function onMnemonicSubmit (mnemonic) {
     walletRef.current = new Wallet(mnemonic, {
       discover: false,
@@ -28,7 +29,7 @@ const ModuleWallet = ({
     })
     setLock(false)
   }
-
+  
   const resetWallet = () => {
     walletRef.current = null
     setLock(true)
@@ -39,10 +40,9 @@ const ModuleWallet = ({
       resetWallet={resetWallet}
     />
     {lock ? <LoadWallet
-      onMnemonicSubmit={onMnemonicSubmit}
-    />
-      : <WalletInterface
-        resetWallet={resetWallet}
+        onMnemonicSubmit={onMnemonicSubmit}
+      />
+      : <WalletStateContainer
         wallet={walletRef.current}
         coins={coins}
       />}
