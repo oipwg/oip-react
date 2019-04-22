@@ -23,7 +23,9 @@ const Container = styled('div')({
   borderRadius: (props) => props.borderRadius ? props.borderRadius : '10px',
   display: 'flex',
   flexDirection: 'row',
-  flex: (props) => props.flex ? props.flex : '0 0',
+  flexGrow: (props) => props.flexGrow,
+  flexShrink: (props) => props.flexShrink || '0',
+  flex: (props) => props.flex,
   alignSelf: (props) => props.alignSelf,
   justifySelf: (props) => props.justifySelf,
   border: (props) => props.border
