@@ -13,7 +13,6 @@ const styles = theme => ({
     flexDirection: 'column',
     flex: '1 1 600px',
     borderRadius: 'inherit',
-    border: '1px solid grey',
     backgroundColor: 'white'
   }
 })
@@ -29,15 +28,14 @@ const Container = styled('div')({
   flex: (props) => props.flex,
   alignSelf: (props) => props.alignSelf,
   justifySelf: (props) => props.justifySelf,
-  border: (props) => props.border
+  border: (props) => props.border,
+  boxShadow: (props) => props.boxShadow
 })
 
 const ModuleWallet = ({
   classes,
   coins,
-  width,
-  height,
-  borderRadius
+  ...rest,
 }) => {
   const walletRef = useRef(null)
   const [lock, setLock] = useState(true)
@@ -55,7 +53,7 @@ const ModuleWallet = ({
     setLock(true)
   }
   
-  return <Container width={width} height={height} borderRadius={borderRadius}>
+  return <Container {...rest}>
     <div className={classes.root}>
       <WalletHeader
         resetWallet={resetWallet}

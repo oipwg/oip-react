@@ -22,6 +22,8 @@ storiesOf('ModuleWallet', module)
           height={'400px'}
           weidth={'900px'}
           borderRadius={'20px'}
+          // boxShadow={'2px 1px 2px'}
+          border={`1px solid grey`}
         />
     </ThemeWrapper>
   })
