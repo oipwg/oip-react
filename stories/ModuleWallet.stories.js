@@ -17,18 +17,11 @@ const ThemeWrapper = (props) => {
 storiesOf('ModuleWallet', module)
   .add('default', () => {
     return <ThemeWrapper>
-      <div style={{
-        display: 'flex',
-        flexDirection: 'row',
-        height: '339px',
-        width: '744px',
-        // borderTopLeftRadius: '10px',
-        // borderTopRightRadius: '10px'
-        borderRadius: '10px'
-      }}>
         <ModuleWallet
           coins={['flo', 'flo_testnet']}
+          height={'400px'}
+          weidth={'900px'}
+          borderRadius={'20px'}
         />
-      </div>
     </ThemeWrapper>
   })
