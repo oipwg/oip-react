@@ -2,8 +2,6 @@ import React, { useEffect, useReducer, useState } from 'react'
 import WalletInterface from './WalletInterface'
 
 const ADDRESSES = 'Addresses'
-const TRANSACTIONS = 'Transactions'
-const SEND = 'Send'
 
 const ADD_ADDRESSES = 'ADD_ADDRESSES'
 const ADD_TRANSACTIONS = 'ADD_TRANSACTIONS'

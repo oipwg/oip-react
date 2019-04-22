@@ -2,7 +2,6 @@ import React from 'react'
 import withStyles from 'react-jss'
 import ActionNavBar from './ActionNavBar'
 import WalletPages from './WalletPages'
-import WalletInterface from './WalletInterface'
 
 const styles = theme => ({
   root: {

@@ -1,9 +1,8 @@
-import React, { useEffect, useReducer } from 'react'
+import React from 'react'
 import withStyles from 'react-jss'
 import Addresses from './Addresses'
 import Transactions from './Transactions'
 import Send from './Send'
-import WalletInterface from './WalletInterface'
 
 const styles = theme => ({
   root: {
