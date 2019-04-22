@@ -23,6 +23,10 @@ const Container = styled('div')({
   borderRadius: (props) => props.borderRadius ? props.borderRadius : '10px',
   display: 'flex',
   flexDirection: 'row',
+  flex: (props) => props.flex ? props.flex : '0 0',
+  alignSelf: (props) => props.alignSelf,
+  justifySelf: (props) => props.justifySelf,
+  border: (props) => props.border
 })
 
 const ModuleWallet = ({
