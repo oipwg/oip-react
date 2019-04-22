@@ -8,5 +8,6 @@ export {
   withStyles,
   DynamicComplexSearch,
   TagsInput,
-  RecordTemplate
+  RecordTemplate,
+  ModuleWallet
 }
