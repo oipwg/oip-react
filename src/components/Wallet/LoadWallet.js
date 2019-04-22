@@ -11,9 +11,14 @@ const styles = theme => ({
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: 'white',
+    borderBottomLeftRadius: 'inherit',
+    borderBottomRightRadius: 'inherit'
   },
-  inputBase: {},
+  inputBase: {
+    height: 33
+  },
   inputMnemonic: {
     display: 'flex',
     border: 'none',

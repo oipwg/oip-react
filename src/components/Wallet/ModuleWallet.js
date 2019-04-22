@@ -13,7 +13,8 @@ const styles = theme => ({
     flexDirection: 'column',
     flex: '1 1 600px',
     borderRadius: 'inherit',
-    border: '1px solid grey'
+    border: '1px solid grey',
+    backgroundColor: 'white'
   }
 })
 
