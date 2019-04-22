@@ -49,7 +49,7 @@ const styles = theme => ({
   },
   inputBase: {
     border: 'none',
-    borderBottom: '2px solid blue',
+    borderBottom: `2px solid ${theme.palette.primary.main}`,
     display: 'flex',
     flex: '1',
     height: 40,
@@ -65,7 +65,7 @@ const styles = theme => ({
     fontSize: '15px',
   },
   sendSubmit: {
-    background: 'blue',
+    background: `${theme.palette.primary.main}`,
     color: 'white',
     border: 'none',
     padding: '11px 30px',

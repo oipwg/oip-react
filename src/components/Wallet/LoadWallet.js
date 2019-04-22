@@ -18,7 +18,7 @@ const styles = theme => ({
     display: 'flex',
     border: 'none',
     width: '70%',
-    borderBottom: '1px blue solid',
+    borderBottom: `1px ${theme.palette.primary.main} solid`,
     textAlign: 'center',
     maxWidth: '722px'
   },
@@ -37,9 +37,10 @@ const styles = theme => ({
     marginTop: '20px'
   },
   buttonBase: {
-    border: '1px solid blue',
+    minWidth: '82px',
+    border: `1px solid ${theme.palette.primary.main}`,
     margin: [0, 5],
-    backgroundColor: 'blue',
+    backgroundColor: `${theme.palette.primary.main}`,
     borderRadius: '5px',
     color: 'white',
     fontWeight: 'bold',
@@ -49,6 +50,9 @@ const styles = theme => ({
       border: 'none',
       cursor: 'not-allowed'
     }
+  },
+  loadButton: {
+    backgroundColor: `${theme.palette.primary.darken(0.7)}`,
   }
 })
 

@@ -32,7 +32,7 @@ const styles = theme => ({
           cursor: 'default'
         },
         '&:active': {
-          color: 'blue',
+          color: `${theme.palette.primary.main}`,
           cursor: 'pointer'
         }
       }
@@ -62,12 +62,13 @@ const Coins = ({
   setActiveCoin,
   activeCoin,
   state,
-  refreshCoins
+  refreshCoins,
+  theme
 }) => {
   const activeCoinStyle = (coin) => {
     if (coin === activeCoin) {
       return {
-        borderLeft: '2px solid blue'
+        borderLeft: `2px solid ${theme.palette.primary.main}`
       }
     }
   }
@@ -115,4 +116,4 @@ const Coins = ({
   </div>
 }
 
-export default withStyles(styles)(Coins)
+export default withStyles(styles, {injectTheme: true})(Coins)

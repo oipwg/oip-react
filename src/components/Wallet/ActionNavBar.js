@@ -23,12 +23,13 @@ const ActionNavBar = ({
   classes,
   navItems = [],
   activeNavLink,
-  onNavLinkClick
+  onNavLinkClick,
+  theme
 }) => {
   function activeNavLinkStyle (item) {
     if (item === activeNavLink) {
       return {
-        borderBottom: '2px solid blue'
+        borderBottom: `2px solid ${theme.palette.primary.main}`
       }
     }
   }
@@ -46,4 +47,4 @@ const ActionNavBar = ({
   </div>
 }
 
-export default withStyles(styles)(ActionNavBar)
+export default withStyles(styles, {injectTheme: true})(ActionNavBar)

@@ -6,7 +6,7 @@ const styles = theme => ({
     display: 'flex',
     flexDirection: 'row',
     flex: '1 1 30px',
-    backgroundColor: 'blue',
+    backgroundColor: `${theme.palette.primary.main}`,
     borderTopRightRadius: 'inherit',
     borderTopLeftRadius: 'inherit',
     overflow: 'hidden',
