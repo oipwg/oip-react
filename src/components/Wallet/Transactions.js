@@ -94,6 +94,12 @@ const calculateAmount = (vin, vout, addresses) => {
   return { amount, type }
 }
 
+function sortTransactions(transactions) {
+  return transactions.sort((a, b) => {
+    return (b.time - a.time)
+  })
+}
+// tx.floData
 const Transactions = ({
   classes,
   transactions = [],
@@ -101,6 +107,7 @@ const Transactions = ({
   addresses
 }) => {
   explorerUrl = explorerUrl.split('api')[0]
+  transactions = sortTransactions(transactions)
   return <div className={classes.root}>
     {transactions.map((tx, i) => {
       const { amount } = calculateAmount(tx.vin, tx.vout, addresses)
