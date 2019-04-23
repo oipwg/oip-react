@@ -106,6 +106,9 @@ const Send = ({
   
   function handleSubmit () {
     setDisplayState(0)
+    setAmount(0)
+    setAddress('')
+    setFlodata('')
     
     const options = {
       to: { [address]: amount },
@@ -113,6 +116,7 @@ const Send = ({
       floData: flodata,
       discover: false
     }
+    window.alert('sending payment, please wait for confirmation before next transaction')
     wallet.sendPayment(options)
     .then(txid => {
       window.alert(`Transaction successful: ${txid}`)
