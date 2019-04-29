@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "2.0.0-beta.2.4.1",
+  "version": "2.0.0-beta.2.5.1",
   "description": "OIP Component library built with React/JSS",
   "main": "lib/index.js",
   "files": [
@@ -11,7 +11,8 @@
     "storybook": "start-storybook",
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "compile": "npx babel src --out-dir lib --copy-files"
+    "compile": "npx babel src --out-dir lib --copy-files",
+    "prepublish": "yarn compile"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
