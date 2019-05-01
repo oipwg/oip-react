@@ -1,10 +1,12 @@
 import { useRef, useState, useEffect } from 'react'
 import ThemeGenerator from './ThemeGenerator'
 
-const useTheme = (palettes) => {
-  const refThemeGen = useRef(new ThemeGenerator(palettes)).current
+const useTheme = (options, type) => {
+  const refThemeGen = useRef(new ThemeGenerator(options)).current
 
-  const [mode, setMode] = useState('light')
+  type = type || 'light'
+  
+  const [mode, setMode] = useState(type)
   const [theme, setTheme] = useState(() => refThemeGen.getTheme(mode))
 
   function changeTheme (mode) {
