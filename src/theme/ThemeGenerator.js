@@ -217,7 +217,7 @@ export default class ThemeGenerator {
 
     saturate = (color, shades = this.shades) => {
         let arr = []
-        for (let i = 0; i < shades; i++) {
+        for (let i = 1; i <= shades; i++) {
             arr.push(chroma(color).saturate(i).hex())
         }
         return arr
@@ -225,7 +225,7 @@ export default class ThemeGenerator {
 
     desaturate = (color, shades = this.shades) => {
         let arr = []
-        for (let i = 0; i < shades; i++) {
+        for (let i = 1; i <= shades; i++) {
             arr.push(chroma(color).desaturate(i).hex())
         }
         return arr
@@ -233,7 +233,7 @@ export default class ThemeGenerator {
 
     darken = (color, shades = this.shades) => {
         let arr = []
-        for (let i = 0; i < shades; i++) {
+        for (let i = 1; i <= shades; i++) {
             arr.push(chroma(color).darken(i).hex())
         }
         return arr
@@ -241,7 +241,7 @@ export default class ThemeGenerator {
 
     brighten = (color, shades = this.shades) => {
         let arr = []
-        for (let i = 0; i < shades; i++) {
+        for (let i = 1; i <= shades; i++) {
             arr.push(chroma(color).brighten(i).hex())
         }
         return arr
