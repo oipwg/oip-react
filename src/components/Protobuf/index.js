@@ -1,4 +1,4 @@
-import { DescriptorSetProto } from './DescriptorSetProto'
+import DescriptorSetProto from './DescriptorSetProto'
 import RecordTemplate from './RecordTemplate'
 
 export {

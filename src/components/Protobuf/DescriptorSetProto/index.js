@@ -1,5 +1,3 @@
 import DescriptorSetProto from './DescriptorSetProto'
 
-export {
-  DescriptorSetProto
-}
+export default DescriptorSetProto
