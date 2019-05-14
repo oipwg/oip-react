@@ -6,18 +6,14 @@ import { isValidWIF } from '../../../util'
 import classNames from 'classnames'
 
 import { templateBuilder } from 'oip-protobufjs'
+import WalletButton from '../../WalletButton/WalletButton'
 
 const RecordTemplate = ({ classes, getPubResponse }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [privateKey, setPrivateKey] = useState('')
-  const [disableSubmit, toggleDisable] = useState(true)
   const [descriptor, setProtoDescriptor] = useState(undefined)
   const [network, changeNetwork] = useState('mainnet')
-
-  useEffect(() => {
-    toggleDisable(!isValidWIF(privateKey, network))
-  }, [privateKey, network])
 
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value)
@@ -27,7 +23,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
     changeNetwork(e.target.value)
   }
 
-  const handlePublish = async () => {
+  function getSignedTemplateMessage () {
     let template
     try {
       template = templateBuilder({
@@ -41,37 +37,29 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       throw Error(err)
     }
     const { signedMessage64 } = template
-    if (signedMessage64) {
-      const prefix = 'p64:'
-      const message = `${prefix}${signedMessage64}`
-      console.log(message)
 
-      // const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
-      //
-      // const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
-      // const wallet = oip.wallet
-      //
-      // let res
-      // try {
-      //   res = await wallet.sendDataToChain(message)
-      // } catch (err) {
-      //   if (getPubResponse) {
-      //     getPubResponse(err)
-      //   }
-      //   alert(`failed to send template message to chain: ${err}`)
-      //   // throw new Error(`failed to send template message to chain: ${err}`)
-      // }
-      // if (getPubResponse) {
-      //   getPubResponse(res)
-      // }
-      // alert(`Publish success/TXID: ${res}`)
-    }
+    return signedMessage64
+  }
+
+  function serializeMessage (message) {
+    const prefix = 'p64:'
+    return `${prefix}${message}`
+  }
+
+  function getMessage() {
+    return serializeMessage(getSignedTemplateMessage())
   }
 
   const getProtoDescriptor = (descriptor) => {
     setProtoDescriptor(descriptor)
   }
 
+  function onSuccess(res) {
+    console.log('success', res)
+  }
+  function onError(err) {
+    console.error(err)
+  }
   return <div className={classes.recordTemplateRoot}>
     <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
       <span className={classes.inputTitle}>Friendly Name</span>
@@ -116,14 +104,17 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
           testnet
         </option>
       </select>
-      <button
-        className={classNames(classes.buttonBase, classes.publishButton)}
-        disabled={disableSubmit}
-        onClick={handlePublish}
-      >Create & Publish
-      </button>
+      <WalletButton
+        text={'Create & Publish'}
+        wif={privateKey}
+        network={network}
+        setMessage={getMessage}
+        onSuccess={onSuccess}
+        onError={onError}
+      />
     </div>
   </div>
+
 }
 
 const styles = theme => ({
