@@ -2,9 +2,10 @@ import React, { useEffect, useState } from 'react'
 import withStyles from 'react-jss'
 import { OIP } from 'js-oip'
 import { DescriptorSetProto } from '../index'
-import { templateBuilder } from './dependencies'
 import { isValidWIF } from '../../../util'
 import classNames from 'classnames'
+
+import { templateBuilder } from 'oip-protobufjs'
 
 const RecordTemplate = ({ classes, getPubResponse }) => {
   const [name, setName] = useState('')
@@ -43,26 +44,27 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
     if (signedMessage64) {
       const prefix = 'p64:'
       const message = `${prefix}${signedMessage64}`
+      console.log(message)
 
-      const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
-
-      const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
-      const wallet = oip.wallet
-
-      let res
-      try {
-        res = await wallet.sendDataToChain(message)
-      } catch (err) {
-        if (getPubResponse) {
-          getPubResponse(err)
-        }
-        alert(`failed to send template message to chain: ${err}`)
-        // throw new Error(`failed to send template message to chain: ${err}`)
-      }
-      if (getPubResponse) {
-        getPubResponse(res)
-      }
-      alert(`Publish success/TXID: ${res}`)
+      // const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
+      //
+      // const oip = new OIP(privateKey, 'testnet', { explorerUrl }) // toDo: switch to flochain
+      // const wallet = oip.wallet
+      //
+      // let res
+      // try {
+      //   res = await wallet.sendDataToChain(message)
+      // } catch (err) {
+      //   if (getPubResponse) {
+      //     getPubResponse(err)
+      //   }
+      //   alert(`failed to send template message to chain: ${err}`)
+      //   // throw new Error(`failed to send template message to chain: ${err}`)
+      // }
+      // if (getPubResponse) {
+      //   getPubResponse(res)
+      // }
+      // alert(`Publish success/TXID: ${res}`)
     }
   }
 
