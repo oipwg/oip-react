@@ -14,7 +14,8 @@ storiesOf('Protobuf', module)
   .add('DescriptorSetProto', () => {
     return <ThemeWrapper>
       <DescriptorSetProto
-        onBuild={(proto) => console.log(proto.toString('base64'))}
+        // onBuild={(proto) => console.log(proto.toString('base64'))}
+        getDescriptor={desc => {console.log(desc.toString())}}
       />
     </ThemeWrapper>
   })
