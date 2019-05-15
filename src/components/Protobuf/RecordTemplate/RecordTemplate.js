@@ -10,7 +10,8 @@ import WalletButton from '../../WalletButton/WalletButton'
 const RecordTemplate = ({
   classes,
   onSuccess,
-  onError
+  onError,
+  _extends
 }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -34,7 +35,8 @@ const RecordTemplate = ({
         DescriptorSetProto: descriptor,
         wif: privateKey,
         description,
-        network
+        network,
+        _extends
       })
     } catch (err) {
       throw Error(err)
