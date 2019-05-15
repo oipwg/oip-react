@@ -4,7 +4,7 @@ import withStyles from 'react-jss'
 import { isValidWIF } from '../../util'
 
 const styles = theme => ({
-  root: {
+  walletButtonRoot: {
     backgroundColor: 'transparent',
     color: theme.palette.primary.main,
     padding: [7, 12],
@@ -68,7 +68,7 @@ const WalletButton = ({
 
   return <button
     disabled={disable}
-    className={classes.root}
+    className={classes.walletButtonRoot}
     onClick={handleClick}
   >
     {text}

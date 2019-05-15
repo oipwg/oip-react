@@ -22,8 +22,11 @@ storiesOf('Protobuf', module)
 
   .add('RecordTemplate', () => {
     return <ThemeWrapper>
-      <RecordTemplate
-
-      />
+      <div style={{width: '500px'}}>
+        <RecordTemplate
+          onSuccess={txid => console.log('Success: ', txid)}
+          onError={err => console.log('Error: ', err)}
+        />
+      </div>
     </ThemeWrapper>
   })

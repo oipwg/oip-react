@@ -101,26 +101,28 @@ const FieldRow = ({gfs, id, liftDescriptor, classes}) => {
     const isEnum = gfs.state.form[id].fieldType === 'enum'
 
     return <div className={classes.descriptorFieldRowContainer}>
-        <SelectOptions
-            opts={['singular', 'repeated']}
-            id={id}
-            state={gfs.state.form[id]}
-            onChange={gfs.update}
-            name={'fieldRule'}
-            shouldUpdate={shouldUpdate}
-            onBlur={liftDescriptor}
-            classes={classes}
-        />
-        <SelectOptions
-            opts={protoFields}
-            id={id}
-            state={gfs.state.form[id]}
-            onChange={gfs.update}
-            name={'fieldType'}
-            shouldUpdate={shouldUpdate}
-            onBlur={liftDescriptor}
-            classes={classes}
-        />
+        <div className={classes.selectOptions}>
+            <SelectOptions
+              opts={['singular', 'repeated']}
+              id={id}
+              state={gfs.state.form[id]}
+              onChange={gfs.update}
+              name={'fieldRule'}
+              shouldUpdate={shouldUpdate}
+              onBlur={liftDescriptor}
+              classes={classes}
+            />
+            <SelectOptions
+              opts={protoFields}
+              id={id}
+              state={gfs.state.form[id]}
+              onChange={gfs.update}
+              name={'fieldType'}
+              shouldUpdate={shouldUpdate}
+              onBlur={liftDescriptor}
+              classes={classes}
+            />
+        </div>
         <InputField
             placeholder={'Field Name'}
             id={id}
@@ -212,6 +214,7 @@ const styles = theme => ({
     descriptorInputField: {},
     selectBase: {},
     descriptorSelect: {},
+    selectOptions: {}
 })
 
 function serializeFormData(form) {

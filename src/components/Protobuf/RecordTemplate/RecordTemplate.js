@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import withStyles from 'react-jss'
-import { OIP } from 'js-oip'
 import { DescriptorSetProto } from '../index'
-import { isValidWIF } from '../../../util'
+
 import classNames from 'classnames'
 
 import { templateBuilder } from 'oip-protobufjs'
 import WalletButton from '../../WalletButton/WalletButton'
 
-const RecordTemplate = ({ classes, getPubResponse }) => {
+const RecordTemplate = ({
+  classes,
+  onSuccess,
+  onError
+}) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [privateKey, setPrivateKey] = useState('')
@@ -54,11 +57,11 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
     setProtoDescriptor(descriptor)
   }
 
-  function onSuccess(res) {
-    console.log('success', res)
+  function handleOnSuccess(res) {
+    if (onSuccess) onSuccess(res)
   }
-  function onError(err) {
-    console.error(err)
+  function handleOnError(err) {
+    if (onError) onError(err)
   }
   return <div className={classes.recordTemplateRoot}>
     <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
@@ -68,6 +71,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
         value={name}
         className={classes.inputBase}
         onChange={(e) => setName(e.target.value)}
+        placeholder={'Template name'}
       />
     </div>
     <div className={classNames(classes.templateFieldRow, classes.descriptionRow)}>
@@ -77,6 +81,7 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
         value={description}
         className={classes.inputBase}
         onChange={(e) => setDescription(e.target.value)}
+        placeholder={'Template description'}
       />
     </div>
     <DescriptorSetProto
@@ -84,12 +89,14 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
       classes={classes}
     />
     <div className={classNames(classes.templateFieldRow, classes.wifRow)}>
-      <span className={classes.inputTitle}>Input private key (WIF)</span>
+      <span className={classes.inputTitle}>private key (wif)</span>
       <input
+        id={'wif'}
         type={'text'}
         onChange={handlePrivateKey}
         value={privateKey}
         className={classes.inputBase}
+        placeholder={'Private key (wif)'}
       />
     </div>
     <div className={classNames(classes.templateFieldRow, classes.publishRow)}>
@@ -104,32 +111,106 @@ const RecordTemplate = ({ classes, getPubResponse }) => {
           testnet
         </option>
       </select>
-      <WalletButton
-        text={'Create & Publish'}
-        wif={privateKey}
-        network={network}
-        setMessage={getMessage}
-        onSuccess={onSuccess}
-        onError={onError}
-      />
+      <div className={classes.walletButton}>
+        <WalletButton
+          text={'Create & Publish'}
+          wif={privateKey}
+          network={network}
+          setMessage={getMessage}
+          onSuccess={handleOnSuccess}
+          onError={handleOnError}
+        />
+      </div>
     </div>
   </div>
-
 }
 
+
 const styles = theme => ({
-  recordTemplateRoot: {},
-  selectBase: {},
-  inputBase: {},
-  buttonBase: {},
-  templateFieldRow: {},
-  inputTitle: {},
+  recordTemplateRoot: {
+    width: 275
+
+  },
+  templateFieldRow: {
+    position: 'relative'
+  },
+  selectBase: {
+    backgroundColor: 'transparent',
+    boxSizing: 'border-box',
+    border: `1px solid ${theme.palette.greyscale(0.3)}`,
+    borderRadius: '3px',
+    padding: [3, 2],
+    width: '48%'
+  },
+  inputBase: {
+    height: 25,
+    boxSizing: 'border-box',
+    margin: [15, 0, 13, 0],
+    width: 250,
+    border: `1px solid ${theme.palette.greyscale(0.3)}`,
+    borderRadius: '3px',
+    padding: [3, 2],
+    fontSize: 12,
+    '&::placeholder': {
+      fontSize: 10,
+    }
+  },
+  buttonBase: {
+    backgroundColor: 'transparent',
+    border: `1px solid ${theme.palette.greyscale(0.3)}`,
+    color: theme.palette.greyscale(0.3),
+    fontWeight: 'bold'
+  },
+  inputTitle: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    fontSize: 11,
+    color: theme.palette.greyscale(0.7)
+  },
   nameRow: {},
   descriptionRow: {},
   wifRow: {},
-  publishRow: {},
-  selectNetwork: {},
-  publishButton: {}
+  publishRow: {
+    width: '250px',
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  selectNetwork: {
+    height: '25px',
+    width: '120px'
+  },
+  publishButton: {},
+  // descriptor specific
+  descriptorRoot: {},
+  descriptorFieldRowContainer: {},
+  addRowButton: {
+    border: 0,
+    margin: [0, 0, 5, 0],
+    '&:hover': {
+      cursor: 'pointer',
+    }
+  },
+  removeRowButton: {
+    marginLeft: 7,
+    border: 0,
+    '&:hover': {
+      cursor: 'pointer',
+    }
+  },
+  descriptorInputField: {},
+  descriptorSelect: {},
+  selectOptions: {
+    width: 250,
+    display: 'flex',
+    justifyContent: 'space-between'
+  },
+  //wallet button
+  walletButton: {
+    '& > button': {
+      padding: [4, 8]
+    }
+  }
 })
 
 export default withStyles(styles)(RecordTemplate)
