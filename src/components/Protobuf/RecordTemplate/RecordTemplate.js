@@ -130,8 +130,9 @@ const RecordTemplate = ({
 
 const styles = theme => ({
   recordTemplateRoot: {
-    width: 275
-
+    width: 275,
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
   templateFieldRow: {
     position: 'relative'
