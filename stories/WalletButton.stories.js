@@ -9,7 +9,9 @@ const ThemeWrapper = (props) => {
         {props.children}
     </ThemeProvider>
 }
+let message
 
+const defaultMessage = 'test this testnet'
 storiesOf('WalletButton', module)
     .add('default', () => {
         function onSuccess(res) {
@@ -25,7 +27,7 @@ storiesOf('WalletButton', module)
                 network={'testnet'}
                 wif={'cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq'}
                 text={'Use this button to send data to the FLO chain!'}
-                message={'test this testnet'}
+                message={message ? message : defaultMessage}
             />
         </ThemeWrapper>
     })
