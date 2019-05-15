@@ -10809,10 +10809,10 @@ oip-hdmw@^1.3.27:
     varuint-bitcoin "^1.1.0"
     wif "^2.0.6"
 
-oip-protobufjs@^1.2.3:
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/oip-protobufjs/-/oip-protobufjs-1.2.3.tgz#a1f00e92f7bac705300351607ac034be44273820"
-  integrity sha512-Xu7Y6ECHfQZYwan08NrkyalNoxjzO2IpoZ9Gfgkp5RehoruYypIDQ42/GXjKeOhHpaeybLXBxr5ELQyS/69wpA==
+oip-protobufjs@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/oip-protobufjs/-/oip-protobufjs-1.3.0.tgz#5a3d89e2ab0bb6112a784f86e7a82c19ca2b81dc"
+  integrity sha512-YX5gZmvWnIv2WOJncvIZw6vKKQFnYLsaFscPZSl/uEwS7uAOyM/8tAEq/t2eu7rsYll5Vw5KB7rbfOjH5EjAcw==
   dependencies:
     bitcoinjs-lib "^5.0.2"
     bitcoinjs-message "^2.0.0"

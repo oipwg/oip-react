@@ -212,6 +212,12 @@ const styles = theme => ({
     '& > button': {
       padding: [4, 8]
     }
+  },
+  // tags input
+  tagsInputRoot: {
+    width: 250,
+    marginBottom: 13,
+    boxSizing: 'border-box'
   }
 })
 

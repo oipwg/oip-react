@@ -88,7 +88,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
   const placeHolderText = state.tags.length === 0 && inputValue === '' ? placeholder || 'e.g. (tag swag mag)' : null
 
   return <div
-    className={classes.root}
+    className={classes.tagsInputRoot}
   >
     <div id={'tags'}>
       {state.tags.map((tag, i) => {
@@ -113,7 +113,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
 }
 
 const styles = {
-  root: {
+  tagsInputRoot: {
     display: 'inline-flex',
     width: '300px',
     height: 30,
