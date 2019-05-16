@@ -54,7 +54,7 @@ const WalletButton = ({
       throw Error(`must pass a message prop of type string to WalletButton`)
     }
 
-    const explorerUrl = network === 'mainnet' ? 'https://flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
+    const explorerUrl = network === 'mainnet' ? 'https://livenet.flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
     const wallet = new OIP(wif, network, { explorerUrl }).wallet
 
     let res
