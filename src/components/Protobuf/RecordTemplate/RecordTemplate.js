@@ -16,7 +16,6 @@ const RecordTemplate = ({
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
   const [privateKey, setPrivateKey] = useState('')
-  const [descriptor, setProtoDescriptor] = useState(undefined)
   const [network, changeNetwork] = useState('mainnet')
 
   const handlePrivateKey = (e) => {
@@ -29,6 +28,14 @@ const RecordTemplate = ({
 
   function getSignedTemplateMessage () {
     let template
+    let descriptor
+
+    try {
+      descriptor = getProtoDescriptor()
+    } catch (err) {
+      throw Error(err)
+    }
+
     try {
       template = templateBuilder({
         friendlyName: name,
@@ -46,25 +53,36 @@ const RecordTemplate = ({
     return signedMessage64
   }
 
-  function serializeMessage (message) {
+  function prefixMessage (message) {
     const prefix = 'p64:'
     return `${prefix}${message}`
   }
 
-  function getMessage() {
-    return serializeMessage(getSignedTemplateMessage())
+  function getMessage () {
+    try {
+      const signedMessage = getSignedTemplateMessage()
+      return (prefixMessage(signedMessage))
+    } catch (err) {
+      throw Error(err)
+    }
   }
 
-  const getProtoDescriptor = (descriptor) => {
-    setProtoDescriptor(descriptor)
+  const getProtoDescriptor = ( getDescriptorFn ) => {
+    try {
+      return getDescriptorFn()
+    } catch (err) {
+      throw Error(err)
+    }
   }
 
-  function handleOnSuccess(res) {
+  function handleOnSuccess (res) {
     if (onSuccess) onSuccess(res)
   }
-  function handleOnError(err) {
+
+  function handleOnError (err) {
     if (onError) onError(err)
   }
+
   return <div className={classes.recordTemplateRoot}>
     <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
       <span className={classes.inputTitle}>Friendly Name</span>
@@ -118,7 +136,7 @@ const RecordTemplate = ({
           text={'Create & Publish'}
           wif={privateKey}
           network={network}
-          setMessage={getMessage}
+          getMessage={getMessage}
           onSuccess={handleOnSuccess}
           onError={handleOnError}
         />
@@ -126,7 +144,6 @@ const RecordTemplate = ({
     </div>
   </div>
 }
-
 
 const styles = theme => ({
   recordTemplateRoot: {

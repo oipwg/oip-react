@@ -1,6 +1,6 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
-import { DescriptorSetProto, RecordTemplate } from '../src/components'
+import { DescriptorSetProto, RecordTemplate, RecordProto } from '../src/components'
 import { useTheme, ThemeProvider } from '../src/theme'
 
 const ThemeWrapper = (props) => {
@@ -12,17 +12,25 @@ const ThemeWrapper = (props) => {
 
 storiesOf('Protobuf', module)
   .add('DescriptorSetProto', () => {
+    function getDescriptor ( fn ) {
+      try {
+        let descriptor = fn()
+        console.log(descriptor.toString())
+      } catch (err) {
+        console.error(err)
+      }
+    }
     return <ThemeWrapper>
       <DescriptorSetProto
         // onBuild={(proto) => console.log(proto.toString('base64'))}
-        getDescriptor={desc => {console.log(desc.toString())}}
+        getDescriptor={getDescriptor}
       />
     </ThemeWrapper>
   })
 
   .add('RecordTemplate', () => {
     return <ThemeWrapper>
-      <div style={{width: '500px'}}>
+      <div style={{ width: '500px' }}>
         <RecordTemplate
           onSuccess={txid => console.log('Success: ', txid)}
           onError={err => console.log('Error: ', err)}

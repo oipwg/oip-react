@@ -33,7 +33,7 @@ const WalletButton = ({
   message,
   onSuccess,
   onError,
-  setMessage
+  getMessage
 }) => {
   const [disable, toggleDisable] = useState(true)
 
@@ -45,9 +45,12 @@ const WalletButton = ({
     e.preventDefault()
     // toDo: set explorerUrl from config
 
-    if (setMessage) {
-      message = setMessage()
-      console.log(message)
+    if (getMessage) {
+      try {
+        message = getMessage()
+      } catch (err) {
+        throw Error(err)
+      }
     }
 
     if (!message || message === '') {

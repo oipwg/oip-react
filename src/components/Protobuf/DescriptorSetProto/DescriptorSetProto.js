@@ -169,13 +169,15 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
 
   const liftDescriptor = () => {
     if (getDescriptor) {
-      let descriptor
-      try {
-        descriptor = buildDescriptor(serializeFormData(gfs.state.form))
-      } catch (err) {
-        descriptor = err
+      const descriptorFn = () => {
+        try {
+          return buildDescriptor(serializeFormData(gfs.state.form))
+        } catch (err) {
+          throw Error(err)
+        }
       }
-      getDescriptor(descriptor)
+
+      getDescriptor(descriptorFn)
     }
   }
 
