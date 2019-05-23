@@ -1,5 +1,5 @@
 import DynamicComplexSearch from './DynamicComplexSearch'
-import { DescriptorSetProto, RecordTemplate } from './Protobuf'
+import { DescriptorSetProto, RecordTemplate, RecordProto } from './Protobuf'
 import { TagsInput } from './UI'
 import { ModuleWallet } from './ModuleWallet'
 
@@ -8,5 +8,6 @@ export {
   DescriptorSetProto,
   TagsInput,
   RecordTemplate,
-  ModuleWallet
+  ModuleWallet,
+  RecordProto
 }

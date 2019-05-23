@@ -38,3 +38,16 @@ storiesOf('Protobuf', module)
       </div>
     </ThemeWrapper>
   })
+
+  .add('RecordProto', () => {
+    const descriptor = 'CrYCChhvaXBQcm90b190ZW1wbGF0ZXMucHJvdG8SEm9pcFByb3RvLnRlbXBsYXRlcyL9AQoBUBIMCgRuYW1lGAEgASgJEgsKA2FnZRgCIAEoDRISCgpvY2N1cGF0aW9uGAMgASgJEhUKB2ZyaWVuZHMYBiADKAsyBFR4aWQSGwoNZmFtaWx5TWVtYmVycxgHIAMoCzIEVHhpZBoTCgRUeGlkEgsKA3JhdxgBIAEoDCJACghDcnlzdGFscxINCglVTkRFRklORUQQABISCg5DcnlzdGFsc19BR0FURRABEhEKDUNyeXN0YWxzX1JPU0UQAiI+CgdIb2JiaWVzEg0KCVVOREVGSU5FRBAAEg8KC0hvYmJpZXNfTVRHEAESEwoPSG9iYmllc19BQkxFVE9OEAJiBnByb3RvMw=='
+    const templateName = 'tmpl_00000000000RYANC'
+    return <ThemeWrapper>
+      <div style={{ width: '500px' }}>
+        <RecordProto
+          descriptor={descriptor}
+          templateName={templateName}
+        />
+      </div>
+    </ThemeWrapper>
+  })
