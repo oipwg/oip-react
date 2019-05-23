@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import withStyles from 'react-jss'
 import { DescriptorSetProto } from '../index'
 
@@ -17,6 +17,7 @@ const RecordTemplate = ({
   const [description, setDescription] = useState('')
   const [privateKey, setPrivateKey] = useState('')
   const [network, changeNetwork] = useState('mainnet')
+  const descriptorRef = useRef(null)
 
   const handlePrivateKey = (e) => {
     setPrivateKey(e.target.value)
@@ -28,18 +29,11 @@ const RecordTemplate = ({
 
   function getSignedTemplateMessage () {
     let template
-    let descriptor
-
-    try {
-      descriptor = getProtoDescriptor()
-    } catch (err) {
-      throw Error(err)
-    }
 
     try {
       template = templateBuilder({
         friendlyName: name,
-        DescriptorSetProto: descriptor,
+        DescriptorSetProto: descriptorRef.current,
         wif: privateKey,
         description,
         network,
@@ -67,12 +61,8 @@ const RecordTemplate = ({
     }
   }
 
-  const getProtoDescriptor = ( getDescriptorFn ) => {
-    try {
-      return getDescriptorFn()
-    } catch (err) {
-      throw Error(err)
-    }
+  const getProtoDescriptor = ( descriptor ) => {
+    descriptorRef.current = descriptor
   }
 
   function handleOnSuccess (res) {
