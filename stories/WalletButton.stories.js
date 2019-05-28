@@ -9,7 +9,7 @@ const ThemeWrapper = (props) => {
         {props.children}
     </ThemeProvider>
 }
-let message = 'p64:Ck8STTpLCkkKKXR5cGUuZ29vZ2xlYXBpcy5jb20vdG1wbF84RDY2QzZBRkY5QkREOEVFEhwKBmZsaWdodAoMbXVzaWMgbWFraW5nCgRsb3ZlEAEYASIib1JwbWVZdmpnZmhrU3BQV0dMOGVQNWVQdXB5b3AzaHo5aipBIJkzmdugXRUvNpwPQzIAf0CW2t95SdM4HYT5oMU5G6mmLbAWSVhECBGViFTXOye4j11AgFpc/RiuLrpSQj03fzc='
+let message = 'p64:ClMSUTpPCk0KPHR5cGUuZ29vZ2xlYXBpcy5jb20vb2lwUHJvdG8udGVtcGxhdGVzLnRtcGxfMzcwODQwRUVDQjNDMjdDQRINCCESCVJ5YW4gTW9vbhABGAEiIm9mYkI2N2dxamdhWWk0NXU4UWsyVTNoR29DbXlaY2diTjQqQR+BAHDXt0vjBky9WcA4gwreKSXRDPrehWjYYxaG2G3O3hqGwsbyFwIf41H+xFP97peBbGnj0W40PhOxKSDHoR4+'
 
 const defaultMessage = 'test this testnet'
 storiesOf('WalletButton', module)
