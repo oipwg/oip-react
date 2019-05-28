@@ -40,13 +40,21 @@ storiesOf('Protobuf', module)
   })
 
   .add('RecordProto', () => {
-    const descriptor = 'CrYCChhvaXBQcm90b190ZW1wbGF0ZXMucHJvdG8SEm9pcFByb3RvLnRlbXBsYXRlcyL9AQoBUBIMCgRuYW1lGAEgASgJEgsKA2FnZRgCIAEoDRISCgpvY2N1cGF0aW9uGAMgASgJEhUKB2ZyaWVuZHMYBiADKAsyBFR4aWQSGwoNZmFtaWx5TWVtYmVycxgHIAMoCzIEVHhpZBoTCgRUeGlkEgsKA3JhdxgBIAEoDCJACghDcnlzdGFscxINCglVTkRFRklORUQQABISCg5DcnlzdGFsc19BR0FURRABEhEKDUNyeXN0YWxzX1JPU0UQAiI+CgdIb2JiaWVzEg0KCVVOREVGSU5FRBAAEg8KC0hvYmJpZXNfTVRHEAESEwoPSG9iYmllc19BQkxFVE9OEAJiBnByb3RvMw=='
-    const templateName = 'tmpl_00000000000RYANC'
+    const descriptor = 'CnkKCnR4aWQucHJvdG8SCG9pcFByb3RvIhgKBFR4aWQSEAoDcmF3GAEgASgMUgNyYXdCCloIb2lwUHJvdG9KMwoFEgMAAAAKCAoBDBIDAAAACggKAQISAwAAAAoJCgIEABIDAAAACgsKBAQAAgASAwAAAGIGcHJvdG8zCscBCgdwLnByb3RvEhJvaXBQcm90by50ZW1wbGF0ZXMaCnR4aWQucHJvdG8iTQoBUBIQCgRtYXNzGAEoA1IEbWFzcxIQCgRuYW1lGAIoCVIEbmFtZRIkCgVtb29ucxgDIAMoCzIOLm9pcFByb3RvLlR4aWRSBW1vb25zSk0KBRIDAAAACggKAQwSAwAAAAoICgECEgMAAAAKCQoCBAASAwAAAAoLCgQEAAIAEgMAAAAKCwoEBAACARIDAAAACgsKBAQAAgISAwAAAA=='
+    const templateName = 'tmpl_D7309B2A2738A99F'
+    function onSuccess(res) {
+      console.log('successfully sent data to chain: ', res)
+    }
+    function onError(err) {
+      console.log('error', err)
+    }
     return <ThemeWrapper>
       <div style={{ width: '500px' }}>
         <RecordProto
           descriptor={descriptor}
           templateName={templateName}
+          onSuccess={onSuccess}
+          onError={onError}
         />
       </div>
     </ThemeWrapper>
