@@ -33,7 +33,9 @@ const WalletButton = ({
   message,
   onSuccess,
   onError,
-  getMessage
+  getMessage,
+  mainnetExplorerUrl = 'https://livenet.flocha.in/api',
+  testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api'
 }) => {
   const [disable, toggleDisable] = useState(true)
 
@@ -49,15 +51,15 @@ const WalletButton = ({
       try {
         message = getMessage()
       } catch (err) {
-        throw Error(err)
+        return onError(err)
       }
     }
 
     if (!message || message === '') {
-      throw Error(`must pass a message prop of type string to WalletButton`)
+      return onError(`must pass a message prop of type string to WalletButton`)
     }
 
-    const explorerUrl = network === 'mainnet' ? 'https://livenet.flocha.in/api' : 'https://testnet.explorer.mediciland.com/api'
+    const explorerUrl = network === 'mainnet' ? mainnetExplorerUrl : testnetExplorerUrl
     const wallet = new OIP(wif, network, { explorerUrl }).wallet
 
     let res
