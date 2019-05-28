@@ -1,11 +1,10 @@
 import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import withStyles from 'react-jss'
 import PropTypes from 'prop-types'
-import { decodeDescriptor } from 'oip-protobufjs'
+import { decodeDescriptor, recordProtoBuilder } from 'oip-protobufjs'
 
 import { TagsInput } from '../../UI'
 import WalletButton from '../../WalletButton/WalletButton'
-import { recordProtoBuilder } from 'oip-protobufjs/src'
 
 const fieldHeight = 25
 const fieldWidth = 250
