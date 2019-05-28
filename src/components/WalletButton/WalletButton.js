@@ -51,12 +51,20 @@ const WalletButton = ({
       try {
         message = getMessage()
       } catch (err) {
-        return onError(err)
+        if (onError) {
+          return onError(err)
+        } else {
+          throw Error(`Failed to get getMessage in wallet button component: ${err}`)
+        }
       }
     }
 
     if (!message || message === '') {
-      return onError(`must pass a message prop of type string to WalletButton`)
+      if (onError) {
+        return onError(`must pass a message prop of type string to WalletButton`)
+      } else {
+        throw Error(`must pass a message prop of type string to WalletButton`)
+      }
     }
 
     const explorerUrl = network === 'mainnet' ? mainnetExplorerUrl : testnetExplorerUrl
