@@ -3322,9 +3322,9 @@ bitcoinjs-lib@^5.0.1:
     wif "^2.0.1"
 
 bitcoinjs-lib@^5.0.2:
-  version "5.0.4"
-  resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.0.4.tgz#b4fcdd2410c750a054cddda6a7b5b4f997d0091f"
-  integrity sha512-xX+nTIBeTn8p4R4CbQaArvAjSt5gKsYTEWmFcD8hlH6ZDXaACvQVk1m7XpqNGP/84Wpd6FTIZoaYycLYfM95xA==
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/bitcoinjs-lib/-/bitcoinjs-lib-5.0.5.tgz#1c76f82479913affac2b0b9821884a6f7373902b"
+  integrity sha512-BUimtgWFoWmoXQ74XxlQH8y9Vzi8ypFiWErDkP+VBe0nGcU3bKAJbNhzhZOO1/QAfyelfNvxVV5Cj189XinmPg==
   dependencies:
     "@types/node" "10.12.18"
     bech32 "^1.1.2"
@@ -11067,9 +11067,9 @@ multicodec@~0.5.0:
     varint "^5.0.0"
 
 multicodec@~0.5.1:
-  version "0.5.1"
-  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-0.5.1.tgz#fa4d6fbb99abdf3cec0f207a022ce20ad3813fd5"
-  integrity sha512-Q5glyZLdXVbbBxvRYHLQHpu8ydVf1422Z+v9fU47v2JCkiue7n+JcFS7uRv0cQW8hbVtgdtIDgYWPWaIKEXuXA==
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/multicodec/-/multicodec-0.5.3.tgz#b1ef71a55d0698c9b2d89585f66e4b081f33c20c"
+  integrity sha512-TUId9mavSh7q4ui5nUYiC0U10XVrMhsoMLPoG6nAAaFt2GKqZKK3aB2AeFk58aqEnLhmTSdRkmNrlty4jjOxzg==
   dependencies:
     varint "^5.0.0"
 
@@ -11624,10 +11624,10 @@ oip-hdmw@^1.3.27:
     varuint-bitcoin "^1.1.0"
     wif "^2.0.6"
 
-oip-protobufjs@^1.5.0:
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/oip-protobufjs/-/oip-protobufjs-1.5.0.tgz#6cd062f807d97374b50c37629946408cbd293209"
-  integrity sha512-ZpzZS+BK1CrQpPLEUtyKKOtSmg3ZHY7SEDdazo55MiD6mar1XeBAlJP4FjYwu5MibK7bMab5YtvYL0w4iHNiNw==
+oip-protobufjs@^1.5.2:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/oip-protobufjs/-/oip-protobufjs-1.5.2.tgz#230242d19c4e00e583b068549ac5cb3232f8c2c4"
+  integrity sha512-DgzAq/3zdXyS2Qmm+xCgg/b1OMN2ccJzfq+g0tBv5rDbkvXVO1Xrv9eREk2fEO4g1Djg/+pl+vQfS8YXXY/WNA==
   dependencies:
     bitcoinjs-lib "^5.0.2"
     bitcoinjs-message "^2.0.0"
