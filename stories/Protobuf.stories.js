@@ -60,27 +60,39 @@ storiesOf('Protobuf', module)
       </div>
     </ThemeWrapper>
   })
-  .add('RecordProto Extends', () => {
-    const file_descriptor_set = 'CkAKB3AucHJvdG8iLQoBUBITCgtzdXBlclBvd2VycxgBIAMoCRITCgtsb3ZlQWZmYWlycxgCIAMoCWIGcHJvdG8z'
-    const name = 'tmpl_2F29D8C0'
-    function onSuccess(res) {
+  .add('RecordProtoContainer', () => {
+    function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
     }
-    function onError(err) {
+
+    function onError (err) {
       console.log('error', err)
     }
-    const template = {
-      file_descriptor_set,
-      name,
-      extends: [1569568859]
-    }
+
+    const templates = [
+      {
+        file_descriptor_set: 'CkAKB3AucHJvdG8iLQoBUBITCgtzdXBlclBvd2VycxgBIAMoCRITCgtsb3ZlQWZmYWlycxgCIAMoCWIGcHJvdG8z',
+        name: 'tmpl_2F29D8C0'
+      },
+      {
+        file_descriptor_set: 'ClAKG29pcDVfcmVjb3JkX3RlbXBsYXRlcy5wcm90bxIVb2lwNS5yZWNvcmQudGVtcGxhdGVzIhIKAVASDQoFbXVzaWMYASABKAliBnByb3RvMw==',
+        name: 'tmpl_D5725A4B'
+      },
+      {
+        file_descriptor_set: 'CmcKGG9pcFByb3RvX3RlbXBsYXRlcy5wcm90bxISb2lwUHJvdG8udGVtcGxhdGVzIi8KAVASDAoEbmFtZRgBIAEoCRILCgNhcnQYAiABKAkSDwoHd2Vic2l0ZRgDIAEoCWIGcHJvdG8z',
+        name: 'tmpl_4D44E6D1'
+      },
+      {
+        file_descriptor_set: 'CmwKG29pcDVfcmVjb3JkX3RlbXBsYXRlcy5wcm90bxIVb2lwNS5yZWNvcmQudGVtcGxhdGVzIi4KAVASDAoEbmFtZRgBIAEoCRILCgNhZ2UYAiABKA0SDgoGcG93ZXJzGAMgAygJYgZwcm90bzM=',
+        name: 'tmpl_DC6CA90C'
+      }
+    ]
     return <ThemeWrapper>
       <div style={{ width: '500px' }}>
-        <RecordProto
-          template={template}
+        <RecordProtoContainer
           onSuccess={onSuccess}
           onError={onError}
-          withPublisher={true}
+          templates={templates}
         />
       </div>
     </ThemeWrapper>
