@@ -41,8 +41,8 @@ const WalletButton = ({
   const [disable, toggleDisable] = useState(true)
 
   useEffect(() => {
-    toggleDisable(!isValidWIF(wif, network))
-  }, [wif, network])
+    toggleDisable(!isValidWIF(wif, network) || !message)
+  }, [wif, network, message])
 
   async function handleClick (e) {
     e.preventDefault()
@@ -72,14 +72,24 @@ const WalletButton = ({
     }
 
     const explorerUrl = network === 'mainnet' ? mainnetExplorerUrl : testnetExplorerUrl
-    const wallet = new OIP(wif, network, { explorerUrl }).wallet
+    const oip = new OIP(wif, network, { explorerUrl })
+    const wallet = oip.wallet
 
     let res
-    try {
-      res = await wallet.sendDataToChain(message)
-    } catch (err) {
-      if (onError) onError(err)
+    if (message.length > 1040) {
+      try {
+        res = await oip.publishMultiparts(message)
+      } catch (err) {
+        if (onError) onError(err)
+      }
+    } else {
+      try {
+        res = await wallet.sendDataToChain(message)
+      } catch (err) {
+        if (onError) onError(err)
+      }
     }
+
     if (onSuccess) onSuccess(res)
   }
 
