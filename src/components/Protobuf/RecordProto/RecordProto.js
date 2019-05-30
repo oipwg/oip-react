@@ -14,8 +14,8 @@ const marginTopForTitle = 15
 const styles = theme => ({
   root: {
     width: fieldWidth,
-    marginLeft: 'auto',
-    marginRight: 'auto'
+    // marginLeft: 'auto',
+    // marginRight: 'auto'
   },
   inputField: {
     width: fieldWidth,
@@ -86,10 +86,11 @@ const RecordProto = ({
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
   oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
   withPublisher = false,
+  keyIndex, // internal use
   getOipDetails, // external use
-  keyIndex,
-  rootKey,
-  __liftDetails // internal use
+  rootKey, // internal use
+  __liftDetails, // internal use,
+  id // internal use
 }) => {
   // define top-level record proto
   const root = rootKey || 'ROOT'
@@ -202,7 +203,6 @@ const RecordProto = ({
     })
   }, [state])
 
-
   function setChildState (detailsData) {
     setDetailsData(prevState => {
       return {
@@ -223,7 +223,7 @@ const RecordProto = ({
       for (let key of keys) {
         details.push(detailsData[key])
       }
-      getOipDetails(details) // array of detail Any payloads
+      getOipDetails({ id, detailsData: details }) // array of detail Any payloads
     }
   }, [detailsData])
   // ^^ handling build and lift state
@@ -431,8 +431,8 @@ RecordProto.propTypes = {
     descriptor: PropTypes.string.isRequired,
     templateName: PropTypes.string.isRequired,
     _extends: PropTypes.oneOfType([
-      PropTypes.number,
-      PropTypes.arrayOf(PropTypes.number)
+      PropTypes.string,
+      PropTypes.arrayOf(PropTypes.string)
     ])
   }),
   onSuccess: PropTypes.func,
@@ -440,7 +440,8 @@ RecordProto.propTypes = {
   withPublisher: PropTypes.bool,
   mainnetExplorerUrl: PropTypes.string,
   testnetExplorerUrl: PropTypes.string,
-  getOipDetailsData: PropTypes.func
+  getOipDetailsData: PropTypes.func,
+  oipdHttpApi: PropTypes.string
 }
 
 export default withStyles(styles)(RecordProto)
