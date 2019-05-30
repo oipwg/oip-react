@@ -35,7 +35,6 @@ storiesOf('Protobuf', module)
           onSuccess={txid => console.log('Success: ', txid)}
           onError={err => console.error(err)}
           withPublisher={true}
-          _extends={-2219827213574532400}
         />
       </div>
     </ThemeWrapper>
