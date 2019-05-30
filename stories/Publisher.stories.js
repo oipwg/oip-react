@@ -25,6 +25,7 @@ storiesOf('Publisher', module)
       <Publisher
         onSuccess={onSuccess}
         onError={onError}
+        message={'testnettestthis'}
       />
     </ThemeWrapper>
   })

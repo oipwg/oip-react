@@ -13,11 +13,12 @@ const ThemeWrapper = (props) => {
 storiesOf('Protobuf', module)
   .add('DescriptorSetProto', () => {
     function getDescriptor ( descr ) {
-      // console.log(descr.toString())
+      if (descr) {
+        console.log(descr.toString())
+      }
     }
     return <ThemeWrapper>
       <DescriptorSetProto
-        // onBuild={(proto) => console.log(proto.toString('base64'))}
         getDescriptor={getDescriptor}
       />
     </ThemeWrapper>
