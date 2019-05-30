@@ -31,14 +31,14 @@ storiesOf('Protobuf', module)
           onSuccess={txid => console.log('Success: ', txid)}
           onError={err => console.error(err)}
           withPublisher={true}
+          // _extends={1569568859}
         />
       </div>
     </ThemeWrapper>
   })
-
   .add('RecordProto', () => {
-    const descriptor = 'CnkKCnR4aWQucHJvdG8SCG9pcFByb3RvIhgKBFR4aWQSEAoDcmF3GAEgASgMUgNyYXdCCloIb2lwUHJvdG9KMwoFEgMAAAAKCAoBDBIDAAAACggKAQISAwAAAAoJCgIEABIDAAAACgsKBAQAAgASAwAAAGIGcHJvdG8zCscBCgdwLnByb3RvEhJvaXBQcm90by50ZW1wbGF0ZXMaCnR4aWQucHJvdG8iTQoBUBIQCgRtYXNzGAEoA1IEbWFzcxIQCgRuYW1lGAIoCVIEbmFtZRIkCgVtb29ucxgDIAMoCzIOLm9pcFByb3RvLlR4aWRSBW1vb25zSk0KBRIDAAAACggKAQwSAwAAAAoICgECEgMAAAAKCQoCBAASAwAAAAoLCgQEAAIAEgMAAAAKCwoEBAACARIDAAAACgsKBAQAAgISAwAAAA=='
-    const templateName = 'tmpl_D7309B2A2738A99F'
+    const file_descriptor_set = 'CmcKGG9pcFByb3RvX3RlbXBsYXRlcy5wcm90bxISb2lwUHJvdG8udGVtcGxhdGVzIi8KAVASDAoEbmFtZRgBIAEoCRIMCgRzb2lsGAIgASgJEg4KBmNvbG9ycxgDIAMoCWIGcHJvdG8z'
+    const name = 'tmpl_5D8DB85B'
     function onSuccess(res) {
       console.log('successfully sent data to chain: ', res)
     }
@@ -46,8 +46,33 @@ storiesOf('Protobuf', module)
       console.log('error', err)
     }
     const template = {
-      descriptor,
-      templateName
+      file_descriptor_set,
+      name
+    }
+    return <ThemeWrapper>
+      <div style={{ width: '500px' }}>
+        <RecordProto
+          template={template}
+          onSuccess={onSuccess}
+          onError={onError}
+          withPublisher={true}
+        />
+      </div>
+    </ThemeWrapper>
+  })
+  .add('RecordProto Extends', () => {
+    const file_descriptor_set = 'CkAKB3AucHJvdG8iLQoBUBITCgtzdXBlclBvd2VycxgBIAMoCRITCgtsb3ZlQWZmYWlycxgCIAMoCWIGcHJvdG8z'
+    const name = 'tmpl_2F29D8C0'
+    function onSuccess(res) {
+      console.log('successfully sent data to chain: ', res)
+    }
+    function onError(err) {
+      console.log('error', err)
+    }
+    const template = {
+      file_descriptor_set,
+      name,
+      extends: [1569568859]
     }
     return <ThemeWrapper>
       <div style={{ width: '500px' }}>

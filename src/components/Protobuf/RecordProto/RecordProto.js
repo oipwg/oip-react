@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useReducer, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState, useRef } from 'react'
 import withStyles from 'react-jss'
 import PropTypes from 'prop-types'
 import { decodeDescriptor, recordProtoBuilder, buildOipDetails } from 'oip-protobufjs'
+import { DaemonApi } from 'js-oip'
 
 import { TagsInput } from '../../UI'
 import Publisher from '../../Publisher/Publisher/Publisher'
@@ -83,14 +84,68 @@ const RecordProto = ({
   onError,
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
+  oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
   withPublisher = false,
   getOipDetailsData,
-  keyIndex
+  keyIndex,
 }) => {
-  const { descriptor, templateName, _extends } = template
+  let { file_descriptor_set: descriptor, name: templateName, extends: _extends } = template
   const memoizedDescriptor = useMemo(() => decodeDescriptor(descriptor, true), [descriptor])
   const { webFmt } = memoizedDescriptor
 
+  // handle extended templates
+  const [extendedTemplates, setExtendedTemplates] = useState({})
+  const daemonRef = useRef(null)
+
+  function getDaemonApi () {
+    if (daemonRef.current === null) {
+      daemonRef.current = new DaemonApi(oipdHttpApi)
+    }
+    return daemonRef.current
+  }
+
+  useEffect(() => {
+    if (_extends) {
+      if (!Array.isArray(_extends)) {
+        _extends = [_extends]
+      }
+      const searchTemplates = async (templatesIds) => {
+        let daemonApi = getDaemonApi()
+        for (let id of templatesIds) {
+          if (!extendedTemplates[id]) {
+            const searchQuery = `template.identifier:${id}`
+            let res
+            try {
+              res = await daemonApi.searchOip5Templates({ q: searchQuery })
+            } catch (err) {
+              throw Error(`Failed to search for templates matching identifier: ${id} \n ${err}`)
+            }
+            const { success, payload } = res
+            if (success) {
+              let payloadResults = payload.results // SHOULD ALWAYS BE AN ARRAY
+              if (payloadResults[0]) {
+                const { template } = payloadResults[0]
+                if (template) {
+                  setExtendedTemplates(prevState => {
+                    return {
+                      ...prevState,
+                      [id]: template
+                    }
+                  })
+                }
+              }
+            } else {
+              console.error(`response success returns false when searching templates for identifier: ${id}`)
+            }
+          }
+        }
+      }
+      searchTemplates(_extends)
+    }
+  }, [_extends])
+  // ^^ handling extended templates
+
+  // handle individual record proto state
   let initialState = {}
 
   function reducer (state, action) {
@@ -103,7 +158,9 @@ const RecordProto = ({
   }
 
   const [state, dispatch] = useReducer(reducer, initialState)
+  // ^^ handling individual record proto state
 
+  // serialize
   function prefixMessage (message) {
     return `p64:${message}`
   }
@@ -115,7 +172,9 @@ const RecordProto = ({
       payload: state
     }
   }
+  // ^^ handling serialization
 
+  // handle build and lift state
   function liftOipDetailsData () {
     let details
     try {
@@ -135,7 +194,9 @@ const RecordProto = ({
       }
     }
   }, [state])
+  // ^^ handling build and lift state
 
+  // function passed to Publisher to build and create message (only useful if publisher is set to true)
   function getMessage ({ wif, network }) {
     // build record template
     const serializedDetailsData = serializeState(state)
@@ -163,6 +224,8 @@ const RecordProto = ({
     testnetExplorerUrl={testnetExplorerUrl}
     withPublisher={withPublisher}
     keyIndex={keyIndex}
+    extendedTemplates={extendedTemplates}
+    oipdHttpApi={oipdHttpApi}
   />
 }
 
@@ -176,7 +239,9 @@ const RecordInterface = ({
   mainnetExplorerUrl,
   testnetExplorerUrl,
   withPublisher,
-  keyIndex
+  keyIndex,
+  extendedTemplates,
+  oipdHttpApi,
 }) => {
   return <div className={classes.root} key={keyIndex}>
     {Object.keys(webFmt.fields).map((field, i) => {
@@ -197,6 +262,17 @@ const RecordInterface = ({
         enumData={enumData}
         classes={classes}
         dispatch={dispatch}
+      />
+    })}
+    {Object.keys(extendedTemplates).map((templateIdentifier, i) => {
+      const template = extendedTemplates[templateIdentifier]
+      return <RecordProto
+        classes={classes}
+        keyIndex={i}
+        mainnetExplorerUrl={mainnetExplorerUrl}
+        testnetExplorerUrl={testnetExplorerUrl}
+        oipdHttpApi={oipdHttpApi}
+        template={template}
       />
     })}
     {withPublisher && <Publisher

@@ -41,8 +41,8 @@ const WalletButton = ({
   const [disable, toggleDisable] = useState(true)
 
   useEffect(() => {
-    toggleDisable(!isValidWIF(wif, network) || !message)
-  }, [wif, network, message])
+    toggleDisable(!isValidWIF(wif, network))
+  }, [wif, network])
 
   async function handleClick (e) {
     e.preventDefault()
