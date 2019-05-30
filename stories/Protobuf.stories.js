@@ -12,13 +12,8 @@ const ThemeWrapper = (props) => {
 
 storiesOf('Protobuf', module)
   .add('DescriptorSetProto', () => {
-    function getDescriptor ( fn ) {
-      try {
-        let descriptor = fn()
-        console.log(descriptor.toString())
-      } catch (err) {
-        console.error(err)
-      }
+    function getDescriptor ( descr ) {
+      // console.log(descr.toString())
     }
     return <ThemeWrapper>
       <DescriptorSetProto
