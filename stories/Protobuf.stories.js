@@ -33,7 +33,9 @@ storiesOf('Protobuf', module)
       <div style={{ width: '500px' }}>
         <RecordTemplate
           onSuccess={txid => console.log('Success: ', txid)}
-          onError={err => console.log('Error: ', err)}
+          onError={err => console.error(err)}
+          withPublisher={true}
+          _extends={-2219827213574532400}
         />
       </div>
     </ThemeWrapper>
@@ -48,13 +50,17 @@ storiesOf('Protobuf', module)
     function onError(err) {
       console.log('error', err)
     }
+    const template = {
+      descriptor,
+      templateName
+    }
     return <ThemeWrapper>
       <div style={{ width: '500px' }}>
         <RecordProto
-          descriptor={descriptor}
-          templateName={templateName}
+          template={template}
           onSuccess={onSuccess}
           onError={onError}
+          withPublisher={true}
         />
       </div>
     </ThemeWrapper>

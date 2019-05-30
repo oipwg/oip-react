@@ -1,10 +1,10 @@
 import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import withStyles from 'react-jss'
 import PropTypes from 'prop-types'
-import { decodeDescriptor, recordProtoBuilder } from 'oip-protobufjs'
+import { decodeDescriptor, recordProtoBuilder, buildOipDetails } from 'oip-protobufjs'
 
 import { TagsInput } from '../../UI'
-import WalletButton from '../../WalletButton/WalletButton'
+import Publisher from '../../Publisher/Publisher/Publisher'
 
 const fieldHeight = 25
 const fieldWidth = 250
@@ -42,9 +42,6 @@ const styles = theme => ({
     borderRadius: 3,
     fontSize: 12
   },
-  publishContainer: {
-    width: fieldWidth
-  },
   fieldContainer: {
     position: 'relative'
   },
@@ -52,26 +49,6 @@ const styles = theme => ({
     fontSize: 10,
     color: `${theme.palette.greyscale(0.8)}`,
     position: 'absolute'
-  },
-  publishRow: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  networkSelect: {
-    height: fieldHeight,
-    boxSizing: 'border-box',
-    padding: 4,
-    background: 'none',
-    border: `1px solid ${theme.palette.greyscale(0.3)}`,
-    borderRadius: 3,
-    fontSize: 12,
-    width: 123
-  },
-  walletButton: {
-    '& > button': {
-      padding: [4, 8]
-    }
   },
   // tags input
   tagsInputRoot: {
@@ -101,13 +78,16 @@ const styles = theme => ({
 
 const RecordProto = ({
   classes,
-  descriptor,
-  templateName,
+  template,
   onSuccess,
   onError,
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
-  testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api'
+  testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
+  withPublisher = false,
+  getOipDetailsData,
+  keyIndex
 }) => {
+  const { descriptor, templateName, _extends } = template
   const memoizedDescriptor = useMemo(() => decodeDescriptor(descriptor, true), [descriptor])
   const { webFmt } = memoizedDescriptor
 
@@ -128,7 +108,7 @@ const RecordProto = ({
     return `p64:${message}`
   }
 
-  function serializeState(state) {
+  function serializeState (state) {
     return {
       name: templateName,
       descriptor: descriptor,
@@ -136,7 +116,27 @@ const RecordProto = ({
     }
   }
 
-  function getMessage ({wif, network}) {
+  function liftOipDetailsData () {
+    let details
+    try {
+      details = buildOipDetails(serializeState(state))
+    } catch (err) {
+      throw Error(`Failed to build OipDetails in RecordProto: \n ${err}`)
+    }
+    return details
+  }
+
+  useEffect(() => {
+    if (getOipDetailsData) {
+      try {
+        return liftOipDetailsData()
+      } catch (err) {
+        throw Error(`Failed to lift Oip Details in useEffect in RecordProto: \n ${err}`)
+      }
+    }
+  }, [state])
+
+  function getMessage ({ wif, network }) {
     // build record template
     const serializedDetailsData = serializeState(state)
     let signedMessage
@@ -147,14 +147,10 @@ const RecordProto = ({
         network
       })
     } catch (err) {
-      throw Error(err)
+      throw Error(`Failed to get message in RecordProto: \n ${err}`)
     }
     return prefixMessage(signedMessage.signedMessage64)
   }
-
-  // useEffect(() => {
-  //   getMessage()
-  // }, [state])
 
   return <RecordInterface
     classes={classes}
@@ -165,6 +161,8 @@ const RecordProto = ({
     getMessage={getMessage}
     mainnetExplorerUrl={mainnetExplorerUrl}
     testnetExplorerUrl={testnetExplorerUrl}
+    withPublisher={withPublisher}
+    keyIndex={keyIndex}
   />
 }
 
@@ -176,9 +174,11 @@ const RecordInterface = ({
   onError,
   getMessage,
   mainnetExplorerUrl,
-  testnetExplorerUrl
+  testnetExplorerUrl,
+  withPublisher,
+  keyIndex
 }) => {
-  return <div className={classes.root}>
+  return <div className={classes.root} key={keyIndex}>
     {Object.keys(webFmt.fields).map((field, i) => {
       const fieldData = webFmt.fields[field]
       return <FieldRow
@@ -199,14 +199,14 @@ const RecordInterface = ({
         dispatch={dispatch}
       />
     })}
-    <Publisher
+    {withPublisher && <Publisher
       classes={classes}
       onSuccess={onSuccess}
       onError={onError}
       getMessage={getMessage}
       mainnetExplorerUrl={mainnetExplorerUrl}
       testnetExplorerUrl={testnetExplorerUrl}
-    />
+    />}
   </div>
 }
 
@@ -297,69 +297,6 @@ const FieldRow = ({
   </div>
 }
 
-const Publisher = ({
-  classes,
-  getMessage,
-  onSuccess,
-  onError,
-  mainnetExplorerUrl,
-  testnetExplorerUrl
-}) => {
-  const [wif, setWif] = useState('')
-  const [network, setNetwork] = useState('mainnet')
-
-  function handlePrivateKey(e) {
-    setWif(e.target.value)
-  }
-
-  function handleNetworkChange (e) {
-    setNetwork(e.target.value)
-  }
-
-  function _getMessage() {
-    return getMessage({wif, network})
-  }
-
-  return <div className={classes.publishContainer}>
-    <div className={classes.fieldContainer}>
-      <span className={classes.fieldTitle}>Private key (wif)</span>
-      <input
-        id={'wif'}
-        type={'text'}
-        onChange={handlePrivateKey}
-        value={wif}
-        className={classes.inputField}
-        placeholder={'private key (wallet import format)'}
-      />
-    </div>
-    <div className={classes.publishRow}>
-      <select
-        value={network}
-        onChange={handleNetworkChange}
-        className={classes.networkSelect}>
-        <option value={'mainnet'}>
-          mainnet
-        </option>
-        <option value={'testnet'}>
-          testnet
-        </option>
-      </select>
-      <div className={classes.walletButton}>
-        <WalletButton
-          text={'Create & Publish'}
-          wif={wif}
-          network={network}
-          getMessage={_getMessage}
-          onSuccess={onSuccess}
-          onError={onError}
-          mainnetExplorerUrl={mainnetExplorerUrl}
-          testnetExplorerUrl={testnetExplorerUrl}
-        />
-      </div>
-    </div>
-  </div>
-}
-
 function formatEnumValue (value) {
   value = value.split('_')
   if (value[1]) {
@@ -371,10 +308,20 @@ function formatEnumValue (value) {
 
 RecordProto.propTypes = {
   classes: PropTypes.object.isRequired,
-  descriptor: PropTypes.string.isRequired,
-  templateName: PropTypes.string.isRequired,
+  template: PropTypes.shape({
+    descriptor: PropTypes.string.isRequired,
+    templateName: PropTypes.string.isRequired,
+    _extends: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.arrayOf(PropTypes.number)
+    ])
+  }),
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
+  withPublisher: PropTypes.bool,
+  mainnetExplorerUrl: PropTypes.string,
+  testnetExplorerUrl: PropTypes.string,
+  getOipDetailsData: PropTypes.func
 }
 
 export default withStyles(styles)(RecordProto)

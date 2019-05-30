@@ -1,46 +1,38 @@
 import React, { useState, useRef } from 'react'
 import withStyles from 'react-jss'
-import { DescriptorSetProto } from '../index'
-
 import classNames from 'classnames'
-
+import PropTypes from 'prop-types'
 import { templateBuilder } from 'oip-protobufjs'
-import WalletButton from '../../WalletButton/WalletButton'
+import { Publisher } from '../../Publisher'
+import { DescriptorSetProto } from '../index'
 
 const RecordTemplate = ({
   classes,
   onSuccess,
   onError,
-  _extends
+  _extends,
+  mainnetExplorerUrl = 'https://livenet.flocha.in/api',
+  testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
+  withPublisher = false
 }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
-  const [privateKey, setPrivateKey] = useState('')
-  const [network, changeNetwork] = useState('mainnet')
   const descriptorRef = useRef(null)
 
-  const handlePrivateKey = (e) => {
-    setPrivateKey(e.target.value)
-  }
-
-  const handleNetworkChange = (e) => {
-    changeNetwork(e.target.value)
-  }
-
-  function getSignedTemplateMessage () {
+  function getSignedTemplateMessage ({ wif, network }) {
     let template
 
     try {
       template = templateBuilder({
         friendlyName: name,
         DescriptorSetProto: descriptorRef.current,
-        wif: privateKey,
+        wif,
         description,
         network,
         _extends
       })
     } catch (err) {
-      throw Error(err)
+      throw Error(`Failed to build proto template at getSignedTemplateMessage in RecordTemplate.js: \n ${err}`)
     }
     const { signedMessage64 } = template
 
@@ -52,25 +44,18 @@ const RecordTemplate = ({
     return `${prefix}${message}`
   }
 
-  function getMessage () {
+  function getMessage ({ wif, network }) {
+    let signedMessage
     try {
-      const signedMessage = getSignedTemplateMessage()
-      return (prefixMessage(signedMessage))
+      signedMessage = getSignedTemplateMessage({ wif, network })
     } catch (err) {
-      throw Error(err)
+      throw Error(`Failed to getSignedTemplateMessage at getMessage() in RecordTemplate.js: \n ${err}`)
     }
+    return (prefixMessage(signedMessage))
   }
 
-  const getProtoDescriptor = ( descriptor ) => {
+  const getProtoDescriptor = (descriptor) => {
     descriptorRef.current = descriptor
-  }
-
-  function handleOnSuccess (res) {
-    if (onSuccess) onSuccess(res)
-  }
-
-  function handleOnError (err) {
-    if (onError) onError(err)
   }
 
   return <div className={classes.recordTemplateRoot}>
@@ -98,40 +83,14 @@ const RecordTemplate = ({
       getDescriptor={getProtoDescriptor}
       classes={classes}
     />
-    <div className={classNames(classes.templateFieldRow, classes.wifRow)}>
-      <span className={classes.inputTitle}>private key (wif)</span>
-      <input
-        id={'wif'}
-        type={'text'}
-        onChange={handlePrivateKey}
-        value={privateKey}
-        className={classes.inputBase}
-        placeholder={'Private key (wif)'}
-      />
-    </div>
-    <div className={classNames(classes.templateFieldRow, classes.publishRow)}>
-      <select
-        value={network}
-        onChange={handleNetworkChange}
-        className={classNames(classes.selectBase, classes.selectNetwork)}>
-        <option value={'mainnet'}>
-          mainnet
-        </option>
-        <option value={'testnet'}>
-          testnet
-        </option>
-      </select>
-      <div className={classes.walletButton}>
-        <WalletButton
-          text={'Create & Publish'}
-          wif={privateKey}
-          network={network}
-          getMessage={getMessage}
-          onSuccess={handleOnSuccess}
-          onError={handleOnError}
-        />
-      </div>
-    </div>
+    {withPublisher && <Publisher
+      classes={classes}
+      onSuccess={onSuccess}
+      onError={onError}
+      getMessage={getMessage}
+      mainnetExplorerUrl={mainnetExplorerUrl}
+      testnetExplorerUrl={testnetExplorerUrl}
+    />}
   </div>
 }
 
@@ -228,5 +187,18 @@ const styles = theme => ({
     boxSizing: 'border-box'
   }
 })
+
+RecordTemplate.propTypes = {
+  classes: PropTypes.object.isRequired,
+  _extends: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.arrayOf(PropTypes.number)
+  ]),
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
+  withPublisher: PropTypes.bool,
+  mainnetExplorerUrl: PropTypes.string,
+  testnetExplorerUrl: PropTypes.string,
+}
 
 export default withStyles(styles)(RecordTemplate)

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { OIP } from 'js-oip'
 import withStyles from 'react-jss'
-import { isValidWIF } from '../../util'
+import PropTypes from 'prop-types'
+import { isValidWIF } from '../../../util'
 
 const styles = theme => ({
   walletButtonRoot: {
@@ -45,8 +46,8 @@ const WalletButton = ({
 
   async function handleClick (e) {
     e.preventDefault()
-    // toDo: set explorerUrl from config
 
+    let originalMessage = message
     if (getMessage) {
       try {
         message = getMessage()
@@ -54,8 +55,11 @@ const WalletButton = ({
         if (onError) {
           return onError(err)
         } else {
-          throw Error(`Failed to get getMessage in wallet button component: ${err}`)
+          throw Error(`Failed to get getMessage in wallet button component \n ${err}`)
         }
+      }
+      if (!message) { // if message is undefined, then set to the original message
+        message = originalMessage
       }
     }
 
@@ -63,7 +67,7 @@ const WalletButton = ({
       if (onError) {
         return onError(`must pass a message prop of type string to WalletButton`)
       } else {
-        throw Error(`must pass a message prop of type string to WalletButton`)
+        throw Error(`must pass a message prop of type string to WalletButton \n`)
       }
     }
 
@@ -87,4 +91,18 @@ const WalletButton = ({
     {text}
   </button>
 }
+
+WalletButton.propTypes = {
+  classes: PropTypes.object.isRequired,
+  text: PropTypes.string,
+  wif: PropTypes.string,
+  network: PropTypes.string,
+  message: PropTypes.string,
+  onSuccess: PropTypes.func,
+  onError: PropTypes.func,
+  getMessage: PropTypes.func,
+  mainnetExplorerUrl: PropTypes.string,
+  testnetExplorerUrl: PropTypes.string
+}
+
 export default withStyles(styles)(WalletButton)
