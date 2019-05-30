@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useReducer, useState, useRef } from 'react'
 import withStyles from 'react-jss'
 import PropTypes from 'prop-types'
-import { decodeDescriptor, recordProtoBuilder, buildOipDetails } from 'oip-protobufjs'
+import { decodeDescriptor, recordProtoBuilder } from 'oip-protobufjs'
 import { DaemonApi } from 'js-oip'
 
 import { TagsInput } from '../../UI'
@@ -86,9 +86,15 @@ const RecordProto = ({
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
   oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
   withPublisher = false,
-  getOipDetailsData,
+  getOipDetails, // external use
   keyIndex,
+  rootKey,
+  __liftDetails // internal use
 }) => {
+  // define top-level record proto
+  const root = rootKey || 'ROOT'
+
+  // deserialize template data
   let { file_descriptor_set: descriptor, name: templateName, extends: _extends } = template
   const memoizedDescriptor = useMemo(() => decodeDescriptor(descriptor, true), [descriptor])
   const { webFmt } = memoizedDescriptor
@@ -172,38 +178,69 @@ const RecordProto = ({
       payload: state
     }
   }
+
   // ^^ handling serialization
 
-  // handle build and lift state
-  function liftOipDetailsData () {
-    let details
-    try {
-      details = buildOipDetails(serializeState(state))
-    } catch (err) {
-      throw Error(`Failed to build OipDetails in RecordProto: \n ${err}`)
-    }
-    return details
+  // handle state updating and lifting
+  /**
+   * @typedef detailsData
+   * @example
+   * {
+   *   [root]: serializedState(state),
+   *   [root1]: serializedState(state)
+   * }
+   */
+  const [detailsData, setDetailsData] = useState({})
+
+  // when state updates, set it to total details data state (internal)
+  useEffect(() => {
+    setDetailsData(prevState => {
+      return {
+        ...prevState,
+        [root]: serializeState(state)
+      }
+    })
+  }, [state])
+
+
+  function setChildState (detailsData) {
+    setDetailsData(prevState => {
+      return {
+        ...prevState,
+        ...detailsData
+      }
+    })
   }
 
+  // lift details up to parent
   useEffect(() => {
-    if (getOipDetailsData) {
-      try {
-        return liftOipDetailsData()
-      } catch (err) {
-        throw Error(`Failed to lift Oip Details in useEffect in RecordProto: \n ${err}`)
-      }
+    if (__liftDetails) {
+      __liftDetails(detailsData)
     }
-  }, [state])
+    if (getOipDetails) {
+      let keys = Object.keys(detailsData)
+      let details = []
+      for (let key of keys) {
+        details.push(detailsData[key])
+      }
+      getOipDetails(details) // array of detail Any payloads
+    }
+  }, [detailsData])
   // ^^ handling build and lift state
 
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
   function getMessage ({ wif, network }) {
     // build record template
-    const serializedDetailsData = serializeState(state)
+    let keys = Object.keys(detailsData)
+    let anyPayloads = []
+    for (let key of keys) {
+      anyPayloads.push(detailsData[key])
+    }
+    console.log(anyPayloads)
     let signedMessage
     try {
       signedMessage = recordProtoBuilder({
-        detailsData: serializedDetailsData,
+        detailsData: anyPayloads,
         wif,
         network
       })
@@ -226,6 +263,8 @@ const RecordProto = ({
     keyIndex={keyIndex}
     extendedTemplates={extendedTemplates}
     oipdHttpApi={oipdHttpApi}
+    root={root}
+    setChildState={setChildState}
   />
 }
 
@@ -242,6 +281,8 @@ const RecordInterface = ({
   keyIndex,
   extendedTemplates,
   oipdHttpApi,
+  root,
+  setChildState
 }) => {
   return <div className={classes.root} key={keyIndex}>
     {Object.keys(webFmt.fields).map((field, i) => {
@@ -273,6 +314,8 @@ const RecordInterface = ({
         testnetExplorerUrl={testnetExplorerUrl}
         oipdHttpApi={oipdHttpApi}
         template={template}
+        rootKey={`${root}-${i}`}
+        __liftDetails={setChildState}
       />
     })}
     {withPublisher && <Publisher
