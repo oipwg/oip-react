@@ -35,7 +35,9 @@ function RecordProtoContainer ({
     if (action.type === 'UPDATE') {
       return {
         ...state,
-        [action.id]: action.details
+        [action.data.name]: {
+          ...action.data
+        }
       }
     } else {
       throw Error(`Invalid action type in recordProtoContainer`)
@@ -44,12 +46,16 @@ function RecordProtoContainer ({
 
   const [state, dispatch] = useReducer(reducer, initState)
 
-  function storeDetailsData ({ detailsData, id }) {
-    dispatch({
-      type: 'UPDATE',
-      id,
-      details: detailsData
-    })
+  function storeDetailsData (detailsData) {
+    if (detailsData.length === 0) return
+
+    for (let data of detailsData) {
+      const payload = {
+        type: 'UPDATE',
+        data
+      }
+      dispatch(payload)
+    }
   }
 
   function prefixMessage (message) {
@@ -58,13 +64,13 @@ function RecordProtoContainer ({
 
   function getMessage ({ wif, network }) {
     let detailsData = []
-    console.log(state)
 
-    for (let id in state) {
-      if (state.hasOwnProperty(id)) {
-        detailsData = [...detailsData, ...state[id]]
+    for (let tmpl in state) {
+      if (state.hasOwnProperty(tmpl)) {
+        detailsData.push(state[tmpl])
       }
     }
+
     // build record proto
     let recordData
     try {
@@ -86,7 +92,6 @@ function RecordProtoContainer ({
         template={template}
         keyIndex={i}
         getOipDetails={storeDetailsData}
-        id={parseInt(`${Math.random().toFixed(7)*1e7}`)} // generate random number
         oipdHttpApi={oipdHttpApi}
       />
     })}

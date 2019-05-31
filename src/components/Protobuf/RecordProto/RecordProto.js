@@ -90,7 +90,6 @@ const RecordProto = ({
   getOipDetails, // external use
   rootKey, // internal use
   __liftDetails, // internal use,
-  id // internal use
 }) => {
   // define top-level record proto
   const root = rootKey || 'ROOT'
@@ -193,7 +192,7 @@ const RecordProto = ({
    */
   const [detailsData, setDetailsData] = useState({})
 
-  // when state updates, set it to total details data state (internal)
+  // handle state updates, set it to total details data state (internal)
   useEffect(() => {
     setDetailsData(prevState => {
       return {
@@ -223,7 +222,7 @@ const RecordProto = ({
       for (let key of keys) {
         details.push(detailsData[key])
       }
-      getOipDetails({ id, detailsData: details }) // array of detail Any payloads
+      getOipDetails(details) // array of detail Any payloads
     }
   }, [detailsData])
   // ^^ handling build and lift state
