@@ -85,7 +85,7 @@ function RecordProtoContainer ({
     return prefixMessage(recordData.signedMessage64)
   }
 
-  return <>
+  return <div className={classes.root}>
     {templates.map((template, i) => {
       return <RecordProto
         classes={classes}
@@ -103,7 +103,7 @@ function RecordProtoContainer ({
       onSuccess={onSuccess}
       onError={onError}
     />
-  </>
+  </div>
 }
 
 const styles = theme => ({
