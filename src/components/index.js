@@ -12,5 +12,6 @@ export {
   ModuleWallet,
   RecordProto,
   WalletButton,
-  Publisher
+  Publisher,
+  RecordProtoContainer
 }
