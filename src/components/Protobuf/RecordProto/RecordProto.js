@@ -434,7 +434,7 @@ RecordProto.propTypes = {
       PropTypes.arrayOf(PropTypes.number)
     ]),
     description: PropTypes.string,
-    identifier: PropTypes.string,
+    identifier: PropTypes.number,
     friendly_name: PropTypes.string
   }),
   onSuccess: PropTypes.func,
