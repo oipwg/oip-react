@@ -70,6 +70,8 @@ const WalletButton = ({
         throw Error(`must pass a message prop of type string to WalletButton \n`)
       }
     }
+    // console.log(message)
+    // return
 
     const explorerUrl = network === 'mainnet' ? mainnetExplorerUrl : testnetExplorerUrl
     const oip = new OIP(wif, network, { explorerUrl })
