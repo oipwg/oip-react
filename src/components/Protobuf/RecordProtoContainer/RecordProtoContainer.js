@@ -86,11 +86,11 @@ function RecordProtoContainer ({
   }
 
   return <div className={classes.root}>
-    {templates.map((template, i) => {
+    {templates.map(template => {
       return <RecordProto
         classes={classes}
         template={template}
-        keyIndex={i}
+        keyIndex={template.identifier}
         getOipDetails={storeDetailsData}
         oipdHttpApi={oipdHttpApi}
       />

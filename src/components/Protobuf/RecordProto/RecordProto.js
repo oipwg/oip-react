@@ -297,7 +297,7 @@ const RecordInterface = ({
     {Object.keys(webFmt.enums).map((enumField, i) => {
       const enumData = webFmt.enums[enumField]
       return <EnumRow
-        i={i}
+        key={i}
         enumField={enumField}
         enumData={enumData}
         classes={classes}
@@ -331,7 +331,7 @@ const RecordInterface = ({
 const EnumRow = ({
   enumField,
   enumData,
-  i,
+  key,
   classes,
   dispatch
 }) => {
@@ -350,7 +350,7 @@ const EnumRow = ({
   }, [state])
 
   const { values } = enumData // currently don't allow repeated
-  return <div className={classes.fieldContainer} key={i}>
+  return <div className={classes.fieldContainer} key={key}>
     <span className={classes.fieldTitle}>
       Field: {enumField}
     </span>
