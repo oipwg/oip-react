@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import { RecordProto } from '../index'
 import { Publisher } from '../../Publisher'
-import { recordProtoBuilder } from 'oip-protobufjs/src'
+import { recordProtoBuilder } from 'oip-protobufjs'
 
 /**
  * @typedef {Object} templateData
