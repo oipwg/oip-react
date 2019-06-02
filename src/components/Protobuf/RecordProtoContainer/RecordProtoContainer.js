@@ -112,14 +112,10 @@ const styles = theme => ({
 
 RecordProtoContainer.propTypes = {
   classes: PropTypes.object.isRequired,
-  templates: PropTypes.arrayOf(PropTypes.shape({
-    descriptor: PropTypes.string.isRequired,
-    templateName: PropTypes.string.isRequired,
-    _extends: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ])
-  })),
+  templates: PropTypes.oneOfType([
+    PropTypes.object.isRequired,
+    PropTypes.arrayOf(PropTypes.object).isRequired
+  ]),
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
   mainnetExplorerUrl: PropTypes.string,

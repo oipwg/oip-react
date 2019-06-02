@@ -427,12 +427,15 @@ function formatEnumValue (value) {
 RecordProto.propTypes = {
   classes: PropTypes.object.isRequired,
   template: PropTypes.shape({
-    descriptor: PropTypes.string.isRequired,
-    templateName: PropTypes.string.isRequired,
-    _extends: PropTypes.oneOfType([
-      PropTypes.string,
-      PropTypes.arrayOf(PropTypes.string)
-    ])
+    file_descriptor_set: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    extends: PropTypes.oneOfType([
+      PropTypes.number,
+      PropTypes.arrayOf(PropTypes.number)
+    ]),
+    description: PropTypes.string,
+    identifier: PropTypes.string,
+    friendly_name: PropTypes.string
   }),
   onSuccess: PropTypes.func,
   onError: PropTypes.func,
