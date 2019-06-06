@@ -287,7 +287,7 @@ const RecordInterface = ({
     {Object.keys(webFmt.fields).map((field, i) => {
       const fieldData = webFmt.fields[field]
       return <FieldRow
-        key={i}
+        keyIndex={`${keyIndex}-${field}-${i}`}
         field={field}
         fieldData={fieldData}
         classes={classes}
@@ -297,7 +297,7 @@ const RecordInterface = ({
     {Object.keys(webFmt.enums).map((enumField, i) => {
       const enumData = webFmt.enums[enumField]
       return <EnumRow
-        keyIndex={i}
+        keyIndex={`${keyIndex}-${enumField}-${i}`}
         enumField={enumField}
         enumData={enumData}
         classes={classes}
@@ -308,7 +308,7 @@ const RecordInterface = ({
       const template = extendedTemplates[templateIdentifier]
       return <RecordProto
         classes={classes}
-        keyIndex={i}
+        keyIndex={`${templateIdentifier}-${i}`}
         mainnetExplorerUrl={mainnetExplorerUrl}
         testnetExplorerUrl={testnetExplorerUrl}
         oipdHttpApi={oipdHttpApi}
@@ -371,7 +371,7 @@ const EnumRow = ({
 const FieldRow = ({
   field,
   fieldData,
-  i,
+  keyIndex,
   classes,
   dispatch
 }) => {
@@ -394,7 +394,7 @@ const FieldRow = ({
   }, [state])
 
   const { type, repeated } = fieldData
-  return <div className={classes.fieldContainer} key={i}>
+  return <div className={classes.fieldContainer} key={keyIndex}>
     <span className={classes.fieldTitle}>
       Field: {field} | Type: {repeated ? `Repeated` : null} {type}
     </span>
