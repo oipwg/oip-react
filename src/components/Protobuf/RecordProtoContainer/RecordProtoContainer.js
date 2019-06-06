@@ -90,7 +90,7 @@ function RecordProtoContainer ({
       return <RecordProto
         classes={classes}
         template={template}
-        keyIndex={template.identifier}
+        key={template.identifier}
         getOipDetails={storeDetailsData}
         oipdHttpApi={oipdHttpApi}
       />

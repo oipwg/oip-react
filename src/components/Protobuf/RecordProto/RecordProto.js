@@ -277,17 +277,16 @@ const RecordInterface = ({
   mainnetExplorerUrl,
   testnetExplorerUrl,
   withPublisher,
-  keyIndex,
   extendedTemplates,
   oipdHttpApi,
   root,
   setChildState
 }) => {
-  return <div className={classes.root} key={keyIndex}>
+  return <div className={classes.root}>
     {Object.keys(webFmt.fields).map((field, i) => {
       const fieldData = webFmt.fields[field]
       return <FieldRow
-        keyIndex={`${keyIndex}-${field}-${i}`}
+        key={`${field}-${i}`}
         field={field}
         fieldData={fieldData}
         classes={classes}
@@ -297,7 +296,7 @@ const RecordInterface = ({
     {Object.keys(webFmt.enums).map((enumField, i) => {
       const enumData = webFmt.enums[enumField]
       return <EnumRow
-        keyIndex={`${keyIndex}-${enumField}-${i}`}
+        key={`${enumField}-${i}`}
         enumField={enumField}
         enumData={enumData}
         classes={classes}
@@ -308,7 +307,7 @@ const RecordInterface = ({
       const template = extendedTemplates[templateIdentifier]
       return <RecordProto
         classes={classes}
-        keyIndex={`${templateIdentifier}-${i}`}
+        key={templateIdentifier}
         mainnetExplorerUrl={mainnetExplorerUrl}
         testnetExplorerUrl={testnetExplorerUrl}
         oipdHttpApi={oipdHttpApi}
@@ -331,7 +330,6 @@ const RecordInterface = ({
 const EnumRow = ({
   enumField,
   enumData,
-  keyIndex,
   classes,
   dispatch
 }) => {
@@ -350,7 +348,7 @@ const EnumRow = ({
   }, [state])
 
   const { values } = enumData // currently don't allow repeated
-  return <div className={classes.fieldContainer} key={keyIndex}>
+  return <div className={classes.fieldContainer}>
     <span className={classes.fieldTitle}>
       Field: {enumField}
     </span>
@@ -360,7 +358,7 @@ const EnumRow = ({
       className={classes.selectField}
     >
       {Object.keys(values).map((value, i) => {
-        return <option key={i} value={values[value]}>
+        return <option key={`${value}-${i}`} value={values[value]}>
           {formatEnumValue(value)}
         </option>
       })}
@@ -371,7 +369,6 @@ const EnumRow = ({
 const FieldRow = ({
   field,
   fieldData,
-  keyIndex,
   classes,
   dispatch
 }) => {
@@ -394,7 +391,7 @@ const FieldRow = ({
   }, [state])
 
   const { type, repeated } = fieldData
-  return <div className={classes.fieldContainer} key={keyIndex}>
+  return <div className={classes.fieldContainer}>
     <span className={classes.fieldTitle}>
       Field: {field} | Type: {repeated ? `Repeated` : null} {type}
     </span>
