@@ -1,5 +1,13 @@
 import { useTheme, withStyles, ThemeProvider, ThemeGenerator } from './theme'
-import { DynamicComplexSearch, TagsInput, RecordTemplate, ModuleWallet, RecordProto, RecordProtoContainer } from './components'
+import {
+  DynamicComplexSearch,
+  TagsInput,
+  RecordTemplate,
+  ModuleWallet,
+  RecordProto,
+  RecordProtoContainer,
+  WalletButton
+} from './components'
 
 export {
   useTheme,
@@ -11,5 +19,6 @@ export {
   RecordTemplate,
   ModuleWallet,
   RecordProto,
-  RecordProtoContainer
+  RecordProtoContainer,
+  WalletButton
 }
