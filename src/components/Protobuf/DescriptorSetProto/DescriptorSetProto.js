@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
-// gfs = GLOBAl FORM STATE
+// gfs = GLOBAl FORM STATE    
 import { useGlobalFormState } from '../../../hooks'
 
 import TagsInput from '../../UI/TagsInput'
