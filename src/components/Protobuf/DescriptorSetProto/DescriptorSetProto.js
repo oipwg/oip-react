@@ -1,8 +1,10 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
+// gfs = GLOBAl FORM STATE
 import { useGlobalFormState } from '../../../hooks'
+
 import TagsInput from '../../UI/TagsInput'
 import classNames from 'classnames'
 import { buildDescriptor } from 'oip-protobufjs'
@@ -59,8 +61,11 @@ const SelectOptions = React.memo((
   return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
+// --------------
+
+// FIELD NAME
 const InputField = React.memo((
-  { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true }
+  { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true, validate }
 ) => {
   let okd = () => {
   }
@@ -71,11 +76,14 @@ const InputField = React.memo((
       } : onChangeCopy
     }
   }
+
   return <input
+    required
     type={type}
     id={id}
     name={name}
     value={state[name]}
+    validate={validate(state[name])}
     onKeyDown={okd}
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => {
@@ -96,10 +104,12 @@ const shouldUpdate = (oldProps, newProps) => {
   const classesDidNotChange = oldProps.classes === newProps.classes
   return nameDidNotChange && classesDidNotChange
 }
+// --------------
 
-const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
+//  two selects; sigular/repeated and types
+const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
+
   const isEnum = gfs.state.form[id].fieldType === 'enum'
-
   return <div className={classes.descriptorFieldRowContainer}>
     <div className={classes.selectOptions}>
       <SelectOptions
@@ -133,6 +143,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
       allowSpaces={false}
       onBlur={liftDescriptor}
       classes={classes}
+      validate={validate}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
@@ -150,7 +161,8 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
     /> : null}
     {gfs.state.form[id].index > 0 && <button
       onClick={() => {
-        gfs.remove(id)
+        gfs.remove(id),
+          validate()
       }}
       className={classNames(classes.buttonBase, classes.removeRowButton)}
     >-</button>}
@@ -158,21 +170,26 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
 }
 
 const DescriptorSetProto = ({ classes, getDescriptor }) => {
-  const id = useRef(uid()).current
 
+  const [passErrorMessage, setPassErrorMessage] = useState('');
+
+  const id = useRef(uid()).current
   const initialFormRow = {
     fieldType: 'string',
     fieldName: '',
     fieldRule: 'singular'
   }
+
   const gfs = useGlobalFormState(id, initialFormRow)
+  let fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '');
+  let filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '');
 
   const liftDescriptor = () => {
     if (getDescriptor) {
       let descriptor
-      // console.log(serializeFormData(gfs.state.form))
       try {
         descriptor = buildDescriptor(serializeFormData(gfs.state.form))
+
       } catch (err) {
         // throw Error(err)
       }
@@ -180,24 +197,60 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     }
   }
 
+  function errorMessage(message) {
+    setPassErrorMessage(message);
+  }
+
+  const arraysMatch = function (arr1, arr2) {
+    if (arr1.length !== arr2.length) { return errorMessage('Enter unique field names') };
+
+    return errorMessage(null);
+  };
+
+  function validate() {
+    arraysMatch(fieldnameArr, filtered);
+  }
+
+
+
+  // RYANS OLD CODE ??
+  //   <FieldRow
+  //   gfs={gfs}
+  //   id={id}
+  //   liftDescriptor={liftDescriptor}
+  //   classes={classes}
+  //   validate={validate}
+  // />
+  // {/* for every from created */}
+  // {Object.keys(gfs.state.form).map((formId) => {
+  //   if (formId !== id) {
+  //     return <FieldRow
+  //       classes={classes}
+  //       gfs={gfs}
+  //       id={formId}
+  //       key={formId}
+  //       liftDescriptor={liftDescriptor}
+  //       fieldnameArr={fieldnameArr}
+  //       validate={validate}
+  //     />
+  //   }
+  // })}
+
   return <div className={classes.descriptorRoot}>
-    <FieldRow
-      gfs={gfs}
-      id={id}
-      liftDescriptor={liftDescriptor}
-      classes={classes}
-    />
     {Object.keys(gfs.state.form).map((formId) => {
-      if (formId !== id) {
-        return <FieldRow
-          classes={classes}
-          gfs={gfs}
-          id={formId}
-          key={formId}
-          liftDescriptor={liftDescriptor}
-        />
-      }
-    })}
+      return <FieldRow
+        classes={classes}
+        gfs={gfs}
+        id={formId}
+        key={formId}
+        liftDescriptor={liftDescriptor}
+        fieldnameArr={fieldnameArr}
+        validate={validate}
+      />
+    })
+    }
+    {/* add another row */}
+    <div>{passErrorMessage}</div>
     <button
       className={classNames(classes.buttonBase, classes.addRowButton)}
       onClick={() => gfs.add(uid(), initialFormRow)}>+
@@ -264,7 +317,7 @@ const styles = theme => ({
   }
 })
 
-function serializeFormData (form) {
+function serializeFormData(form) {
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
@@ -274,7 +327,9 @@ function serializeFormData (form) {
   sorted.sort((a, b) => {
     return a[1] - b[1]
   })
+
   let serialized = []
+
   for (let formData of sorted) {
     let data = form[formData[0]]
     let tmpObject = {
