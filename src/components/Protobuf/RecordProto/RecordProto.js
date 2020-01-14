@@ -7,6 +7,19 @@ import { DaemonApi } from 'js-oip'
 import { TagsInput } from '../../UI'
 import Publisher from '../../Publisher/Publisher/Publisher'
 
+// handle individual record proto state
+let initialState = {}
+
+function reducer(state, action) {
+  if (action.type === 'UPDATE') {
+    return {
+      ...state,
+      [action.field]: action.value
+    }
+  }
+  else throw Error('Invalid type passed to reducer - RecordProto')
+}
+
 const fieldHeight = 25
 const fieldWidth = 250
 const marginTopForTitle = 15
@@ -97,13 +110,15 @@ const RecordProto = ({
   // deserialize template data
   let { file_descriptor_set: descriptor, name: templateName, extends: _extends } = template
   const memoizedDescriptor = useMemo(() => decodeDescriptor(descriptor, true), [descriptor])
+
   const { webFmt } = memoizedDescriptor
 
   // handle extended templates
   const [extendedTemplates, setExtendedTemplates] = useState({})
+
   const daemonRef = useRef(null)
 
-  function getDaemonApi () {
+  function getDaemonApi() {
     if (daemonRef.current === null) {
       daemonRef.current = new DaemonApi(oipdHttpApi)
     }
@@ -151,27 +166,17 @@ const RecordProto = ({
   }, [_extends])
   // ^^ handling extended templates
 
-  // handle individual record proto state
-  let initialState = {}
-
-  function reducer (state, action) {
-    if (action.type === 'UPDATE') {
-      return {
-        ...state,
-        [action.field]: action.value
-      }
-    } else throw Error('Invalid type passed to reducer')
-  }
-
   const [state, dispatch] = useReducer(reducer, initialState)
   // ^^ handling individual record proto state
 
+
+
   // serialize
-  function prefixMessage (message) {
+  function prefixMessage(message) {
     return `p64:${message}`
   }
 
-  function serializeState (state) {
+  function serializeState(state) {
     return {
       name: templateName,
       descriptor: descriptor,
@@ -190,6 +195,7 @@ const RecordProto = ({
    *   [root1]: serializedState(state)
    * }
    */
+
   const [detailsData, setDetailsData] = useState({})
 
   // handle state updates, set it to total details data state (internal)
@@ -202,7 +208,7 @@ const RecordProto = ({
     })
   }, [state])
 
-  function setChildState (detailsData) {
+  function setChildState(detailsData) {
     setDetailsData(prevState => {
       return {
         ...prevState,
@@ -227,15 +233,16 @@ const RecordProto = ({
   }, [detailsData])
   // ^^ handling build and lift state
 
+
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
-  function getMessage ({ wif, network }) {
+  function getMessage({ wif, network }) {
     // build record template
     let keys = Object.keys(detailsData)
     let anyPayloads = []
     for (let key of keys) {
       anyPayloads.push(detailsData[key])
     }
-    console.log(anyPayloads)
+
     let signedMessage
     try {
       signedMessage = recordProtoBuilder({
@@ -248,6 +255,8 @@ const RecordProto = ({
     }
     return prefixMessage(signedMessage.signedMessage64)
   }
+
+
 
   return <RecordInterface
     classes={classes}
@@ -267,6 +276,7 @@ const RecordProto = ({
   />
 }
 
+/*** Loops thrue webFmt object - returns a functional component ***/
 const RecordInterface = ({
   classes,
   webFmt,
@@ -280,139 +290,177 @@ const RecordInterface = ({
   extendedTemplates,
   oipdHttpApi,
   root,
-  setChildState
+  setChildState,
+
 }) => {
-  return <div className={classes.root}>
-    {Object.keys(webFmt.fields).map((field, i) => {
-      const fieldData = webFmt.fields[field]
-      return <FieldRow
-        key={`${field}-${i}`}
-        field={field}
-        fieldData={fieldData}
-        classes={classes}
-        dispatch={dispatch}
-      />
-    })}
-    {Object.keys(webFmt.enums).map((enumField, i) => {
-      const enumData = webFmt.enums[enumField]
-      return <EnumRow
-        key={`${enumField}-${i}`}
-        enumField={enumField}
-        enumData={enumData}
-        classes={classes}
-        dispatch={dispatch}
-      />
-    })}
-    {Object.keys(extendedTemplates).map((templateIdentifier, i) => {
-      const template = extendedTemplates[templateIdentifier]
-      return <RecordProto
-        classes={classes}
-        key={templateIdentifier}
-        mainnetExplorerUrl={mainnetExplorerUrl}
-        testnetExplorerUrl={testnetExplorerUrl}
-        oipdHttpApi={oipdHttpApi}
-        template={template}
-        rootKey={`${root}-${i}`}
-        __liftDetails={setChildState}
-      />
-    })}
-    {withPublisher && <Publisher
-      classes={classes}
-      onSuccess={onSuccess}
-      onError={onError}
-      getMessage={getMessage}
-      mainnetExplorerUrl={mainnetExplorerUrl}
-      testnetExplorerUrl={testnetExplorerUrl}
-    />}
-  </div>
+
+  return (
+    <div className={classes.root}>
+
+      {Object.keys(webFmt.fields).map((field, index) => {
+        const fieldData = webFmt.fields[field]
+        const enumData = webFmt.enums[webFmt.fields[field].enumRefName]
+
+        if (webFmt.fields[field].enumRefName) {
+          return <EnumRow
+            key={`${field}-enum-${index}`}
+            enumField={field}
+            enumData={enumData}
+            classes={classes}
+            dispatch={dispatch}
+          />
+        }
+        else return <FieldRow
+          key={`${field}-${index}`}
+          id={`${field}-${index}`}
+          field={field}
+          fieldData={fieldData}
+          classes={classes}
+          dispatch={dispatch}
+        />
+      })}
+
+      {
+        Object.keys(extendedTemplates).map((templateIdentifier, i) => {
+          const template = extendedTemplates[templateIdentifier]
+          return <RecordProto
+            classes={classes}
+            key={templateIdentifier}
+            mainnetExplorerUrl={mainnetExplorerUrl}
+            testnetExplorerUrl={testnetExplorerUrl}
+            oipdHttpApi={oipdHttpApi}
+            template={template}
+            rootKey={`${root}-${i}`}
+            __liftDetails={setChildState}
+          />
+        })
+      }
+
+      {
+        withPublisher
+        &&
+        <Publisher
+          classes={classes}
+          onSuccess={onSuccess}
+          onError={onError}
+          getMessage={getMessage}
+          mainnetExplorerUrl={mainnetExplorerUrl}
+          testnetExplorerUrl={testnetExplorerUrl}
+        />
+      }
+    </div>
+  )
 }
 
+//*** Enum Dropdown ***/
 const EnumRow = ({
   enumField,
   enumData,
   classes,
-  dispatch
+  dispatch,
 }) => {
   const [state, setState] = useState(0)
 
-  function handleSelectChange (e) {
+
+  function handleSelectChange(e) {
     setState(Number(e.target.value))
   }
+
 
   useEffect(() => {
     dispatch({
       type: 'UPDATE',
       value: state,
-      field: enumField
+      field: enumField,
     })
   }, [state])
 
   const { values } = enumData // currently don't allow repeated
-  return <div className={classes.fieldContainer}>
-    <span className={classes.fieldTitle}>
-      Field: {enumField}
-    </span>
-    <select
-      value={state}
-      onChange={handleSelectChange}
-      className={classes.selectField}
-    >
-      {Object.keys(values).map((value, i) => {
-        return <option key={`${value}-${i}`} value={values[value]}>
-          {formatEnumValue(value)}
-        </option>
-      })}
-    </select>
-  </div>
+
+  //creates enum field dropdown
+  return (
+    <div className={classes.fieldContainer}>
+      <span className={classes.fieldTitle}>
+        Field: {enumField}
+      </span>
+      <select
+        value={state}
+        onChange={handleSelectChange}
+        className={classes.selectField}
+      >
+        {Object.keys(values).map((value, i) => {
+          return (
+            <option key={`${value}-${i}`} value={values[value]}>
+              {formatEnumValue(value)}
+            </option>
+          )
+        })}
+
+      </select>
+    </div>
+
+
+  )
 }
 
+/*** FIELD INPUTS***/
 const FieldRow = ({
   field,
   fieldData,
   classes,
-  dispatch
+  dispatch,
 }) => {
-  const [state, setState] = useState('')
 
-  function handleInputChange (e, tags = false) {
+  const [state, setState] = useState('')
+  const { type, repeated } = fieldData
+
+  function handleInputChange(e, tags = false) {
     if (tags) {
       setState(e)
-    } else {
+    }
+    else {
       setState(e.target.value)
     }
   }
+
 
   useEffect(() => {
     dispatch({
       type: 'UPDATE',
       value: state,
-      field: field
+      field: field,
     })
   }, [state])
 
-  const { type, repeated } = fieldData
-  return <div className={classes.fieldContainer}>
+  let renderField = (<div className={classes.fieldContainer}>
     <span className={classes.fieldTitle}>
       Field: {field} | Type: {repeated ? `Repeated` : null} {type}
     </span>
-    {repeated ? <TagsInput
-      placeholder={`${field}`}
-      getTags={(tags) => {
-        handleInputChange(tags, true)
-      }}
-      allowSpaces={true}
-      classes={classes}
-    /> : <input
-      className={classes.inputField}
-      placeholder={field.toLowerCase()}
-      type={type}
-      value={state}
-      onChange={handleInputChange}
-    />}
-  </div>
+
+    {repeated
+      ? <TagsInput
+        placeholder={`${field}`}
+        getTags={(tags) => {
+          handleInputChange(tags, true)
+        }}
+        allowSpaces={true}
+        classes={classes}
+      />
+      : <input
+        className={classes.inputField}
+        placeholder={field.toLowerCase()}
+        type={type}
+        value={state}
+        onChange={handleInputChange}
+      />}
+  </div>)
+
+
+  return renderField
 }
 
-function formatEnumValue (value) {
+// removes _ from enum values
+function formatEnumValue(value) {
   value = value.split('_')
   if (value[1]) {
     value = value[1].toLowerCase()

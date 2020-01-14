@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
-// gfs = GLOBAl FORM STATE    
+// gfs = GLOBAl FORM STATE - duh!   
 import { useGlobalFormState } from '../../../hooks'
 
 import TagsInput from '../../UI/TagsInput'
@@ -29,9 +29,11 @@ const protoFields = {
   'sfixed64': 'number'
 }
 
+// Select Option for DescriptorSetProto
 const SelectOptions = React.memo((
   { classes, state, opts, onChange, onFocus, onBlur, id, name = '' }
 ) => {
+
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
@@ -63,7 +65,7 @@ const SelectOptions = React.memo((
 
 // --------------
 
-// FIELD NAME
+// Creates input field for creating a DescriptorSetProto - Template
 const InputField = React.memo((
   { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true, validate }
 ) => {
@@ -188,10 +190,11 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     if (getDescriptor) {
       let descriptor
       try {
+
         descriptor = buildDescriptor(serializeFormData(gfs.state.form))
 
       } catch (err) {
-        // throw Error(err)
+        console.error(`${err}: liftDescriptor - DescriptorSetProto`)
       }
       getDescriptor(descriptor)
     }
@@ -211,44 +214,28 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     arraysMatch(fieldnameArr, filtered);
   }
 
-
-
-  // RYANS OLD CODE ??
-  //   <FieldRow
-  //   gfs={gfs}
-  //   id={id}
-  //   liftDescriptor={liftDescriptor}
-  //   classes={classes}
-  //   validate={validate}
-  // />
-  // {/* for every from created */}
-  // {Object.keys(gfs.state.form).map((formId) => {
-  //   if (formId !== id) {
-  //     return <FieldRow
-  //       classes={classes}
-  //       gfs={gfs}
-  //       id={formId}
-  //       key={formId}
-  //       liftDescriptor={liftDescriptor}
-  //       fieldnameArr={fieldnameArr}
-  //       validate={validate}
-  //     />
-  //   }
-  // })}
-
   return <div className={classes.descriptorRoot}>
+    <FieldRow
+      gfs={gfs}
+      id={id}
+      liftDescriptor={liftDescriptor}
+      classes={classes}
+      validate={validate}
+    />
+    {/* for every from created */}
     {Object.keys(gfs.state.form).map((formId) => {
-      return <FieldRow
-        classes={classes}
-        gfs={gfs}
-        id={formId}
-        key={formId}
-        liftDescriptor={liftDescriptor}
-        fieldnameArr={fieldnameArr}
-        validate={validate}
-      />
-    })
-    }
+      if (formId !== id) {
+        return <FieldRow
+          classes={classes}
+          gfs={gfs}
+          id={formId}
+          key={formId}
+          liftDescriptor={liftDescriptor}
+          fieldnameArr={fieldnameArr}
+          validate={validate}
+        />
+      }
+    })}
     {/* add another row */}
     <div>{passErrorMessage}</div>
     <button
@@ -257,6 +244,8 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     </button>
   </div>
 }
+
+
 
 const styles = theme => ({
   descriptorRoot: {},
@@ -332,6 +321,7 @@ function serializeFormData(form) {
 
   for (let formData of sorted) {
     let data = form[formData[0]]
+
     let tmpObject = {
       type: data.fieldType,
       name: data.fieldName,
@@ -342,6 +332,8 @@ function serializeFormData(form) {
   }
 
   return serialized
+
+
 }
 
 export default withStyles(styles)(DescriptorSetProto)

@@ -15,7 +15,7 @@ import withStyles from 'react-jss'
 const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur }) => {
   const initialState = { tags: [] }
 
-  function removeTag ({ tags, index }) {
+  function removeTag({ tags, index }) {
     if (!index && index !== 0) {
       let newArray = [...tags]
       newArray.pop()
@@ -27,7 +27,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
     }
   }
 
-  function reducer (state, action) {
+  function reducer(state, action) {
     switch (action.type) {
       case 'ADD':
         return {
@@ -50,7 +50,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
     }
   }, [state.tags])
 
-  function handleChange (e) {
+  function handleChange(e) {
     let value = e.target.value
     if (!allowSpaces) {
       if (value[value.length - 1] === ' ') {
@@ -62,7 +62,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
     }
   }
 
-  function handleKeyUp (e) {
+  function handleKeyUp(e) {
     if (/(188|13)/.test(e.which)) { // test for comma or enter
       // add tag
       if (inputValue !== '') {

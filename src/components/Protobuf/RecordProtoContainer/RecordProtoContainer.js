@@ -16,7 +16,7 @@ import { recordProtoBuilder } from 'oip-protobufjs'
  *
  * @param {templateData|Array.<templateData>} recordData
  */
-function RecordProtoContainer ({
+function RecordProtoContainer({
   classes,
   templates,
   onSuccess,
@@ -31,7 +31,11 @@ function RecordProtoContainer ({
 
   const initState = {}
 
-  function reducer (state, action) {
+  // Reducers
+  const [state, dispatch] = useReducer(reducer, initState)
+
+
+  function reducer(state, action) {
     if (action.type === 'UPDATE') {
       return {
         ...state,
@@ -44,9 +48,7 @@ function RecordProtoContainer ({
     }
   }
 
-  const [state, dispatch] = useReducer(reducer, initState)
-
-  function storeDetailsData (detailsData) {
+  function storeDetailsData(detailsData) {
     if (detailsData.length === 0) return
 
     for (let data of detailsData) {
@@ -56,13 +58,14 @@ function RecordProtoContainer ({
       }
       dispatch(payload)
     }
+
   }
 
-  function prefixMessage (message) {
+  function prefixMessage(message) {
     return `p64:${message}`
   }
 
-  function getMessage ({ wif, network }) {
+  function getMessage({ wif, network }) {
     let detailsData = []
 
     for (let tmpl in state) {
@@ -72,7 +75,9 @@ function RecordProtoContainer ({
     }
 
     // build record proto
-    let recordData
+    let recordData;
+
+
     try {
       recordData = recordProtoBuilder({
         wif,
@@ -85,12 +90,13 @@ function RecordProtoContainer ({
     return prefixMessage(recordData.signedMessage64)
   }
 
+  // Protobuf Decoder => Template. Creates a Template.
   return <div className={classes.rpcRoot}>
-    {templates.map(template => {
+    {templates.map((template, i) => {
       return <RecordProto
+        key={`${template.identifier}-${i}`}
         classes={classes}
         template={template}
-        key={template.identifier}
         getOipDetails={storeDetailsData}
         oipdHttpApi={oipdHttpApi}
       />

@@ -73,11 +73,11 @@ const LoadWallet = ({
     setMnemonicValidToBe(isValid)
   }, [mnemonicState])
 
-  function handleMnemonicChange (e) {
+  function handleMnemonicChange(e) {
     setMnemonic(e.target.value)
   }
 
-  function genMnemonic () {
+  function genMnemonic() {
     setMnemonic(generateMnemonic())
   }
 
@@ -89,7 +89,7 @@ const LoadWallet = ({
         value={mnemonicState}
         onChange={handleMnemonicChange}
         className={classNames(classes.inputBase, classes.inputMnemonic)}
-        placeholder={'abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about'}
+        placeholder={'enter your twelve word mnemonic here ob la di ob la da'}
       />
       <div className={classes.buttonRow}>
         <button

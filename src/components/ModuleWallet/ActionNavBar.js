@@ -7,7 +7,7 @@ const styles = theme => ({
     flexDirection: 'row',
     flex: '1 1 auto',
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   navItemContainer: {
     display: 'flex',
@@ -26,7 +26,7 @@ const ActionNavBar = ({
   onNavLinkClick,
   theme
 }) => {
-  function activeNavLinkStyle (item) {
+  function activeNavLinkStyle(item) {
     if (item === activeNavLink) {
       return {
         borderBottom: `2px solid ${theme.palette.primary.main}`
@@ -47,4 +47,4 @@ const ActionNavBar = ({
   </div>
 }
 
-export default withStyles(styles, {injectTheme: true})(ActionNavBar)
+export default withStyles(styles, { injectTheme: true })(ActionNavBar)
