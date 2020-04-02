@@ -94,7 +94,7 @@ const calculateAmount = (vin, vout, addresses) => {
   return { amount, type }
 }
 
-function sortTransactions(transactions) {
+function sortTransactions (transactions) {
   return transactions.sort((a, b) => {
     return (b.time - a.time)
   })

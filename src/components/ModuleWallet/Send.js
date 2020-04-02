@@ -59,10 +59,10 @@ const styles = theme => ({
   },
   amountInput: {},
   addressInput: {
-    fontSize: '15px',
+    fontSize: '15px'
   },
   flodataInput: {
-    fontSize: '15px',
+    fontSize: '15px'
   },
   sendSubmit: {
     background: `${theme.palette.primary.main}`,
@@ -75,7 +75,7 @@ const styles = theme => ({
     '&:hover': {
       background: 'red'
     }
-  },
+  }
 })
 
 const Send = ({
@@ -84,32 +84,32 @@ const Send = ({
   wallet
 }) => {
   const needsFloData = activeCoin.includes('flo')
-  
+
   const cycleStates = ['AMOUNT', 'ADDRESS', 'FLODATA', 'SEND']
   const [displayState, setDisplayState] = useState(0)
-  
+
   const [amount, setAmount] = useState(0)
   const [address, setAddress] = useState('')
   const [flodata, setFlodata] = useState('')
-  
+
   function handleAmountChange (e) {
     setAmount(e.target.value)
   }
-  
+
   function handleAddressChange (e) {
     setAddress(e.target.value)
   }
-  
+
   function handleFlodataChange (e) {
     setFlodata(e.target.value)
   }
-  
+
   function handleSubmit () {
     setDisplayState(0)
     setAmount(0)
     setAddress('')
     setFlodata('')
-    
+
     const options = {
       to: { [address]: amount },
       coin: activeCoin,
@@ -118,20 +118,20 @@ const Send = ({
     }
     window.alert('sending payment, please wait for confirmation before next transaction')
     wallet.sendPayment(options)
-    .then(txid => {
-      window.alert(`Transaction successful: ${txid}`)
-    })
-    .catch(err => {
-      window.alert(`Transaction failed: ${err}`)
-    })
+      .then(txid => {
+        window.alert(`Transaction successful: ${txid}`)
+      })
+      .catch(err => {
+        window.alert(`Transaction failed: ${err}`)
+      })
   }
-  
+
   function handleOnKeyUp (e) {
     if (e.keyCode === 13) {
       handleCycleRight()
     }
   }
-  
+
   function renderForm () {
     switch (cycleStates[displayState]) {
       case 'AMOUNT':
@@ -167,10 +167,9 @@ const Send = ({
           onClick={handleSubmit}
           className={classes.sendSubmit}
         />
-      
     }
   }
-  
+
   function handleCycleLeft () {
     if (displayState === 3 && !needsFloData) {
       setDisplayState(displayState => displayState - 2)
@@ -178,7 +177,7 @@ const Send = ({
       setDisplayState(displayState => displayState - 1)
     }
   }
-  
+
   function handleCycleRight () {
     if (displayState === 1 && !needsFloData) {
       setDisplayState(displayState => displayState + 2)
@@ -186,13 +185,13 @@ const Send = ({
       setDisplayState(displayState => displayState + 1)
     }
   }
-  
+
   return <div className={classes.root}>
     <div className={classes.sendHeader}>
       {cycleStates[displayState]}
     </div>
     <div className={classes.sendBody}>
-      <div className={classes.flexSpacer}/>
+      <div className={classes.flexSpacer} />
       <div className={classes.cycleArrow}>
         {displayState !== 0 ? <KeyboardArrowLeft
           onClick={handleCycleLeft}
@@ -206,7 +205,7 @@ const Send = ({
           onClick={handleCycleRight}
         /> : null}
       </div>
-      <div className={classes.flexSpacer}/>
+      <div className={classes.flexSpacer} />
     </div>
   </div>
 }

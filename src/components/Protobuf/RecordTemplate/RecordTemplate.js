@@ -19,7 +19,7 @@ const RecordTemplate = ({
   const [description, setDescription] = useState('')
   const descriptorRef = useRef(null)
 
-  function getSignedTemplateMessage({ wif, network }) {
+  function getSignedTemplateMessage ({ wif, network }) {
     let template
 
     try {
@@ -39,12 +39,12 @@ const RecordTemplate = ({
     return signedMessage64
   }
 
-  function prefixMessage(message) {
+  function prefixMessage (message) {
     const prefix = 'p64:'
     return `${prefix}${message}`
   }
 
-  function getMessage({ wif, network }) {
+  function getMessage ({ wif, network }) {
     let signedMessage
     try {
       signedMessage = getSignedTemplateMessage({ wif, network })
@@ -96,7 +96,7 @@ const RecordTemplate = ({
 
 const styles = theme => ({
   recordTemplateRoot: {
-    width: 275,
+    width: 275
     // marginLeft: 'auto',
     // marginRight: 'auto'
   },
@@ -121,7 +121,7 @@ const styles = theme => ({
     padding: [3, 2],
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     }
   },
   buttonBase: {
@@ -157,14 +157,14 @@ const styles = theme => ({
     border: 0,
     margin: [0, 0, 5, 0],
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   removeRowButton: {
     marginLeft: 7,
     border: 0,
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   descriptorInputField: {},
@@ -174,7 +174,7 @@ const styles = theme => ({
     display: 'flex',
     justifyContent: 'space-between'
   },
-  //wallet button
+  // wallet button
   walletButton: {
     '& > button': {
       padding: [4, 8]
@@ -198,7 +198,7 @@ RecordTemplate.propTypes = {
   onError: PropTypes.func,
   withPublisher: PropTypes.bool,
   mainnetExplorerUrl: PropTypes.string,
-  testnetExplorerUrl: PropTypes.string,
+  testnetExplorerUrl: PropTypes.string
 }
 
 export default withStyles(styles)(RecordTemplate)

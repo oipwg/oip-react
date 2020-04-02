@@ -95,7 +95,7 @@ const Addresses = ({
           className={classes.explorerLink}
           onClick={() => window.open(`${explorerUrl}/address/${addr.getPublicAddress()}`, '_blank')}
         >
-          <Link/>
+          <Link />
         </span>
         <span
           className={classes.copyWIF}
@@ -104,9 +104,9 @@ const Addresses = ({
             window.alert('Copied Private Key in WIF format to clipboard')
           }}
         >
-          <Fingerprint/>
+          <Fingerprint />
         </span>
-      
+
       </div>
     })}
     {/* give it a split second to load =D */}

@@ -35,11 +35,11 @@ const Container = styled('div')({
 const ModuleWallet = ({
   classes,
   coins,
-  ...rest,
+  ...rest
 }) => {
   const walletRef = useRef(null)
   const [lock, setLock] = useState(true)
-  
+
   function onMnemonicSubmit (mnemonic) {
     walletRef.current = new Wallet(mnemonic, {
       discover: false,
@@ -47,20 +47,20 @@ const ModuleWallet = ({
     })
     setLock(false)
   }
-  
+
   const resetWallet = () => {
     walletRef.current = null
     setLock(true)
   }
-  
+
   return <Container {...rest}>
     <div className={classes.root}>
       <WalletHeader
         resetWallet={resetWallet}
       />
       {lock ? <LoadWallet
-          onMnemonicSubmit={onMnemonicSubmit}
-        />
+        onMnemonicSubmit={onMnemonicSubmit}
+      />
         : <WalletStateContainer
           wallet={walletRef.current}
           coins={coins}
