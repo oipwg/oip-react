@@ -39,8 +39,7 @@ const RecordTemplate = ({
     return signedMessage64
   }
 
-  function prefixMessage (message) {
-    const prefix = 'p64:'
+  function prefixMessage (prefix = 'p64:', message) {
     return `${prefix}${message}`
   }
 

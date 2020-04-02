@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useEffect } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
@@ -97,7 +97,7 @@ const shouldUpdate = (oldProps, newProps) => {
   return nameDidNotChange && classesDidNotChange
 }
 
-const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
+const FieldRow = ({ gfs, id, classes }) => {
   const isEnum = gfs.state.form[id].fieldType === 'enum'
 
   return <div className={classes.descriptorFieldRowContainer}>
@@ -109,7 +109,6 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
         onChange={gfs.update}
         name={'fieldRule'}
         shouldUpdate={shouldUpdate}
-        onBlur={liftDescriptor}
         classes={classes}
       />
       <SelectOptions
@@ -119,7 +118,6 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
         onChange={gfs.update}
         name={'fieldType'}
         shouldUpdate={shouldUpdate}
-        onBlur={liftDescriptor}
         classes={classes}
       />
     </div>
@@ -131,12 +129,10 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
       name={'fieldName'}
       shouldUpdate={shouldUpdate}
       allowSpaces={false}
-      onBlur={liftDescriptor}
       classes={classes}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
-      onBlur={liftDescriptor}
       classes={classes}
       getTags={(tags) => {
         const e = {
@@ -157,7 +153,10 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes }) => {
   </div>
 }
 
-const DescriptorSetProto = ({ classes, getDescriptor }) => {
+const DescriptorSetProto = ({
+  classes,
+  getDescriptor
+}) => {
   const id = useRef(uid()).current
 
   const initialFormRow = {
@@ -167,24 +166,25 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
   }
   const gfs = useGlobalFormState(id, initialFormRow)
 
-  const liftDescriptor = () => {
-    if (getDescriptor) {
-      let descriptor
-      // console.log(serializeFormData(gfs.state.form))
-      try {
-        descriptor = buildDescriptor(serializeFormData(gfs.state.form))
-      } catch (err) {
-        // throw Error(err)
+  useEffect(() => {
+    let descriptor
+    try {
+      descriptor = buildDescriptor(serializeFormData(gfs.state.form))
+    } catch (err) {
+      if (descriptor) {
+        console.error(`Failed to build file descriptor in oip-react@v2 -> DescriptorSetProto -> buildDescriptor: \n ${err}`)
+      } else {
+        // ignore because the way the onBlur function works, file descriptor will be undefined and throw all the time.
+        // we only want errors that actually have to do with the build
       }
-      getDescriptor(descriptor)
     }
-  }
+    if (descriptor) getDescriptor(descriptor)
+  }, [gfs])
 
   return <div className={classes.descriptorRoot}>
     <FieldRow
       gfs={gfs}
       id={id}
-      liftDescriptor={liftDescriptor}
       classes={classes}
     />
     {Object.keys(gfs.state.form).map((formId) => {
@@ -194,7 +194,6 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
           gfs={gfs}
           id={formId}
           key={formId}
-          liftDescriptor={liftDescriptor}
         />
       }
     })}
@@ -220,7 +219,7 @@ const styles = theme => ({
     padding: [3, 2],
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     }
   },
   buttonBase: {
@@ -241,14 +240,14 @@ const styles = theme => ({
     border: 0,
     margin: [0, 0, 5, 0],
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   removeRowButton: {
     marginLeft: 7,
     border: 0,
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   selectOptions: {
