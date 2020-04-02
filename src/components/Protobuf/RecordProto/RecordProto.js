@@ -96,7 +96,7 @@ const RecordProto = ({
   onError,
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
-  oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
+  oipdHttpApi = 'https://api.oip.io/oip',
   withPublisher = false,
   keyIndex, // internal use
   getOipDetails, // external use
