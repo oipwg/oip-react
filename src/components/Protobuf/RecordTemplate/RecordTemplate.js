@@ -19,7 +19,7 @@ const RecordTemplate = ({
   const [description, setDescription] = useState('')
   const descriptorRef = useRef(null)
 
-  function getSignedTemplateMessage ({ wif, network }) {
+  function getSignedTemplateMessage({ wif, network }) {
     let template
 
     try {
@@ -39,11 +39,12 @@ const RecordTemplate = ({
     return signedMessage64
   }
 
-  function prefixMessage (prefix = 'p64:', message) {
+  function prefixMessage(message) {
+    const prefix = 'p64:'
     return `${prefix}${message}`
   }
 
-  function getMessage ({ wif, network }) {
+  function getMessage({ wif, network }) {
     let signedMessage
     try {
       signedMessage = getSignedTemplateMessage({ wif, network })

@@ -34,17 +34,20 @@ const WalletButton = ({
   message,
   onSuccess,
   onError,
-  getMessage,
+  getMessage, //function
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api'
 }) => {
+
   const [disable, toggleDisable] = useState(true)
+
+
 
   useEffect(() => {
     toggleDisable(!isValidWIF(wif, network))
   }, [wif, network])
 
-  async function handleClick (e) {
+  async function handleClick(e) {
     e.preventDefault()
 
     let originalMessage = message
@@ -70,8 +73,6 @@ const WalletButton = ({
         throw Error(`must pass a message prop of type string to WalletButton \n`)
       }
     }
-    // console.log(message)
-    // return
 
     const explorerUrl = network === 'mainnet' ? mainnetExplorerUrl : testnetExplorerUrl
     const oip = new OIP(wif, network, { explorerUrl })

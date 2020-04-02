@@ -1,8 +1,10 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useState } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
+// gfs = GLOBAl FORM STATE - duh!   
 import { useGlobalFormState } from '../../../hooks'
+
 import TagsInput from '../../UI/TagsInput'
 import classNames from 'classnames'
 import { buildDescriptor } from 'oip-protobufjs'
@@ -27,9 +29,11 @@ const protoFields = {
   'sfixed64': 'number'
 }
 
+// Select Option for DescriptorSetProto
 const SelectOptions = React.memo((
   { classes, state, opts, onChange, onFocus, onBlur, id, name = '' }
 ) => {
+
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
@@ -59,8 +63,11 @@ const SelectOptions = React.memo((
   return newProps.shouldUpdate ? newProps.shouldUpdate(oldProps, newProps) : false
 })
 
+// --------------
+
+// Creates input field for creating a DescriptorSetProto - Template
 const InputField = React.memo((
-  { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true }
+  { classes, state, onChange, onFocus, onBlur, id, type = 'text', name = '', placeholder = '', allowSpaces = true, validate }
 ) => {
   let okd = () => {
   }
@@ -71,11 +78,14 @@ const InputField = React.memo((
       } : onChangeCopy
     }
   }
+
   return <input
+    required
     type={type}
     id={id}
     name={name}
     value={state[name]}
+    validate={validate(state[name])}
     onKeyDown={okd}
     onChange={onChange ? (e) => onChange(e, id) : null}
     onFocus={onFocus ? (e) => {
@@ -96,10 +106,12 @@ const shouldUpdate = (oldProps, newProps) => {
   const classesDidNotChange = oldProps.classes === newProps.classes
   return nameDidNotChange && classesDidNotChange
 }
+// --------------
 
-const FieldRow = ({ gfs, id, classes }) => {
+//  two selects; sigular/repeated and types
+const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
+
   const isEnum = gfs.state.form[id].fieldType === 'enum'
-
   return <div className={classes.descriptorFieldRowContainer}>
     <div className={classes.selectOptions}>
       <SelectOptions
@@ -109,6 +121,7 @@ const FieldRow = ({ gfs, id, classes }) => {
         onChange={gfs.update}
         name={'fieldRule'}
         shouldUpdate={shouldUpdate}
+        onBlur={liftDescriptor}
         classes={classes}
       />
       <SelectOptions
@@ -118,6 +131,7 @@ const FieldRow = ({ gfs, id, classes }) => {
         onChange={gfs.update}
         name={'fieldType'}
         shouldUpdate={shouldUpdate}
+        onBlur={liftDescriptor}
         classes={classes}
       />
     </div>
@@ -129,10 +143,13 @@ const FieldRow = ({ gfs, id, classes }) => {
       name={'fieldName'}
       shouldUpdate={shouldUpdate}
       allowSpaces={false}
+      onBlur={liftDescriptor}
       classes={classes}
+      validate={validate}
     />
     {isEnum ? <TagsInput
       placeholder={'(i.e. type enum fields here)'}
+      onBlur={liftDescriptor}
       classes={classes}
       getTags={(tags) => {
         const e = {
@@ -146,47 +163,66 @@ const FieldRow = ({ gfs, id, classes }) => {
     /> : null}
     {gfs.state.form[id].index > 0 && <button
       onClick={() => {
-        gfs.remove(id)
+        gfs.remove(id),
+          validate()
       }}
       className={classNames(classes.buttonBase, classes.removeRowButton)}
     >-</button>}
   </div>
 }
 
-const DescriptorSetProto = ({
-  classes,
-  getDescriptor
-}) => {
-  const id = useRef(uid()).current
+const DescriptorSetProto = ({ classes, getDescriptor }) => {
 
+  const [passErrorMessage, setPassErrorMessage] = useState('');
+
+  const id = useRef(uid()).current
   const initialFormRow = {
     fieldType: 'string',
     fieldName: '',
     fieldRule: 'singular'
   }
-  const gfs = useGlobalFormState(id, initialFormRow)
 
-  useEffect(() => {
-    let descriptor
-    try {
-      descriptor = buildDescriptor(serializeFormData(gfs.state.form))
-    } catch (err) {
-      if (descriptor) {
-        console.error(`Failed to build file descriptor in oip-react@v2 -> DescriptorSetProto -> buildDescriptor: \n ${err}`)
-      } else {
-        // ignore because the way the onBlur function works, file descriptor will be undefined and throw all the time.
-        // we only want errors that actually have to do with the build
+  const gfs = useGlobalFormState(id, initialFormRow)
+  let fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '');
+  let filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '');
+
+  const liftDescriptor = () => {
+    if (getDescriptor) {
+      let descriptor
+      try {
+
+        descriptor = buildDescriptor(serializeFormData(gfs.state.form))
+
+      } catch (err) {
+        console.error(`${err}: liftDescriptor - DescriptorSetProto`)
       }
+      getDescriptor(descriptor)
     }
-    if (descriptor) getDescriptor(descriptor)
-  }, [gfs])
+  }
+
+  function errorMessage(message) {
+    setPassErrorMessage(message);
+  }
+
+  const arraysMatch = function (arr1, arr2) {
+    if (arr1.length !== arr2.length) { return errorMessage('Enter unique field names') };
+
+    return errorMessage(null);
+  };
+
+  function validate() {
+    arraysMatch(fieldnameArr, filtered);
+  }
 
   return <div className={classes.descriptorRoot}>
     <FieldRow
       gfs={gfs}
       id={id}
+      liftDescriptor={liftDescriptor}
       classes={classes}
+      validate={validate}
     />
+    {/* for every from created */}
     {Object.keys(gfs.state.form).map((formId) => {
       if (formId !== id) {
         return <FieldRow
@@ -194,15 +230,22 @@ const DescriptorSetProto = ({
           gfs={gfs}
           id={formId}
           key={formId}
+          liftDescriptor={liftDescriptor}
+          fieldnameArr={fieldnameArr}
+          validate={validate}
         />
       }
     })}
+    {/* add another row */}
+    <div>{passErrorMessage}</div>
     <button
       className={classNames(classes.buttonBase, classes.addRowButton)}
       onClick={() => gfs.add(uid(), initialFormRow)}>+
     </button>
   </div>
 }
+
+
 
 const styles = theme => ({
   descriptorRoot: {},
@@ -219,7 +262,7 @@ const styles = theme => ({
     padding: [3, 2],
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10
+      fontSize: 10,
     }
   },
   buttonBase: {
@@ -240,14 +283,14 @@ const styles = theme => ({
     border: 0,
     margin: [0, 0, 5, 0],
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     }
   },
   removeRowButton: {
     marginLeft: 7,
     border: 0,
     '&:hover': {
-      cursor: 'pointer'
+      cursor: 'pointer',
     }
   },
   selectOptions: {
@@ -263,7 +306,7 @@ const styles = theme => ({
   }
 })
 
-function serializeFormData (form) {
+function serializeFormData(form) {
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
@@ -273,9 +316,12 @@ function serializeFormData (form) {
   sorted.sort((a, b) => {
     return a[1] - b[1]
   })
+
   let serialized = []
+
   for (let formData of sorted) {
     let data = form[formData[0]]
+
     let tmpObject = {
       type: data.fieldType,
       name: data.fieldName,
@@ -286,6 +332,8 @@ function serializeFormData (form) {
   }
 
   return serialized
+
+
 }
 
 export default withStyles(styles)(DescriptorSetProto)
