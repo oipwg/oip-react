@@ -382,7 +382,7 @@ const EnumRow = ({
         onChange={handleSelectChange}
         className={classes.selectField}
       >
-        {Object.keys(values).map((value, i) => {
+        {values && Object.keys(values).map((value, i) => {
           return (
             <option key={`${value}-${i}`} value={values[value]}>
               {formatEnumValue(value)}
