@@ -10,14 +10,13 @@ import Publisher from '../../Publisher/Publisher/Publisher'
 // handle individual record proto state
 let initialState = {}
 
-function reducer(state, action) {
+function reducer (state, action) {
   if (action.type === 'UPDATE') {
     return {
       ...state,
       [action.field]: action.value
     }
-  }
-  else throw Error('Invalid type passed to reducer - RecordProto')
+  } else throw Error('Invalid type passed to reducer - RecordProto')
 }
 
 const fieldHeight = 25
@@ -26,7 +25,7 @@ const marginTopForTitle = 15
 
 const styles = theme => ({
   root: {
-    width: fieldWidth,
+    width: fieldWidth
     // marginLeft: 'auto',
     // marginRight: 'auto'
   },
@@ -41,7 +40,7 @@ const styles = theme => ({
     borderRadius: 3,
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     }
   },
   selectField: {
@@ -84,7 +83,7 @@ const styles = theme => ({
     width: fieldWidth,
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     },
     boxSizing: 'border-box'
   }
@@ -102,7 +101,7 @@ const RecordProto = ({
   keyIndex, // internal use
   getOipDetails, // external use
   rootKey, // internal use
-  __liftDetails, // internal use,
+  __liftDetails // internal use,
 }) => {
   // define top-level record proto
   const root = rootKey || 'ROOT'
@@ -118,7 +117,7 @@ const RecordProto = ({
 
   const daemonRef = useRef(null)
 
-  function getDaemonApi() {
+  function getDaemonApi () {
     if (daemonRef.current === null) {
       daemonRef.current = new DaemonApi(oipdHttpApi)
     }
@@ -169,14 +168,12 @@ const RecordProto = ({
   const [state, dispatch] = useReducer(reducer, initialState)
   // ^^ handling individual record proto state
 
-
-
   // serialize
-  function prefixMessage(message) {
+  function prefixMessage (message) {
     return `p64:${message}`
   }
 
-  function serializeState(state) {
+  function serializeState (state) {
     return {
       name: templateName,
       descriptor: descriptor,
@@ -208,7 +205,7 @@ const RecordProto = ({
     })
   }, [state])
 
-  function setChildState(detailsData) {
+  function setChildState (detailsData) {
     setDetailsData(prevState => {
       return {
         ...prevState,
@@ -233,9 +230,8 @@ const RecordProto = ({
   }, [detailsData])
   // ^^ handling build and lift state
 
-
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
-  function getMessage({ wif, network }) {
+  function getMessage ({ wif, network }) {
     // build record template
     let keys = Object.keys(detailsData)
     let anyPayloads = []
@@ -256,8 +252,6 @@ const RecordProto = ({
     return prefixMessage(signedMessage.signedMessage64)
   }
 
-
-
   return <RecordInterface
     classes={classes}
     webFmt={webFmt}
@@ -276,7 +270,7 @@ const RecordProto = ({
   />
 }
 
-/*** Loops thrue webFmt object - returns a functional component ***/
+/** * Loops thrue webFmt object - returns a functional component ***/
 const RecordInterface = ({
   classes,
   webFmt,
@@ -290,10 +284,9 @@ const RecordInterface = ({
   extendedTemplates,
   oipdHttpApi,
   root,
-  setChildState,
+  setChildState
 
 }) => {
-
   return (
     <div className={classes.root}>
 
@@ -309,15 +302,16 @@ const RecordInterface = ({
             classes={classes}
             dispatch={dispatch}
           />
+        } else {
+          return <FieldRow
+            key={`${field}-${index}`}
+            id={`${field}-${index}`}
+            field={field}
+            fieldData={fieldData}
+            classes={classes}
+            dispatch={dispatch}
+          />
         }
-        else return <FieldRow
-          key={`${field}-${index}`}
-          id={`${field}-${index}`}
-          field={field}
-          fieldData={fieldData}
-          classes={classes}
-          dispatch={dispatch}
-        />
       })}
 
       {
@@ -337,8 +331,7 @@ const RecordInterface = ({
       }
 
       {
-        withPublisher
-        &&
+        withPublisher &&
         <Publisher
           classes={classes}
           onSuccess={onSuccess}
@@ -352,32 +345,33 @@ const RecordInterface = ({
   )
 }
 
-//*** Enum Dropdown ***/
+//* ** Enum Dropdown ***/
 const EnumRow = ({
   enumField,
   enumData,
   classes,
-  dispatch,
+  dispatch
 }) => {
   const [state, setState] = useState(0)
 
-
-  function handleSelectChange(e) {
+  function handleSelectChange (e) {
     setState(Number(e.target.value))
   }
-
 
   useEffect(() => {
     dispatch({
       type: 'UPDATE',
       value: state,
-      field: enumField,
+      field: enumField
     })
   }, [state])
 
-  const { values } = enumData // currently don't allow repeated
+  let values // currently don't allow repeated
+  if (enumData && enumData.values) {
+    values = enumData.values
+  }
 
-  //creates enum field dropdown
+  // creates enum field dropdown
   return (
     <div className={classes.fieldContainer}>
       <span className={classes.fieldTitle}>
@@ -399,36 +393,32 @@ const EnumRow = ({
       </select>
     </div>
 
-
   )
 }
 
-/*** FIELD INPUTS***/
+/** * FIELD INPUTS***/
 const FieldRow = ({
   field,
   fieldData,
   classes,
-  dispatch,
+  dispatch
 }) => {
-
   const [state, setState] = useState('')
   const { type, repeated } = fieldData
 
-  function handleInputChange(e, tags = false) {
+  function handleInputChange (e, tags = false) {
     if (tags) {
       setState(e)
-    }
-    else {
+    } else {
       setState(e.target.value)
     }
   }
-
 
   useEffect(() => {
     dispatch({
       type: 'UPDATE',
       value: state,
-      field: field,
+      field: field
     })
   }, [state])
 
@@ -443,7 +433,7 @@ const FieldRow = ({
         getTags={(tags) => {
           handleInputChange(tags, true)
         }}
-        allowSpaces={true}
+        allowSpaces
         classes={classes}
       />
       : <input
@@ -455,12 +445,11 @@ const FieldRow = ({
       />}
   </div>)
 
-
   return renderField
 }
 
 // removes _ from enum values
-function formatEnumValue(value) {
+function formatEnumValue (value) {
   value = value.split('_')
   if (value[1]) {
     value = value[1].toLowerCase()

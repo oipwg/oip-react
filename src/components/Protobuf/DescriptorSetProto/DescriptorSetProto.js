@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react'
 import withStyles from 'react-jss'
 import uid from 'uid'
 
-// gfs = GLOBAl FORM STATE - duh!   
+// gfs = GLOBAl FORM STATE - duh!
 import { useGlobalFormState } from '../../../hooks'
 
 import TagsInput from '../../UI/TagsInput'
@@ -33,7 +33,6 @@ const protoFields = {
 const SelectOptions = React.memo((
   { classes, state, opts, onChange, onFocus, onBlur, id, name = '' }
 ) => {
-
   if (!Array.isArray(opts)) {
     opts = Object.keys(opts)
   }
@@ -110,7 +109,6 @@ const shouldUpdate = (oldProps, newProps) => {
 
 //  two selects; sigular/repeated and types
 const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
-
   const isEnum = gfs.state.form[id].fieldType === 'enum'
   return <div className={classes.descriptorFieldRowContainer}>
     <div className={classes.selectOptions}>
@@ -164,7 +162,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
     {gfs.state.form[id].index > 0 && <button
       onClick={() => {
         gfs.remove(id),
-          validate()
+        validate()
       }}
       className={classNames(classes.buttonBase, classes.removeRowButton)}
     >-</button>}
@@ -172,8 +170,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
 }
 
 const DescriptorSetProto = ({ classes, getDescriptor }) => {
-
-  const [passErrorMessage, setPassErrorMessage] = useState('');
+  const [passErrorMessage, setPassErrorMessage] = useState('')
 
   const id = useRef(uid()).current
   const initialFormRow = {
@@ -183,16 +180,14 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
   }
 
   const gfs = useGlobalFormState(id, initialFormRow)
-  let fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '');
-  let filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '');
+  let fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '')
+  let filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '')
 
   const liftDescriptor = () => {
     if (getDescriptor) {
       let descriptor
       try {
-
         descriptor = buildDescriptor(serializeFormData(gfs.state.form))
-
       } catch (err) {
         console.error(`${err}: liftDescriptor - DescriptorSetProto`)
       }
@@ -200,18 +195,18 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     }
   }
 
-  function errorMessage(message) {
-    setPassErrorMessage(message);
+  function errorMessage (message) {
+    setPassErrorMessage(message)
   }
 
   const arraysMatch = function (arr1, arr2) {
     if (arr1.length !== arr2.length) { return errorMessage('Enter unique field names') };
 
-    return errorMessage(null);
-  };
+    return errorMessage(null)
+  }
 
-  function validate() {
-    arraysMatch(fieldnameArr, filtered);
+  function validate () {
+    arraysMatch(fieldnameArr, filtered)
   }
 
   return <div className={classes.descriptorRoot}>
@@ -245,8 +240,6 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
   </div>
 }
 
-
-
 const styles = theme => ({
   descriptorRoot: {},
   descriptorFieldRowContainer: {},
@@ -262,7 +255,7 @@ const styles = theme => ({
     padding: [3, 2],
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     }
   },
   buttonBase: {
@@ -283,14 +276,14 @@ const styles = theme => ({
     border: 0,
     margin: [0, 0, 5, 0],
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   removeRowButton: {
     marginLeft: 7,
     border: 0,
     '&:hover': {
-      cursor: 'pointer',
+      cursor: 'pointer'
     }
   },
   selectOptions: {
@@ -306,7 +299,7 @@ const styles = theme => ({
   }
 })
 
-function serializeFormData(form) {
+function serializeFormData (form) {
   let sorted = []
   for (let uid in form) {
     if (form.hasOwnProperty(uid)) {
@@ -332,8 +325,6 @@ function serializeFormData(form) {
   }
 
   return serialized
-
-
 }
 
 export default withStyles(styles)(DescriptorSetProto)
