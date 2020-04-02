@@ -16,14 +16,14 @@ import { recordProtoBuilder } from 'oip-protobufjs'
  *
  * @param {templateData|Array.<templateData>} recordData
  */
-function RecordProtoContainer({
+function RecordProtoContainer ({
   classes,
   templates,
   onSuccess,
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
+  oipdHttpApi = 'http://localhost:1606/oip' // toDo: switch to a production endpoint
 }) {
   if (!Array.isArray(templates)) {
     templates = [templates]
@@ -34,8 +34,7 @@ function RecordProtoContainer({
   // Reducers
   const [state, dispatch] = useReducer(reducer, initState)
 
-
-  function reducer(state, action) {
+  function reducer (state, action) {
     if (action.type === 'UPDATE') {
       return {
         ...state,
@@ -48,7 +47,7 @@ function RecordProtoContainer({
     }
   }
 
-  function storeDetailsData(detailsData) {
+  function storeDetailsData (detailsData) {
     if (detailsData.length === 0) return
 
     for (let data of detailsData) {
@@ -58,14 +57,13 @@ function RecordProtoContainer({
       }
       dispatch(payload)
     }
-
   }
 
-  function prefixMessage(message) {
+  function prefixMessage (message) {
     return `p64:${message}`
   }
 
-  function getMessage({ wif, network }) {
+  function getMessage ({ wif, network }) {
     let detailsData = []
 
     for (let tmpl in state) {
@@ -75,8 +73,7 @@ function RecordProtoContainer({
     }
 
     // build record proto
-    let recordData;
-
+    let recordData
 
     try {
       recordData = recordProtoBuilder({

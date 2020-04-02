@@ -94,7 +94,7 @@ describe('ThemeGenerator', () => {
         info: 'purple'
       }
     }
-    const themegen = new ThemeGenerator({palettes: newPalette})
+    const themegen = new ThemeGenerator({ palettes: newPalette })
     expect(themegen.getPalette('chroma')).toBeDefined()
     expect(themegen.getPalette('chroma')).toEqual(newPalette.chroma)
   })
@@ -123,7 +123,7 @@ describe('ThemeGenerator', () => {
         'info': '#19198f'
       }
     }
-    const themegen = new ThemeGenerator({palettes: palette})
+    const themegen = new ThemeGenerator({ palettes: palette })
     expect(themegen.getPalettes()).toEqual({
       light:
         {
@@ -176,7 +176,7 @@ describe('ThemeGenerator', () => {
         info: 'blue'
       }
     }
-    const themegen = new ThemeGenerator({palettes: p})
+    const themegen = new ThemeGenerator({ palettes: p })
     let theme = themegen.getTheme()
     expect(theme.dark).toBeDefined()
     expect(theme.light).toBeDefined()

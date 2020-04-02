@@ -52,7 +52,7 @@ const styles = theme => ({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center'
-  },
+  }
 })
 
 const Coins = ({
@@ -72,12 +72,12 @@ const Coins = ({
       }
     }
   }
-  
-  function handleRefresh(e, coin) {
+
+  function handleRefresh (e, coin) {
     e.stopPropagation()
     refreshCoins(coin)
   }
-  
+
   return <div className={classes.root}>
     {coins.map((coin, i) => {
       const balance = state[coin].balance
@@ -116,4 +116,4 @@ const Coins = ({
   </div>
 }
 
-export default withStyles(styles, {injectTheme: true})(Coins)
+export default withStyles(styles, { injectTheme: true })(Coins)

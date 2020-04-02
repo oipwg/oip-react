@@ -16,7 +16,6 @@ const ADDRESSES = 'Addresses'
 const TRANSACTIONS = 'Transactions'
 const SEND = 'Send'
 
-
 const WalletPages = ({
   classes,
   wallet,
@@ -28,7 +27,6 @@ const WalletPages = ({
   const addresses = activeNavLink === ADDRESSES
   const transactions = activeNavLink === TRANSACTIONS
   const send = activeNavLink === SEND
-  
 
   return <div className={classes.root}>
     {addresses && <Addresses
@@ -41,10 +39,10 @@ const WalletPages = ({
       explorerUrl={wallet.getExplorerUrls()[activeCoin]}
       addresses={state[activeCoin].addresses}
     />}
-     {send && <Send
+    {send && <Send
       activeCoin={activeCoin}
       wallet={wallet}
-     />}
+    />}
   </div>
 }
 

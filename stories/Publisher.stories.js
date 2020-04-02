@@ -65,7 +65,7 @@ storiesOf('Publisher', module)
               borderRadius: '3px',
               border: '1px solid lightgrey',
               padding: '4px'
-            }}/>
+            }} />
           <WalletButton
             onSuccess={this.onSuccess}
             onError={this.onError}

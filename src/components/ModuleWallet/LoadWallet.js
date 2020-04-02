@@ -57,7 +57,7 @@ const styles = theme => ({
     }
   },
   loadButton: {
-    backgroundColor: `${theme.palette.primary.darken(0.7)}`,
+    backgroundColor: `${theme.palette.primary.darken(0.7)}`
   }
 })
 
@@ -73,11 +73,11 @@ const LoadWallet = ({
     setMnemonicValidToBe(isValid)
   }, [mnemonicState])
 
-  function handleMnemonicChange(e) {
+  function handleMnemonicChange (e) {
     setMnemonic(e.target.value)
   }
 
-  function genMnemonic() {
+  function genMnemonic () {
     setMnemonic(generateMnemonic())
   }
 

@@ -15,7 +15,7 @@ const styles = theme => ({
       backgroundColor: theme.palette.primary.main,
       color: 'white',
       cursor: 'pointer',
-      fontWeight: 'bold',
+      fontWeight: 'bold'
     },
     '&:disabled': {
       color: 'grey',
@@ -34,20 +34,17 @@ const WalletButton = ({
   message,
   onSuccess,
   onError,
-  getMessage, //function
+  getMessage, // function
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api'
 }) => {
-
   const [disable, toggleDisable] = useState(true)
-
-
 
   useEffect(() => {
     toggleDisable(!isValidWIF(wif, network))
   }, [wif, network])
 
-  async function handleClick(e) {
+  async function handleClick (e) {
     e.preventDefault()
 
     let originalMessage = message

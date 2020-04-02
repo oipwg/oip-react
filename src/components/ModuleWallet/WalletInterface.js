@@ -32,8 +32,6 @@ const WalletInterface = ({
   refreshCoins,
   handleAddAddress
 }) => {
-
-
   return <div className={classes.root}>
     <Coins
       wallet={wallet}

@@ -5,7 +5,7 @@ const useTheme = (options, type) => {
   const refThemeGen = useRef(new ThemeGenerator(options)).current
 
   type = type || 'light'
-  
+
   const [mode, setMode] = useState(type)
   const [theme, setTheme] = useState(() => refThemeGen.getTheme(mode))
 

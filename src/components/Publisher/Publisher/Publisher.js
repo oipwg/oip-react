@@ -13,17 +13,17 @@ const Publisher = ({
   testnetExplorerUrl
 }) => {
   const [wif, setWif] = useState('')
-  const [network, setNetwork] = useState('mainnet') //mainnet or testnet
+  const [network, setNetwork] = useState('mainnet') // mainnet or testnet
 
-  function handlePrivateKey(e) {
+  function handlePrivateKey (e) {
     setWif(e.target.value)
   }
 
-  function handleNetworkChange(e) {
+  function handleNetworkChange (e) {
     setNetwork(e.target.value)
   }
 
-  function _getMessage() {
+  function _getMessage () {
     if (getMessage) {
       try {
         return getMessage({ wif, network })
@@ -33,7 +33,6 @@ const Publisher = ({
     }
     return undefined
   }
-
 
   return <div className={classes.publishContainer}>
     <div className={classes.fieldContainer}>
@@ -62,7 +61,7 @@ const Publisher = ({
       <div className={classes.walletButton}>
         <WalletButton
           text={'Create & Publish'}
-          wif={wif} //KEY
+          wif={wif} // KEY
           network={network}
           message={message}
           getMessage={_getMessage}
@@ -123,9 +122,9 @@ const styles = theme => ({
     borderRadius: 3,
     fontSize: 12,
     '&::placeholder': {
-      fontSize: 10,
+      fontSize: 10
     }
-  },
+  }
 })
 
 Publisher.propTypes = {

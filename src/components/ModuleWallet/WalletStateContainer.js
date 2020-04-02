@@ -21,15 +21,15 @@ const WalletStateContainer = ({
   }
   const [activeCoin, setActiveCoin] = useState(defaultCoin)
   const [activeNavLink, setActiveNavLink] = useState(ADDRESSES)
-  
+
   function handleSetActiveCoin (coin) {
     setActiveCoin(coin)
   }
-  
+
   function handleNavLinkClick (navItem) {
     setActiveNavLink(navItem)
   }
-  
+
   function init ({ wallet, coins }) {
     const __coins = coins || Object.keys(wallet.getCoins())
     let stateObj = {}
@@ -43,7 +43,7 @@ const WalletStateContainer = ({
     }
     return stateObj
   }
-  
+
   function addAddresses ({ coin, state, addresses }) {
     return {
       ...state,
@@ -56,7 +56,7 @@ const WalletStateContainer = ({
       }
     }
   }
-  
+
   function addTransactions ({ coin, state, transactions }) {
     return {
       ...state,
@@ -69,7 +69,7 @@ const WalletStateContainer = ({
       }
     }
   }
-  
+
   function handleAddAddress () {
     const addresses = state[activeCoin].addresses
     let index = 0
@@ -86,7 +86,7 @@ const WalletStateContainer = ({
       addresses: [address]
     })
   }
-  
+
   function reducer (state, action) {
     switch (action.type) {
       case ADD_ADDRESSES:
@@ -121,9 +121,9 @@ const WalletStateContainer = ({
         throw new Error(`Invalid action type: ${action.type}`)
     }
   }
-  
+
   const [state, dispatch] = useReducer(reducer, { coins, wallet }, init)
-  
+
   async function discoverCoins (coins) {
     if (typeof coins === 'string') {
       coins = [coins]
@@ -132,7 +132,7 @@ const WalletStateContainer = ({
       await wallet.getCoin(coin).discoverAccounts()
     }
   }
-  
+
   async function getExchangeRates (coins) {
     if (typeof coins === 'string') {
       coins = [coins]
@@ -144,7 +144,7 @@ const WalletStateContainer = ({
       return {}
     }
   }
-  
+
   function setExchangeRates (exchangeRates) {
     let keys = Object.keys(exchangeRates)
     for (let coin of keys) {
@@ -155,7 +155,7 @@ const WalletStateContainer = ({
       })
     }
   }
-  
+
   async function getCoinBalances (coins) {
     if (typeof coins === 'string') {
       coins = [coins]
@@ -172,7 +172,7 @@ const WalletStateContainer = ({
       return {}
     }
   }
-  
+
   function setCoinBalances (coinBalances) {
     let keys = Object.keys(coinBalances)
     for (let coin of keys) {
@@ -183,7 +183,7 @@ const WalletStateContainer = ({
       })
     }
   }
-  
+
   function setUsedAddresses (usedAddresses, coin) {
     dispatch({
       type: ADD_ADDRESSES,
@@ -191,7 +191,7 @@ const WalletStateContainer = ({
       addresses: usedAddresses
     })
   }
-  
+
   function getUsedAddresses (coins) {
     if (typeof coins === 'string') {
       coins = [coins]
@@ -209,7 +209,7 @@ const WalletStateContainer = ({
     }
     return addressObject // return {flo: [addrs], bitcoin: [addrs] }
   }
-  
+
   function setTransactions (transactions, coin) {
     dispatch({
       type: ADD_TRANSACTIONS,
@@ -217,7 +217,7 @@ const WalletStateContainer = ({
       transactions: transactions
     })
   }
-  
+
   async function getTransactions (coins, addressObject) {
     if (typeof coins === 'string') {
       coins = [coins]
@@ -225,7 +225,7 @@ const WalletStateContainer = ({
     let transactionObject = {}
     for (let coin of coins) {
       const explorer = wallet.getNetworks()[coin].explorer
-      
+
       let pubAddresses = []
       for (let addr of addressObject[coin]) {
         pubAddresses.push(addr.getPublicAddress())
@@ -240,7 +240,7 @@ const WalletStateContainer = ({
     }
     return transactionObject // return {flo: [txs], bitcoin: [txs] }
   }
-  
+
   function updateAddresses (addressObject) {
     for (let coin in addressObject) {
       if (addressObject.hasOwnProperty(coin)) {
@@ -261,7 +261,7 @@ const WalletStateContainer = ({
       }
     }
   }
-  
+
   function updateTransactions (transactionObject) {
     for (let coin in transactionObject) {
       if (transactionObject.hasOwnProperty(coin)) {
@@ -282,7 +282,7 @@ const WalletStateContainer = ({
       }
     }
   }
-  
+
   async function updateCoinStates (coins) {
     // discover
     // get exchange rate
@@ -303,7 +303,7 @@ const WalletStateContainer = ({
     const transactionObject = await getTransactions(coins, addressObject)
     updateTransactions(transactionObject)
   }
-  
+
   useEffect(() => {
     // for each coin, discover accounts
     // get exchange rates
@@ -333,10 +333,10 @@ const WalletStateContainer = ({
         }
       }
     }
-    
+
     superFunction()
   }, [])
-  
+
   return <WalletInterface
     wallet={wallet}
     coins={coins}
