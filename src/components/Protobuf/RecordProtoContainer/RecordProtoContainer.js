@@ -23,8 +23,8 @@ function RecordProtoContainer({
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
-}) {
+  oipdHttpApi = 'http://api.oip.io/oip',
+  
   if (!Array.isArray(templates)) {
     templates = [templates]
   }
