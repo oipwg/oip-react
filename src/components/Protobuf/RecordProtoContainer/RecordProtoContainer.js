@@ -23,7 +23,8 @@ function RecordProtoContainer ({
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'https://api.oip.io/oip'
+  oipdHttpApi = 'https://api.oip.io/oip',
+}) {
   if (!Array.isArray(templates)) {
     templates = [templates]
   }
