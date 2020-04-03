@@ -18,7 +18,7 @@ storiesOf('ModuleWallet', module)
   .add('default', () => {
     return <ThemeWrapper>
       <ModuleWallet
-        coins={['flo', 'flo_testnet']}
+        coins={['flo', 'floTestnet']}
         height={'400px'}
         weidth={'900px'}
         borderRadius={'20px'}

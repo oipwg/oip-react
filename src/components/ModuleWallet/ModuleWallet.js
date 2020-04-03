@@ -43,7 +43,7 @@ const ModuleWallet = ({
   function onMnemonicSubmit (mnemonic) {
     walletRef.current = new Wallet(mnemonic, {
       discover: false,
-      supported_coins: coins
+      supportedCoins: coins
     })
     setLock(false)
   }
