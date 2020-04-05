@@ -4,8 +4,8 @@ import PropTypes from 'prop-types'
 import { decodeDescriptor, recordProtoBuilder } from 'oip-protobufjs'
 import { DaemonApi } from 'js-oip'
 
-import { TagsInput } from '../../UI'
-import Publisher from '../../Publisher/Publisher/Publisher'
+import styles from './styles'
+import RecordInterface from './RecordInterface'
 
 // handle individual record proto state
 const initialState = {}
@@ -18,76 +18,6 @@ function reducer (state, action) {
     }
   } else throw Error('Invalid type passed to reducer - RecordProto')
 }
-
-const fieldHeight = 25
-const fieldWidth = 250
-const marginTopForTitle = 15
-
-const styles = theme => ({
-  root: {
-    width: fieldWidth
-    // marginLeft: 'auto',
-    // marginRight: 'auto'
-  },
-  inputField: {
-    width: fieldWidth,
-    height: fieldHeight,
-    boxSizing: 'border-box',
-    padding: 4,
-    marginTop: marginTopForTitle,
-    marginBottom: 10,
-    border: `1px solid ${theme.palette.greyscale(0.3)}`,
-    borderRadius: 3,
-    fontSize: 12,
-    '&::placeholder': {
-      fontSize: 10
-    }
-  },
-  selectField: {
-    width: fieldWidth,
-    height: fieldHeight,
-    boxSizing: 'border-box',
-    padding: 4,
-    background: 'none',
-    marginTop: marginTopForTitle,
-    marginBottom: 10,
-    border: `1px solid ${theme.palette.greyscale(0.3)}`,
-    borderRadius: 3,
-    fontSize: 12
-  },
-  fieldContainer: {
-    position: 'relative'
-  },
-  fieldTitle: {
-    fontSize: 10,
-    color: `${theme.palette.greyscale(0.8)}`,
-    position: 'absolute'
-  },
-  // tags input
-  tagsInputRoot: {
-    width: fieldWidth,
-    boxSizing: 'border-box',
-    marginTop: marginTopForTitle,
-    marginBottom: 10,
-    border: `1px solid ${theme.palette.greyscale(0.3)}`,
-    borderRadius: 3,
-    height: fieldHeight,
-    position: 'relative',
-    '& > input': {
-      width: fieldWidth,
-      position: 'relative',
-      boxSizing: 'border-box'
-    }
-  },
-  input: {
-    width: fieldWidth,
-    fontSize: 12,
-    '&::placeholder': {
-      fontSize: 10
-    },
-    boxSizing: 'border-box'
-  }
-})
 
 const RecordProto = ({
   classes,
@@ -117,18 +47,20 @@ const RecordProto = ({
 
   const daemonRef = useRef(null)
 
-  function getDaemonApi () {
-    if (daemonRef.current === null) {
-      daemonRef.current = new DaemonApi(oipdHttpApi)
-    }
-    return daemonRef.current
-  }
-
+  // fetches extended templates
   useEffect(() => {
     if (_extends) {
       if (!Array.isArray(_extends)) {
         _extends = [_extends]
       }
+
+      const getDaemonApi = () => {
+        if (daemonRef.current === null) {
+          daemonRef.current = new DaemonApi(oipdHttpApi)
+        }
+        return daemonRef.current
+      }
+
       const searchTemplates = async (templatesIds) => {
         const daemonApi = getDaemonApi()
         for (const id of templatesIds) {
@@ -163,23 +95,9 @@ const RecordProto = ({
       searchTemplates(_extends)
     }
   }, [_extends])
-  // ^^ handling extended templates
 
   const [state, dispatch] = useReducer(reducer, initialState)
   // ^^ handling individual record proto state
-
-  // serialize
-  function prefixMessage (message) {
-    return `p64:${message}`
-  }
-
-  function serializeState (state) {
-    return {
-      name: templateName,
-      descriptor: descriptor,
-      payload: state
-    }
-  }
 
   // ^^ handling serialization
 
@@ -205,15 +123,6 @@ const RecordProto = ({
     })
   }, [state])
 
-  function setChildState (detailsData) {
-    setDetailsData(prevState => {
-      return {
-        ...prevState,
-        ...detailsData
-      }
-    })
-  }
-
   // lift details up to parent
   useEffect(() => {
     if (__liftDetails) {
@@ -229,6 +138,28 @@ const RecordProto = ({
     }
   }, [detailsData])
   // ^^ handling build and lift state
+
+  // serialize
+  function prefixMessage (message) {
+    return `p64:${message}`
+  }
+
+  function serializeState (state) {
+    return {
+      name: templateName,
+      descriptor: descriptor,
+      payload: state
+    }
+  }
+
+  function setChildState (detailsData) {
+    setDetailsData(prevState => {
+      return {
+        ...prevState,
+        ...detailsData
+      }
+    })
+  }
 
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
   function getMessage ({ wif, network }) {
@@ -268,194 +199,6 @@ const RecordProto = ({
     root={root}
     setChildState={setChildState}
   />
-}
-
-/** * Loops thrue webFmt object - returns a functional component ***/
-const RecordInterface = ({
-  classes,
-  webFmt,
-  dispatch,
-  onSuccess,
-  onError,
-  getMessage,
-  mainnetExplorerUrl,
-  testnetExplorerUrl,
-  withPublisher,
-  extendedTemplates,
-  oipdHttpApi,
-  root,
-  setChildState
-
-}) => {
-  return (
-    <div className={classes.root}>
-
-      {Object.keys(webFmt.fields).map((field, index) => {
-        const fieldData = webFmt.fields[field]
-        const enumData = webFmt.enums[webFmt.fields[field].enumRefName]
-
-        if (webFmt.fields[field].enumRefName) {
-          return <EnumRow
-            key={`${field}-enum-${index}`}
-            enumField={field}
-            enumData={enumData}
-            classes={classes}
-            dispatch={dispatch}
-          />
-        } else {
-          return <FieldRow
-            key={`${field}-${index}`}
-            id={`${field}-${index}`}
-            field={field}
-            fieldData={fieldData}
-            classes={classes}
-            dispatch={dispatch}
-          />
-        }
-      })}
-
-      {
-        Object.keys(extendedTemplates).map((templateIdentifier, i) => {
-          const template = extendedTemplates[templateIdentifier]
-          return <RecordProto
-            classes={classes}
-            key={templateIdentifier}
-            mainnetExplorerUrl={mainnetExplorerUrl}
-            testnetExplorerUrl={testnetExplorerUrl}
-            oipdHttpApi={oipdHttpApi}
-            template={template}
-            rootKey={`${root}-${i}`}
-            __liftDetails={setChildState}
-          />
-        })
-      }
-
-      {
-        withPublisher &&
-          <Publisher
-            classes={classes}
-            onSuccess={onSuccess}
-            onError={onError}
-            getMessage={getMessage}
-            mainnetExplorerUrl={mainnetExplorerUrl}
-            testnetExplorerUrl={testnetExplorerUrl}
-          />
-      }
-    </div>
-  )
-}
-
-//* ** Enum Dropdown ***/
-const EnumRow = ({
-  enumField,
-  enumData,
-  classes,
-  dispatch
-}) => {
-  const [state, setState] = useState(0)
-
-  function handleSelectChange (e) {
-    setState(Number(e.target.value))
-  }
-
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE',
-      value: state,
-      field: enumField
-    })
-  }, [state])
-
-  let values // currently don't allow repeated
-  if (enumData && enumData.values) {
-    values = enumData.values
-  }
-
-  // creates enum field dropdown
-  return (
-    <div className={classes.fieldContainer}>
-      <span className={classes.fieldTitle}>
-        Field: {enumField}
-      </span>
-      <select
-        value={state}
-        onChange={handleSelectChange}
-        className={classes.selectField}
-      >
-        {values && Object.keys(values).map((value, i) => {
-          return (
-            <option key={`${value}-${i}`} value={values[value]}>
-              {formatEnumValue(value)}
-            </option>
-          )
-        })}
-
-      </select>
-    </div>
-
-  )
-}
-
-/** * FIELD INPUTS***/
-const FieldRow = ({
-  field,
-  fieldData,
-  classes,
-  dispatch
-}) => {
-  const [state, setState] = useState('')
-  const { type, repeated } = fieldData
-
-  function handleInputChange (e, tags = false) {
-    if (tags) {
-      setState(e)
-    } else {
-      setState(e.target.value)
-    }
-  }
-
-  useEffect(() => {
-    dispatch({
-      type: 'UPDATE',
-      value: state,
-      field: field
-    })
-  }, [state])
-
-  const renderField = (<div className={classes.fieldContainer}>
-    <span className={classes.fieldTitle}>
-      Field: {field} | Type: {repeated ? 'Repeated' : null} {type}
-    </span>
-
-    {repeated
-      ? <TagsInput
-        placeholder={`${field}`}
-        getTags={(tags) => {
-          handleInputChange(tags, true)
-        }}
-        allowSpaces
-        classes={classes}
-      />
-      : <input
-        className={classes.inputField}
-        placeholder={field.toLowerCase()}
-        type={type}
-        value={state}
-        onChange={handleInputChange}
-      />}
-  </div>)
-
-  return renderField
-}
-
-// removes _ from enum values
-function formatEnumValue (value) {
-  value = value.split('_')
-  if (value[1]) {
-    value = value[1].toLowerCase()
-    return value.charAt(0).toUpperCase() + value.slice(1)
-  }
-  return value[0].toLowerCase()
 }
 
 RecordProto.propTypes = {
