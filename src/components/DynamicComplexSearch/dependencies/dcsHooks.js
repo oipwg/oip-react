@@ -32,7 +32,7 @@ export const useComplexFilter = (id) => {
   }
 
   function removeItem (forms, id) {
-    let { [id]: _, ...rest } = forms
+    const { [id]: _, ...rest } = forms
     return rest
   }
 
@@ -118,7 +118,7 @@ export const useDateTimePicker = () => {
   // dateObject.FEB.days = isLeapYear ? 29 : 28
 
   let numOfDays
-  for (let m in dateObject) {
+  for (const m in dateObject) {
     if (dateObject[m].mm === month) {
       numOfDays = dateObject[m].days
       break

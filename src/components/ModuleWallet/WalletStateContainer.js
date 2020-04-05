@@ -32,8 +32,8 @@ const WalletStateContainer = ({
 
   function init ({ wallet, coins }) {
     const __coins = coins || Object.keys(wallet.getCoins())
-    let stateObj = {}
-    for (let coin of __coins) {
+    const stateObj = {}
+    for (const coin of __coins) {
       stateObj[coin] = {
         addresses: [],
         transactions: [],
@@ -73,13 +73,13 @@ const WalletStateContainer = ({
   function handleAddAddress () {
     const addresses = state[activeCoin].addresses
     let index = 0
-    for (let address of addresses) {
+    for (const address of addresses) {
       if (address.address.index > index) {
         index = address.address.index
       }
     }
     index += 1 // get the address 1 after the index of the highest
-    let address = wallet.getCoin(activeCoin).getAccount(0).getAddress(0, index)
+    const address = wallet.getCoin(activeCoin).getAccount(0).getAddress(0, index)
     dispatch({
       type: ADD_ADDRESSES,
       coin: activeCoin,
@@ -128,7 +128,7 @@ const WalletStateContainer = ({
     if (typeof coins === 'string') {
       coins = [coins]
     }
-    for (let coin of coins) {
+    for (const coin of coins) {
       await wallet.getCoin(coin).discoverAccounts()
     }
   }
@@ -146,8 +146,8 @@ const WalletStateContainer = ({
   }
 
   function setExchangeRates (exchangeRates) {
-    let keys = Object.keys(exchangeRates)
-    for (let coin of keys) {
+    const keys = Object.keys(exchangeRates)
+    for (const coin of keys) {
       dispatch({
         type: UPDATE_EXCHANGE_RATE,
         coin,
@@ -160,7 +160,7 @@ const WalletStateContainer = ({
     if (typeof coins === 'string') {
       coins = [coins]
     }
-    let options = {
+    const options = {
       coins,
       testnet: true,
       discover: false
@@ -174,8 +174,8 @@ const WalletStateContainer = ({
   }
 
   function setCoinBalances (coinBalances) {
-    let keys = Object.keys(coinBalances)
-    for (let coin of keys) {
+    const keys = Object.keys(coinBalances)
+    for (const coin of keys) {
       dispatch({
         type: UPDATE_BALANCE,
         coin,
@@ -196,11 +196,11 @@ const WalletStateContainer = ({
     if (typeof coins === 'string') {
       coins = [coins]
     }
-    let addressObject = {}
-    for (let coin of coins) {
+    const addressObject = {}
+    for (const coin of coins) {
       const __COIN = wallet.getCoin(coin)
       const __ACOUNT = __COIN.getAccount(0)
-      let usedAddresses = __ACOUNT.getUsedAddresses()
+      const usedAddresses = __ACOUNT.getUsedAddresses()
       if (usedAddresses.length > 0) {
         addressObject[coin] = usedAddresses
       } else {
@@ -222,12 +222,12 @@ const WalletStateContainer = ({
     if (typeof coins === 'string') {
       coins = [coins]
     }
-    let transactionObject = {}
-    for (let coin of coins) {
+    const transactionObject = {}
+    for (const coin of coins) {
       const explorer = wallet.getNetworks()[coin].explorer
 
-      let pubAddresses = []
-      for (let addr of addressObject[coin]) {
+      const pubAddresses = []
+      for (const addr of addressObject[coin]) {
         pubAddresses.push(addr.getPublicAddress())
       }
       let transactions
@@ -242,13 +242,13 @@ const WalletStateContainer = ({
   }
 
   function updateAddresses (addressObject) {
-    for (let coin in addressObject) {
+    for (const coin in addressObject) {
       if (addressObject.hasOwnProperty(coin)) {
-        let addressesToAddToState = []
+        const addressesToAddToState = []
         const currentAddresses = state[coin].addresses
-        for (let newAddress of addressObject[coin]) {
+        for (const newAddress of addressObject[coin]) {
           let match = false
-          for (let oldAddress of currentAddresses) {
+          for (const oldAddress of currentAddresses) {
             if (oldAddress.address.index === newAddress.address.index) {
               match = true
             }
@@ -263,13 +263,13 @@ const WalletStateContainer = ({
   }
 
   function updateTransactions (transactionObject) {
-    for (let coin in transactionObject) {
+    for (const coin in transactionObject) {
       if (transactionObject.hasOwnProperty(coin)) {
-        let transactionsToAddToState = []
+        const transactionsToAddToState = []
         const currentTransactions = state[coin].transactions
-        for (let newTransaction of transactionObject[coin]) {
+        for (const newTransaction of transactionObject[coin]) {
           let match = false
-          for (let oldTransaction of currentTransactions) {
+          for (const oldTransaction of currentTransactions) {
             if (oldTransaction.txid === newTransaction.txid) {
               match = true
             }
@@ -321,13 +321,13 @@ const WalletStateContainer = ({
       const balances = await getCoinBalances(coins)
       setCoinBalances(balances)
       const addressObject = getUsedAddresses(coins)
-      for (let coin in addressObject) {
+      for (const coin in addressObject) {
         if (addressObject.hasOwnProperty(coin)) {
           setUsedAddresses(addressObject[coin], coin)
         }
       }
       const transactionObject = await getTransactions(coins, addressObject)
-      for (let coin in transactionObject) {
+      for (const coin in transactionObject) {
         if (transactionObject.hasOwnProperty(coin)) {
           setTransactions(transactionObject[coin], coin)
         }

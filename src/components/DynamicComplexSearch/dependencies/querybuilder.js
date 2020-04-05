@@ -1,22 +1,22 @@
 export default function buildQuery (state) {
   const forms = state.forms
-  let sorted = []
-  for (let uid in forms) {
+  const sorted = []
+  for (const uid in forms) {
     sorted.push([uid, forms[uid].index])
   }
   sorted.sort((a, b) => {
     return a[1] - b[1]
   })
 
-  let queryObject = {
+  const queryObject = {
     0: []
   }
   let count = 0
-  for (let form of sorted) {
+  for (const form of sorted) {
     const formId = form[0]
     const formState = forms[formId]
 
-    let qb = handleQueryBuild(formState)
+    const qb = handleQueryBuild(formState)
     if (formState.type === 'complex') {
       if (formState.operator === 'NOT') {
         queryObject[count].push('AND NOT')
@@ -30,7 +30,7 @@ export default function buildQuery (state) {
     queryObject[count].push(qb)
   }
   let query = ''
-  for (let q in queryObject) {
+  for (const q in queryObject) {
     query += `(${queryObject[q].join(' ')})`
     if (Number(q) !== Object.keys(queryObject).length - 1) {
       query += ' OR '

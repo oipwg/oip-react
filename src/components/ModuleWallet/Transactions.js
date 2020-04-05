@@ -49,22 +49,22 @@ const styles = theme => ({
 })
 
 const calculateAmount = (vin, vout, addresses) => {
-  let usedPubAddresses = []
-  for (let addr of addresses) {
+  const usedPubAddresses = []
+  for (const addr of addresses) {
     usedPubAddresses.push(addr.getPublicAddress())
   }
-  let vinData = []
-  for (let vi of vin) {
+  const vinData = []
+  for (const vi of vin) {
     vinData.push({ address: vi.addr, valueSat: vi.valueSat })
   }
 
-  let voutData = []
-  for (let vo of vout) {
+  const voutData = []
+  for (const vo of vout) {
     const value = vo.value * 1e8 // convert to satoshi
-    let addresses = []
+    const addresses = []
 
-    let addressesInVout = vo.scriptPubKey.addresses
-    for (let addr of addressesInVout) {
+    const addressesInVout = vo.scriptPubKey.addresses
+    for (const addr of addressesInVout) {
       addresses.push(addr)
     }
 
@@ -72,15 +72,15 @@ const calculateAmount = (vin, vout, addresses) => {
   }
 
   let moneySentFromMe = 0
-  for (let vind of vinData) {
+  for (const vind of vinData) {
     if (usedPubAddresses.includes(vind.address)) {
       moneySentFromMe += Number(vind.valueSat)
     }
   }
 
   let moneySentToMe = 0
-  for (let voutd of voutData) {
-    for (let addr of voutd.addresses) {
+  for (const voutd of voutData) {
+    for (const addr of voutd.addresses) {
       if (usedPubAddresses.includes(addr)) {
         moneySentToMe += Number(voutd.value)
       }
@@ -89,7 +89,7 @@ const calculateAmount = (vin, vout, addresses) => {
 
   let amount = (moneySentToMe) - (moneySentFromMe)
   amount /= 1e8
-  let type = amount > 0 ? 'Received' : 'Sent'
+  const type = amount > 0 ? 'Received' : 'Sent'
   amount = capDecimals(amount, 8)
   return { amount, type }
 }
@@ -117,12 +117,14 @@ const Transactions = ({
       >
         <div className={classes.timeAndTxid}>
           <span className={classes.blockTime}>{moment.unix(tx.time).format('MMM D, YYYY')}</span>
-          <span className={classes.txLink}
+          <span
+            className={classes.txLink}
             onClick={() => window.open(`${explorerUrl}/tx/${tx.txid}`, '_blank')}
-          >{tx.txid}</span>
+          >{tx.txid}
+          </span>
         </div>
         <div style={{ color: amount >= 0 ? 'green' : 'red' }} className={classes.txBalance}>
-          {amount > 0 ? '+' : null }{amount}
+          {amount > 0 ? '+' : null}{amount}
         </div>
       </div>
     })}

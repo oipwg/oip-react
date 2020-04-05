@@ -25,7 +25,7 @@ storiesOf('Publisher', module)
       <Publisher
         onSuccess={onSuccess}
         onError={onError}
-        message={'testnettestthis'}
+        message='testnettestthis'
       />
     </ThemeWrapper>
   })
@@ -53,10 +53,10 @@ storiesOf('Publisher', module)
       render () {
         return <>
           <input
-            type={'text'}
+            type='text'
             onChange={this.onChange}
             value={this.state.message}
-            placeholder={'enter message data here'}
+            placeholder='enter message data here'
             style={{
               display: 'block',
               marginBottom: '10px',
@@ -65,13 +65,14 @@ storiesOf('Publisher', module)
               borderRadius: '3px',
               border: '1px solid lightgrey',
               padding: '4px'
-            }} />
+            }}
+          />
           <WalletButton
             onSuccess={this.onSuccess}
             onError={this.onError}
-            network={'testnet'}
-            wif={'cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq'}
-            text={'Use this button to send data to the FLO chain!'}
+            network='testnet'
+            wif='cVeJgyPeQS2935MGpLWiPj28sowu2QxRx4vbdM5UinMwk151Epkq'
+            text='Use this button to send data to the FLO chain!'
             message={this.state.message}
           />
         </>

@@ -85,11 +85,11 @@ const LoadWallet = ({
     <div className={classes.contentContainer}>
       <h3 style={{ color: '#989898' }}>enter your mnemonic or create a new wallet</h3>
       <input
-        type={'text'}
+        type='text'
         value={mnemonicState}
         onChange={handleMnemonicChange}
         className={classNames(classes.inputBase, classes.inputMnemonic)}
-        placeholder={'enter your twelve word mnemonic here ob la di ob la da'}
+        placeholder='enter your twelve word mnemonic here ob la di ob la da'
       />
       <div className={classes.buttonRow}>
         <button

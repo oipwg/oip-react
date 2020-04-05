@@ -137,7 +137,7 @@ const Send = ({
       case 'AMOUNT':
         return <input
           className={classNames(classes.inputBase, classes.amountInput)}
-          type={'number'}
+          type='number'
           value={amount}
           onChange={handleAmountChange}
           onKeyUp={handleOnKeyUp}
@@ -145,25 +145,25 @@ const Send = ({
       case 'ADDRESS':
         return <input
           className={classNames(classes.inputBase, classes.addressInput)}
-          type={'text'}
+          type='text'
           value={address}
-          placeholder={'oRpmeYvjgfhkSpPWGL8eP5ePupyop3hz9j'}
+          placeholder='oRpmeYvjgfhkSpPWGL8eP5ePupyop3hz9j'
           onChange={handleAddressChange}
           onKeyUp={handleOnKeyUp}
         />
       case 'FLODATA':
         return <input
           className={classNames(classes.inputBase, classes.flodataInput)}
-          type={'text'}
+          type='text'
           value={flodata}
-          placeholder={'Your text here'}
+          placeholder='Your text here'
           onChange={handleFlodataChange}
           onKeyUp={handleOnKeyUp}
         />
       case 'SEND':
         return <input
-          type={'submit'}
-          value={'Send'}
+          type='submit'
+          value='Send'
           onClick={handleSubmit}
           className={classes.sendSubmit}
         />

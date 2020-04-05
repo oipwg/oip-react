@@ -47,7 +47,7 @@ const WalletButton = ({
   async function handleClick (e) {
     e.preventDefault()
 
-    let originalMessage = message
+    const originalMessage = message
     if (getMessage) {
       try {
         message = getMessage()
@@ -65,9 +65,9 @@ const WalletButton = ({
 
     if (!message || message === '') {
       if (onError) {
-        return onError(`must pass a message prop of type string to WalletButton`)
+        return onError('must pass a message prop of type string to WalletButton')
       } else {
-        throw Error(`must pass a message prop of type string to WalletButton \n`)
+        throw Error('must pass a message prop of type string to WalletButton \n')
       }
     }
 

@@ -1,5 +1,5 @@
 // Speed up calls to hasOwnProperty
-let hasOwnProperty = Object.prototype.hasOwnProperty
+const hasOwnProperty = Object.prototype.hasOwnProperty
 
 export default function isEmpty (obj) {
   // null and undefined are "empty"
@@ -18,7 +18,7 @@ export default function isEmpty (obj) {
   // Otherwise, does it have any properties of its own?
   // Note that this doesn't handle
   // toString and valueOf enumeration bugs in IE < 9
-  for (let key in obj) {
+  for (const key in obj) {
     if (hasOwnProperty.call(obj, key)) return false
   }
   return true

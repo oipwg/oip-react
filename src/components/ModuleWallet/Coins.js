@@ -91,11 +91,11 @@ const Coins = ({
       >
         <div
           className={classes.coinInfoRow}
-          id={'coinTitle'}
+          id='coinTitle'
         >
           {COIN.coin.displayName} wallet
           <span
-            id={'refresh-button'}
+            id='refresh-button'
             onClick={(e) => handleRefresh(e, coin)}
           >
             <Refresh />

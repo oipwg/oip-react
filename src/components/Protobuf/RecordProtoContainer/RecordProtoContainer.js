@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import { RecordProto } from '../index'
@@ -23,7 +23,7 @@ function RecordProtoContainer ({
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'https://api.oip.io/oip',
+  oipdHttpApi = 'https://api.oip.io/oip'
 }) {
   if (!Array.isArray(templates)) {
     templates = [templates]
@@ -43,30 +43,30 @@ function RecordProtoContainer ({
         }
       }
     } else {
-      throw Error(`Invalid action type in recordProtoContainer`)
+      throw Error('Invalid action type in recordProtoContainer')
     }
   }
 
-  function storeDetailsData (detailsData) {
+  const storeDetailsData = useCallback( (detailsData) => {
     if (detailsData.length === 0) return
 
-    for (let data of detailsData) {
+    for (const data of detailsData) {
       const payload = {
         type: 'UPDATE',
         data
       }
       dispatch(payload)
     }
-  }
+  }, [])
 
   function prefixMessage (message) {
     return `p64:${message}`
   }
 
   function getMessage ({ wif, network }) {
-    let detailsData = []
+    const detailsData = []
 
-    for (let tmpl in state) {
+    for (const tmpl in state) {
       if (state.hasOwnProperty(tmpl)) {
         detailsData.push(state[tmpl])
       }

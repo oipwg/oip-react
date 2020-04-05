@@ -38,29 +38,30 @@ const Publisher = ({
     <div className={classes.fieldContainer}>
       <span className={classes.fieldTitle}>Private key (wif)</span>
       <input
-        id={'wif'}
-        type={'text'}
+        id='wif'
+        type='text'
         onChange={handlePrivateKey}
         value={wif}
         className={classes.inputField}
-        placeholder={'private key (wallet import format)'}
+        placeholder='private key (wallet import format)'
       />
     </div>
     <div className={classes.publishRow}>
       <select
         value={network}
         onChange={handleNetworkChange}
-        className={classes.networkSelect}>
-        <option value={'mainnet'}>
+        className={classes.networkSelect}
+      >
+        <option value='mainnet'>
           mainnet
         </option>
-        <option value={'testnet'}>
+        <option value='testnet'>
           testnet
         </option>
       </select>
       <div className={classes.walletButton}>
         <WalletButton
-          text={'Create & Publish'}
+          text='Create & Publish'
           wif={wif} // KEY
           network={network}
           message={message}
