@@ -2,6 +2,7 @@ import React from 'react'
 import Publisher from '../../../Publisher/Publisher/Publisher'
 import EnumRow from '../EnumRow'
 import FieldRow from '../FieldRow'
+import RecordProto from '../RecordProto'
 
 /** * Loops through webFmt object - returns a functional component ***/
 const RecordInterface = ({
