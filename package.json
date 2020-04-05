@@ -1,6 +1,6 @@
 {
   "name": "oip-react",
-  "version": "2.0.0-beta.3.9.13",
+  "version": "2.0.0-beta.3.9.14",
   "description": "OIP Component library built with React/JSS",
   "main": "lib/index.js",
   "files": [
@@ -50,7 +50,7 @@
     "protobufjs": "~6.8.8",
     "react": "^16.8.4",
     "react-dom": "^16.8.4",
-    "react-jss": "git@github.com:/cssinjs/jss/tree/master/packages/react-jss",
+    "react-jss": "^10.1.1",
     "styled-jss": "^2.2.3",
     "uid": "^0.0.2",
     "wif": "^2.0.6"
