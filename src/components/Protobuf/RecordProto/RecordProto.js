@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useReducer, useState, useRef } from 'react'
+import React, { useEffect, useMemo, useReducer, useState, useRef, useCallback } from 'react'
 import withStyles from 'react-jss'
 import PropTypes from 'prop-types'
 import { decodeDescriptor, recordProtoBuilder } from 'oip-protobufjs'
@@ -96,10 +96,8 @@ const RecordProto = ({
     }
   }, [_extends])
 
+  // handles individual record proto state
   const [state, dispatch] = useReducer(reducer, initialState)
-  // ^^ handling individual record proto state
-
-  // ^^ handling serialization
 
   // handle state updating and lifting
   /**
@@ -110,7 +108,6 @@ const RecordProto = ({
    *   [root1]: serializedState(state)
    * }
    */
-
   const [detailsData, setDetailsData] = useState({})
 
   // handle state updates, set it to total details data state (internal)
@@ -136,7 +133,7 @@ const RecordProto = ({
       }
       getOipDetails(details) // array of detail Any payloads
     }
-  }, [detailsData])
+  }, [detailsData, __liftDetails, getOipDetails])
   // ^^ handling build and lift state
 
   // serialize
@@ -152,14 +149,14 @@ const RecordProto = ({
     }
   }
 
-  function setChildState (detailsData) {
+  const setChildState = useCallback((detailsData) => {
     setDetailsData(prevState => {
       return {
         ...prevState,
         ...detailsData
       }
     })
-  }
+  }, [])
 
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
   function getMessage ({ wif, network }) {

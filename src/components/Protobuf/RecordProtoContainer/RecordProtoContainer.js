@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react'
+import React, { useReducer, useCallback } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import { RecordProto } from '../index'
@@ -47,7 +47,7 @@ function RecordProtoContainer ({
     }
   }
 
-  function storeDetailsData (detailsData) {
+  const storeDetailsData = useCallback( (detailsData) => {
     if (detailsData.length === 0) return
 
     for (const data of detailsData) {
@@ -57,7 +57,7 @@ function RecordProtoContainer ({
       }
       dispatch(payload)
     }
-  }
+  }, [])
 
   function prefixMessage (message) {
     return `p64:${message}`
