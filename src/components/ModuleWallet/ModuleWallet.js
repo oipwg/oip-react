@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import withStyles from 'react-jss'
-import { Wallet } from 'oip-hdmw'
+import { Wallet } from '@oipwg/hdmw'
 import styled from 'styled-jss'
 
 import { LoadWallet } from './index'
@@ -43,7 +43,7 @@ const ModuleWallet = ({
   function onMnemonicSubmit (mnemonic) {
     walletRef.current = new Wallet(mnemonic, {
       discover: false,
-      supported_coins: coins
+      supportedCoins: coins
     })
     setLock(false)
   }

@@ -96,7 +96,7 @@ const RecordProto = ({
   onError,
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
-  oipdHttpApi = 'http://localhost:1606/oip', // toDo: switch to a production endpoint
+  oipdHttpApi = 'https://api.oip.io/oip',
   withPublisher = false,
   keyIndex, // internal use
   getOipDetails, // external use
@@ -382,7 +382,7 @@ const EnumRow = ({
         onChange={handleSelectChange}
         className={classes.selectField}
       >
-        {Object.keys(values).map((value, i) => {
+        {values && Object.keys(values).map((value, i) => {
           return (
             <option key={`${value}-${i}`} value={values[value]}>
               {formatEnumValue(value)}
