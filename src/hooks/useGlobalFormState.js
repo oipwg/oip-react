@@ -23,7 +23,7 @@ const useGlobalFormState = (id, initialRow) => {
   }
 
   function deleteItem (form, id) {
-    let { [id]: _, ...rest } = form
+    const { [id]: _, ...rest } = form
     return rest
   }
 

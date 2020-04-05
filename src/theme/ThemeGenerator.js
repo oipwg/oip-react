@@ -3,27 +3,27 @@ import chroma from 'chroma-js'
 export default class ThemeGenerator {
   constructor (options) {
     this.palettes = {
-      'light': {
-        'primary': '#3688aa',
-        'secondary': '#c45249',
-        'tertiary': '#303c58',
-        'background': '#ffffff',
-        'text': '#000000',
-        'success': '#339757',
-        'warning': '#fcaa32',
-        'danger': '#FF0000',
-        'info': '#5d5d66'
+      light: {
+        primary: '#3688aa',
+        secondary: '#c45249',
+        tertiary: '#303c58',
+        background: '#ffffff',
+        text: '#000000',
+        success: '#339757',
+        warning: '#fcaa32',
+        danger: '#FF0000',
+        info: '#5d5d66'
       },
-      'dark': {
-        'primary': '#3688aa',
-        'secondary': '#c45249',
-        'tertiary': '#4f6391',
-        'background': '#000000',
-        'text': '#ffffff',
-        'success': '#339757',
-        'warning': '#ee9a26',
-        'danger': '#FF0000',
-        'info': '#74748d'
+      dark: {
+        primary: '#3688aa',
+        secondary: '#c45249',
+        tertiary: '#4f6391',
+        background: '#000000',
+        text: '#ffffff',
+        success: '#339757',
+        warning: '#ee9a26',
+        danger: '#FF0000',
+        info: '#74748d'
       }
     }
 
@@ -72,7 +72,7 @@ export default class ThemeGenerator {
     this.commonPalette = {
       colorTypes: Object.keys(this.palettes.light),
       greyscale: (v) => {
-        let f = chroma.scale()
+        const f = chroma.scale()
         return f(v).hex()
       }
     }
@@ -123,15 +123,15 @@ export default class ThemeGenerator {
   }
 
   setSpacingSmall (spacing) {
-    this.spacing['sm'] = spacing
+    this.spacing.sm = spacing
   }
 
   setSpacingMedium (spacing) {
-    this.spacing['md'] = spacing
+    this.spacing.md = spacing
   }
 
   setSpacingLarge (spacing) {
-    this.spacing['lg'] = spacing
+    this.spacing.lg = spacing
   }
 
   getSpacing () {
@@ -147,8 +147,8 @@ export default class ThemeGenerator {
   }
 
   generateTheme () {
-    let theme = {}
-    for (let themeName in this.palettes) {
+    const theme = {}
+    for (const themeName in this.palettes) {
       if (this.palettes.hasOwnProperty(themeName)) {
         theme[themeName] = {
           name: themeName,
@@ -178,7 +178,7 @@ export default class ThemeGenerator {
   }
 
   addPalettes (palettes) {
-    for (let name in palettes) {
+    for (const name in palettes) {
       if (palettes.hasOwnProperty(name)) {
         // todo:: check if palette has all fields needed, if not use default color
         this.palettes[name] = palettes[name]
@@ -195,8 +195,8 @@ export default class ThemeGenerator {
   }
 
     generatePalette = (palette, shades = this.shades) => {
-      let tmpObj = {}
-      for (let type in palette) {
+      const tmpObj = {}
+      for (const type in palette) {
         if (palette.hasOwnProperty(type)) {
           const color = palette[type]
           tmpObj[type] = {
@@ -216,7 +216,7 @@ export default class ThemeGenerator {
     }
 
     saturate = (color, shades = this.shades) => {
-      let arr = []
+      const arr = []
       for (let i = 1; i <= shades; i++) {
         arr.push(chroma(color).saturate(i).hex())
       }
@@ -224,7 +224,7 @@ export default class ThemeGenerator {
     }
 
     desaturate = (color, shades = this.shades) => {
-      let arr = []
+      const arr = []
       for (let i = 1; i <= shades; i++) {
         arr.push(chroma(color).desaturate(i).hex())
       }
@@ -232,7 +232,7 @@ export default class ThemeGenerator {
     }
 
     darken = (color, shades = this.shades) => {
-      let arr = []
+      const arr = []
       for (let i = 1; i <= shades; i++) {
         arr.push(chroma(color).darken(i).hex())
       }
@@ -240,7 +240,7 @@ export default class ThemeGenerator {
     }
 
     brighten = (color, shades = this.shades) => {
-      let arr = []
+      const arr = []
       for (let i = 1; i <= shades; i++) {
         arr.push(chroma(color).brighten(i).hex())
       }

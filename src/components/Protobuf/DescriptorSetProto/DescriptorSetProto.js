@@ -10,23 +10,23 @@ import classNames from 'classnames'
 import { buildDescriptor } from 'oip-protobufjs'
 
 const protoFields = {
-  'string': 'text',
-  'bool': 'text',
-  'bytes': 'text',
-  'double': 'number',
-  'float': 'number',
-  'enum': 'misc',
-  'OipRef': 'text',
-  'int32': 'number',
-  'int64': 'number',
-  'uint32': 'number',
-  'uint64': 'number',
-  'sint32': 'number',
-  'sint64': 'number',
-  'fixed32': 'number',
-  'fixed64': 'number',
-  'sfixed32': 'number',
-  'sfixed64': 'number'
+  string: 'text',
+  bool: 'text',
+  bytes: 'text',
+  double: 'number',
+  float: 'number',
+  enum: 'misc',
+  OipRef: 'text',
+  int32: 'number',
+  int64: 'number',
+  uint32: 'number',
+  uint64: 'number',
+  sint32: 'number',
+  sint64: 'number',
+  fixed32: 'number',
+  fixed64: 'number',
+  sfixed32: 'number',
+  sfixed64: 'number'
 }
 
 // Select Option for DescriptorSetProto
@@ -117,7 +117,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
         id={id}
         state={gfs.state.form[id]}
         onChange={gfs.update}
-        name={'fieldRule'}
+        name='fieldRule'
         shouldUpdate={shouldUpdate}
         onBlur={liftDescriptor}
         classes={classes}
@@ -127,18 +127,18 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
         id={id}
         state={gfs.state.form[id]}
         onChange={gfs.update}
-        name={'fieldType'}
+        name='fieldType'
         shouldUpdate={shouldUpdate}
         onBlur={liftDescriptor}
         classes={classes}
       />
     </div>
     <InputField
-      placeholder={'Field Name'}
+      placeholder='Field Name'
       id={id}
       state={gfs.state.form[id]}
       onChange={gfs.update}
-      name={'fieldName'}
+      name='fieldName'
       shouldUpdate={shouldUpdate}
       allowSpaces={false}
       onBlur={liftDescriptor}
@@ -146,7 +146,7 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
       validate={validate}
     />
     {isEnum ? <TagsInput
-      placeholder={'(i.e. type enum fields here)'}
+      placeholder='(i.e. type enum fields here)'
       onBlur={liftDescriptor}
       classes={classes}
       getTags={(tags) => {
@@ -165,7 +165,8 @@ const FieldRow = ({ gfs, id, liftDescriptor, classes, validate }) => {
         validate()
       }}
       className={classNames(classes.buttonBase, classes.removeRowButton)}
-    >-</button>}
+    >-
+    </button>}
   </div>
 }
 
@@ -180,8 +181,8 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
   }
 
   const gfs = useGlobalFormState(id, initialFormRow)
-  let fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '')
-  let filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '')
+  const fieldnameArr = serializeFormData(gfs.state.form).map(x => x.name).filter(el => el !== '')
+  const filtered = fieldnameArr.filter((v, i, a) => a.indexOf(v) === i).filter(el => el !== '')
 
   const liftDescriptor = () => {
     if (getDescriptor) {
@@ -235,7 +236,8 @@ const DescriptorSetProto = ({ classes, getDescriptor }) => {
     <div>{passErrorMessage}</div>
     <button
       className={classNames(classes.buttonBase, classes.addRowButton)}
-      onClick={() => gfs.add(uid(), initialFormRow)}>+
+      onClick={() => gfs.add(uid(), initialFormRow)}
+    >+
     </button>
   </div>
 }
@@ -300,8 +302,8 @@ const styles = theme => ({
 })
 
 function serializeFormData (form) {
-  let sorted = []
-  for (let uid in form) {
+  const sorted = []
+  for (const uid in form) {
     if (form.hasOwnProperty(uid)) {
       sorted.push([uid, form[uid].index])
     }
@@ -310,12 +312,12 @@ function serializeFormData (form) {
     return a[1] - b[1]
   })
 
-  let serialized = []
+  const serialized = []
 
-  for (let formData of sorted) {
-    let data = form[formData[0]]
+  for (const formData of sorted) {
+    const data = form[formData[0]]
 
-    let tmpObject = {
+    const tmpObject = {
       type: data.fieldType,
       name: data.fieldName,
       rule: data.fieldRule === 'repeated' ? 'repeated' : undefined,

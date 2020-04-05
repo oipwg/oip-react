@@ -84,7 +84,7 @@ const Addresses = ({
           id={`addr-${addr.address.index}`}
           className={classNames('copy-p2pkh', classes.pubAddress)}
           onClick={() => {
-            let sel = window.getSelection()
+            const sel = window.getSelection()
             sel.empty()
             window.alert('copied address to clipboard')
           }}
@@ -113,7 +113,8 @@ const Addresses = ({
     {addresses.length > 0 ? <div className={classes.addRow}>
       <span
         className={classes.addAddress}
-        onClick={() => addAddress()}>
+        onClick={() => addAddress()}
+      >
         + Show next address
       </span>
     </div> : null}

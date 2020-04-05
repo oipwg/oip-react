@@ -8,7 +8,7 @@ import { TagsInput } from '../../UI'
 import Publisher from '../../Publisher/Publisher/Publisher'
 
 // handle individual record proto state
-let initialState = {}
+const initialState = {}
 
 function reducer (state, action) {
   if (action.type === 'UPDATE') {
@@ -130,8 +130,8 @@ const RecordProto = ({
         _extends = [_extends]
       }
       const searchTemplates = async (templatesIds) => {
-        let daemonApi = getDaemonApi()
-        for (let id of templatesIds) {
+        const daemonApi = getDaemonApi()
+        for (const id of templatesIds) {
           if (!extendedTemplates[id]) {
             const searchQuery = `template.identifier:${id}`
             let res
@@ -142,7 +142,7 @@ const RecordProto = ({
             }
             const { success, payload } = res
             if (success) {
-              let payloadResults = payload.results // SHOULD ALWAYS BE AN ARRAY
+              const payloadResults = payload.results // SHOULD ALWAYS BE AN ARRAY
               if (payloadResults[0]) {
                 const { template } = payloadResults[0]
                 if (template) {
@@ -220,9 +220,9 @@ const RecordProto = ({
       __liftDetails(detailsData)
     }
     if (getOipDetails) {
-      let keys = Object.keys(detailsData)
-      let details = []
-      for (let key of keys) {
+      const keys = Object.keys(detailsData)
+      const details = []
+      for (const key of keys) {
         details.push(detailsData[key])
       }
       getOipDetails(details) // array of detail Any payloads
@@ -233,9 +233,9 @@ const RecordProto = ({
   // function passed to Publisher to build and create message (only useful if publisher is set to true)
   function getMessage ({ wif, network }) {
     // build record template
-    let keys = Object.keys(detailsData)
-    let anyPayloads = []
-    for (let key of keys) {
+    const keys = Object.keys(detailsData)
+    const anyPayloads = []
+    for (const key of keys) {
       anyPayloads.push(detailsData[key])
     }
 
@@ -332,14 +332,14 @@ const RecordInterface = ({
 
       {
         withPublisher &&
-        <Publisher
-          classes={classes}
-          onSuccess={onSuccess}
-          onError={onError}
-          getMessage={getMessage}
-          mainnetExplorerUrl={mainnetExplorerUrl}
-          testnetExplorerUrl={testnetExplorerUrl}
-        />
+          <Publisher
+            classes={classes}
+            onSuccess={onSuccess}
+            onError={onError}
+            getMessage={getMessage}
+            mainnetExplorerUrl={mainnetExplorerUrl}
+            testnetExplorerUrl={testnetExplorerUrl}
+          />
       }
     </div>
   )
@@ -422,9 +422,9 @@ const FieldRow = ({
     })
   }, [state])
 
-  let renderField = (<div className={classes.fieldContainer}>
+  const renderField = (<div className={classes.fieldContainer}>
     <span className={classes.fieldTitle}>
-      Field: {field} | Type: {repeated ? `Repeated` : null} {type}
+      Field: {field} | Type: {repeated ? 'Repeated' : null} {type}
     </span>
 
     {repeated

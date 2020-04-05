@@ -9,7 +9,9 @@ const ThemeWrapper = (props) => {
     {props.children}
     <button
       style={{ display: 'block', marginTop: '30px', backgroundColor: 'unset', border: 'none', padding: '10px', cursor: 'pointer' }}
-      onClick={() => changeTheme(theme.name === 'light' ? 'dark' : 'light')}>Toggle Theme</button>
+      onClick={() => changeTheme(theme.name === 'light' ? 'dark' : 'light')}
+    >Toggle Theme
+    </button>
   </ThemeProvider>
 }
 
@@ -19,11 +21,11 @@ storiesOf('ModuleWallet', module)
     return <ThemeWrapper>
       <ModuleWallet
         coins={['flo', 'floTestnet']}
-        height={'400px'}
-        weidth={'900px'}
-        borderRadius={'20px'}
+        height='400px'
+        weidth='900px'
+        borderRadius='20px'
         // boxShadow={'2px 1px 2px'}
-        border={`1px solid grey`}
+        border='1px solid grey'
       />
     </ThemeWrapper>
   })

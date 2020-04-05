@@ -1,18 +1,18 @@
 import mapping42 from './042artifactMapping'
 
 export default function getMapping ({ index, onlyAllowEnabled = true, switchValueTypes = true }) {
-  let mapping = {}
+  const mapping = {}
   function parseMapping (obj, stack = '') {
-    for (let prop in obj) {
+    for (const prop in obj) {
       if (obj.hasOwnProperty(prop)) {
-        if (obj[prop]['properties']) {
-          let updatedStack = stack + (stack === '' ? `${prop}` : `.${prop}`)
-          parseMapping(obj[prop]['properties'], updatedStack)
+        if (obj[prop].properties) {
+          const updatedStack = stack + (stack === '' ? `${prop}` : `.${prop}`)
+          parseMapping(obj[prop].properties, updatedStack)
         } else {
           if (obj[prop].enabled === false) {
             return
           } else {
-            if (obj[prop]['fields']) {
+            if (obj[prop].fields) {
               // toDo: add support for keywords
               mapping[prop] = {
                 path: stack + `.${prop}`,
@@ -30,7 +30,7 @@ export default function getMapping ({ index, onlyAllowEnabled = true, switchValu
     }
   }
 
-  parseMapping(mapping42[index]['mappings']['_doc']['properties']) // toDo has to change to live api data
+  parseMapping(mapping42[index].mappings._doc.properties) // toDo has to change to live api data
   if (!switchValueTypes) {
     return mapping
   }
@@ -50,9 +50,9 @@ export default function getMapping ({ index, onlyAllowEnabled = true, switchValu
           return value
       }
     }
-    for (let keyField in mapping) {
+    for (const keyField in mapping) {
       if (mapping.hasOwnProperty(keyField)) {
-        let val = switchVal(mapping[keyField].type)
+        const val = switchVal(mapping[keyField].type)
         if (val) { // remove the ones with typed 'object'
           mapping[keyField].type = val
         }

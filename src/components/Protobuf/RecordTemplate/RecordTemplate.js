@@ -62,21 +62,21 @@ const RecordTemplate = ({
     <div className={classNames(classes.templateFieldRow, classes.nameRow)}>
       <span className={classes.inputTitle}>Friendly Name</span>
       <input
-        type={'text'}
+        type='text'
         value={name}
         className={classes.inputBase}
         onChange={(e) => setName(e.target.value)}
-        placeholder={'Template name'}
+        placeholder='Template name'
       />
     </div>
     <div className={classNames(classes.templateFieldRow, classes.descriptionRow)}>
       <span className={classes.inputTitle}>Description</span>
       <input
-        type={'text'}
+        type='text'
         value={description}
         className={classes.inputBase}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder={'Template description'}
+        placeholder='Template description'
       />
     </div>
     <DescriptorSetProto

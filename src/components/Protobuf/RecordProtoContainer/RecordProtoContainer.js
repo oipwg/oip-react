@@ -23,7 +23,7 @@ function RecordProtoContainer ({
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'https://api.oip.io/oip',
+  oipdHttpApi = 'https://api.oip.io/oip'
 }) {
   if (!Array.isArray(templates)) {
     templates = [templates]
@@ -43,14 +43,14 @@ function RecordProtoContainer ({
         }
       }
     } else {
-      throw Error(`Invalid action type in recordProtoContainer`)
+      throw Error('Invalid action type in recordProtoContainer')
     }
   }
 
   function storeDetailsData (detailsData) {
     if (detailsData.length === 0) return
 
-    for (let data of detailsData) {
+    for (const data of detailsData) {
       const payload = {
         type: 'UPDATE',
         data
@@ -64,9 +64,9 @@ function RecordProtoContainer ({
   }
 
   function getMessage ({ wif, network }) {
-    let detailsData = []
+    const detailsData = []
 
-    for (let tmpl in state) {
+    for (const tmpl in state) {
       if (state.hasOwnProperty(tmpl)) {
         detailsData.push(state[tmpl])
       }

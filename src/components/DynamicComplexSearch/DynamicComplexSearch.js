@@ -34,7 +34,7 @@ const FormContainer = ({ mapping, onSubmit, classes }) => {
   mapping = getAndParseMapping({ index: 'mainnet-oip042_artifact' })
   // console.log(mapping)
   const splitField = (field) => {
-    let split = field.split('.')
+    const split = field.split('.')
     return split[split.length - 1]
   }
   const getFieldOptions = (field = '') => {
@@ -122,12 +122,14 @@ const FormWrapper = withStyles(baseStyles)(({
     <div className={classes.buttonRow}>
       <button
         className={__(classes.buttonBase, classes.fnButtons, classes.addButton)}
-        onClick={() => add(uid())}>
+        onClick={() => add(uid())}
+      >
         Add Row
       </button>
       <button
         className={__(classes.buttonBase, classes.fnButtons, classes.submitButton)}
-        onClick={(e) => { e.preventDefault(); onSubmit(buildQuery(state)) }}>
+        onClick={(e) => { e.preventDefault(); onSubmit(buildQuery(state)) }}
+      >
         Submit
       </button>
     </div>
@@ -136,8 +138,8 @@ const FormWrapper = withStyles(baseStyles)(({
 
 const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldType, classes }) => {
   const formState = state.forms[id]
-  const field = formState['field']
-  const option = formState['option']
+  const field = formState.field
+  const option = formState.option
 
   const optionRef = useRef(null)
 
@@ -153,11 +155,12 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
   return <>
     <select
       className={__(classes.selectBase, classes.selectField)}
-      name={'field'}
+      name='field'
       onChange={(e) => handleUpdate(e, id)}
     >
       <option
-        value={'*'}>
+        value='*'
+      >
             All Fields
       </option>
       {Object.keys(mapping).map((k, i) => {
@@ -167,8 +170,9 @@ const FormBase = ({ id, state, mapping, handleUpdate, getFieldOptions, getFieldT
     <select
       className={__(classes.selectBase, classes.selectOption)}
       ref={optionRef}
-      name={'option'}
-      onChange={(e) => handleUpdate(e, id)}>
+      name='option'
+      onChange={(e) => handleUpdate(e, id)}
+    >
       {getFieldOptions(field).map((opt, i) => {
         return <option value={opt} key={i}>{opt}</option>
       })}
@@ -189,12 +193,12 @@ const ComplexBase = ({ id, state, mapping, handleUpdate, handleRemove, getFieldO
   return <>
     <select
       className={__(classes.selectBase, classes.selectOp)}
-      name={'operator'}
+      name='operator'
       onChange={(e) => handleUpdate(e, id)}
     >
-      <option value={'AND'}> AND</option>
-      <option value={'OR'}> OR</option>
-      <option value={'NOT'}> NOT</option>
+      <option value='AND'> AND</option>
+      <option value='OR'> OR</option>
+      <option value='NOT'> NOT</option>
     </select>
     <FormBase
       id={id}
@@ -251,7 +255,7 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
       <input
         className={__(classes.selectBase, classes.inputQuery)}
         ref={textNumRef}
-        name={'query'}
+        name='query'
         type={type}
         onChange={(e) => handleUpdate(e, id)}
       />
@@ -264,12 +268,11 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
         <input
           className={__(classes.selectBase, classes.inputQuery)}
           ref={textNumBetweenRef}
-          name={'maxQuery'}
+          name='maxQuery'
           type={type}
           onChange={(e) => handleUpdate(e, id)}
         />
-      </> : null
-      }
+      </> : null}
     </div>
   }
 
@@ -295,7 +298,7 @@ const FormQueryInput = ({ handleUpdate, id, option, getFieldType, field, classes
         return <select
           className={__(classes.selectBase, classes.selectOption)}
           ref={booleanRef}
-          name={'query'}
+          name='query'
           onChange={(e) => handleUpdate(e, id)}
         >
           <option value>True</option>
@@ -374,7 +377,7 @@ const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classe
     <select
       className={__(classes.selectBase, classes.selectField)}
       onChange={(e) => { setMonth(e.target.value) }}
-      name={'months'}
+      name='months'
     >
       {Object.keys(dateObject).map((m, i) => {
         return <option key={i} value={dateObject[m].mm}>{m}</option>
@@ -383,7 +386,7 @@ const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classe
     <select
       className={__(classes.selectBase, classes.selectField)}
       onChange={(e) => { setDay(e.target.value) }}
-      name={'days'}
+      name='days'
     >
       {days.map((d, i) => {
         return <option key={i} value={d}>{d}</option>
@@ -392,10 +395,10 @@ const DatePicker = ({ setMonth, dateObject, setDay, days, setYear, years, classe
     <input
       className={__(classes.inputBase, classes.inputDatalist)}
       onChange={(e) => { setYear(e.target.value) }}
-      type={'number'}
-      list={'years'}
+      type='number'
+      list='years'
     />
-    <datalist id={'years'}>
+    <datalist id='years'>
       {years.map((y, i) => {
         return <option key={i} value={y}>{y}</option>
       })}
@@ -408,7 +411,7 @@ const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds, cl
     <select
       className={__(classes.selectBase, classes.selectField)}
       onChange={(e) => { setHour(e.target.value) }}
-      name={'hours'}
+      name='hours'
     >
       {hours.map((m, i) => {
         return <option key={i} value={m}>{m}hr</option>
@@ -417,7 +420,7 @@ const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds, cl
     <select
       className={__(classes.selectBase, classes.selectField)}
       onChange={(e) => { setMinute(e.target.value) }}
-      name={'minutes'}
+      name='minutes'
     >
       {minutes.map((m, i) => {
         return <option key={i} value={m}>{m}m</option>
@@ -426,7 +429,7 @@ const TimePicker = ({ setHour, hours, setMinute, minutes, setSecond, seconds, cl
     <select
       className={__(classes.selectBase, classes.selectField)}
       onChange={(e) => { setSecond(e.target.value) }}
-      name={'seconds'}
+      name='seconds'
     >
       {seconds.map((m, i) => {
         return <option key={i} value={m}>{m}s</option>

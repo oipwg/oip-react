@@ -17,11 +17,11 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
 
   function removeTag ({ tags, index }) {
     if (!index && index !== 0) {
-      let newArray = [...tags]
+      const newArray = [...tags]
       newArray.pop()
       return newArray
     } else {
-      let newArray = [...tags]
+      const newArray = [...tags]
       newArray.splice(index, 1)
       return newArray
     }
@@ -51,7 +51,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
   }, [state.tags])
 
   function handleChange (e) {
-    let value = e.target.value
+    const value = e.target.value
     if (!allowSpaces) {
       if (value[value.length - 1] === ' ') {
         return false
@@ -90,7 +90,7 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
   return <div
     className={classes.tagsInputRoot}
   >
-    <div id={'tags'}>
+    <div id='tags'>
       {state.tags.map((tag, i) => {
         return <span className={classes.tagContainer} key={i}>
           <span className={classes.tagName}>{tag}</span>
@@ -98,10 +98,10 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
         </span>
       })}
     </div>
-    <div id={'input'}>
+    <div id='input'>
       <input
         className={classes.input}
-        type={'text'}
+        type='text'
         onKeyUp={handleKeyUp}
         value={inputValue}
         onChange={handleChange}
@@ -126,10 +126,10 @@ const styles = {
         padding: 4
       }
     },
-    font: `400 13.3333px Arial`,
+    font: '400 13.3333px Arial',
     '&:focus-within': {
       borderColor: '#66bfff',
-      boxShadow: `0 0 0 4px rgba(0, 149, 255, 0.15)`,
+      boxShadow: '0 0 0 4px rgba(0, 149, 255, 0.15)',
       outline: 0,
       position: 'relative'
     },
