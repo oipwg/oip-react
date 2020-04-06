@@ -78,7 +78,7 @@ const Publisher = ({
 
 const fieldHeight = 25
 const fieldWidth = 250
-const marginTopForTitle = 15
+const marginTopForTitle = 5
 
 const styles = theme => ({
   publishContainer: {
@@ -90,7 +90,6 @@ const styles = theme => ({
   fieldTitle: {
     fontSize: 10,
     color: `${theme.palette.greyscale(0.8)}`,
-    position: 'absolute'
   },
   publishRow: {
     display: 'flex',

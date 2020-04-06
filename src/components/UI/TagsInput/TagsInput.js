@@ -116,6 +116,7 @@ const styles = {
   tagsInputRoot: {
     flexWrap: 'wrap',
     width: 'auto',
+    overflow: 'scroll',
     padding: 4,
     border: '1px solid grey',
     borderRadius: '3px',
