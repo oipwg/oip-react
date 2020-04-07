@@ -4,6 +4,7 @@ import withStyles from 'react-jss'
 
 const styles = {
     Feedback: {
+        fontSize: '14px'
     }
   }
 

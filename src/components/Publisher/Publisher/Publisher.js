@@ -88,10 +88,12 @@ const marginTopForTitle = 5
 
 const styles = theme => ({
   publishContainer: {
-    width: fieldWidth
+    width: fieldWidth,
+    marginBottom: '2rem',
   },
   fieldContainer: {
-    position: 'relative'
+    position: 'relative',
+
   },
   fieldTitle: {
     fontSize: 10,
