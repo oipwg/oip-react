@@ -1,13 +1,23 @@
 import React from 'react';
+import withStyles from 'react-jss'
 
-const Feedback = ({message }) => {
+
+const styles = {
+    Feedback: {
+    }
+  }
+
+
+const Feedback = ({classes, message }) => {
     return (
-        <div role="alert">
-            {message}
+        <div className={classes.Feedback }role="alert">
+            <p>
+                {message}
+            </p>
         </div>
     )
 }
 
 
 
-export default Feedback;
+export default withStyles(styles)(Feedback);

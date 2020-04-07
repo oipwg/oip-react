@@ -18,9 +18,6 @@ const Publisher = ({
   const [wif, setWif] = useState('')
   const [network, setNetwork] = useState('mainnet') // mainnet or testnet
 
-
-
-
   function handlePrivateKey (e) {
     setWif(e.target.value)
   }
@@ -79,7 +76,7 @@ const Publisher = ({
         />
       </div>
     </div>
-        { feedback && <Feedback message={success.message}/>
+        { feedback && <Feedback message={feedback}/>
 
         }
   </div>

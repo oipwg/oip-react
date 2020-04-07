@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { storiesOf } from '@storybook/react'
 import { DescriptorSetProto, RecordTemplate, RecordProto } from '../src/components'
 import { useTheme, ThemeProvider } from '../src/theme'
 import RecordProtoContainer from '../src/components/Protobuf/RecordProtoContainer'
 
 const ThemeWrapper = (props) => {
+
+  
+  
   const { theme } = useTheme()
   return <ThemeProvider theme={theme}>
     {props.children}
@@ -14,6 +17,7 @@ const ThemeWrapper = (props) => {
 storiesOf('Protobuf', module)
   .add('DescriptorSetProto', () => {
     function getDescriptor (descr) {
+
       if (descr) {
         console.log(descr.toString())
       }
@@ -26,24 +30,32 @@ storiesOf('Protobuf', module)
     </ThemeWrapper>
   })
 
+
   .add('RecordTemplate', () => {
+    const [feedback, setFeedback] = useState(null)
+
     return <ThemeWrapper>
       <div style={{ width: '500px' }}>
         <RecordTemplate
-          onSuccess={txid => console.log('Success: ', txid)}
+          onSuccess={txid => setFeedback('Success ' + txid)}
           onError={err => console.error(err)}
           withPublisher
+          feedback={feedback}
         // _extends={1569568859}
         />
       </div>
     </ThemeWrapper>
   })
   .add('RecordProto', () => {
+    const [feedback, setFeedback] = useState(null)
+
     const file_descriptor_set = 'CmYKB3AucHJvdG8SEm9pcFByb3RvLnRlbXBsYXRlcyI/CgFQEgwKBG5hbWUYASABKAkSFQoNZmF2b3JpdGVTcG9ydBgCIAEoCRIVCg1mYXZvcml0ZUZydWl0GAMgASgJYgZwcm90bzM='
     const name = 'tmpl_348E9396'
 
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
 
     function onError (err) {
@@ -62,17 +74,24 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           withPublisher
+          feedback={feedback}
         />
       </div>
     </ThemeWrapper>
   })
   .add('RecordProtoContainer', () => {
+    const [feedback, setFeedback] = useState(null)
+
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
 
     function onError (err) {
       console.log('error', err)
+      setFeedback(err.message)
+
     }
 
     const templates = [
@@ -95,18 +114,25 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           templates={templates}
+          feedback={feedback}
         />
       </div>
     </ThemeWrapper>
   })
   // TESTING TEMPLATE
   .add('My Testing Template', () => {
+    const [feedback, setFeedback] = useState(null)
+
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
 
     function onError (err) {
       console.log('error', err)
+      setFeedback(err.message)
+
     }
 
     const templates = [
@@ -121,17 +147,24 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           templates={templates}
+          feedback={feedback}
         />
       </div>
     </ThemeWrapper>
   }) // TESTING TEMPLATE
   .add('Go', () => {
+    const [feedback, setFeedback] = useState(null)
+
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
 
     function onError (err) {
       console.log('error', err)
+      setFeedback(err.message)
+
     }
 
     const templates = [
@@ -146,17 +179,25 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           templates={templates}
+          feedback={feedback}
+
         />
       </div>
     </ThemeWrapper>
   })
   .add('Javascript', () => {
+    const [feedback, setFeedback] = useState(null)
+
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
 
     function onError (err) {
       console.log('error', err)
+      setFeedback(err.message)
+
     }
 
     const templates = [
@@ -171,17 +212,26 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           templates={templates}
+          feedback={feedback}
+
         />
       </div>
     </ThemeWrapper>
   })
   .add('Confirmed Publisher', () => {
+    const [feedback, setFeedback] = useState(null)
+
     function onSuccess (res) {
       console.log('successfully sent data to chain: ', res)
+      setFeedback('successfully sent data to chain: ' + res)
+
     }
+    
 
     function onError (err) {
       console.log('error', err)
+      setFeedback(err.message)
+
     }
 
     const templates = [
@@ -196,6 +246,8 @@ storiesOf('Protobuf', module)
           onSuccess={onSuccess}
           onError={onError}
           templates={templates}
+          feedback={feedback}
+
         />
       </div>
     </ThemeWrapper>

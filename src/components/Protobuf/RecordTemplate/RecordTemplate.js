@@ -14,7 +14,8 @@ const RecordTemplate = ({
   _extends,
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
-  withPublisher = false
+  withPublisher = false,
+  feedback
 }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -91,6 +92,7 @@ const RecordTemplate = ({
       getMessage={getMessage}
       mainnetExplorerUrl={mainnetExplorerUrl}
       testnetExplorerUrl={testnetExplorerUrl}
+      feedback={feedback}
     />}
   </div>
 }
