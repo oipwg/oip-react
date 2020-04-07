@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import WalletButton from '../WalletButton/WalletButton'
+import Feedback from '../../UI/feedback/Feedback'
+
 
 const Publisher = ({
   classes,
@@ -10,7 +12,8 @@ const Publisher = ({
   onSuccess,
   onError,
   mainnetExplorerUrl,
-  testnetExplorerUrl
+  testnetExplorerUrl,
+  feedback,
 }) => {
   const [wif, setWif] = useState('')
   const [network, setNetwork] = useState('mainnet') // mainnet or testnet
@@ -73,6 +76,9 @@ const Publisher = ({
         />
       </div>
     </div>
+        { feedback && <Feedback message={feedback}/>
+
+        }
   </div>
 }
 
@@ -82,10 +88,12 @@ const marginTopForTitle = 5
 
 const styles = theme => ({
   publishContainer: {
-    width: fieldWidth
+    width: fieldWidth,
+    marginBottom: '2rem',
   },
   fieldContainer: {
-    position: 'relative'
+    position: 'relative',
+
   },
   fieldTitle: {
     fontSize: 10,
