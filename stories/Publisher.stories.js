@@ -26,6 +26,7 @@ storiesOf('Publisher', module)
         onSuccess={onSuccess}
         onError={onError}
         message='testnettestthis'
+        success={{message: 'sick'}}
       />
     </ThemeWrapper>
   })
