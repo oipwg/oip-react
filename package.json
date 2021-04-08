@@ -12,7 +12,7 @@
     "lint": "standard",
     "lint:fix": "standard --fix",
     "compile": "npx babel src --out-dir lib --copy-files",
-    "prepublish": "yarn compile"
+    "prepublish": "npm run compile"
   },
   "devDependencies": {
     "@babel/cli": "^7.8.4",
