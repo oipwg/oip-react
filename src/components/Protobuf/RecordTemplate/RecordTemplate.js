@@ -15,7 +15,9 @@ const RecordTemplate = ({
   mainnetExplorerUrl = 'https://livenet.flocha.in/api',
   testnetExplorerUrl = 'https://testnet.explorer.mediciland.com/api',
   withPublisher = false,
-  feedback
+  feedback,
+  wif,
+  hidePrivateKeyInput = false
 }) => {
   const [name, setName] = useState('')
   const [description, setDescription] = useState('')
@@ -93,6 +95,8 @@ const RecordTemplate = ({
       mainnetExplorerUrl={mainnetExplorerUrl}
       testnetExplorerUrl={testnetExplorerUrl}
       feedback={feedback}
+      wif={wif}
+      hidePrivateKeyInput={hidePrivateKeyInput}
     />}
   </div>
 }
@@ -107,7 +111,9 @@ RecordTemplate.propTypes = {
   onError: PropTypes.func,
   withPublisher: PropTypes.bool,
   mainnetExplorerUrl: PropTypes.string,
-  testnetExplorerUrl: PropTypes.string
+  testnetExplorerUrl: PropTypes.string,
+  hidePrivateKeyInput: PropTypes.bool,
+  wif: PropTypes.string
 }
 
 export default withStyles(styles)(RecordTemplate)

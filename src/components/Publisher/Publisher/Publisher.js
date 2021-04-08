@@ -14,8 +14,10 @@ const Publisher = ({
   mainnetExplorerUrl,
   testnetExplorerUrl,
   feedback,
+  hidePrivateKeyInput,
+  wif: userWif
 }) => {
-  const [wif, setWif] = useState('')
+  const [wif, setWif] = useState(userWif)
   const [network, setNetwork] = useState('mainnet') // mainnet or testnet
 
   function handlePrivateKey (e) {
@@ -38,7 +40,7 @@ const Publisher = ({
   }
 
   return <div className={classes.publishContainer}>
-    <div className={classes.fieldContainer}>
+    {!hidePrivateKeyInput && <div className={classes.fieldContainer}>
       <span className={classes.fieldTitle}>Private key (wif)</span>
       <input
         id='wif'
@@ -48,7 +50,7 @@ const Publisher = ({
         className={classes.inputField}
         placeholder='private key (wallet import format)'
       />
-    </div>
+    </div>}
     <div className={classes.publishRow}>
       <select
         value={network}
@@ -142,7 +144,13 @@ Publisher.propTypes = {
   onError: PropTypes.func,
   mainnetExplorerUrl: PropTypes.string,
   testnetExplorerUrl: PropTypes.string,
-  message: PropTypes.string
+  message: PropTypes.string,
+  // set this to true to hide the ability to input a private key
+  hidePrivateKeyInput: PropTypes.bool,
+  // pass in a wif (private key) to sign messages. if you are not hiding
+  // the private key input, the user will have the ability to override
+  // the passed in wif
+  wif: PropTypes.string
 }
 
 export default withStyles(styles)(Publisher)
