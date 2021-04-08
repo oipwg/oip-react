@@ -1,6 +1,6 @@
 const fieldHeight = 25
 const fieldWidth = 250
-const marginTopForTitle = 15
+const marginTopForTitle = 5
 
 const styles = theme => ({
   root: {
@@ -40,17 +40,15 @@ const styles = theme => ({
   fieldTitle: {
     fontSize: 10,
     color: `${theme.palette.greyscale(0.8)}`,
-    position: 'absolute'
   },
   // tags input
   tagsInputRoot: {
     width: fieldWidth,
     boxSizing: 'border-box',
-    marginTop: marginTopForTitle,
+    marginTop: marginTopForTitle ,
     marginBottom: 10,
     border: `1px solid ${theme.palette.greyscale(0.3)}`,
     borderRadius: 3,
-    height: fieldHeight,
     position: 'relative',
     '& > input': {
       width: fieldWidth,

@@ -23,7 +23,8 @@ function RecordProtoContainer ({
   onError,
   mainnetExplorerUrl,
   testnetExplorerUrl,
-  oipdHttpApi = 'https://api.oip.io/oip'
+  oipdHttpApi = 'https://api.oip.io/oip',
+  feedback
 }) {
   if (!Array.isArray(templates)) {
     templates = [templates]
@@ -105,6 +106,7 @@ function RecordProtoContainer ({
       testnetExplorerUrl={testnetExplorerUrl}
       onSuccess={onSuccess}
       onError={onError}
+      feedback={feedback}
     />
   </div>
 }

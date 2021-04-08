@@ -114,14 +114,15 @@ const TagsInput = ({ classes, getTags, placeholder, allowSpaces = false, onBlur 
 
 const styles = {
   tagsInputRoot: {
-    display: 'inline-flex',
-    width: '300px',
-    height: 30,
+    flexWrap: 'wrap',
+    width: 'auto',
+    overflow: 'scroll',
     padding: 4,
     border: '1px solid grey',
     borderRadius: '3px',
     '& #tags': {
       display: 'flex',
+      flexWrap: 'wrap',
       '& > span': {
         padding: 4
       }
@@ -136,7 +137,6 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'flex-start',
     cursor: 'text',
-    overflow: 'hidden',
     whiteSpace: 'nowrap'
   },
   tagContainer: {
@@ -151,7 +151,7 @@ const styles = {
     cursor: 'pointer'
   },
   input: {
-    border: 'none',
+    width: '98%',
     outline: 'none',
     padding: '4px'
   }
