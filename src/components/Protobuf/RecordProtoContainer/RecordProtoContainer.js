@@ -24,7 +24,9 @@ function RecordProtoContainer ({
   mainnetExplorerUrl,
   testnetExplorerUrl,
   oipdHttpApi = 'https://api.oip.io/oip',
-  feedback
+  feedback,
+  hidePrivateKeyInput,
+  wif
 }) {
   if (!Array.isArray(templates)) {
     templates = [templates]
@@ -107,6 +109,8 @@ function RecordProtoContainer ({
       onSuccess={onSuccess}
       onError={onError}
       feedback={feedback}
+      hidePrivateKeyInput={hidePrivateKeyInput}
+      wif={wif}
     />
   </div>
 }
