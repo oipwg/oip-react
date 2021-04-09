@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PropTypes from 'prop-types'
 import withStyles from 'react-jss'
 import WalletButton from '../WalletButton/WalletButton'
@@ -19,6 +19,10 @@ const Publisher = ({
 }) => {
   const [wif, setWif] = useState(userWif)
   const [network, setNetwork] = useState('mainnet') // mainnet or testnet
+
+  useEffect(() => {
+    setWif(userWif)
+  }, [userWif])
 
   function handlePrivateKey (e) {
     setWif(e.target.value)
