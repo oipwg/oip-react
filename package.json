@@ -46,7 +46,7 @@
     "react-spinners": "^0.4.5",
     "reactstrap": "^6.4.0",
     "uid": "0.0.2",
-    "validator": "^10.6.0",
+    "validator": "^13.7.0",
     "video.js": "^7.1.0",
     "wavesurfer.js": "^2.0.6"
   },
